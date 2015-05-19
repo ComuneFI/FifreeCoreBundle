@@ -1,0 +1,41 @@
+opzioniTabella:
+    pattern:  /
+    defaults: { _controller: "FiCoreBundle:opzioniTabella:index" }
+
+opzioniTabella_new:
+    pattern:  /new
+    defaults: { _controller: "FiCoreBundle:opzioniTabella:new" }
+
+opzioniTabella_create:
+    pattern:  /create
+    defaults: { _controller: "FiCoreBundle:opzioniTabella:create" }
+    requirements: { _method: post }
+
+opzioniTabella_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "FiCoreBundle:opzioniTabella:edit" }
+
+opzioniTabella_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "FiCoreBundle:opzioniTabella:update" }
+    requirements: { _method: post|put }
+
+opzioniTabella_aggiorna:
+    pattern:  /aggiorna
+    defaults: { _controller: "FiCoreBundle:opzioniTabella:aggiorna" }
+    requirements: { _method: post|put }
+
+opzioniTabella_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "FiCoreBundle:opzioniTabella:delete" }
+    requirements: { _method: post|delete }
+
+opzioniTabella_deletemultiple:
+    pattern:  /delete
+    defaults: { _controller: "FiCoreBundle:opzioniTabella:delete" }
+    requirements: { _method: post|delete }
+
+opzioniTabella_griglia:
+    pattern:  /griglia
+    defaults: { _controller: "FiCoreBundle:opzioniTabella:griglia" }
+    requirements: { _method: get }

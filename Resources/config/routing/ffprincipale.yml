@@ -1,0 +1,41 @@
+ffprincipale:
+    pattern:  /
+    defaults: { _controller: "FiCoreBundle:ffprincipale:index" }
+
+ffprincipale_new:
+    pattern:  /new
+    defaults: { _controller: "FiCoreBundle:ffprincipale:new" }
+
+ffprincipale_create:
+    pattern:  /create
+    defaults: { _controller: "FiCoreBundle:ffprincipale:create" }
+    requirements: { _method: post }
+
+ffprincipale_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "FiCoreBundle:ffprincipale:edit" }
+
+ffprincipale_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "FiCoreBundle:ffprincipale:update" }
+    requirements: { _method: post|put }
+
+ffprincipale_aggiorna:
+    pattern:  /aggiorna
+    defaults: { _controller: "FiCoreBundle:ffprincipale:aggiorna" }
+    requirements: { _method: post|put }
+
+ffprincipale_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "FiCoreBundle:ffprincipale:delete" }
+    requirements: { _method: post|delete }
+
+ffprincipale_deletemultiple:
+    pattern:  /delete
+    defaults: { _controller: "FiCoreBundle:ffprincipale:delete" }
+    requirements: { _method: post|delete }
+
+ffprincipale_griglia:
+    pattern:  /griglia
+    defaults: { _controller: "FiCoreBundle:ffprincipale:griglia" }
+    requirements: { _method: get }

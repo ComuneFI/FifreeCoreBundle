@@ -1,0 +1,64 @@
+Fi\CoreBundle\Entity\tabelle:
+    type: entity
+    table: tabelle
+    indexes:
+        fk_table1_operatori1_idx:
+            columns: [operatori_id]
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        nometabella:
+            type: string
+            length: 45
+            nullable: true
+        nomecampo:
+            type: string
+            length: 45
+            nullable: true
+        mostraindex:
+            type: boolean
+            nullable: true
+        ordineindex:
+            type: integer
+            nullable: true
+        larghezzaindex:
+            type: integer
+            nullable: true
+        etichettaindex:
+            type: string
+            length: 255
+            nullable: true
+        mostrastampa:
+            type: boolean
+            nullable: true
+        ordinestampa:
+            type: integer
+            nullable: true
+        larghezzastampa:
+            type: integer
+            nullable: true
+        etichettastampa:
+            type: string
+            length: 255
+            nullable: true
+        operatori_id:
+            type: integer
+            nullable: true
+    oneToMany:
+        opzioni_tabellas:
+            targetEntity: opzioniTabella
+            mappedBy: tabelle
+            joinColumn:
+                name: tabelle_id
+                referencedColumnName: id
+                nullable: false
+    manyToOne:
+        operatori:
+            targetEntity: operatori
+            inversedBy: tabelles
+            joinColumn:
+                name: operatori_id
+                referencedColumnName: id

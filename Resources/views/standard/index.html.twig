@@ -1,0 +1,84 @@
+{% extends 'FiCoreBundle::layout.html.twig' %}
+
+{% block content -%}
+
+    <div id="dettaglio" class="ui-widget ui-widget-content ui-jqdialog ui-corner-all"></div>
+    <div id="dettaglioconf" class="ui-widget ui-widget-content ui-jqdialog ui-corner-all"></div>
+
+    <div id="{{ nomecontroller }}" class="tabella">
+        <table id="list1">
+        </table> 
+        <div id="pager1">
+        </div> 
+    </div>
+
+    <script type="text/javascript">
+
+        $(document).keypress(function(event) {
+            switch (event.key)
+            {
+                case "Add":
+                    if (event.shiftKey) {
+                        event.preventDefault();
+                        apriDettaglio({
+                            'tabella': '{{ nomecontroller }}',
+                            'tipo': 'new',
+                            'altezza': testata.altezzaform,
+                            'larghezza': testata.larghezzaform,
+                            'sinistra': testata.sinistraform,
+                            'alto': testata.altoform
+                        });
+                    }
+                    break;
+                case "Del":
+                    if (event.shiftKey) {
+                        event.preventDefault();
+                        if (lastsel) {
+                            eliminaDettaglio({
+                                'tabella': '{{ nomecontroller }}',
+                                'tipo': 'del',
+                                'id': lastsel,
+                                'multisel': testata.multisel
+                            });
+                        }
+
+
+                    }
+                    break;
+                case "Enter":
+                    if (event.shiftKey) {
+                        event.preventDefault();
+                        /*
+                         if (lastsel){
+                         apriDettaglio({
+                         'tabella': '{{ nomecontroller }}',
+                         'tipo': 'edit',
+                         'id':lastsel,
+                         'altezza': testata.altezzaform,
+                         'larghezza': testata.larghezzaform,
+                         'sinistra': testata.sinistraform,
+                         'alto': testata.altoform
+                         });
+                         }*/
+                    }
+                    break;
+                case "Esc":
+                    event.preventDefault();
+                    $("#eData").trigger('click');
+                    $(".fi-default-salva").removeClass("fi-default-salva");
+                    $(".fi-default-elimina").removeClass("fi-default-elimina");
+                    break;
+            }
+        });
+
+        $(document).ready(function() {
+        {% if ((canread is defined and canread == 0)) %}
+                alert("Non si hanno i permessi per visualizzare questo contenuto");
+        {% else %}
+                caricaGriglia({{ testata|raw }});
+                $(".ui-jqgrid-bdiv").focus();
+        {% endif %}
+            });
+    </script>
+
+{% endblock %}

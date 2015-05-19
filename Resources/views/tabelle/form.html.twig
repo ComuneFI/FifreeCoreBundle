@@ -1,0 +1,23 @@
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+
+<div id="tabelle_part_nomi">
+    {{ form_row(form.nometabella) }}
+    {{ form_row(form.nomecampo) }}
+  </div>
+  <div id="tabelle_part_index">
+    {{ form_row(form.mostraindex) }}
+    {{ form_row(form.ordineindex) }}
+    {{ form_row(form.larghezzaindex) }}
+    {{ form_row(form.etichettaindex) }}
+    </div>
+    <div id="tabelle_part_stampa">
+
+
+    {{ form_row(form.mostrastampa) }}
+    {{ form_row(form.ordinestampa) }}
+    {{ form_row(form.larghezzastampa) }}
+    {{ form_row(form.etichettastampa) }}
+    </div>
+
+{{ form_end(form) }}

@@ -1,0 +1,18 @@
+{% extends "FiCoreBundle::layout.html.twig" %}
+
+{% block title "Demo" %}
+
+{% set code = code(_self) %}
+
+{% block body %}
+
+    <h1>Il codice dietro a questa pagina</h1>
+    <div class="block">
+        <div class="symfony-content" style="font-size: 200%;">{{ code|raw }}</div>
+    </div>
+
+    {% block content %}
+
+    {% endblock %}
+
+{% endblock %}

@@ -1,0 +1,54 @@
+fi_demo_index:
+    pattern:  /
+    defaults: { _controller: "FiCoreBundle:Demo:index" }
+
+fi_php_word_compilamodello:
+    pattern:  /phpword
+    defaults: { _controller: "FiCoreBundle:Demo:PHPWord" }
+
+fi_php_excel_demowrite:
+    pattern:  /phpexcel/demowrite
+    defaults: { _controller: FiCoreBundle:Demo:excelwrite }
+
+fi_php_excel_demoreadarray:
+    pattern:  /phpexcel/demoreadarray
+    defaults: { _controller: FiCoreBundle:Demo:excelreadarray }
+
+fi_php_excel_demoread:
+    pattern:  /phpexcel/demoread
+    defaults: { _controller: FiCoreBundle:Demo:excelread }
+
+fi_php_excel_querytoexcel:
+    pattern:  /phpexcel/queryToExcel
+    defaults: { _controller: FiCoreBundle:Demo:excelqueryToExcel }
+
+fi_demo_uploadfile:
+    pattern:  /uploadfile
+    defaults: { _controller: "FiCoreBundle:Demo:uploadIndex" }
+
+fi_demo_uploadfile_destination:
+    pattern:  /saveuploadfile
+    defaults: { _controller: "FiCoreBundle:Demo:uploadSave" }
+    
+fi_demo_doctrine_select:
+    pattern:  /doctrineSelect
+    defaults: { _controller: "FiCoreBundle:Demo:doctrineSelect" }
+    
+fi_demo_doctrine_insert:
+    pattern:  /doctrineInsert
+    defaults: { _controller: "FiCoreBundle:Demo:doctrineInsert" }
+    
+fi_demo_doctrine_delete:
+    pattern:  /doctrineDelete
+    defaults: { _controller: "FiCoreBundle:Demo:doctrineDelete" }
+    
+fi_demo_doctrine_update:
+    pattern:  /doctrineUpdate
+    defaults: { _controller: "FiCoreBundle:Demo:doctrineUpdate" }
+    
+fi_demo_docx2pdf:
+    pattern:  /docx2pdf
+    defaults: { _controller: "FiCoreBundle:Demo:docx2Pdf" }
+
+    
+

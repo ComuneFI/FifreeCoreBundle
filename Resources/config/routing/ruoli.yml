@@ -1,0 +1,40 @@
+ruoli:
+    pattern:  /
+    defaults: { _controller: "FiCoreBundle:ruoli:index" }
+
+ruoli_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "FiCoreBundle:ruoli:show" }
+
+ruoli_new:
+    pattern:  /new
+    defaults: { _controller: "FiCoreBundle:ruoli:new" }
+
+ruoli_create:
+    pattern:  /create
+    defaults: { _controller: "FiCoreBundle:ruoli:create" }
+    requirements: { _method: post }
+
+ruoli_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "FiCoreBundle:ruoli:edit" }
+
+ruoli_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "FiCoreBundle:ruoli:update" }
+    requirements: { _method: post|put }
+
+ruoli_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "FiCoreBundle:ruoli:delete" }
+    requirements: { _method: post|delete }
+    
+ruoli_deletemultiple:
+    pattern:  /delete
+    defaults: { _controller: "FiCoreBundle:ruoli:delete" }
+    requirements: { _method: post|delete }
+
+ruoli_griglia:
+    pattern:  /griglia
+    defaults: { _controller: "FiCoreBundle:ruoli:griglia" }
+    requirements: { _method: get }

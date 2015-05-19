@@ -1,0 +1,9 @@
+Fi\CoreBundle\Entity\ffprincipale:
+    properties:
+        descrizione:
+            - NotBlank: ~
+            
+Fi\CoreBundle\Entity\menuApplicazione:
+    properties:
+        nome:
+            - NotBlank: ~

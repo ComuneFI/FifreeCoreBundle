@@ -1,0 +1,52 @@
+<!--Javascript-->
+<script type="text/javascript">
+var baseUrl = '{{app.request.baseUrl}}';
+</script>
+<script type="text/javascript" src="{{ asset('bundles/ficore/js/vendor/jquery/jquery-1.11.0.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/ficore/js/vendor/jqgrid/jquery.jqGrid.src.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/ficore/js/vendor/jqgrid/i18n/grid.locale-it.js') }}" ></script>
+
+<script type="text/javascript" src="{{ asset('bundles/ficore/js/vendor/jquery-ui/jquery-ui-1.10.3.custom.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/ficore/js/vendor/jquery-ui/jquery.ui.datepicker.it.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/ficore/js/vendor/jquery-ui/jquery-ui-timepicker-addon.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/ficore/js/vendor/jqueryflexselect/jquery.flexselect.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/ficore/js/vendor/jqueryflexselect/liquidmetal.js') }}" ></script>
+
+<script type="text/javascript" src="{{ asset('bundles/ficore/js/vendor/qtip/jquery.qtip.min.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/ficore/js/vendor/qtip/imagesloaded.pkg.min.js') }}" ></script>
+
+<script type="text/javascript" src="{{ asset('bundles/ficore/js/griglia.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/ficore/js/fifree2.js') }}" ></script>
+<!--Javascript-->
+
+<!--Menu-->
+<script src="{{ asset('bundles/ficore/js/vendor/jquery-menubar/jquery.ui.menubar.js') }}"></script>
+<script src="{{ asset('bundles/ficore/js/vendor/jquery-menubar/jquery.contextMenu.js') }}"></script>
+<!--Menu-->
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#bar1").fadeIn("slow");
+    $("#bar1").menubar({
+        position: {
+        within: $("#toolbar-menu").add(window).first()
+        }
+    });
+});
+
+//Gestione per attivare il loading quando parte una richiesta ajax
+$(document).on({
+    ajaxStart: function() { 
+        $('.waiting_div').slideDown("slow");
+        $('#img_wdt_db').hide();
+        $('#img_wdt_db_wait').show();
+    },
+    ajaxStop: function() { 
+        $('.waiting_div').slideUp("slow");
+        $('#img_wdt_db_wait').hide();
+        $('#img_wdt_db').show();
+    }    
+});
+
+</script>
+

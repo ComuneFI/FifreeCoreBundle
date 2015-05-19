@@ -1,0 +1,50 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>opzioniTabella</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Tabelle_id</th>
+                <td>{{ entity.tabelleid }}</td>
+            </tr>
+            <tr>
+                <th>Descrizione</th>
+                <td>{{ entity.descrizione }}</td>
+            </tr>
+            <tr>
+                <th>Parametro</th>
+                <td>{{ entity.parametro }}</td>
+            </tr>
+            <tr>
+                <th>Valore</th>
+                <td>{{ entity.valore }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('opzioniTabella') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('opzioniTabella_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('opzioniTabella_delete', { 'id': entity.id }) }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+{% endblock %}

@@ -1,0 +1,63 @@
+fi_core_homepage:
+    pattern:  /coredemo/
+    defaults: { _controller: FiCoreBundle:Default:index }
+
+FiCoreBundle_demo:
+    resource: "@FiCoreBundle/Resources/config/routing/demoutility.yml"
+    prefix:   /demo
+
+FiCoreBundle_Ffprincipale:
+    resource: "@FiCoreBundle/Resources/config/routing/ffprincipale.yml"
+    prefix:   /ffprincipale
+
+FiCoreBundle_Ffsecondaria:
+    resource: "@FiCoreBundle/Resources/config/routing/ffsecondaria.yml"
+    prefix:   /ffsecondaria    
+
+FiCoreBundle_Funzioni:
+    resource: "@FiCoreBundle/Resources/config/routing/funzioni.yml"
+    prefix:   /funzioni
+        
+FiCoreBundle_ruoli:
+    resource: "@FiCoreBundle/Resources/config/routing/ruoli.yml"
+    prefix:   /ruoli
+        
+FiCoreBundle_operatori:
+    resource: "@FiCoreBundle/Resources/config/routing/operatori.yml"
+    prefix:   /operatori
+    
+FiCoreBundle_permessi:
+    resource: "@FiCoreBundle/Resources/config/routing/permessi.yml"
+    prefix:   /permessi
+    
+FiCoreBundle_tabelle:
+    resource: "@FiCoreBundle/Resources/config/routing/tabelle.yml"
+    prefix:   /tabelle
+
+FiCoreBundle_opzioniTabella: 
+  resource: "@FiCoreBundle/Resources/config/routing/opzionitabella.yml"
+  prefix: /opzioniTabella
+
+FiCoreBundle_menuApplicazione: 
+  resource: "@FiCoreBundle/Resources/config/routing/menuapplicazione.yml"
+  prefix: /menuApplicazione
+
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /profile
+

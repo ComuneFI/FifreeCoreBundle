@@ -1,0 +1,34 @@
+Fi\CoreBundle\Entity\opzioniTabella:
+    type: entity
+    table: opzioni_tabella
+    indexes:
+        opzioni_tabella_tabelle_fk1_idx:
+            columns: [tabelle_id]
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        tabelle_id:
+            type: integer
+        descrizione:
+            type: string
+            length: 255
+            nullable: true
+        parametro:
+            type: string
+            length: 255
+            nullable: true
+        valore:
+            type: string
+            length: 255
+            nullable: true
+    manyToOne:
+        tabelle:
+            targetEntity: tabelle
+            inversedBy: opzioni_tabellas
+            joinColumn:
+                name: tabelle_id
+                referencedColumnName: id
+                nullable: false

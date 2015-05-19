@@ -1,0 +1,103 @@
+{# empty Twig template #}
+
+<ul id = "bar1" class = "menubar" style="display: none">
+
+  {% for i in risposta %}
+
+    {% if (i.notifiche is defined) and (i.notifiche) %}
+      <li id="{{i.tag}}_li" class="notification_li"> 
+        <span id="{{i.tag}}_count" class="notification_count">0</span>
+        <a href="#" id="{{i.tag}}Link" class="notificationLink">{{i.nome}}</a>
+
+        <div id="{{i.tag}}Container" class="notificationContainer">
+          <div id="{{i.tag}}Body" class="notifications notificationBody"></div>
+          {% if ( i.percorso.percorso is defined and i.percorso.percorso|length > 0) %}
+            <div id="{{i.tag}}Footer" class="notificationFooter"><a href = "{{ i.percorso.percorso }}" target="{{ i.target }}">Vedi tutto</a></div>
+          {% endif %}
+        </div>  
+    {%else %}
+      <li {% if i.classe is defined %} class = "{{ i.classe }}" {% endif %} >
+        <a href = "{{ i.percorso.percorso }}" target="{{ i.target }}">{{ i.nome }}</a>
+    {%endif %}  
+
+      {% if i.sottolivello is defined and i.sottolivello|length > 0 %}
+        <ul>
+          {% for sottomenu in i.sottolivello %}
+            <li> <a href = "{{ sottomenu.percorso }}" target="{{ sottomenu.target }}">{{ sottomenu.nome }}</a>
+              {% if (sottomenu.sottolivello is defined and sottomenu.sottolivello|length > 0) %}
+                <ul>
+                  {% for sottosubmenu in sottomenu.sottolivello %}
+                    <li> <a href = "{{ sottosubmenu.percorso }}" target="{{ sottosubmenu.target }}">{{ sottosubmenu.nome }}</a>
+                      {% if (sottosubmenu.sottolivello is defined and sottosubmenu.sottolivello|length > 0) %}
+                        <ul>
+                          {% for sottosottosubmenu in sottosubmenu.sottolivello %}
+                            <li> <a href = "{{ sottosottosubmenu.percorso }}" target="{{ sottosottosubmenu.target }}">{{ sottosottosubmenu.nome }}</a></li>
+                            {% endfor %}
+                        </ul>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </li>
+  {% endfor %}
+
+</ul>
+
+<script type="text/javascript" >
+  $(document).ready(function ()
+  {
+
+
+  {% for i in risposta %}
+
+    {% if (i.notifiche is defined) and (i.notifiche) %}
+
+
+      {% if (i.percorsonotifiche.percorso) %}
+          $('#{{i.tag}}Body').load('{{i.percorsonotifiche.percorso}}');
+      {% endif %}
+
+
+          $('body').click(function (evt) {
+            //console.log(evt.target.id);
+            if (evt.target.id == "{{i.tag}}Container") {
+              return;
+            }
+            //For descendants of menu_content being clicked, remove this check if you do not want to put constraint on descendants.
+            //console.log($(evt.target).closest('#{{i.tag}}Container').length);
+            if ($(evt.target).closest('#{{i.tag}}Container').length) {
+              return;
+            }
+
+
+
+
+            $(".{{i.tag}}Container").hide();
+            $("#{{i.tag}}Container").hide();
+            //Do processing of click event here for every element except with id menu_content
+
+          });
+
+
+          $("#{{i.tag}}Link").click(function () {
+            $("#{{i.tag}}Container").fadeToggle(300);
+            //$("#notification_count").fadeOut("slow");
+            return false;
+          });
+          //Popup on click
+          $("#{{i.tag}}Container").click(function () {
+
+          });
+    {%endif %}
+  {% endfor %}
+    });
+
+
+
+
+</script>

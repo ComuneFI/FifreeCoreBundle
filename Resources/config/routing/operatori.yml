@@ -1,0 +1,40 @@
+operatori:
+    pattern:  /
+    defaults: { _controller: "FiCoreBundle:operatori:index" }
+
+operatori_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "FiCoreBundle:operatori:show" }
+
+operatori_new:
+    pattern:  /new
+    defaults: { _controller: "FiCoreBundle:operatori:new" }
+
+operatori_create:
+    pattern:  /create
+    defaults: { _controller: "FiCoreBundle:operatori:create" }
+    requirements: { _method: post }
+
+operatori_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "FiCoreBundle:operatori:edit" }
+
+operatori_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "FiCoreBundle:operatori:update" }
+    requirements: { _method: post|put }
+
+operatori_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "FiCoreBundle:operatori:delete" }
+    requirements: { _method: post|delete }
+
+operatori_deletemultiple:
+    pattern:  /delete
+    defaults: { _controller: "FiCoreBundle:operatori:delete" }
+    requirements: { _method: post|delete }
+
+operatori_griglia:
+    pattern:  /griglia
+    defaults: { _controller: "FiCoreBundle:operatori:griglia" }
+    requirements: { _method: get }

@@ -1,0 +1,40 @@
+permessi:
+    pattern:  /
+    defaults: { _controller: "FiCoreBundle:permessi:index" }
+
+permessi_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "FiCoreBundle:permessi:show" }
+
+permessi_new:
+    pattern:  /new
+    defaults: { _controller: "FiCoreBundle:permessi:new" }
+
+permessi_create:
+    pattern:  /create
+    defaults: { _controller: "FiCoreBundle:permessi:create" }
+    requirements: { _method: post }
+
+permessi_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "FiCoreBundle:permessi:edit" }
+
+permessi_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "FiCoreBundle:permessi:update" }
+    requirements: { _method: post|put }
+
+permessi_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "FiCoreBundle:permessi:delete" }
+    requirements: { _method: post|delete }
+
+permessi_deletemultiple:
+    pattern:  /delete
+    defaults: { _controller: "FiCoreBundle:permessi:delete" }
+    requirements: { _method: post|delete }
+
+permessi_griglia:
+    pattern:  /griglia
+    defaults: { _controller: "FiCoreBundle:permessi:griglia" }
+    requirements: { _method: get }

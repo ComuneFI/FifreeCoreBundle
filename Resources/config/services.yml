@@ -1,0 +1,70 @@
+parameters:
+#    fi_core.example.class: Fi\CoreBundle\Example
+  ficorebundle.db.table_prefix: __corebundle_
+  
+  fiQuery.class: Fi\OracleBundle\DependencyInjection\fiQuery
+  oracle_ORACLE_USER:
+    utente: ORACLE_USER
+    password: ORACLE_PASSWORD
+    connessione: ORACLE_SID
+    #arguments: [%connessione%]
+  oracle_adreader:
+    utente: ORACLE_USER
+    password: ORACLE_PASSWORD
+    connessione: ORACLE_SID
+    
+services:
+#    fi_core.example:
+#        class: %fi_core.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    request:
+        class:        Symfony\Component\HttpFoundation\Request
+
+    fi.twig.fi_permessi_extension:
+        class: Fi\CoreBundle\Twig\Extension\PermessiTwigExtension
+        arguments: [ '@service_container', '@request' ]
+        tags:
+            - { name: twig.extension }
+            
+            
+    fi.twig.fi_demo_extension:
+      class: Fi\CoreBundle\Twig\Extension\DemoExtension
+      tags:
+        - { name: twig.extension }
+      arguments: [ '@twig.loader' ]
+
+    fi.twig.demo.listener:
+        class: Fi\CoreBundle\EventListener\ControllerListener
+        arguments: ['@fi.twig.fi_demo_extension']
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller,method: onKernelController }
+    
+    #Informazioni connessione database su Web Debug Toolbar
+    data_collector.databaseinfo:
+        class: Fi\CoreBundle\Collector\DatabaseInfoDataCollector
+        arguments: [ '@service_container' ]
+        tags:
+            - { name: data_collector , template: "FiCoreBundle:Collector:databaseInfo", id: "databaseInfo" }
+            
+    ficorebundle.tblprefix_subscriber:
+        class: Fi\CoreBundle\Subscriber\TablePrefixSubscriber
+        arguments: [%ficorebundle.db.table_prefix%]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    #    fi_oracle.example.class: Fi\OracleBundle\Example
+    #    fi_jfestere.example.class: Fi\JfestereBundle\Example
+
+
+    oracle_sigru:
+        class:     "%fiQuery.class%"
+        #arguments: [@service_id, "plain_value", %parameter%]
+        arguments: [%oracle_ORACLE_USER%]
+        
+    oracle_adreader:
+        class:     "%fiQuery.class%"
+        #arguments: [@service_id, "plain_value", %parameter%]
+        arguments: [%oracle_adreader%]
+
+            

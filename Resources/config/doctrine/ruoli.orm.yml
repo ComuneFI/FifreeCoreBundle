@@ -1,0 +1,39 @@
+Fi\CoreBundle\Entity\ruoli:
+    type: entity
+    table: ruoli
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        ruolo:
+            type: string
+            length: 45
+            nullable: true
+        paginainiziale:
+            type: string
+            length: 255
+            nullable: true
+        is_superadmin:
+            type: boolean
+            nullable: true
+        is_admin:
+            type: boolean
+            nullable: true
+        is_user:
+            type: boolean
+            nullable: true
+    oneToMany:
+        operatoris:
+            targetEntity: operatori
+            mappedBy: ruoli
+            joinColumn:
+                name: ruoli_id
+                referencedColumnName: id
+        permessis:
+            targetEntity: permessi
+            mappedBy: ruoli
+            joinColumn:
+                name: ruoli_id
+                referencedColumnName: id

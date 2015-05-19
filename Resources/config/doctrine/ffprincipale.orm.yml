@@ -1,0 +1,21 @@
+Fi\CoreBundle\Entity\ffprincipale:
+    type: entity
+    table: ffprincipale
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        descrizione:
+            type: string
+            length: 45
+            nullable: true
+    oneToMany:
+        ffsecondarias:
+            targetEntity: ffsecondaria
+            mappedBy: ffprincipale
+            joinColumn:
+                name: ffprincipale_id
+                referencedColumnName: id
+                nullable: false

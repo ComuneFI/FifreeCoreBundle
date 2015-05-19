@@ -1,0 +1,4 @@
+funzioni:
+    pattern:  /traduzionefiltro
+    defaults: { _controller: "FiCoreBundle:Funzioni:traduzionefiltro" }
+

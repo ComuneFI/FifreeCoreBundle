@@ -1,0 +1,39 @@
+Fi\CoreBundle\Entity\operatori:
+    type: entity
+    table: operatori
+    indexes:
+        fk_operatori_ruoli1_idx:
+            columns: [ruoli_id]
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        operatore:
+            type: string
+            length: 255
+            nullable: true
+        ruoli_id:
+            type: integer
+            nullable: true
+    oneToMany:
+        permessis:
+            targetEntity: permessi
+            mappedBy: operatori
+            joinColumn:
+                name: operatori_id
+                referencedColumnName: id
+        tabelles:
+            targetEntity: tabelle
+            mappedBy: operatori
+            joinColumn:
+                name: operatori_id
+                referencedColumnName: id
+    manyToOne:
+        ruoli:
+            targetEntity: ruoli
+            inversedBy: operatoris
+            joinColumn:
+                name: ruoli_id
+                referencedColumnName: id
