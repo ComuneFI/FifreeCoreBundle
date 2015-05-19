@@ -1,0 +1,27 @@
+{
+    "name": "fi/fifreecorebundle",
+    "description": "Core Fifree2",
+    "type": "symfony-bundle",
+    "authors": [{
+            "name": "Andrea Manzi",
+            "email": "andrea.manzi@comune.fi.it"
+        }],
+    "keywords": [
+        "Core fifree2 bundle"
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "fi\\fifree2corebundle\\": ""
+        }
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "symfony/http-kernel": "~2.5"
+    },
+    "extra": {
+        "branch-alias": {
+            "master": "1.0.0"
+        }
+    }
+}
