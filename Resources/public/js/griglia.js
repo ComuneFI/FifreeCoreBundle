@@ -934,7 +934,7 @@ function apriDettaglio(parametri) {
             jQuery(div).width(larghezza);
 
         jQuery(div).append('<img src="' + imgwaiturl + '" style="position: absolute;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);" />')
-        jQuery(div).load(editUrl, parametripassa, function(responseText, textStatus) {
+        jQuery(div).load(editUrl, parametripassa, function (responseText, textStatus) {
             if (textStatus === 'error') {
                 jQuery(div).html('<p>Si è verificato il seguente errore sul server: </p><br/>' + responseText);
             }
@@ -967,7 +967,7 @@ function apriDettaglio(parametri) {
             $(nomedialog).dialog({
                 title: 'Attenzione',
                 buttons: {
-                    "Ok": function() {
+                    "Ok": function () {
                         $(this).dialog("close");
                     }
                 },
@@ -977,6 +977,8 @@ function apriDettaglio(parametri) {
             $(nomedialog).show();
         }
     }
+    //Funzione di overlay per ottenere l'effetto di finestra in backgroud trasparenti nel caso di sovrapposizione
+    trasparenzadiv();
 }
 
 
@@ -995,6 +997,8 @@ function chiudiDettaglio(parametri) {
     if (refreshgrid === 1) {
         jQuery(list).trigger("reloadGrid", [{current: true}]);
     }
+    //Funzione di overlay per ottenere l'effetto di finestra in backgroud trasparenti nel caso di sovrapposizione
+    trasparenzadiv();
 }
 
 function salvaDettaglio(parametri) {
@@ -1016,10 +1020,10 @@ function salvaDettaglio(parametri) {
     var divricaricare = parametri['divricaricare'];
 
     var parametripassa = jQuery(formdati).serializeArray();
-    $.each(parametriaggiuntivi, function(key, value) {
-        parametripassa.push({'name' : 'parametriaggiuntivi['+key+']', 'value' : value});
+    $.each(parametriaggiuntivi, function (key, value) {
+        parametripassa.push({'name': 'parametriaggiuntivi[' + key + ']', 'value': value});
     });
-    jQuery(div).load(baseUrl + '/' + tabella + "/" + (rowid > 0 ? rowid + '/update' : 'create'), parametripassa, function(responseText, textStatus, XMLHttpRequest) {
+    jQuery(div).load(baseUrl + '/' + tabella + "/" + (rowid > 0 ? rowid + '/update' : 'create'), parametripassa, function (responseText, textStatus, XMLHttpRequest) {
         //jQuery(div).html(dump(parametripassa));
         //jQuery(div).html('<p>Si è verificato il seguente errore sul server: </p><br/>'+responseText);
         var trovatoerrore = responseText.search("Errors");
@@ -1070,7 +1074,7 @@ function salvaDettaglio_piu_parametri(parametri, parametriaggiuntivi) {
 
     var parametripassa = jQuery(formdati).serializeArray();
 
-    jQuery(div).load(baseUrl + '/' + tabella + "/" + (rowid > 0 ? 'update' : 'create') + '?id=' + rowid + stringapar, parametripassa, function(responseText, textStatus, XMLHttpRequest) {
+    jQuery(div).load(baseUrl + '/' + tabella + "/" + (rowid > 0 ? 'update' : 'create') + '?id=' + rowid + stringapar, parametripassa, function (responseText, textStatus, XMLHttpRequest) {
         var trovatoerrore = responseText.search("Errors");
         var errorivalidazione = responseText.search("error_list");
         var richiesti = responseText.search("Required");
@@ -1154,13 +1158,13 @@ function eliminaDettaglio(parametri) {
         jQuery(list).jqGrid('delGridRow', rowid, {
             reloadAfterSubmit: true,
             url: baseUrl + '/' + tabella + '/delete',
-            afterComplete: function(responseText, textStatus, XMLHttpRequest) {
+            afterComplete: function (responseText, textStatus, XMLHttpRequest) {
                 jQuery(list).jqGrid('resetSelection');
                 if (responseText.status === 200 && responseText.responseText === "404") {
                     jQuery(nomedialog).dialog({
                         title: 'Attenzione',
                         buttons: {
-                            "Ok": function() {
+                            "Ok": function () {
                                 jQuery(this).dialog("close");
                             }
                         },
@@ -1182,7 +1186,7 @@ function eliminaDettaglio(parametri) {
         $(nomedialog).dialog({
             title: 'Attenzione',
             buttons: {
-                "Ok": function() {
+                "Ok": function () {
                     $(this).dialog("close");
                 }
             },
@@ -1199,7 +1203,7 @@ function dopolaricerca(parametripassati) {
     var larghezza = jQuery("#" + tabella).width();
     var filtro = jQuery("#list1").getGridParam("postData");
 
-    jQuery.get(baseUrl + '/' + 'funzioni/traduzionefiltro', filtro, function(data) {
+    jQuery.get(baseUrl + '/' + 'funzioni/traduzionefiltro', filtro, function (data) {
 
         jQuery("#notecorpo").html(data);
         jQuery("#notecorpo").width(larghezza);
@@ -1267,7 +1271,7 @@ function messaggio(parametri) {
 
 
     var bottoni = {
-        "Ok": function() {
+        "Ok": function () {
             var strFun = funzioneok;
             var strParam = parametri;
             var fn = window[strFun];
@@ -1278,7 +1282,7 @@ function messaggio(parametri) {
         }
     };
     if (nomefunzionenull) {
-        bottoni[nomefunzionenull] = (function() {
+        bottoni[nomefunzionenull] = (function () {
             jQuery(this).dialog("close");
         });
     }
@@ -1300,4 +1304,38 @@ function messaggio(parametri) {
 
 function reload(nomelist) {
     $(nomelist).trigger("reloadGrid");
+}
+
+function trasparenzadiv() {
+
+    var divzindexs = new Array();
+    $(".ui-jqdialog").each(function () {
+        if ($(this).is(":visible")) {
+            divzindexs.push({div: this.id, val: $(this).zIndex()});
+            //console.log($(this).zIndex());
+        }
+    });
+
+    divzindexs.sort(function (a, b) {
+        return a.val - b.val;
+    });
+    //console.log(Object.keys(divzindexs).length);
+    //console.log(divzindexs);
+    for (var i = 0; i < divzindexs.length; i++) {
+        // Iterates over numeric indexes from 0 to 5, as everyone expects.
+        if (i === divzindexs.length - 1) {
+            var elem = divzindexs[i];
+            //console.log("qui");
+            $("#" + elem.div).fadeTo("slow", 1, function () {
+            });
+        } else {
+            //"#"+
+            var elem = divzindexs[i];
+            //console.log(elem.div);
+            $("#" + elem.div).fadeTo("slow", 0.1, function () {
+            });
+        }
+
+    }
+
 }

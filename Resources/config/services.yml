@@ -3,15 +3,15 @@ parameters:
   ficorebundle.db.table_prefix: __corebundle_
   
   fiQuery.class: Fi\OracleBundle\DependencyInjection\fiQuery
-  oracle_ORACLE_USER:
-    utente: ORACLE_USER
-    password: ORACLE_PASSWORD
-    connessione: ORACLE_SID
+  oracle_P00:
+    utente: P00
+    password: F1PEZ0_1
+    connessione: SIGRUDB
     #arguments: [%connessione%]
   oracle_adreader:
-    utente: ORACLE_USER
-    password: ORACLE_PASSWORD
-    connessione: ORACLE_SID
+    utente: ADREADER
+    password: LETTORE14
+    connessione: SIGRUDB
     
 services:
 #    fi_core.example:
@@ -60,7 +60,7 @@ services:
     oracle_sigru:
         class:     "%fiQuery.class%"
         #arguments: [@service_id, "plain_value", %parameter%]
-        arguments: [%oracle_ORACLE_USER%]
+        arguments: [%oracle_P00%]
         
     oracle_adreader:
         class:     "%fiQuery.class%"
