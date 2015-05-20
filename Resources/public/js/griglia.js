@@ -957,11 +957,13 @@ function apriDettaglio(parametri) {
                 jQuery(div).offset(o);
             }
 
+            if (overlayopen) {
+                $(overlay).fadeIn('fast');
+                $(div).fadeIn('slow');
+            }
+            //Funzione di overlay per ottenere l'effetto di finestra in backgroud trasparenti nel caso di sovrapposizione
+            trasparenzadiv();
         });
-        if (overlayopen) {
-            $(overlay).fadeIn('fast');
-            $(div).fadeIn('slow');
-        }
     } else {
         if (tipo != "new") {
             $(nomedialog).dialog({
@@ -977,8 +979,7 @@ function apriDettaglio(parametri) {
             $(nomedialog).show();
         }
     }
-    //Funzione di overlay per ottenere l'effetto di finestra in backgroud trasparenti nel caso di sovrapposizione
-    trasparenzadiv();
+
 }
 
 
@@ -1307,36 +1308,34 @@ function reload(nomelist) {
 }
 
 function trasparenzadiv() {
-    $(document).ajaxComplete(function (event, request, settings) {
 
-        var divzindexs = new Array();
-        $(".ui-jqdialog").each(function () {
-            if ($(this).is(":visible")) {
-                divzindexs.push({div: this.id, val: $(this).zIndex()});
-                //console.log($(this).zIndex());
-            }
-        });
-
-        divzindexs.sort(function (a, b) {
-            return a.val - b.val;
-        });
-        //console.log(Object.keys(divzindexs).length);
-        //console.log(divzindexs);
-        for (var i = 0; i < divzindexs.length; i++) {
-            // Iterates over numeric indexes from 0 to 5, as everyone expects.
-            if (i === divzindexs.length - 1) {
-                var elem = divzindexs[i];
-                //console.log("qui");
-                $("#" + elem.div).fadeTo("slow", 1, function () {
-                });
-            } else {
-                //"#"+
-                var elem = divzindexs[i];
-                //console.log(elem.div);
-                $("#" + elem.div).fadeTo("slow", 0.1, function () {
-                });
-            }
-
+    var divzindexs = new Array();
+    $(".ui-jqdialog").each(function () {
+        if ($(this).is(":visible")) {
+            divzindexs.push({div: this.id, val: $(this).zIndex()});
+            //console.log($(this).zIndex());
         }
     });
+
+    divzindexs.sort(function (a, b) {
+        return a.val - b.val;
+    });
+    //console.log(Object.keys(divzindexs).length);
+    //console.log(divzindexs);
+    for (var i = 0; i < divzindexs.length; i++) {
+        // Iterates over numeric indexes from 0 to 5, as everyone expects.
+        if (i === divzindexs.length - 1) {
+            var elem = divzindexs[i];
+            //console.log("qui");
+            $("#" + elem.div).fadeTo("slow", 1, function () {
+            });
+        } else {
+            //"#"+
+            var elem = divzindexs[i];
+            //console.log(elem.div);
+            $("#" + elem.div).fadeTo("slow", 0.1, function () {
+            });
+        }
+
+    }
 }
