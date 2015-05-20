@@ -1307,35 +1307,36 @@ function reload(nomelist) {
 }
 
 function trasparenzadiv() {
+    $(document).ajaxComplete(function (event, request, settings) {
 
-    var divzindexs = new Array();
-    $(".ui-jqdialog").each(function () {
-        if ($(this).is(":visible")) {
-            divzindexs.push({div: this.id, val: $(this).zIndex()});
-            //console.log($(this).zIndex());
+        var divzindexs = new Array();
+        $(".ui-jqdialog").each(function () {
+            if ($(this).is(":visible")) {
+                divzindexs.push({div: this.id, val: $(this).zIndex()});
+                //console.log($(this).zIndex());
+            }
+        });
+
+        divzindexs.sort(function (a, b) {
+            return a.val - b.val;
+        });
+        //console.log(Object.keys(divzindexs).length);
+        //console.log(divzindexs);
+        for (var i = 0; i < divzindexs.length; i++) {
+            // Iterates over numeric indexes from 0 to 5, as everyone expects.
+            if (i === divzindexs.length - 1) {
+                var elem = divzindexs[i];
+                //console.log("qui");
+                $("#" + elem.div).fadeTo("slow", 1, function () {
+                });
+            } else {
+                //"#"+
+                var elem = divzindexs[i];
+                //console.log(elem.div);
+                $("#" + elem.div).fadeTo("slow", 0.1, function () {
+                });
+            }
+
         }
     });
-
-    divzindexs.sort(function (a, b) {
-        return a.val - b.val;
-    });
-    //console.log(Object.keys(divzindexs).length);
-    //console.log(divzindexs);
-    for (var i = 0; i < divzindexs.length; i++) {
-        // Iterates over numeric indexes from 0 to 5, as everyone expects.
-        if (i === divzindexs.length - 1) {
-            var elem = divzindexs[i];
-            //console.log("qui");
-            $("#" + elem.div).fadeTo("slow", 1, function () {
-            });
-        } else {
-            //"#"+
-            var elem = divzindexs[i];
-            //console.log(elem.div);
-            $("#" + elem.div).fadeTo("slow", 0.1, function () {
-            });
-        }
-
-    }
-
 }
