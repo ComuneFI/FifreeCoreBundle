@@ -910,7 +910,7 @@ function apriDettaglio(parametri) {
     var alto = parametri['alto'] || -1;
     var is_draggable = (parametri["is_draggable"] == 0) ? false : true;
     var overlayopen = parametri['overlayopen'] || 0;
-    var imgwaiturl = parametri['imgwaiturl'];
+    var imgwaiturl = parametri['imgwaiturl'] || '/bundles/ficore/images/wait.gif';
     var list = parametri['list'] || "#list1";
     var nomedialog = parametri['nomedialog'] || "#dialog";
     var nometestodialog = parametri['nometestodialog'] || "#testodialog";
