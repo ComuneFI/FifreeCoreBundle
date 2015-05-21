@@ -27,6 +27,7 @@ class fiUtilita {
       $elemento = $parametri["elemento"];
     } else {
       return false;
+      
     }
 
     //parametri obbligatori
