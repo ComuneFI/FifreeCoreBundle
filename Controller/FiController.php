@@ -160,7 +160,11 @@ class FiController extends Controller {
         $formType = $formbundle . "Type";
 
         $entity = new $classbundle();
-        $form = $this->createForm(new $formType(), $entity);
+        $form = $this->createForm(new $formType(), $entity, array("attr" => array(
+                'id' => "formdati" . $controller,
+            ),
+            'action' => $this->generateUrl($controller . "_create")
+        ));
 
         return $this->render($nomebundle . ':' . $controller . ':new.html.twig', array(
                     'nomecontroller' => $controller,
@@ -192,7 +196,11 @@ class FiController extends Controller {
             throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
 
-        $editForm = $this->createForm(new $formType(), $entity);
+        $editForm = $this->createForm(new $formType(), $entity, array("attr" => array(
+                'id' => "formdati" . $controller,
+            ),
+            'action' => $this->generateUrl($controller . "_update", array("id"=>$entity->getId()))
+        ));
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render($nomebundle . ':' . $controller . ':edit.html.twig', array(
