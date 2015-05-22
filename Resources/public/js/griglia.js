@@ -116,9 +116,8 @@ function caricaGriglia(parametrijs) {
         if ((modellocolonne[i]["tipocampo"] == "float") || (modellocolonne[i]["tipocampo"] == "number"))
             modellocolonne[i]["formatter"] = 'number';
           
-        if ((modellocolonne[i]["name"] == "id") && nascondiid)  {
-          modellocolonne[i]["width"] = 0;
-          
+        if ((modellocolonne[i]["name"] == "id"))  {
+          modellocolonne[i]["hidden"] = nascondiid;
         }
         
           
@@ -142,7 +141,8 @@ function caricaGriglia(parametrijs) {
             };
         }
     }
-
+    
+    
     //Si crea la griglia
     jQuery(nomelist).jqGrid({
         url: baseUrl + '/' + tabella + '/' + percorsogriglia,
