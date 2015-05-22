@@ -46,6 +46,7 @@ function caricaGriglia(parametrijs) {
     var datipost = parametrijs["datipost"] || {};
     var selezionaprimo = (parametrijs["selezionaprimo"] == 1) ? true : false;
     var nascondicaption = (parametrijs["nascondicaption"] == 1) ? true : false;
+    var nascondiid = (parametrijs["nascondiid"] == 0) ? false : true;
     var nascondifilter = (parametrijs["nascondifilter"] == 1) ? true : false;
     var ridimensionabile = (parametrijs["ridimensionabile"] == 0) ? false : true;
     var overlayopen = (parametrijs["overlayopen"] == 1) ? true : false;
@@ -114,7 +115,13 @@ function caricaGriglia(parametrijs) {
 
         if ((modellocolonne[i]["tipocampo"] == "float") || (modellocolonne[i]["tipocampo"] == "number"))
             modellocolonne[i]["formatter"] = 'number';
-
+          
+        if ((modellocolonne[i]["name"] == "id") && nascondiid)  {
+          modellocolonne[i]["width"] = 0;
+          
+        }
+        
+          
         if (modellocolonne[i]["tipocampo"] == "select") {
             modellocolonne[i]["edittype"] = "checkbox";
             modellocolonne[i]["stype"] = "select";
