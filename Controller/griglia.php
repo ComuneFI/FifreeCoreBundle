@@ -131,7 +131,7 @@ class griglia extends FiController {
         $entityName = $parametri["entityName"];
         $bundle = $parametri["bundle"];
         $tipof = $parametri["tipof"];
-        
+
         $elencocampi = $doctrine->getClassMetadata($entityName)->getFieldNames();
         foreach ($regole as $regola) {
             //echo $regola["field"];exit;
@@ -273,7 +273,7 @@ class griglia extends FiController {
             }
             $regole[] = array("field" => "$nometabellaprecondizione.$nomecampoprecondizione", "op" => $operatoreprecondizione, "data" => $valorecampoprecondizione);
             $tipof = $operatorelogicoprecondizione;
-            
+
             self::setRegole($q, $primo, array(
                 "regole" => $regole,
                 "doctrine" => $doctrine,
@@ -743,14 +743,25 @@ class griglia extends FiController {
 
             //Gestione per passare campi che non sono nella tabella ma metodi del model (o richiamabili tramite magic method get)
             if (isset($campiextra)) {
-                foreach ($campiextra as $nomecampo => $singolocampo) {
-                    $campo = 'get' . ucfirst($singolocampo);
-                    /* @var $doctrine \Doctrine\ORM\EntityManager */
-                    $objTabella = $doctrine->find($entityName, $singolo["id"]);
-                    $vettoreriga[] = $objTabella->$campo();
+                if (count($campiextra) > 1) {
+                    foreach ($campiextra as $vettore) {
+                        foreach ($vettore as $nomecampo => $singolocampo) {
+                            $campo = 'get' . ucfirst($singolocampo);
+                            /* @var $doctrine \Doctrine\ORM\EntityManager */
+                            $objTabella = $doctrine->find($entityName, $singolo["id"]);
+                            $vettoreriga[] = $objTabella->$campo();
+                        }
+                    }
+                } else {
+                    foreach ($campiextra as $nomecampo => $singolocampo) {
+                        $campo = 'get' . ucfirst($singolocampo);
+                        /* @var $doctrine \Doctrine\ORM\EntityManager */
+                        $objTabella = $doctrine->find($entityName, $singolo["id"]);
+                        $vettoreriga[] = $objTabella->$campo();
+                    }
                 }
             }
-
+            
             //Si costruisce la risposta json per la jqgrid
             ksort($vettoreriga);
             $vettorerigasorted = array();
