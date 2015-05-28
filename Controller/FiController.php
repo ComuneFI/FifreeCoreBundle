@@ -17,10 +17,12 @@ class FiController extends Controller {
     protected function setup(Request $request) {
         $matches = array();
         self::$controller = new \ReflectionClass(get_class($this));
+        
         preg_match('/(.*)\\\(.*)Bundle\\\Controller\\\(.*)Controller/', self::$controller->getName(), $matches);
-        self::$namespace = $matches[1];
-        self::$bundle = $matches[2];
-        self::$controller = $matches[3];
+        
+        self::$namespace = isset($matches[1])?$matches[1]:"";
+        self::$bundle = isset($matches[2])?$matches[2]:"";
+        self::$controller = isset($matches[3])?$matches[3]:"";
         self::$action = substr($request->attributes->get('_controller'),strrpos($request->attributes->get('_controller'), ":") + 1);
     }
 
