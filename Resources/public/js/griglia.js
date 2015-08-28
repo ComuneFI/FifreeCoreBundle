@@ -39,6 +39,7 @@ function caricaGriglia(parametrijs) {
     var tastochiudi = (parametrijs["tastochiudi"] == 1) ? true : false;
     var percorsogriglia = parametrijs["percorsogriglia"] || "griglia";
     var div = parametrijs["div"] || "#dettaglio";
+    var divtesta = parametrijs["divtesta"] || "#testatadettaglio";
     var chiamante = parametrijs["chiamante"] || null;
     var parametritesta = parametrijs["parametritesta"] || 0;
     var parametrigriglia = parametrijs["parametrigriglia"] || 0;
@@ -174,7 +175,8 @@ function caricaGriglia(parametrijs) {
                     'overlayopen': overlayopen,
                     'imgwaiturl': imgwaiturl,
                     'list': nomelist,
-                    'div': div
+                    'div': div,
+                    'divtesta': divtesta
                 });
 
             }
@@ -218,7 +220,8 @@ function caricaGriglia(parametrijs) {
                                 'overlayopen': overlayopen,
                                 'imgwaiturl': imgwaiturl,
                                 'list': nomelist,
-                                'div': div
+                                'div': div,
+                                'divtesta': divtesta
                             });
                         }
                     },
@@ -235,7 +238,8 @@ function caricaGriglia(parametrijs) {
                                 'overlayopen': overlayopen,
                                 'imgwaiturl': imgwaiturl,
                                 'list': nomelist,
-                                'div': div
+                                'div': div,
+                                'divtesta': divtesta
                             });
                         }
                     },
@@ -359,7 +363,8 @@ function caricaGriglia(parametrijs) {
                     'overlayopen': overlayopen,
                     'imgwaiturl': imgwaiturl,
                     'list': nomelist,
-                    'div': div
+                    'div': div,
+                    'divtesta': divtesta
                 });
             },
             position: "last",
@@ -415,7 +420,8 @@ function caricaGriglia(parametrijs) {
                     'overlayopen': overlayopen,
                     'imgwaiturl': imgwaiturl,
                     'list': nomelist,
-                    'div': div
+                    'div': div,
+                    'divtesta': divtesta
                 });
                 lastsel = 0;
                 jQuery(nomelist).jqGrid('resetSelection');
@@ -925,6 +931,8 @@ function apriDettaglio(parametri) {
     var nomedialog = parametri['nomedialog'] || "#dialog";
     var nometestodialog = parametri['nometestodialog'] || "#testodialog";
     var overlay = parametri['overlay'] || "#overlay";
+
+alert('apridettaglio. divtesta = ' + divtesta);
 
     var rowid;
     if (tipo === "new") {
