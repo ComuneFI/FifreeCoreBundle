@@ -932,8 +932,6 @@ function apriDettaglio(parametri) {
     var nometestodialog = parametri['nometestodialog'] || "#testodialog";
     var overlay = parametri['overlay'] || "#overlay";
 
-alert('apridettaglio. divtesta = ' + divtesta);
-
     var rowid;
     if (tipo === "new") {
         rowid = 0;
