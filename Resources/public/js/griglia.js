@@ -52,6 +52,22 @@ function caricaGriglia(parametrijs) {
     var ridimensionabile = (parametrijs["ridimensionabile"] == 0) ? false : true;
     var overlayopen = (parametrijs["overlayopen"] == 1) ? true : false;
     var imgwaiturl = parametrijs['imgwaiturl'] || '/bundles/ficore/images/wait.gif';
+    
+    var parametriaggiuntivi_edit = parametrijs["parametriaggiuntivi_edit"] || {};
+    var stringapar_edit = "";
+    for (var key in parametriaggiuntivi_edit) {
+        if (stringapar_edit != "")
+            stringapar_edit += "&";
+        stringapar_edit += key + "=" + encodeURI(parametriaggiuntivi_edit[key]);
+    }
+
+    var parametriaggiuntivi_new = parametrijs["parametriaggiuntivi_new"] || {};
+    var stringapar_new = "";
+    for (var key in parametriaggiuntivi_new) {
+        if (stringapar_new != "")
+            stringapar_new += "&";
+        stringapar_new += key + "=" + encodeURI(parametriaggiuntivi_new[key]);
+    }
 
     var filterToolbar_stringResult = parametrijs["filterToolbar_stringResult"] || true;
     var filterToolbar_searchOnEnter = parametrijs["filterToolbar_searchOnEnter"] || false;
@@ -176,7 +192,8 @@ function caricaGriglia(parametrijs) {
                     'imgwaiturl': imgwaiturl,
                     'list': nomelist,
                     'div': div,
-                    'divtesta': divtesta
+                    'divtesta': divtesta,
+                    'parametripassa' : stringapar_edit
                 });
 
             }
@@ -221,7 +238,8 @@ function caricaGriglia(parametrijs) {
                                 'imgwaiturl': imgwaiturl,
                                 'list': nomelist,
                                 'div': div,
-                                'divtesta': divtesta
+                                'divtesta': divtesta,
+                                'parametripassa' : stringapar_edit
                             });
                         }
                     },
@@ -239,7 +257,8 @@ function caricaGriglia(parametrijs) {
                                 'imgwaiturl': imgwaiturl,
                                 'list': nomelist,
                                 'div': div,
-                                'divtesta': divtesta
+                                'divtesta': divtesta,
+                                'parametripassa' : stringapar_new
                             });
                         }
                     },
@@ -364,7 +383,8 @@ function caricaGriglia(parametrijs) {
                     'imgwaiturl': imgwaiturl,
                     'list': nomelist,
                     'div': div,
-                    'divtesta': divtesta
+                    'divtesta': divtesta,
+                    'parametripassa' : stringapar_new
                 });
             },
             position: "last",
@@ -421,7 +441,8 @@ function caricaGriglia(parametrijs) {
                     'imgwaiturl': imgwaiturl,
                     'list': nomelist,
                     'div': div,
-                    'divtesta': divtesta
+                    'divtesta': divtesta,
+                    'parametripassa' : stringapar_edit
                 });
                 lastsel = 0;
                 jQuery(nomelist).jqGrid('resetSelection');
