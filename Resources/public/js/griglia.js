@@ -159,7 +159,6 @@ function caricaGriglia(parametrijs) {
         }
     }
 
-
     //Si crea la griglia
     jQuery(nomelist).jqGrid({
         url: baseUrl + '/' + tabella + '/' + percorsogriglia,
@@ -271,8 +270,9 @@ function caricaGriglia(parametrijs) {
                                 'tipo': 'del',
                                 'id': trigger.id,
                                 'multisel': multisel,
-                                'overlayopen': overlayopen,
+                                'overlayclose': overlayopen,
                                 'list': nomelist,
+                                'div': div,
                                 'imgwaiturl': imgwaiturl
                             });
 
@@ -490,7 +490,9 @@ function caricaGriglia(parametrijs) {
                     'id': (multisel ? s : lastsel),
                     'multisel': multisel,
                     'list': nomelist,
-                    'imgwaiturl': imgwaiturl
+                    'div': div,
+                    'imgwaiturl': imgwaiturl,
+                    'overlayclose': overlayopen
                 });
 
                 lastsel = 0;
@@ -571,8 +573,12 @@ function caricaGriglia(parametrijs) {
         //jQuery("#" + tabella + ' .ui-jqgrid-title').before(temp);
         jQuery(div + ' .ui-jqgrid-title').before(temp);
     }
-    if (div !== "#dettaglio")
+    
+    // Questo era lo statement originale che però ci ha creato dei problemi nella visualizzazione dei sottodettagli, quindi è stato modificato
+    // if (div !== "#dettaglio") jQuery(div).show();
+    if (div.substr(0, 10) !== "#dettaglio") {
         jQuery(div).show();
+    }
 }
 
 /*
@@ -1353,7 +1359,6 @@ function trasparenzadiv() {
     $(".ui-jqdialog").each(function () {
         if ($(this).is(":visible")) {
             divzindexs.push({div: this.id, val: $(this).zIndex()});
-            //console.log($(this).zIndex());
         }
     });
 
