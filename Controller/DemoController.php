@@ -111,7 +111,6 @@ class DemoController extends Controller {
         $cc = array();
         $bcc = array();
         $destinatari[] = 'fakemittentemail@fakemail.com';
-        $destinatari[] = 'andrea.manzi@comune.fi.it';
         $cc[] = 'fakeccmail@fakemail.com';
         $bcc[] = 'fakebccmail@fakemail.com';
 
