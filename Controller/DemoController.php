@@ -120,12 +120,15 @@ class DemoController extends Controller {
         $messaggio->setTo($destinatari);
         $messaggio->setCc($cc);
         $messaggio->setBcc($bcc);
-        $pathallegato = $this->get('kernel')->getRootDir() . "/tmp/rec.xls";
-
-        $messaggio->attach(\Swift_Attachment::fromPath($pathallegato));
-
         $messaggio->setBody("Corpo della mail\n");
+        
+        //Allegato
+        $pathallegato = $this->get('kernel')->getRootDir() . "/tmp/rec.xls";
+        $messaggio->attach(\Swift_Attachment::fromPath($pathallegato));
+        
+        //ATTENZIONE! Questo comando invia la mail
         $this->get('mailer')->send($messaggio);
+        
         return $this->render('FiCoreBundle:Demo:output.html.twig');
     }
 
