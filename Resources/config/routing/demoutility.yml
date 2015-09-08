@@ -50,5 +50,7 @@ fi_demo_docx2pdf:
     pattern:  /docx2pdf
     defaults: { _controller: "FiCoreBundle:Demo:docx2Pdf" }
 
-    
+fi_php_invioemail:
+    pattern:  /inviomail
+    defaults: { _controller: "FiCoreBundle:Demo:inviomail" }
 

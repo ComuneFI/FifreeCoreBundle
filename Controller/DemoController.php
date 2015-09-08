@@ -105,6 +105,31 @@ class DemoController extends Controller {
         return $this->render('FiCoreBundle:Demo:output.html.twig');
     }
 
+    public function inviomailAction() {
+        $mittente = array("fakemittentemail@fakemail.com"=>"Fake Mittente");
+        $destinatari = array();
+        $cc = array();
+        $bcc = array();
+        $destinatari[] = 'fakemittentemail@fakemail.com';
+        $destinatari[] = 'andrea.manzi@comune.fi.it';
+        $cc[] = 'fakeccmail@fakemail.com';
+        $bcc[] = 'fakebccmail@fakemail.com';
+
+        $messaggio = \Swift_Message::newInstance()
+                ->setSubject("Oggetto della mail")
+                ->setFrom($mittente);
+        $messaggio->setTo($destinatari);
+        $messaggio->setCc($cc);
+        $messaggio->setBcc($bcc);
+        $pathallegato = $this->get('kernel')->getRootDir() . "/tmp/rec.xls";
+
+        $messaggio->attach(\Swift_Attachment::fromPath($pathallegato));
+
+        $messaggio->setBody("Corpo della mail\n");
+        $this->get('mailer')->send($messaggio);
+        return $this->render('FiCoreBundle:Demo:output.html.twig');
+    }
+
     public function excelreadAction() {
         set_time_limit(960);
         ini_set("memory_limit", "2048M");
