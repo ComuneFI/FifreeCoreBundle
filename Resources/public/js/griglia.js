@@ -39,6 +39,7 @@ function caricaGriglia(parametrijs) {
     var tastochiudi = (parametrijs["tastochiudi"] == 1) ? true : false;
     var percorsogriglia = parametrijs["percorsogriglia"] || "griglia";
     var div = parametrijs["div"] || "#dettaglio";
+    var divtesta = parametrijs["divtesta"] || "#testatadettaglio";
     var chiamante = parametrijs["chiamante"] || null;
     var parametritesta = parametrijs["parametritesta"] || 0;
     var parametrigriglia = parametrijs["parametrigriglia"] || 0;
@@ -51,6 +52,22 @@ function caricaGriglia(parametrijs) {
     var ridimensionabile = (parametrijs["ridimensionabile"] == 0) ? false : true;
     var overlayopen = (parametrijs["overlayopen"] == 1) ? true : false;
     var imgwaiturl = parametrijs['imgwaiturl'] || '/bundles/ficore/images/wait.gif';
+    
+    var parametriaggiuntivi_edit = parametrijs["parametriaggiuntivi_edit"] || {};
+    var stringapar_edit = "";
+    for (var key in parametriaggiuntivi_edit) {
+        if (stringapar_edit != "")
+            stringapar_edit += "&";
+        stringapar_edit += key + "=" + encodeURI(parametriaggiuntivi_edit[key]);
+    }
+
+    var parametriaggiuntivi_new = parametrijs["parametriaggiuntivi_new"] || {};
+    var stringapar_new = "";
+    for (var key in parametriaggiuntivi_new) {
+        if (stringapar_new != "")
+            stringapar_new += "&";
+        stringapar_new += key + "=" + encodeURI(parametriaggiuntivi_new[key]);
+    }
 
     var filterToolbar_stringResult = parametrijs["filterToolbar_stringResult"] || true;
     var filterToolbar_searchOnEnter = parametrijs["filterToolbar_searchOnEnter"] || false;
@@ -142,7 +159,6 @@ function caricaGriglia(parametrijs) {
         }
     }
 
-
     //Si crea la griglia
     jQuery(nomelist).jqGrid({
         url: baseUrl + '/' + tabella + '/' + percorsogriglia,
@@ -174,7 +190,9 @@ function caricaGriglia(parametrijs) {
                     'overlayopen': overlayopen,
                     'imgwaiturl': imgwaiturl,
                     'list': nomelist,
-                    'div': div
+                    'div': div,
+                    'divtesta': divtesta,
+                    'parametripassa' : stringapar_edit
                 });
 
             }
@@ -218,7 +236,9 @@ function caricaGriglia(parametrijs) {
                                 'overlayopen': overlayopen,
                                 'imgwaiturl': imgwaiturl,
                                 'list': nomelist,
-                                'div': div
+                                'div': div,
+                                'divtesta': divtesta,
+                                'parametripassa' : stringapar_edit
                             });
                         }
                     },
@@ -235,7 +255,9 @@ function caricaGriglia(parametrijs) {
                                 'overlayopen': overlayopen,
                                 'imgwaiturl': imgwaiturl,
                                 'list': nomelist,
-                                'div': div
+                                'div': div,
+                                'divtesta': divtesta,
+                                'parametripassa' : stringapar_new
                             });
                         }
                     },
@@ -248,8 +270,9 @@ function caricaGriglia(parametrijs) {
                                 'tipo': 'del',
                                 'id': trigger.id,
                                 'multisel': multisel,
-                                'overlayopen': overlayopen,
+                                'overlayclose': overlayopen,
                                 'list': nomelist,
+                                'div': div,
                                 'imgwaiturl': imgwaiturl
                             });
 
@@ -359,7 +382,9 @@ function caricaGriglia(parametrijs) {
                     'overlayopen': overlayopen,
                     'imgwaiturl': imgwaiturl,
                     'list': nomelist,
-                    'div': div
+                    'div': div,
+                    'divtesta': divtesta,
+                    'parametripassa' : stringapar_new
                 });
             },
             position: "last",
@@ -415,7 +440,9 @@ function caricaGriglia(parametrijs) {
                     'overlayopen': overlayopen,
                     'imgwaiturl': imgwaiturl,
                     'list': nomelist,
-                    'div': div
+                    'div': div,
+                    'divtesta': divtesta,
+                    'parametripassa' : stringapar_edit
                 });
                 lastsel = 0;
                 jQuery(nomelist).jqGrid('resetSelection');
@@ -463,7 +490,9 @@ function caricaGriglia(parametrijs) {
                     'id': (multisel ? s : lastsel),
                     'multisel': multisel,
                     'list': nomelist,
-                    'imgwaiturl': imgwaiturl
+                    'div': div,
+                    'imgwaiturl': imgwaiturl,
+                    'overlayclose': overlayopen
                 });
 
                 lastsel = 0;
@@ -544,8 +573,12 @@ function caricaGriglia(parametrijs) {
         //jQuery("#" + tabella + ' .ui-jqgrid-title').before(temp);
         jQuery(div + ' .ui-jqgrid-title').before(temp);
     }
-    if (div !== "#dettaglio")
+    
+    // Questo era lo statement originale che però ci ha creato dei problemi nella visualizzazione dei sottodettagli, quindi è stato modificato
+    // if (div !== "#dettaglio") jQuery(div).show();
+    if (div.substr(0, 10) !== "#dettaglio") {
         jQuery(div).show();
+    }
 }
 
 /*
@@ -1326,7 +1359,6 @@ function trasparenzadiv() {
     $(".ui-jqdialog").each(function () {
         if ($(this).is(":visible")) {
             divzindexs.push({div: this.id, val: $(this).zIndex()});
-            //console.log($(this).zIndex());
         }
     });
 

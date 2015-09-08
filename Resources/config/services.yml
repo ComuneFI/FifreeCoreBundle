@@ -1,5 +1,6 @@
 parameters:
-#    fi_core.example.class: Fi\CoreBundle\Example
+#    fi_core.example.class: Fi\CoreBundle\Example 
+  ficorebundle.db.table_schema: 
   ficorebundle.db.table_prefix: __corebundle_
   
   fiQuery.class: Fi\OracleBundle\DependencyInjection\fiQuery
@@ -50,6 +51,12 @@ services:
     ficorebundle.tblprefix_subscriber:
         class: Fi\CoreBundle\Subscriber\TablePrefixSubscriber
         arguments: [%ficorebundle.db.table_prefix%]
+        tags:
+            - { name: doctrine.event_subscriber }
+            
+    ficorebundle.tblschema_subscriber:
+        class: Fi\CoreBundle\Subscriber\TableSchemaSubscriber
+        arguments: [%ficorebundle.db.table_schema%]
         tags:
             - { name: doctrine.event_subscriber }
 
