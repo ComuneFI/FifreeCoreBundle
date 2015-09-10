@@ -54,3 +54,7 @@ fi_php_invioemail:
     pattern:  /inviomail
     defaults: { _controller: "FiCoreBundle:Demo:inviomail" }
 
+fi_php_letturamailbox:
+    pattern:  /letturamailbox
+    defaults: { _controller: "FiCoreBundle:Demo:letturamailbox" }
+

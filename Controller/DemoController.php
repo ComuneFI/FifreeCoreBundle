@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use PhpOffice\PhpWord\PhpWord;
+use Fi\ImapBundle\DependencyInjection\ImapMailbox;
 
 class DemoController extends Controller {
 
@@ -106,7 +107,7 @@ class DemoController extends Controller {
     }
 
     public function inviomailAction() {
-        $mittente = array("fakemittentemail@fakemail.com"=>"Fake Mittente");
+        $mittente = array("fakemittentemail@fakemail.com" => "Fake Mittente");
         $destinatari = array();
         $cc = array();
         $bcc = array();
@@ -121,15 +122,62 @@ class DemoController extends Controller {
         $messaggio->setCc($cc);
         $messaggio->setBcc($bcc);
         $messaggio->setBody("Corpo della mail\n");
-        
+
         //Allegato
         $pathallegato = $this->get('kernel')->getRootDir() . "/tmp/rec.xls";
         $messaggio->attach(\Swift_Attachment::fromPath($pathallegato));
-        
+
         //ATTENZIONE! Questo comando invia la mail
         $this->get('mailer')->send($messaggio);
-        
+
         return $this->render('FiCoreBundle:Demo:output.html.twig');
+    }
+
+    public function letturamailboxAction() {
+
+        $indirizzomail = '{imap.comune.intranet:143/novalidate-cert}INBOX';
+        $utentemail = 'imaptestlocale';
+        $passwordmail = 'firenze1';
+
+        $nummessaggiConsegna = 0;
+        $mailbox = new ImapMailbox($indirizzomail, $utentemail, $passwordmail, 'UTF-8');
+
+        $arraymessaggi = array();
+        $mess = 0;
+        $mailsIds = $mailbox->searchMailBox('ALL');
+        if (!$mailsIds) {
+            //Gestire come si vuole il fatto che non ci sono messaggi nella casella di posta
+            throw new ImapMailboxException("Nessun messaggio trovato nella casella");
+        } else {
+            foreach ($mailsIds as $mailId) {
+                $ok = TRUE;
+                try {
+                    /* @var $mail \Fi\ImapBundle\DependencyInjection\IncomingMail */
+                    $mail = $mailbox->getMail($mailId);
+
+                    if (!$mail) {
+                        $arraymessaggi[$mailId] = "** Errore parse headers del messaggio con ID $mailId";
+                        $ok = FALSE;
+                    }
+                } catch (Exception $ex) {
+                    $arraymessaggi[$mailId] = "** Messaggio con caratteri errati - MailId $mailId ** Eccezione " . $ex->getTraceAsString();
+                    $ok = FALSE;
+                }
+                if ($ok === TRUE) {
+                    $arraymessaggi[$mailId]["id"] = $mail->id;
+                    $arraymessaggi[$mailId]["subject"] = $mail->subject;
+                    $arraymessaggi[$mailId]["bodytext"] = trim($mail->textPlain);
+                    //$arraymessaggi[$mailId]["bodyhtml"] = trim($mail->textHtml);
+                    $arraymessaggi[$mailId]["fromname"] = $mail->fromName;
+                    $arraymessaggi[$mailId]["fromaddress"] = $mail->fromAddress;
+                    $arraymessaggi[$mailId]["date"] = \DateTime::createFromFormat("Y-m-d H:i:s", $mail->date);
+                    $arraymessaggi[$mailId]["replyto"] = $mail->replyTo;
+                    $arraymessaggi[$mailId]["cc"] = $mail->cc;
+                    $arraymessaggi[$mailId]["to"] = $mail->to;
+                }
+            }
+        }
+        return $this->render('FiCoreBundle:Demo:output.html.twig', array("extrainfo" => "messaggi trovati:" . count($arraymessaggi)));
     }
 
     public function excelreadAction() {
@@ -151,6 +199,7 @@ class DemoController extends Controller {
         $cognomecol = 1;
         $nomecol = 2;
         $datanascitacol = 3;
+        $datiletti = "";
         for ($row = 2; $row < $totalRows + 1; $row++) {
             //Leggere il valore in una cella
             $matricola = $sheet->getCellByColumnAndRow($matricolacol, $row)->getValue();
@@ -161,13 +210,13 @@ class DemoController extends Controller {
             //Leggere il valore del risultato di una formula
             $formula = $sheet->getCellByColumnAndRow($matricolacol, $row)->getCalculatedValue();
 
-            var_dump($matricola . ":" . $cognome . ":" . $nome . ":" . $datanascita);
+            $datiletti = $matricola . ":" . $cognome . ":" . $nome . ":" . $datanascita;
         }
 
         #Read more: http://bayu.freelancer.web.id/2010/07/16/phpexcel-advanced-read-write-excel-made-simple/#ixzz2bGzPoFGk
         #Under Creative Commons License: Attribution
 
-        return $this->render('FiCoreBundle:Demo:output.html.twig');
+        return $this->render('FiCoreBundle:Demo:output.html.twig',array("extrainfo"=>$datiletti));
     }
 
     public function excelreadarrayAction() {
@@ -184,8 +233,7 @@ class DemoController extends Controller {
         $sheet = $objPHPExcel->getActiveSheet();
 
         $values = $sheet->toArray();
-        var_dump($values);
-        return $this->render('FiPhpExcelBundle:Default:read.html.twig');
+        return $this->render('FiPhpExcelBundle:Default:read.html.twig',array("extrainfo"=>$values));
     }
 
     public function excelwriteAction() {
