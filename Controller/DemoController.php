@@ -11,6 +11,7 @@ use Fi\ImapBundle\DependencyInjection\ImapMailbox;
 class DemoController extends Controller {
 
     public function indexAction() {
+        var_dump($this->container);exit;
         return $this->render('FiCoreBundle:Demo:index.html.twig');
     }
 
