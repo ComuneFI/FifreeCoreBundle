@@ -1,5 +1,5 @@
 fi_core_homepage:
-    pattern:  /coredemo/
+    path:  /coredemo/
     defaults: { _controller: FiCoreBundle:Default:index }
 
 FiCoreBundle_demo:
