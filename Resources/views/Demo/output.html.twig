@@ -2,7 +2,8 @@
 
 {% block title "Demo" %}
 
-    {% set code = code(_self) %}
+    {% import _self as macros %}
+    {% set code = code(macros) %}
 
     {% block body %}
 

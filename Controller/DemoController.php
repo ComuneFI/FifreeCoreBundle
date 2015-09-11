@@ -69,7 +69,11 @@ class DemoController extends Controller {
         $qb->setParameter('idOperatore', 1);
         //$qb->setFirstResult( $offset )
         //$qb->setMaxResults( $limit );
-        $qb->getQuery()->getResult();
+        $resultset = $qb->getQuery()->getResult();
+        
+        foreach ($resultset as $row) {
+            /* ... per ogni elemento ... */
+        }
 
         return $this->render('FiCoreBundle:Demo:output.html.twig');
     }
@@ -216,7 +220,7 @@ class DemoController extends Controller {
         #Read more: http://bayu.freelancer.web.id/2010/07/16/phpexcel-advanced-read-write-excel-made-simple/#ixzz2bGzPoFGk
         #Under Creative Commons License: Attribution
 
-        return $this->render('FiCoreBundle:Demo:output.html.twig',array("extrainfo"=>$datiletti));
+        return $this->render('FiCoreBundle:Demo:output.html.twig', array("extrainfo" => $datiletti));
     }
 
     public function excelreadarrayAction() {
@@ -233,7 +237,7 @@ class DemoController extends Controller {
         $sheet = $objPHPExcel->getActiveSheet();
 
         $values = $sheet->toArray();
-        return $this->render('FiPhpExcelBundle:Default:read.html.twig',array("extrainfo"=>$values));
+        return $this->render('FiPhpExcelBundle:Default:read.html.twig', array("extrainfo" => $values));
     }
 
     public function excelwriteAction() {
