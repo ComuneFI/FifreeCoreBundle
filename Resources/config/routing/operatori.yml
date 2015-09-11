@@ -1,40 +1,40 @@
 operatori:
-    pattern:  /
+    path:  /
     defaults: { _controller: "FiCoreBundle:operatori:index" }
 
 operatori_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "FiCoreBundle:operatori:show" }
 
 operatori_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "FiCoreBundle:operatori:new" }
 
 operatori_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "FiCoreBundle:operatori:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 operatori_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "FiCoreBundle:operatori:edit" }
 
 operatori_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "FiCoreBundle:operatori:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 operatori_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "FiCoreBundle:operatori:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 operatori_deletemultiple:
-    pattern:  /delete
+    path:  /delete
     defaults: { _controller: "FiCoreBundle:operatori:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 operatori_griglia:
-    pattern:  /griglia
+    path:  /griglia
     defaults: { _controller: "FiCoreBundle:operatori:griglia" }
-    requirements: { _method: get }
+    requirements: { methods: get }

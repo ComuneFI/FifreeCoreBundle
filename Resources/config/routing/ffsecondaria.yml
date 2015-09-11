@@ -1,41 +1,41 @@
 ffsecondaria:
-    pattern:  /
+    path:  /
     defaults: { _controller: "FiCoreBundle:ffsecondaria:index" }
 
 ffsecondaria_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "FiCoreBundle:ffsecondaria:new" }
 
 ffsecondaria_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "FiCoreBundle:ffsecondaria:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 ffsecondaria_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "FiCoreBundle:ffsecondaria:edit" }
 
 ffsecondaria_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "FiCoreBundle:ffsecondaria:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 ffprincipale_aggiorna:
-    pattern:  /aggiorna
+    path:  /aggiorna
     defaults: { _controller: "FiCoreBundle:ffsecondaria:aggiorna" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 ffsecondaria_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "FiCoreBundle:ffsecondaria:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 ffsecondaria_deletemultiple:
-    pattern:  /delete
+    path:  /delete
     defaults: { _controller: "FiCoreBundle:ffsecondaria:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 ffsecondaria_griglia:
-    pattern:  /griglia
+    path:  /griglia
     defaults: { _controller: "FiCoreBundle:ffsecondaria:griglia" }
-    requirements: { _method: get }
+    requirements: { methods: get }

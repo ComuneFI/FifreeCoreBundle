@@ -1,61 +1,61 @@
 tabelle:
-    pattern:  /
+    path:  /
     defaults: { _controller: "FiCoreBundle:tabelle:index" }
 
 tabelle_configura:
-    pattern:  /configura/{nometabella}
+    path:  /configura/{nometabella}
     defaults: { _controller: "FiCoreBundle:tabelle:configura" }
-    requirements: { _method: post|put|get }
+    requirements: { methods: post|put|get }
 
 tabelle_stampatabella:
-    pattern:  /stampatabella/{nometabella}
+    path:  /stampatabella/{nometabella}
     defaults: { _controller: "FiCoreBundle:tabelle:stampatabella" }
-    requirements: { _method: post|put|get }
+    requirements: { methods: post|put|get }
     
 tabelle_grigliapopup:
-    pattern:  /{chiamante}/grigliapopup
+    path:  /{chiamante}/grigliapopup
     defaults: { _controller: "FiCoreBundle:tabelle:grigliapopup" }
-    requirements: { _method: post|put|get }
+    requirements: { methods: post|put|get }
 
 tabelle_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "FiCoreBundle:tabelle:show" }
 
 tabelle_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "FiCoreBundle:tabelle:new" }
 
 tabelle_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "FiCoreBundle:tabelle:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 tabelle_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "FiCoreBundle:tabelle:edit" }
 
 tabelle_aggiorna:
-    pattern:  /aggiorna
+    path:  /aggiorna
     defaults: { _controller: "FiCoreBundle:tabelle:aggiorna" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 tabelle_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "FiCoreBundle:tabelle:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 tabelle_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "FiCoreBundle:tabelle:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
     
 tabelle_deletemultiple:
-    pattern:  /delete
+    path:  /delete
     defaults: { _controller: "FiCoreBundle:tabelle:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 tabelle_griglia:
-    pattern:  /griglia
+    path:  /griglia
     defaults: { _controller: "FiCoreBundle:tabelle:griglia" }
-    requirements: { _method: get }
+    requirements: { methods: get }
     
