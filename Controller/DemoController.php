@@ -7,11 +7,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use PhpOffice\PhpWord\PhpWord;
 use Fi\ImapBundle\DependencyInjection\ImapMailbox;
+use Symfony\Component\HttpKernel\Kernel;
 
 class DemoController extends Controller {
 
     public function indexAction() {
-        var_dump(count($this->container));exit;
+        var_dump(Kernel::VERSION);exit;
         return $this->render('FiCoreBundle:Demo:index.html.twig');
     }
 
