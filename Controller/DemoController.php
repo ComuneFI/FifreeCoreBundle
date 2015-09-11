@@ -12,7 +12,6 @@ use Symfony\Component\HttpKernel\Kernel;
 class DemoController extends Controller {
 
     public function indexAction() {
-        var_dump(Kernel::VERSION);exit;
         return $this->render('FiCoreBundle:Demo:index.html.twig');
     }
 
