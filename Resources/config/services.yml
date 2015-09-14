@@ -35,6 +35,12 @@ services:
         - { name: twig.extension }
       arguments: [ '@twig.loader' ]
 
+    fi.twig.fi_misc_extension:
+      class: Fi\CoreBundle\Twig\Extension\MiscExtension
+      tags:
+        - { name: twig.extension }
+      arguments: [ '@service_container' ]
+
     fi.twig.demo.listener:
         class: Fi\CoreBundle\EventListener\ControllerListener
         arguments: ['@fi.twig.fi_demo_extension']
