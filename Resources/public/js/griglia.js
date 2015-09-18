@@ -89,7 +89,7 @@ function caricaGriglia(parametrijs) {
     if(!modellocolonne[modellocolonne.length -1]) modellocolonne.pop();
     
     //Si sistemano tutte le caratteristiche per le colonne della griglia
-    for (var i = 0; i < modellocolonne.length -1; i++) {
+    for (var i = 0; i < modellocolonne.length; i++) {
         modellocolonne[i]["editable"] = (editinline && modellocolonne[i]["name"] != "id" ? true : false);
         var effettuaricercasucampo = modellocolonne[i]["search"];
         if ((typeof effettuaricercasucampo == 'undefined') || ((typeof effettuaricercasucampo == 'undefined') && (effettuaricercasucampo != false))) {
