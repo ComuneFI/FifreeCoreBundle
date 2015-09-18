@@ -85,7 +85,9 @@ function caricaGriglia(parametrijs) {
     //['eq','ne','lt','le','gt','ge','bw','bn','in','ni','ew','en','cn','nc', 'nu', 'nn'] 
     //significano questo 
     //['equal','not equal', 'less', 'less or equal','greater','greater or equal', 'begins with','does not begin with','is in','is not in','ends with','does not end with','contains','does not contain', 'is null', 'is not null'] 
-
+    //Internet explorer gestisce la length di un array diversamente dagli altri browser
+    if(!modellocolonne[modellocolonne.length -1]) modellocolonne.pop();
+    
     //Si sistemano tutte le caratteristiche per le colonne della griglia
     for (var i = 0; i < modellocolonne.length -1; i++) {
         modellocolonne[i]["editable"] = (editinline && modellocolonne[i]["name"] != "id" ? true : false);
