@@ -87,7 +87,7 @@ function caricaGriglia(parametrijs) {
     //['equal','not equal', 'less', 'less or equal','greater','greater or equal', 'begins with','does not begin with','is in','is not in','ends with','does not end with','contains','does not contain', 'is null', 'is not null'] 
 
     //Si sistemano tutte le caratteristiche per le colonne della griglia
-    for (var i = 0; i < modellocolonne.length; i++) {
+    for (var i = 0; i < modellocolonne.length -1; i++) {
         modellocolonne[i]["editable"] = (editinline && modellocolonne[i]["name"] != "id" ? true : false);
         var effettuaricercasucampo = modellocolonne[i]["search"];
         if ((typeof effettuaricercasucampo == 'undefined') || ((typeof effettuaricercasucampo == 'undefined') && (effettuaricercasucampo != false))) {
