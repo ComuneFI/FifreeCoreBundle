@@ -1264,6 +1264,7 @@ function dopolaricerca(parametripassati) {
 function FindDefaultOption(opzioniedit)
 {
     var defaulteditoptions = "";
+    if(!opzioniedit[opzioniedit.length -1]) opzioniedit.pop();
     for (var y = 0; y < opzioniedit.length; y++) {
         if (opzioniedit[y]["default"] == true)
             defaulteditoptions = opzioniedit[y]["descrizione"];
@@ -1274,6 +1275,7 @@ function FindDefaultOption(opzioniedit)
 function SetEditOptions(opzioniedit)
 {
     var editoptions = "";
+    if(!opzioniedit[opzioniedit.length -1]) opzioniedit.pop();
     for (var y = 0; y < opzioniedit.length; y++) {
 
         if (editoptions !== "")
@@ -1286,6 +1288,7 @@ function SetEditOptions(opzioniedit)
 function SetSearchOptions(opzioniedit)
 {
     var searchoptions = "";
+    if(!opzioniedit[opzioniedit.length -1]) opzioniedit.pop();
     for (var y = 0; y < opzioniedit.length; y++) {
 
         if (opzioniedit[y]["valore"] === "") {
@@ -1369,6 +1372,7 @@ function trasparenzadiv() {
     });
     //console.log(Object.keys(divzindexs).length);
     //console.log(divzindexs);
+    if(!divzindexs[divzindexs.length -1]) divzindexs.pop();
     for (var i = 0; i < divzindexs.length; i++) {
         // Iterates over numeric indexes from 0 to 5, as everyone expects.
         if (i === divzindexs.length - 1) {
