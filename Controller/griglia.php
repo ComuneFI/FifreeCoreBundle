@@ -373,7 +373,7 @@ class griglia extends FiController {
         $ordinecolonne = isset($paricevuti["ordinecolonne"]) ? $paricevuti["ordinecolonne"] : NULL;
 
         /* @var $em \Doctrine\ORM\EntityManager */
-        $em = $doctrine->getRepository($bundle . ":" . $nometabella)->findAll();
+        //$em = $doctrine->getRepository($bundle . ":" . $nometabella)->findAll();
         $entityName = $bundle . ':' . $nometabella;
 
         $colonne = self::getColonne(array("entityName" => $entityName, "doctrine" => $doctrine));
@@ -539,8 +539,9 @@ class griglia extends FiController {
         $bundle = $paricevuti["nomebundle"];
         $nometabella = $paricevuti["nometabella"];
         $tabellej = (isset($paricevuti["tabellej"]) ? $paricevuti["tabellej"] : NULL);
-        if (is_object($tabellej))
+        if (is_object($tabellej)) {
             $tabellej = get_object_vars($tabellej);
+        }
 
         $decodifiche = (isset($paricevuti["decodifiche"]) ? $paricevuti["decodifiche"] : NULL);
         $escludere = (isset($paricevuti["escludere"]) ? $paricevuti["escludere"] : NULL);
@@ -637,8 +638,7 @@ class griglia extends FiController {
           return;
          */
 
-        $quanti = count($query_tutti_records->getResult());
-
+        $quanti = count($query_tutti_records->getScalarResult());
 
         // imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati
         $offset = ($limit * ($page - 1));
