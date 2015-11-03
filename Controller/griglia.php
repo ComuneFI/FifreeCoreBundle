@@ -638,7 +638,8 @@ class griglia extends FiController {
           return;
          */
 
-        $quanti = count($query_tutti_records->getScalarResult());
+        //$quanti = count($query_tutti_records->getScalarResult());
+        $quanti = 1000;
 
         // imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati
         $offset = ($limit * ($page - 1));
