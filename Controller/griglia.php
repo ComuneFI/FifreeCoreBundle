@@ -3,6 +3,7 @@
 namespace Fi\CoreBundle\Controller;
 
 use Fi\CoreBundle\Controller\gestionepermessiController;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class griglia extends FiController {
 
@@ -628,18 +629,11 @@ class griglia extends FiController {
       ));
     }
     // conta il numero di record di risposta
-    $query_tutti_records = $q->getQuery();
+    // $query_tutti_records = $q->getQuery();
+    // $quanti = count($query_tutti_records->getSingleScalarResult());
 
-    /*
-      print_r(array(
-      'sql' => $query_tutti_records->getSQL(),
-      'parameters' => $query_tutti_records->getParameters(),
-      ));
-      return;
-     */
-
-    $quanti = count($query_tutti_records->getSingleScalarResult());
-
+    $paginator = new Paginator($q, true);
+    $quanti = count($paginator);
 
     // imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati
     $offset = ($limit * ($page - 1));
