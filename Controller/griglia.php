@@ -679,7 +679,9 @@ class griglia extends FiController {
       $singolo = $singolo_zero[0];
       //Si scorrono tutti i campi del record
       $vettoreriga = array();
+
       foreach ($singolo as $nomecampo => $singolocampo) {
+
         //Si controlla se il campo è da escludere o meno
         if ((!isset($escludere) || !(in_array($nomecampo, $escludere))) && (!isset($escludereutente) || !(in_array($nomecampo, $escludereutente)))) {
           if (isset($tabellej[$nomecampo])) {
@@ -769,6 +771,7 @@ class griglia extends FiController {
       }
       $vettorerisposta["rows"][] = array("id" => $singolo->getId(), "cell" => $vettorerigasorted);
       unset($vettoreriga);
+      $doctrine->detach($singolo_zero[0]);
     }
 
     return json_encode($vettorerisposta);
@@ -814,7 +817,6 @@ class griglia extends FiController {
         }
       }
     }
-    $doctrine->detach($singolo[0]);
   }
 
   static public function campoElencato($parametriCampoElencato) {
