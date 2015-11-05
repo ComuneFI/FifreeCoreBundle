@@ -560,7 +560,7 @@ class griglia extends FiController {
     $campiextra = (isset($paricevuti["campiextra"]) ? $paricevuti["campiextra"] : NULL);
     $ordinecolonne = (isset($paricevuti["ordinecolonne"]) ? $paricevuti["ordinecolonne"] : NULL);
     // inserisco i filtri passati in un vettore
-    $filtri = json_decode($request->get("filters"), true);
+    $filtri = json_decode($request->get('filters'), true);
 
     // inserisco i parametri che sono passati nella $request all'interno di 
     // apposite variabili 
@@ -625,10 +625,11 @@ class griglia extends FiController {
       ));
     }
     // conta il numero di record di risposta
+    // $query_tutti_records = $q->getQuery();
+    // $quanti = count($query_tutti_records->getSingleScalarResult());
 
     $paginator = new Paginator($q, true);
     $quanti = count($paginator);
-    
 
     // imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati
     $offset = ($limit * ($page - 1));
@@ -642,16 +643,17 @@ class griglia extends FiController {
       $q = ($offset ? $q->setFirstResult($offset) : $q);
     }
 
-    if ($sidx) {
+    if ($sidx)
       $q->orderBy($sidx, $sord);
-    }
 
     //Dall'oggetto querybuilder si ottiene la query da eseguire
     $query_paginata = $q->getQuery();
 
+    ///*Object*/
+    //$q = $query_paginata->getResult();
     ///*array*/
     //Si ottiene un array con tutti i records
-    //$q = $query_paginata->getArrayResult();
+    $q = $query_paginata->getArrayResult();
     //Se il limire non è stato impostato si mette 1 (per calcolare la paginazione)
     $limit = ($limit ? $limit : 1);
     // calcola in mumero di pagine totali necessarie
@@ -665,17 +667,11 @@ class griglia extends FiController {
     $vettorerisposta["filtri"] = $filtri;
     $indice = 0;
 
-
-    $q = $query_paginata->iterate();
-
     //Si scorrono tutti i records della query
-    while (($singolo_zero = $q->next()) !== false) {
-      $singolo = $singolo_zero[0];
+    foreach ($q as $singolo) {
       //Si scorrono tutti i campi del record
       $vettoreriga = array();
-
       foreach ($singolo as $nomecampo => $singolocampo) {
-
         //Si controlla se il campo è da escludere o meno
         if ((!isset($escludere) || !(in_array($nomecampo, $escludere))) && (!isset($escludereutente) || !(in_array($nomecampo, $escludereutente)))) {
           if (isset($tabellej[$nomecampo])) {
@@ -763,9 +759,8 @@ class griglia extends FiController {
       foreach ($vettoreriga as $key => $value) {
         $vettorerigasorted[] = $value;
       }
-      $vettorerisposta["rows"][] = array("id" => $singolo->getId(), "cell" => $vettorerigasorted);
+      $vettorerisposta["rows"][] = array("id" => $singolo["id"], "cell" => $vettorerigasorted);
       unset($vettoreriga);
-      $doctrine->detach($singolo_zero[0]);
     }
 
     return json_encode($vettorerisposta);
