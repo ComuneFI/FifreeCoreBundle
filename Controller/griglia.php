@@ -657,7 +657,7 @@ class griglia extends FiController {
     //$q = $query_paginata->getResult();
     ///*array*/
     //Si ottiene un array con tutti i records
-    $q = $query_paginata->getArrayResult();
+    //$q = $query_paginata->getArrayResult();
     //Se il limire non è stato impostato si mette 1 (per calcolare la paginazione)
     $limit = ($limit ? $limit : 1);
     // calcola in mumero di pagine totali necessarie
@@ -671,8 +671,13 @@ class griglia extends FiController {
     $vettorerisposta["filtri"] = $filtri;
     $indice = 0;
 
+
+    $q = $query_paginata->iterate();
+
     //Si scorrono tutti i records della query
-    foreach ($q as $singolo) {
+    while (($singolo_zero = $q->next()) !== false) {
+      $singolo = get_object_vars($singolo_zero[0]);
+      $singolooggetto = $singolo_zero[0];
       //Si scorrono tutti i campi del record
       $vettoreriga = array();
       foreach ($singolo as $nomecampo => $singolocampo) {
@@ -763,7 +768,7 @@ class griglia extends FiController {
       foreach ($vettoreriga as $key => $value) {
         $vettorerigasorted[] = $value;
       }
-      $vettorerisposta["rows"][] = array("id" => $singolo["id"], "cell" => $vettorerigasorted);
+      $vettorerisposta["rows"][] = array("id" => $singolooggetto->getId(), "cell" => $vettorerigasorted);
       unset($vettoreriga);
     }
 
@@ -810,6 +815,7 @@ class griglia extends FiController {
         }
       }
     }
+    $doctrine->detach($singolo[0]);
   }
 
   static public function campoElencato($parametriCampoElencato) {
