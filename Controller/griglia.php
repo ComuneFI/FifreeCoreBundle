@@ -673,8 +673,7 @@ class griglia extends FiController {
 
 
     $q = $query_paginata->iterate();
-    exit; 
-
+    echo "iterato"; 
     //Si scorrono tutti i records della query
     while (($singolo_zero = $q->next()) !== false) {
       $singolo = get_object_vars($singolo_zero[0]);
