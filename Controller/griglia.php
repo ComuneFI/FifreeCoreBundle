@@ -673,14 +673,10 @@ class griglia extends FiController {
 
 
     $q = $query_paginata->iterate();
-    
+
     //Si scorrono tutti i records della query
     while (($singolo_zero = $q->next()) !== false) {
-      echo "uno:" . count($singolo_zero) ."<br>due:"; 
-      echo count($singolo_zero[0]);
-      exit; 
-      $singolo = get_object_vars($singolo_zero[0]);
-      $singolooggetto = $singolo_zero[0];
+      $singolo = $singolo_zero[0];
       //Si scorrono tutti i campi del record
       $vettoreriga = array();
       foreach ($singolo as $nomecampo => $singolocampo) {
