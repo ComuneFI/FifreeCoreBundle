@@ -166,6 +166,7 @@ function caricaGriglia(parametrijs) {
     jQuery(nomelist).jqGrid({
         url: baseUrl + '/' + tabella + '/' + percorsogriglia,
         postData: datipost,
+        mtype: 'POST',
         datatype: "json",
         colNames: nomicolonne,
         colModel: modellocolonne,
