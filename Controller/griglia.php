@@ -676,7 +676,7 @@ class griglia extends FiController {
     
     //Si scorrono tutti i records della query
     while (($singolo_zero = $q->next()) !== false) {
-      echo count($singolo_zero); 
+      echo "uno:" . count($singolo_zero) ."<br>due:"; 
       echo count($singolo_zero[0]);
       exit; 
       $singolo = get_object_vars($singolo_zero[0]);
