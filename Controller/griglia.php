@@ -767,7 +767,7 @@ class griglia extends FiController {
       foreach ($vettoreriga as $key => $value) {
         $vettorerigasorted[] = $value;
       }
-      $vettorerisposta["rows"][] = array("id" => $singolooggetto->getId(), "cell" => $vettorerigasorted);
+      $vettorerisposta["rows"][] = array("id" => $singolo->getId(), "cell" => $vettorerigasorted);
       unset($vettoreriga);
     }
 
