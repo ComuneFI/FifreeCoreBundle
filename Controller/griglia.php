@@ -560,22 +560,18 @@ class griglia extends FiController {
     $campiextra = (isset($paricevuti["campiextra"]) ? $paricevuti["campiextra"] : NULL);
     $ordinecolonne = (isset($paricevuti["ordinecolonne"]) ? $paricevuti["ordinecolonne"] : NULL);
     // inserisco i filtri passati in un vettore
-    if ($request->get('filters')) {
-      $filtri = json_decode($request->get('filters'), true);
-    } else {
-      $filtri = json_decode($request->query->get('filters'), true);
-    }
+    $filtri = json_decode($request->get("filters"), true);
 
     // inserisco i parametri che sono passati nella $request all'interno di 
     // apposite variabili 
     // che pagina siamo 
-    $page = $request->query->get('page'); // get the requested page 
+    $page = $request->get('page'); // get the requested page 
     // quante righe restituire (in caso di nospan = false) 
-    $limit = $request->query->get('rows'); // get how many rows we want to have into the grid 
+    $limit = $request->get('rows'); // get how many rows we want to have into the grid 
     // su quale campo fare l'ordinamento
-    $sidx = $request->query->get('sidx'); // get index row - i.e. user click to sort 
+    $sidx = $request->get('sidx'); // get index row - i.e. user click to sort 
     // direzione dell'ordinamento 
-    $sord = $request->query->get('sord'); // get the direction if(!$sidx) $sidx =1;
+    $sord = $request->get('sord'); // get the direction if(!$sidx) $sidx =1;
     // se non è passato nessun campo (ipotesi peregrina) usa id 
     if (!$sidx) {
       $sidx = $nometabella . ".id";
@@ -629,11 +625,10 @@ class griglia extends FiController {
       ));
     }
     // conta il numero di record di risposta
-    // $query_tutti_records = $q->getQuery();
-    // $quanti = count($query_tutti_records->getSingleScalarResult());
 
     $paginator = new Paginator($q, true);
     $quanti = count($paginator);
+    
 
     // imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati
     $offset = ($limit * ($page - 1));
@@ -647,14 +642,13 @@ class griglia extends FiController {
       $q = ($offset ? $q->setFirstResult($offset) : $q);
     }
 
-    if ($sidx)
+    if ($sidx) {
       $q->orderBy($sidx, $sord);
+    }
 
     //Dall'oggetto querybuilder si ottiene la query da eseguire
     $query_paginata = $q->getQuery();
 
-    ///*Object*/
-    //$q = $query_paginata->getResult();
     ///*array*/
     //Si ottiene un array con tutti i records
     $q = $query_paginata->getArrayResult();
