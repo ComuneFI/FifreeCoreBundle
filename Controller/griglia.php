@@ -651,7 +651,7 @@ class griglia extends FiController {
 
     ///*array*/
     //Si ottiene un array con tutti i records
-    $q = $query_paginata->getArrayResult();
+    //$q = $query_paginata->getArrayResult();
     //Se il limire non è stato impostato si mette 1 (per calcolare la paginazione)
     $limit = ($limit ? $limit : 1);
     // calcola in mumero di pagine totali necessarie
@@ -665,11 +665,17 @@ class griglia extends FiController {
     $vettorerisposta["filtri"] = $filtri;
     $indice = 0;
 
+
+    $q = $query_paginata->iterate();
+
     //Si scorrono tutti i records della query
-    foreach ($q as $singolo) {
+    while (($singolo_zero = $q->next()) !== false) {
+      $singolo = $singolo_zero[0];
       //Si scorrono tutti i campi del record
       $vettoreriga = array();
+
       foreach ($singolo as $nomecampo => $singolocampo) {
+
         //Si controlla se il campo è da escludere o meno
         if ((!isset($escludere) || !(in_array($nomecampo, $escludere))) && (!isset($escludereutente) || !(in_array($nomecampo, $escludereutente)))) {
           if (isset($tabellej[$nomecampo])) {
@@ -757,8 +763,9 @@ class griglia extends FiController {
       foreach ($vettoreriga as $key => $value) {
         $vettorerigasorted[] = $value;
       }
-      $vettorerisposta["rows"][] = array("id" => $singolo["id"], "cell" => $vettorerigasorted);
+      $vettorerisposta["rows"][] = array("id" => $singolo->getId(), "cell" => $vettorerigasorted);
       unset($vettoreriga);
+      $doctrine->detach($singolo_zero[0]);
     }
 
     return json_encode($vettorerisposta);
