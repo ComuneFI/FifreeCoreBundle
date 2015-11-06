@@ -72,8 +72,9 @@ class griglia extends FiController {
 
   static function campiesclusi($parametri = array()) {
 
-    if (!isset($parametri["nometabella"]))
+    if (!isset($parametri["nometabella"])) {
       return false;
+    }
 
     $nometabella = $parametri["nometabella"];
 
@@ -185,12 +186,13 @@ class griglia extends FiController {
       if ($primo) {
         $q->where($regola["field"] . " " . self::$decodificaop[$regola['op']] . " " . self::$precarattere[$regola['op']] . $regola['data'] . self::$postcarattere[$regola['op']]);
       } else {
-        if ($tipof == "OR")
+        if ($tipof == "OR") {
           $q->orWhere($regola["field"] . " " . self::$decodificaop[$regola['op']] . " " . self::$precarattere[$regola['op']] . $regola['data'] . self::$postcarattere[$regola['op']]);
-        else
+        } else {
           $q->andWhere($regola["field"] . " " . self::$decodificaop[$regola['op']] . " " . self::$precarattere[$regola['op']] . $regola['data'] . self::$postcarattere[$regola['op']]);
+        }
+        $primo = false;
       }
-      $primo = false;
     }
   }
 
@@ -200,8 +202,9 @@ class griglia extends FiController {
     $nometabella = $parametri["nometabella"];
 
     foreach ($tabellej as $tabellaj) {
-      if (is_object($tabellaj))
+      if (is_object($tabellaj)) {
         $tabellaj = get_object_vars($tabellaj);
+      }
       //Serve per far venire nella getArrayResult() anche i campi della tabella il leftjoin
       //altrimenti mostra solo quelli della tabella con alias a
       $q->addSelect(array($tabellaj["tabella"]));
@@ -399,8 +402,9 @@ class griglia extends FiController {
                 $indice++;
                 $indicecolonna = $indice;
               } else {
-                if ($indicecolonna > $indice)
+                if ($indicecolonna > $indice) {
                   $indice = $indicecolonna;
+                }
               }
             } else {
               $indice++;
@@ -412,10 +416,11 @@ class griglia extends FiController {
             }
 
             $nomicolonne[$indicecolonna] = isset($singoloalias["descrizione"]) ? $singoloalias["descrizione"] : griglia::to_camel_case(array("str" => $chiave, "primamaiuscola" => true));
-            if (isset($singoloalias["tipo"]) && ($singoloalias["tipo"] == "select"))
+            if (isset($singoloalias["tipo"]) && ($singoloalias["tipo"] == "select")) {
               $modellocolonne[$indicecolonna] = array("name" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "id" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "width" => isset($singoloalias["lunghezza"]) ? $singoloalias["lunghezza"] : ($colonna["length"] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna["length"] * $moltiplicatorelarghezza), "tipocampo" => isset($singoloalias["tipo"]) ? $singoloalias["tipo"] : $colonna["type"], "editoptions" => $singoloalias["valoricombo"]);
-            else
+            } else {
               $modellocolonne[$indicecolonna] = array("name" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "id" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "width" => isset($singoloalias["lunghezza"]) ? $singoloalias["lunghezza"] : ($colonna["length"] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna["length"] * $moltiplicatorelarghezza), "tipocampo" => isset($singoloalias["tipo"]) ? $singoloalias["tipo"] : $colonna["type"]);
+            }
           }
         } else {
           if (isset($ordinecolonne)) {
@@ -424,8 +429,9 @@ class griglia extends FiController {
               $indice++;
               $indicecolonna = $indice;
             } else {
-              if ($indicecolonna > $indice)
+              if ($indicecolonna > $indice) {
                 $indice = $indicecolonna;
+              }
             }
           } else {
             $indice++;
@@ -643,9 +649,9 @@ class griglia extends FiController {
       $q = ($offset ? $q->setFirstResult($offset) : $q);
     }
 
-    if ($sidx)
+    if ($sidx) {
       $q->orderBy($sidx, $sord);
-
+    }
     //Dall'oggetto querybuilder si ottiene la query da eseguire
     $query_paginata = $q->getQuery();
 
@@ -657,7 +663,8 @@ class griglia extends FiController {
     //Se il limire non è stato impostato si mette 1 (per calcolare la paginazione)
     $limit = ($limit ? $limit : 1);
     // calcola in mumero di pagine totali necessarie
-    $total_pages = ($quanti % $limit == 0 ? $quanti / ($limit == 0 ? 1 : $limit) : round(($quanti - 0.5) / ($limit == 0 ? 1 : $limit)) + 1);
+
+    $total_pages = ceil($quanti / ($limit == 0 ? 1 : $limit));
 
     // imposta in $vettorerisposta la risposta strutturata per essere compresa da jqgrid
     $vettorerisposta = array();
@@ -766,7 +773,8 @@ class griglia extends FiController {
     return json_encode($vettorerisposta);
   }
 
-  static public function valorizzaVettore(&$vettoreriga, $parametri) {
+  static public
+          function valorizzaVettore(&$vettoreriga, $parametri) {
 
     $tabella = $parametri["tabella"];
     $nomecampo = $parametri["nomecampo"];
@@ -808,7 +816,8 @@ class griglia extends FiController {
     }
   }
 
-  static public function campoElencato($parametriCampoElencato) {
+  static public
+          function campoElencato($parametriCampoElencato) {
 
     $tabellej = $parametriCampoElencato["tabellej"];
     $nomecampo = $parametriCampoElencato["nomecampo"];
@@ -887,8 +896,9 @@ class griglia extends FiController {
     $tipofiltro = isset($genericofiltri->groupOp) ? $genericofiltri->groupOp : "";
     self::$decodificaop = array('eq' => ' è uguale a ', 'ne' => ' è diverso da ', 'lt' => ' è inferiore a ', 'le' => ' è inferiore o uguale a ', 'gt' => ' è maggiore di ', 'ge' => ' è maggiore o uguale di ', 'bw' => ' comincia con ', 'bn' => ' non comincia con ', 'in' => ' è uno fra ', 'ni' => ' non è uno fra ', 'ew' => ' finisce con ', 'en' => ' con finisce con ', 'cn' => ' contiene ', 'nc' => ' non contiene ', 'nu' => ' è vuoto', 'nn' => ' non è vuoto');
 
-    if (!isset($filtri) or ( !$filtri))
+    if (!isset($filtri) or ( !$filtri)) {
       return "";
+    }
 
     $filtrodescritto = ("I dati mostrati rispondono a" . ($tipofiltro == "AND" ? " tutti i" : "d almeno uno dei") . " seguenti criteri: ");
 
