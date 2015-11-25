@@ -14,9 +14,9 @@ class fifree2checkpermissionCommand extends ContainerAwareCommand {
 
   protected function configure() {
     $this
-            ->setName('fifree2:checkpermission')
-            ->setDescription('Controllo permessi ambiente fifree')
-            ->setHelp('Controlla i privilegi delle cartelle del progetto')
+            ->setName('fifree2:pubblicamanuale')
+            ->setDescription('Copia il manuale dalla cartella Doc alla cartella Web')
+            ->setHelp('Estende la pubblicazione degli assets al manuale')
     ;
   }
 
