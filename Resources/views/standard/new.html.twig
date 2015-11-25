@@ -1,77 +1,68 @@
-{% extends 'FiCoreBundle::layout.html.twig' %}
-{% block head %}{% endblock %}
-{% block menu %}{% endblock %}
-{% block contextMenu %}{% endblock %}
+<div id="testatadettaglio" class="ui-jqdialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">Nuova riga 
+    <a class="fi-default-chiudi ui-jqdialog-titlebar-close ui-corner-all ui-state-hover" onclick="chiudiDettaglio({});" style="right: 0.3em;"><span class="ui-icon ui-icon-closethick"></span></a>
+</div>
 
-{% block fibody -%}
-    <div id="testatadettaglio" class="ui-jqdialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">Nuova riga 
-        <a class="fi-default-chiudi ui-jqdialog-titlebar-close ui-corner-all ui-state-hover" onclick="chiudiDettaglio({});" style="right: 0.3em;"><span class="ui-icon ui-icon-closethick"></span></a>
-    </div>
+<div id="corpodettaglio" class="ui-jqdialog-content ui-widget-content">
+    {% if (errori is defined and errori is not null)  %}
+        <ul class="error_list">
+            <li>{{ errori  }}</li>
+        </ul>
+    {% endif  %}
 
-    <div id="corpodettaglio" class="ui-jqdialog-content ui-widget-content">
-        {% if (errori is defined and errori is not null)  %}
-            <ul class="error_list">
-                <li>{{ errori  }}</li>
-            </ul>
-        {% endif  %}
+    {{ form_start(form) }}
 
-        {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <p>
+        <a class="fi-default-salva fm-button ui-state-default ui-corner-all fm-button-icon-left" id="sData{{nomecontroller}}S" onclick="presubmit('formdati{{nomecontroller}}');">Salva<span class="ui-icon ui-icon-disk"></span></a>
+    </p>
+    <input type="submit" style="display: none;"/>
+    {{ form_end(form) }}
 
-        {{ form_widget(form) }}
-        <p>
-            <a class="fi-default-salva fm-button ui-state-default ui-corner-all fm-button-icon-left" id="sData{{nomecontroller}}S" onclick="presubmit('formdati{{nomecontroller}}');">Salva<span class="ui-icon ui-icon-disk"></span></a>
-        </p>
-        <input type="submit" style="display: none;"/>
-        {{ form_end(form) }}
+    <script type="text/javascript">
+        var validato = false;
+        $("#formdati{{nomecontroller}}").submit(function (e) {
+            validato = true;
+            e.preventDefault();
+            return false;
+        });
 
-        <script type="text/javascript">
-            var validato = false;
-            $("#formdati{{nomecontroller}}").submit(function (e) {
-                validato = true;
-                e.preventDefault();
-                return false;
+        $("#sData{{nomecontroller}}S").click(function () {
+            if (validato) {
+                salvaDettaglio({'tabella': '{{nomecontroller}}', 'formdati': '#formdati{{nomecontroller}}', 'id': '{{ 0 }}'});
+            }
+        });
+
+        /*$(document).keypress(function (event) {
+         switch (event.key)
+         {
+         case "Esc":
+         event.preventDefault();
+         $(".fi-default-chiudi").click();
+         break;
+         case "Enter":
+         if (event.shiftKey) {
+         event.preventDefault();
+         $(".fi-default-salva").click();
+         $(".fi-default-salva").removeClass("fi-default-salva");
+         }
+         break;
+         case "Del":
+         if (event.shiftKey) {
+         event.preventDefault();
+         $(".fi-default-elimina").click();
+         $(".fi-default-elimina").removeClass("fi-default-elimina");
+         }
+         break;
+         }
+         });*/
+
+        $(function () {
+
+            $(".ficorebundle_datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd/mm/yy'
             });
 
-            $("#sData{{nomecontroller}}S").click(function () {
-                if (validato) {
-                    salvaDettaglio({'tabella': '{{nomecontroller}}', 'formdati': '#formdati{{nomecontroller}}', 'id': '{{ 0 }}'});
-                }
-            });
-
-            /*$(document).keypress(function (event) {
-                switch (event.key)
-                {
-                    case "Esc":
-                        event.preventDefault();
-                        $(".fi-default-chiudi").click();
-                        break;
-                    case "Enter":
-                        if (event.shiftKey) {
-                            event.preventDefault();
-                            $(".fi-default-salva").click();
-                            $(".fi-default-salva").removeClass("fi-default-salva");
-                        }
-                        break;
-                    case "Del":
-                        if (event.shiftKey) {
-                            event.preventDefault();
-                            $(".fi-default-elimina").click();
-                            $(".fi-default-elimina").removeClass("fi-default-elimina");
-                        }
-                        break;
-                }
-            });*/
-
-            $(function () {
-
-                $(".ficorebundle_datepicker").datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    dateFormat: 'dd/mm/yy'
-                });
-
-            });
-        </script>
-
-    {% endblock %}
-{% block waiting %}{% endblock %}
+        });
+    </script>
