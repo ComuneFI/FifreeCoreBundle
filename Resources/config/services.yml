@@ -35,6 +35,12 @@ services:
         - { name: twig.extension }
       arguments: [ '@twig.loader' ]
 
+    fi.twig.fi_utilita_extension:
+      class: Fi\CoreBundle\Twig\Extension\UtilitaExtension
+      tags:
+        - { name: twig.extension }
+      arguments: [ '@twig.loader' ]
+
     fi.twig.fi_misc_extension:
       class: Fi\CoreBundle\Twig\Extension\MiscExtension
       tags:
