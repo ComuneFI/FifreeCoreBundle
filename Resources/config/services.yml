@@ -4,6 +4,10 @@ parameters:
   ficorebundle.db.table_prefix: __corebundle_
   
   fiQuery.class: Fi\OracleBundle\DependencyInjection\fiQuery
+  oracle_GPS:
+    utente: GPS
+    password: GPS
+    connessione: SIGRUDB
   oracle_P00:
     utente: P00
     password: F1PEZ0_1
@@ -69,7 +73,11 @@ services:
     #    fi_oracle.example.class: Fi\OracleBundle\Example
     #    fi_jfestere.example.class: Fi\JfestereBundle\Example
 
-
+    oracle_gps:
+        class:     "%fiQuery.class%"
+        #arguments: [@service_id, "plain_value", %parameter%]
+        arguments: [%oracle_GPS%]
+        
     oracle_sigru:
         class:     "%fiQuery.class%"
         #arguments: [@service_id, "plain_value", %parameter%]
