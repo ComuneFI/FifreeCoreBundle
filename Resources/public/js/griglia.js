@@ -52,7 +52,7 @@ function caricaGriglia(parametrijs) {
     var ridimensionabile = (parametrijs["ridimensionabile"] == 0) ? false : true;
     var overlayopen = (parametrijs["overlayopen"] == 1) ? true : false;
     var imgwaiturl = parametrijs['imgwaiturl'] || '/bundles/ficore/images/wait.gif';
-    
+
     var parametriaggiuntivi_edit = parametrijs["parametriaggiuntivi_edit"] || {};
     var stringapar_edit = "";
     for (var key in parametriaggiuntivi_edit) {
@@ -86,8 +86,9 @@ function caricaGriglia(parametrijs) {
     //significano questo 
     //['equal','not equal', 'less', 'less or equal','greater','greater or equal', 'begins with','does not begin with','is in','is not in','ends with','does not end with','contains','does not contain', 'is null', 'is not null'] 
     //Internet explorer gestisce la length di un array diversamente dagli altri browser
-    if(!modellocolonne[modellocolonne.length -1]) modellocolonne.pop();
-    
+    if (!modellocolonne[modellocolonne.length - 1])
+        modellocolonne.pop();
+
     //Si sistemano tutte le caratteristiche per le colonne della griglia
     for (var i = 0; i < modellocolonne.length; i++) {
         modellocolonne[i]["editable"] = (editinline && modellocolonne[i]["name"] != "id" ? true : false);
@@ -165,6 +166,7 @@ function caricaGriglia(parametrijs) {
     jQuery(nomelist).jqGrid({
         url: baseUrl + '/' + tabella + '/' + percorsogriglia,
         postData: datipost,
+        mtype: 'POST',
         datatype: "json",
         colNames: nomicolonne,
         colModel: modellocolonne,
@@ -194,7 +196,7 @@ function caricaGriglia(parametrijs) {
                     'list': nomelist,
                     'div': div,
                     'divtesta': divtesta,
-                    'parametripassa' : stringapar_edit
+                    'parametripassa': stringapar_edit
                 });
 
             }
@@ -240,7 +242,7 @@ function caricaGriglia(parametrijs) {
                                 'list': nomelist,
                                 'div': div,
                                 'divtesta': divtesta,
-                                'parametripassa' : stringapar_edit
+                                'parametripassa': stringapar_edit
                             });
                         }
                     },
@@ -259,7 +261,7 @@ function caricaGriglia(parametrijs) {
                                 'list': nomelist,
                                 'div': div,
                                 'divtesta': divtesta,
-                                'parametripassa' : stringapar_new
+                                'parametripassa': stringapar_new
                             });
                         }
                     },
@@ -386,7 +388,7 @@ function caricaGriglia(parametrijs) {
                     'list': nomelist,
                     'div': div,
                     'divtesta': divtesta,
-                    'parametripassa' : stringapar_new
+                    'parametripassa': stringapar_new
                 });
             },
             position: "last",
@@ -444,7 +446,7 @@ function caricaGriglia(parametrijs) {
                     'list': nomelist,
                     'div': div,
                     'divtesta': divtesta,
-                    'parametripassa' : stringapar_edit
+                    'parametripassa': stringapar_edit
                 });
                 lastsel = 0;
                 jQuery(nomelist).jqGrid('resetSelection');
@@ -575,7 +577,7 @@ function caricaGriglia(parametrijs) {
         //jQuery("#" + tabella + ' .ui-jqgrid-title').before(temp);
         jQuery(div + ' .ui-jqgrid-title').before(temp);
     }
-    
+
     // Questo era lo statement originale che però ci ha creato dei problemi nella visualizzazione dei sottodettagli, quindi è stato modificato
     // if (div !== "#dettaglio") jQuery(div).show();
     if (div.substr(0, 10) !== "#dettaglio") {
@@ -706,7 +708,17 @@ function caricaGriglia_inline(parametrijs, parametriaggiuntivi) {
                 return true;
             },
             onError: function (rowid, jqXHR, textStatus) {
-                alert(textStatus);
+                $("#dialog").dialog({
+                    title: 'Attenzione',
+                    buttons: {
+                        "Ok": function () {
+                            $(this).dialog("close");
+                        }
+                    },
+                    modal: true
+                });
+                $("#testodialog").html(textStatus);
+                $("#dialog").show();
             },
             afterSave: function (rowid, jqXHR) {
                 risposta = JSON.parse(jqXHR["responseText"]);
@@ -1057,6 +1069,7 @@ function salvaDettaglio(parametri) {
     var formdati = parametri['formdati'] || "#formdati";
     var list = parametri['list'] || "#list1";
     var parametriaggiuntivi = parametri["parametriaggiuntivi"] || {};
+    var parametrireloadcombo = parametri["parametrireloadcombo"] || {};
     if (parametri["overlayclose"] === 0)
         parametri["overlayclose"] = 0;
     else
@@ -1069,6 +1082,8 @@ function salvaDettaglio(parametri) {
     $.each(parametriaggiuntivi, function (key, value) {
         parametripassa.push({'name': 'parametriaggiuntivi[' + key + ']', 'value': value});
     });
+    parametripassa.push({'name': 'continua', 'value': continua});
+    
     jQuery(div).load(baseUrl + '/' + tabella + "/" + (rowid > 0 ? rowid + '/update' : 'create'), parametripassa, function (responseText, textStatus, XMLHttpRequest) {
         //jQuery(div).html(dump(parametripassa));
         //jQuery(div).html('<p>Si è verificato il seguente errore sul server: </p><br/>'+responseText);
@@ -1099,6 +1114,40 @@ function salvaDettaglio(parametri) {
                 current: true
             }]);
 
+        if (jQuery.isEmptyObject(parametrireloadcombo)) {
+            //console.log('i parametri non sono stati passati');
+        } else {
+            //console.log('bisogna fare la reload del combo');
+            var combo = parametrireloadcombo["combo"];
+            var percorso = parametrireloadcombo["percorso"];
+            var label = parametrireloadcombo["label"];
+            jQuery(combo).empty();
+            jQuery.ajax({
+                url: percorso,
+                type: "POST",
+                async: false,
+                dataType: "json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $("#dialog").dialog({
+                        title: 'Attenzione',
+                        buttons: {
+                            "Ok": function () {
+                                $(this).dialog("close");
+                            }
+                        },
+                        modal: true
+                    });
+                    $("#testodialog").html('error! textStatus = ' + textStatus + ' - errorThrown = ' + errorThrown + ' - XHR = ' + jqXHR);
+                    $("#dialog").show();
+                },
+                success: function (response) {
+                    //Prende la risposta ed alimenta la select
+                    jQuery.each(response, function (key, value) {
+                        jQuery(combo).append(new Option(value[label], value["id"]))
+                    });
+                }
+            });
+        }
     });
 }
 
@@ -1264,7 +1313,8 @@ function dopolaricerca(parametripassati) {
 function FindDefaultOption(opzioniedit)
 {
     var defaulteditoptions = "";
-    if(!opzioniedit[opzioniedit.length -1]) opzioniedit.pop();
+    if (!opzioniedit[opzioniedit.length - 1])
+        opzioniedit.pop();
     for (var y = 0; y < opzioniedit.length; y++) {
         if (opzioniedit[y]["default"] == true)
             defaulteditoptions = opzioniedit[y]["descrizione"];
@@ -1275,7 +1325,8 @@ function FindDefaultOption(opzioniedit)
 function SetEditOptions(opzioniedit)
 {
     var editoptions = "";
-    if(!opzioniedit[opzioniedit.length -1]) opzioniedit.pop();
+    if (!opzioniedit[opzioniedit.length - 1])
+        opzioniedit.pop();
     for (var y = 0; y < opzioniedit.length; y++) {
 
         if (editoptions !== "")
@@ -1288,7 +1339,8 @@ function SetEditOptions(opzioniedit)
 function SetSearchOptions(opzioniedit)
 {
     var searchoptions = "";
-    if(!opzioniedit[opzioniedit.length -1]) opzioniedit.pop();
+    if (!opzioniedit[opzioniedit.length - 1])
+        opzioniedit.pop();
     for (var y = 0; y < opzioniedit.length; y++) {
 
         if (opzioniedit[y]["valore"] === "") {
@@ -1359,7 +1411,7 @@ function trasparenzadiv() {
     if (typeof notrasparenzadiv !== "undefined" && notrasparenzadiv) {
         return true;
     }
-    
+
     var divzindexs = new Array();
     $(".ui-jqdialog").each(function () {
         if ($(this).is(":visible")) {
@@ -1372,7 +1424,8 @@ function trasparenzadiv() {
     });
     //console.log(Object.keys(divzindexs).length);
     //console.log(divzindexs);
-    if(!divzindexs[divzindexs.length -1]) divzindexs.pop();
+    if (!divzindexs[divzindexs.length - 1])
+        divzindexs.pop();
     for (var i = 0; i < divzindexs.length; i++) {
         // Iterates over numeric indexes from 0 to 5, as everyone expects.
         if (i === divzindexs.length - 1) {

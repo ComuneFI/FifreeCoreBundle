@@ -1,58 +1,58 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8" />
-    <title>{% block title %}{{appname}}{% endblock %}</title>
-    <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
-    {% block head %}
-    {{ include('FiCoreBundle:Default:css.html.twig') }}
-    {% block css %}
-    {% endblock %}
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}{{appname}}{% endblock %}</title>
+        <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
+        {% block head %}
+            {{ include('FiCoreBundle:Default:css.html.twig') }}
+            {% block css %}
+            {% endblock %}
 
-    {{ include('FiCoreBundle:Default:javascripts.html.twig') }}
-    {% block javascripts %}
-    {% endblock %}
+            {{ include('FiCoreBundle:Default:javascripts.html.twig') }}
+            {% block javascripts %}
+            {% endblock %}
 
-    {% endblock %}
-</head>
+        {% endblock %}
+    </head>
 
-<body>
-    {% for flashMessage in app.session.flashbag.get('notice') %}
-        <div class="flash-message">
-            <em>Messaggio</em>: {{ flashMessage }}
+    <body>
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="flash-message">
+                <em>Messaggio</em>: {{ flashMessage }}
+            </div>
+        {% endfor %}
+        {% block menu %}
+            {{ render(controller('FiCoreBundle:menu:generamenu')) }}
+        {% endblock %}
+
+        {% block contextMenu %}
+            {{ include('FiCoreBundle:menu:contextMenu.html.twig') }}
+        {% endblock %}
+
+        {% block fibody %}
+            <div id="nascosto" class="nascosto">
+            </div>
+            <div class="overlay" id="overlay" style="display:none;"></div>
+            <div id="testata" class="ui-widget"></div>
+
+            <div id="dialog"><div id="testodialog"></div></div>
+
+            <div id="Primo" class="cornici">
+                <table id="menu" class="ui-layout-west"></table>
+            </div>
+            <div id="Secondo" class="cornici">
+                <div id="corpo" class="ui-widget">
+                    <div class="block">
+                    {% block content %}{% endblock %}
+                </div>
+                <div id="notecorpo" class="ui-widget ui-widget-content ui-jqdialog ui-corner-all"></div>
+            </div>
         </div>
-    {% endfor %}
-    {% block menu %}
-    {{ render(controller('FiCoreBundle:menu:generamenu')) }}
-    {% endblock %}
-
-    {% block contextMenu %}
-    {{ include('FiCoreBundle:menu:contextMenu.html.twig') }}
-    {% endblock %}
-
-    {% block fibody %}
-    <div id="nascosto" class="nascosto">
-    </div>
-    <div class="overlay" id="overlay" style="display:none;"></div>
-    <div id="testata" class="ui-widget"></div>
-
-    <div id="dialog"><div id="testodialog"></div></div>
-
-    <div id="Primo" class="cornici">
-      <table id="menu" class="ui-layout-west"></table>
-    </div>
-    <div id="Secondo" class="cornici">
-      <div id="corpo" class="ui-widget">
-    <div class="block">
-        {% block content %}{% endblock %}
-    </div>
-      <div id="notecorpo" class="ui-widget ui-widget-content ui-jqdialog ui-corner-all"></div>
-      </div>
-    </div>
     {% block body %}{% endblock %}
     <!--<h5>Ambiente: {{app.environment}}</h5>-->
-    {% endblock %}
-    {% block waiting %}
+{% endblock %}
+{% block waiting %}
     <div class="waiting_div" style="display: none"><img src="{{ asset('bundles/ficore/images/waitpage.gif') }}" alt="wait"></div>
     {% endblock %}
 </body>

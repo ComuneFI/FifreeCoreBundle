@@ -17,13 +17,13 @@ class FiController extends Controller {
     protected function setup(Request $request) {
         $matches = array();
         self::$controller = new \ReflectionClass(get_class($this));
-        
+
         preg_match('/(.*)\\\(.*)Bundle\\\Controller\\\(.*)Controller/', self::$controller->getName(), $matches);
-        
-        self::$namespace = isset($matches[1])?$matches[1]:"";
-        self::$bundle = isset($matches[2])?$matches[2]:"";
-        self::$controller = isset($matches[3])?$matches[3]:"";
-        self::$action = substr($request->attributes->get('_controller'),strrpos($request->attributes->get('_controller'), ":") + 1);
+
+        self::$namespace = isset($matches[1]) ? $matches[1] : "";
+        self::$bundle = isset($matches[2]) ? $matches[2] : "";
+        self::$controller = isset($matches[3]) ? $matches[3] : "";
+        self::$action = substr($request->attributes->get('_controller'), strrpos($request->attributes->get('_controller'), ":") + 1);
     }
 
     public function setParametriGriglia($prepar = array()) {
@@ -58,7 +58,7 @@ class FiController extends Controller {
         $gestionepermessi = new gestionepermessiController();
         $gestionepermessi->setContainer($this->container);
         $utentecorrente = $gestionepermessi->utentecorrenteAction();
-        $canRead = ($gestionepermessi->leggereAction(array("modulo"=>$controller))?1:0);       
+        $canRead = ($gestionepermessi->leggereAction(array("modulo" => $controller)) ? 1 : 0);
 
 
         $nomebundle = $namespace . $bundle . "Bundle";
@@ -97,7 +97,7 @@ class FiController extends Controller {
                     'entities' => $entities,
                     'nomecontroller' => $controller,
                     'testata' => $testata,
-                    'canread'=>$canRead,
+                    'canread' => $canRead,
         ));
     }
 
@@ -125,14 +125,15 @@ class FiController extends Controller {
         $entity = new $classbundle();
         $formType = $formbundle . "Type";
         $form = $this->createForm(new $formType(), $entity);
-        $form->handleRequest($request);
+        $form->submit($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 
-            if ($request->isXmlHttpRequest()) {
+            $continua = $request->get("continua");
+            if ($continua == 0) {
                 return new Response("OK");
             } else {
                 return $this->redirect($this->generateUrl($controller . '_edit', array('id' => $entity->getId())));
@@ -201,7 +202,7 @@ class FiController extends Controller {
         $editForm = $this->createForm(new $formType(), $entity, array("attr" => array(
                 'id' => "formdati" . $controller,
             ),
-            'action' => $this->generateUrl($controller . "_update", array("id"=>$entity->getId()))
+            'action' => $this->generateUrl($controller . "_update", array("id" => $entity->getId()))
         ));
         $deleteForm = $this->createDeleteForm($id);
 
@@ -219,7 +220,7 @@ class FiController extends Controller {
      */
     /* @var $em \Doctrine\ORM\EntityManager */
     public function updateAction(Request $request, $id) {
-        $this->setup($request);
+        self::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -238,13 +239,14 @@ class FiController extends Controller {
 
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new $formType(), $entity);
-        $editForm->bind($request);
+        $editForm->submit($request);
 
         if ($editForm->isValid()) {
             $em->persist($entity);
             $em->flush();
 
-            if ($request->isXmlHttpRequest()) {
+            $continua = $request->get("continua");
+            if ($continua == 0) {
                 return new Response("OK");
             } else {
                 return $this->redirect($this->generateUrl($controller . '_edit', array('id' => $id)));
