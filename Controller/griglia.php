@@ -18,11 +18,11 @@ class griglia extends FiController {
         //['equal','not equal', 'less', 'less or equal','greater','greater or equal', 'begins with','does not begin with','is in','is not in','ends with','does not end with','contains','does not contain', 'is null', 'is not null'] 
         // sulla base dell'operatore impostato per la singola ricerca si impostano tre vettori 
         // il promo contiene l'operatore da usare in query 
-        self::$decodificaop = array('eq' => '=', 'ne' => '<>', 'lt' => '<', 'le' => '<=', 'gt' => '>', 'ge' => '>=', 'bw' => 'LIKE', 'bn' => 'NOT LIKE', 'in' => 'IN', 'ni' => 'NOT IN', 'ew' => 'LIKE', 'en' => 'NOT LIKE', 'cn' => 'LIKE', 'nc' => 'NOT LIKE', 'nu' => 'IS', 'nn' => 'IS NOT'); //, 'nt' => '<>');
+        self::$decodificaop = array('eq' => '=', 'ne' => '<>', 'lt' => '<', 'le' => '<=', 'gt' => '>', 'ge' => '>=', 'bw' => 'LIKE', 'bn' => 'NOT LIKE', 'in' => 'IN', 'ni' => 'NOT IN', 'ew' => 'LIKE', 'en' => 'NOT LIKE', 'cn' => 'LIKE', 'nc' => 'NOT LIKE', 'nu' => 'IS', 'nn' => 'IS NOT', 'nt' => '<>');
         // questo contiene il carattere da usare prima del campo dati in query dipendentemente dal tipo di operatore
-        self::$precarattere = array('eq' => '', 'ne' => '', 'lt' => '', 'le' => '', 'gt' => '', 'ge' => '', 'bw' => 'lower(\'', 'bn' => 'lower(\'', 'in' => '(', 'ni' => '(', 'ew' => 'lower(\'%', 'en' => 'lower(\'%', 'cn' => 'lower(\'%', 'nc' => 'lower(\'%', 'nu' => 'NULL', 'nn' => 'NULL'); //, 'nt' => 'TRUE');
+        self::$precarattere = array('eq' => '', 'ne' => '', 'lt' => '', 'le' => '', 'gt' => '', 'ge' => '', 'bw' => 'lower(\'', 'bn' => 'lower(\'', 'in' => '(', 'ni' => '(', 'ew' => 'lower(\'%', 'en' => 'lower(\'%', 'cn' => 'lower(\'%', 'nc' => 'lower(\'%', 'nu' => 'NULL', 'nn' => 'NULL', 'nt' => 'TRUE');
         // questo contiene il carattere da usare dopo il campo dati in query dipendentemente dal tipo di operatore
-        self::$postcarattere = array('eq' => '', 'ne' => '', 'lt' => '', 'le' => '', 'gt' => '', 'ge' => '', 'bw' => '%\')', 'bn' => '%\')', 'in' => ')', 'ni' => ')', 'ew' => '\')', 'en' => '\')', 'cn' => '%\')', 'nc' => '%\')', 'nu' => '', 'nn' => ''); //, 'nt' => '');
+        self::$postcarattere = array('eq' => '', 'ne' => '', 'lt' => '', 'le' => '', 'gt' => '', 'ge' => '', 'bw' => '%\')', 'bn' => '%\')', 'in' => ')', 'ni' => ')', 'ew' => '\')', 'en' => '\')', 'cn' => '%\')', 'nc' => '%\')', 'nu' => '', 'nn' => '', 'nt' => '');
     }
 
     static function setVettoriPerData() {
@@ -578,9 +578,19 @@ class griglia extends FiController {
         if (!$sidx) {
             $sidx = $nometabella . ".id";
         } elseif (strrpos($sidx, ".") == 0) {
-            $sidx = $nometabella . "." . $sidx;
+            if (strrpos($sidx, ",") == 0) {
+                $sidx = $nometabella . "." . $sidx; // un solo campo
+            } else { // più campi, passati separati da virgole
+                $parti = explode(",", $sidx);
+                $sidx = "";
+                foreach ($parti as $parte) {
+                    if (trim($sidx) != "") {
+                        $sidx = $sidx . ",";
+                    }
+                    $sidx = $sidx . $nometabella . "." . trim($parte);
+                }
+            }
         }
-
         // inizia la query 
         $entityName = $bundle . ':' . $nometabella;
         $q = $doctrine->createQueryBuilder();
