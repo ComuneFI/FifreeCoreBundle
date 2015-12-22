@@ -3,25 +3,30 @@
 {% block toolbar %}
     {# contenuto della barra di debug del web #}
     {% set icon %}
-<div id="img_wdt_db">
-<img width="20" height="28" alt="Database" src="data:image/png;base64,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"/>
-</div>
-<div id="img_wdt_db_wait" style="display: none">
-<img width="20" height="28" alt="Database" src="{{ asset('bundles/ficore/images/waitpage.gif') }}"/>
-</div>
+        <div id="img_wdt_db">
+            <img width="20" height="28" alt="Database" src="data:image/png;base64,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"/>
+        </div>
+        <div id="img_wdt_db_wait" style="display: none">
+            <img width="20" height="28" alt="Database" src="{{ asset('bundles/ficore/images/waitpage.gif') }}"/>
+        </div>
     {% endset %}
     {% set text %}
-<div class="sf-toolbar-info-piece">
-  <b>Driver</b> <span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.DatabaseDriver }}</span>
-  <br/><br/>
-  <b>Host</b> <span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.DatabaseHost }}{{  collector.DatabasePort ? ':' ~ collector.DatabasePort : '' }}</span>
-  <br/><br/>
-  <b>Database</b> <span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.DatabaseName }}</span>
-  <br/>
-  <b>User</b> {{ collector.DatabaseUser }}
-  <br/>
-  <b>Password</b> {{ collector.DatabasePassword[:2] ~ '*****' }}
-</div>
+
+        <div class="sf-toolbar-info-piece">
+            <b>Driver</b><span class="sf-toolbar-status">{{ collector.DatabaseDriver }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Host</b><span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.DatabaseHost }}{{  collector.DatabasePort ? ':' ~ collector.DatabasePort : '' }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Database</b><span class="sf-toolbar-status sf-toolbar-status-yellow">{{ collector.DatabaseName }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>User</b><span class="sf-toolbar-status">{{ collector.DatabaseUser }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Password</b><span>{{ collector.DatabasePassword[:2] ~ '*****' }}</span>
+        </div>
     {% endset %}
     {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
 {% endblock %}
@@ -32,35 +37,35 @@
 
 {% block menu %}
     {# contenuto del menù #}
-<span class="label">
-  <span class="icon">
-    <img width="20" height="28" alt="Database" src="data:image/png;base64,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"/>
-  </span>
-  <strong>Database</strong>
-</span>
+    <span class="label">
+        <span class="icon">
+            <img width="20" height="28" alt="Database" src="data:image/png;base64,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"/>
+        </span>
+        <strong>Database</strong>
+    </span>
 
 {% endblock %}
 
 {% block panel %}
     {# contenuto del pannello #}
-<div class="sf-toolbar-info-piece">
-  <table style="width: 30%">
-    <tr>
-      <td>Driver</td><td><b>{{ collector.DatabaseDriver }}</b></td>
-    </tr>
-    <tr>
-      <td>Host</td><td><b>{{ collector.DatabaseHost }}{{  collector.DatabasePort ? ':' ~ collector.DatabasePort : '' }}</b></td>
-    </tr>
-    <tr>
-      <td>Database</td><td><b>{{ collector.DatabaseName }}</b></td>
-    </tr>
-    <tr>
-      <td>User</td><td>{{ collector.DatabaseUser }}</td>
-    </tr>
-    <tr>
-      <td>Password</td><td><i>{{ collector.DatabasePassword[:2] ~ '*****' }}</i></td>
-    </tr>
-  </table>
+    <div class="sf-toolbar-info-piece">
+        <table style="width: 30%">
+            <tr>
+                <td>Driver</td><td><b>{{ collector.DatabaseDriver }}</b></td>
+            </tr>
+            <tr>
+                <td>Host</td><td><b>{{ collector.DatabaseHost }}{{  collector.DatabasePort ? ':' ~ collector.DatabasePort : '' }}</b></td>
+            </tr>
+            <tr>
+                <td>Database</td><td><b>{{ collector.DatabaseName }}</b></td>
+            </tr>
+            <tr>
+                <td>User</td><td>{{ collector.DatabaseUser }}</td>
+            </tr>
+            <tr>
+                <td>Password</td><td><i>{{ collector.DatabasePassword[:2] ~ '*****' }}</i></td>
+            </tr>
+        </table>
 
-</div>
+    </div>
 {% endblock %}
