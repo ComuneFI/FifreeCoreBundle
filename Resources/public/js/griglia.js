@@ -166,6 +166,7 @@ function caricaGriglia(parametrijs) {
     jQuery(nomelist).jqGrid({
         url: baseUrl + '/' + tabella + '/' + percorsogriglia,
         postData: datipost,
+        mtype: 'POST',
         datatype: "json",
         colNames: nomicolonne,
         colModel: modellocolonne,
@@ -1081,6 +1082,8 @@ function salvaDettaglio(parametri) {
     $.each(parametriaggiuntivi, function (key, value) {
         parametripassa.push({'name': 'parametriaggiuntivi[' + key + ']', 'value': value});
     });
+    parametripassa.push({'name': 'continua', 'value': continua});
+    
     jQuery(div).load(baseUrl + '/' + tabella + "/" + (rowid > 0 ? rowid + '/update' : 'create'), parametripassa, function (responseText, textStatus, XMLHttpRequest) {
         //jQuery(div).html(dump(parametripassa));
         //jQuery(div).html('<p>Si è verificato il seguente errore sul server: </p><br/>'+responseText);

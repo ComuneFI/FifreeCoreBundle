@@ -3,6 +3,7 @@
 namespace Fi\CoreBundle\Controller;
 
 use Fi\CoreBundle\Controller\gestionepermessiController;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class griglia extends FiController {
 
@@ -17,11 +18,11 @@ class griglia extends FiController {
         //['equal','not equal', 'less', 'less or equal','greater','greater or equal', 'begins with','does not begin with','is in','is not in','ends with','does not end with','contains','does not contain', 'is null', 'is not null'] 
         // sulla base dell'operatore impostato per la singola ricerca si impostano tre vettori 
         // il promo contiene l'operatore da usare in query 
-        self::$decodificaop = array('eq' => '=', 'ne' => '<>', 'lt' => '<', 'le' => '<=', 'gt' => '>', 'ge' => '>=', 'bw' => 'LIKE', 'bn' => 'NOT LIKE', 'in' => 'IN', 'ni' => 'NOT IN', 'ew' => 'LIKE', 'en' => 'NOT LIKE', 'cn' => 'LIKE', 'nc' => 'NOT LIKE', 'nu' => 'IS', 'nn' => 'IS NOT'); //, 'nt' => '<>');
+        self::$decodificaop = array('eq' => '=', 'ne' => '<>', 'lt' => '<', 'le' => '<=', 'gt' => '>', 'ge' => '>=', 'bw' => 'LIKE', 'bn' => 'NOT LIKE', 'in' => 'IN', 'ni' => 'NOT IN', 'ew' => 'LIKE', 'en' => 'NOT LIKE', 'cn' => 'LIKE', 'nc' => 'NOT LIKE', 'nu' => 'IS', 'nn' => 'IS NOT', 'nt' => '<>');
         // questo contiene il carattere da usare prima del campo dati in query dipendentemente dal tipo di operatore
-        self::$precarattere = array('eq' => '', 'ne' => '', 'lt' => '', 'le' => '', 'gt' => '', 'ge' => '', 'bw' => 'lower(\'', 'bn' => 'lower(\'', 'in' => '(', 'ni' => '(', 'ew' => 'lower(\'%', 'en' => 'lower(\'%', 'cn' => 'lower(\'%', 'nc' => 'lower(\'%', 'nu' => 'NULL', 'nn' => 'NULL'); //, 'nt' => 'TRUE');
+        self::$precarattere = array('eq' => '', 'ne' => '', 'lt' => '', 'le' => '', 'gt' => '', 'ge' => '', 'bw' => 'lower(\'', 'bn' => 'lower(\'', 'in' => '(', 'ni' => '(', 'ew' => 'lower(\'%', 'en' => 'lower(\'%', 'cn' => 'lower(\'%', 'nc' => 'lower(\'%', 'nu' => 'NULL', 'nn' => 'NULL', 'nt' => 'TRUE');
         // questo contiene il carattere da usare dopo il campo dati in query dipendentemente dal tipo di operatore
-        self::$postcarattere = array('eq' => '', 'ne' => '', 'lt' => '', 'le' => '', 'gt' => '', 'ge' => '', 'bw' => '%\')', 'bn' => '%\')', 'in' => ')', 'ni' => ')', 'ew' => '\')', 'en' => '\')', 'cn' => '%\')', 'nc' => '%\')', 'nu' => '', 'nn' => ''); //, 'nt' => '');
+        self::$postcarattere = array('eq' => '', 'ne' => '', 'lt' => '', 'le' => '', 'gt' => '', 'ge' => '', 'bw' => '%\')', 'bn' => '%\')', 'in' => ')', 'ni' => ')', 'ew' => '\')', 'en' => '\')', 'cn' => '%\')', 'nc' => '%\')', 'nu' => '', 'nn' => '', 'nt' => '');
     }
 
     static function setVettoriPerData() {
@@ -71,8 +72,9 @@ class griglia extends FiController {
 
     static function campiesclusi($parametri = array()) {
 
-        if (!isset($parametri["nometabella"]))
+        if (!isset($parametri["nometabella"])) {
             return false;
+        }
 
         $nometabella = $parametri["nometabella"];
 
@@ -134,7 +136,7 @@ class griglia extends FiController {
 
         $elencocampi = $doctrine->getClassMetadata($entityName)->getFieldNames();
         foreach ($regole as $regola) {
-            //echo $regola["field"];exit;
+            // echo $regola["field"];
             //Se il campo non ha il . significa che è necessario aggiungere il nometabella
             if (strrpos($regola["field"], ".") == 0) {
                 if (in_array($regola["field"], $elencocampi) == TRUE) {
@@ -181,15 +183,12 @@ class griglia extends FiController {
             if ((substr($regola['data'], 0, 1) == "'") && (substr($regola['data'], strlen($regola['data']) - 1, 1) == "'")) {
                 $regola['data'] = substr($regola['data'], 1, strlen($regola['data']) - 2);
             }
-            if ($primo) {
-                $q->where($regola["field"] . " " . self::$decodificaop[$regola['op']] . " " . self::$precarattere[$regola['op']] . $regola['data'] . self::$postcarattere[$regola['op']]);
+
+            if ($tipof == "OR") {
+                $q->orWhere($regola["field"] . " " . self::$decodificaop[$regola['op']] . " " . self::$precarattere[$regola['op']] . $regola['data'] . self::$postcarattere[$regola['op']]);
             } else {
-                if ($tipof == "OR")
-                    $q->orWhere($regola["field"] . " " . self::$decodificaop[$regola['op']] . " " . self::$precarattere[$regola['op']] . $regola['data'] . self::$postcarattere[$regola['op']]);
-                else
-                    $q->andWhere($regola["field"] . " " . self::$decodificaop[$regola['op']] . " " . self::$precarattere[$regola['op']] . $regola['data'] . self::$postcarattere[$regola['op']]);
+                $q->andWhere($regola["field"] . " " . self::$decodificaop[$regola['op']] . " " . self::$precarattere[$regola['op']] . $regola['data'] . self::$postcarattere[$regola['op']]);
             }
-            $primo = false;
         }
     }
 
@@ -199,8 +198,9 @@ class griglia extends FiController {
         $nometabella = $parametri["nometabella"];
 
         foreach ($tabellej as $tabellaj) {
-            if (is_object($tabellaj))
+            if (is_object($tabellaj)) {
                 $tabellaj = get_object_vars($tabellaj);
+            }
             //Serve per far venire nella getArrayResult() anche i campi della tabella il leftjoin
             //altrimenti mostra solo quelli della tabella con alias a
             $q->addSelect(array($tabellaj["tabella"]));
@@ -398,8 +398,9 @@ class griglia extends FiController {
                                 $indice++;
                                 $indicecolonna = $indice;
                             } else {
-                                if ($indicecolonna > $indice)
+                                if ($indicecolonna > $indice) {
                                     $indice = $indicecolonna;
+                                }
                             }
                         } else {
                             $indice++;
@@ -411,10 +412,11 @@ class griglia extends FiController {
                         }
 
                         $nomicolonne[$indicecolonna] = isset($singoloalias["descrizione"]) ? $singoloalias["descrizione"] : griglia::to_camel_case(array("str" => $chiave, "primamaiuscola" => true));
-                        if (isset($singoloalias["tipo"]) && ($singoloalias["tipo"] == "select"))
+                        if (isset($singoloalias["tipo"]) && ($singoloalias["tipo"] == "select")) {
                             $modellocolonne[$indicecolonna] = array("name" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "id" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "width" => isset($singoloalias["lunghezza"]) ? $singoloalias["lunghezza"] : ($colonna["length"] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna["length"] * $moltiplicatorelarghezza), "tipocampo" => isset($singoloalias["tipo"]) ? $singoloalias["tipo"] : $colonna["type"], "editoptions" => $singoloalias["valoricombo"]);
-                        else
+                        } else {
                             $modellocolonne[$indicecolonna] = array("name" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "id" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "width" => isset($singoloalias["lunghezza"]) ? $singoloalias["lunghezza"] : ($colonna["length"] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna["length"] * $moltiplicatorelarghezza), "tipocampo" => isset($singoloalias["tipo"]) ? $singoloalias["tipo"] : $colonna["type"]);
+                        }
                     }
                 } else {
                     if (isset($ordinecolonne)) {
@@ -423,8 +425,9 @@ class griglia extends FiController {
                             $indice++;
                             $indicecolonna = $indice;
                         } else {
-                            if ($indicecolonna > $indice)
+                            if ($indicecolonna > $indice) {
                                 $indice = $indicecolonna;
+                            }
                         }
                     } else {
                         $indice++;
@@ -559,29 +562,35 @@ class griglia extends FiController {
         $campiextra = (isset($paricevuti["campiextra"]) ? $paricevuti["campiextra"] : NULL);
         $ordinecolonne = (isset($paricevuti["ordinecolonne"]) ? $paricevuti["ordinecolonne"] : NULL);
         // inserisco i filtri passati in un vettore
-        if ($request->get('filters')) {
-            $filtri = json_decode($request->get('filters'), true);
-        } else {
-            $filtri = json_decode($request->query->get('filters'), true);
-        }
+        $filtri = json_decode($request->get('filters'), true);
 
         // inserisco i parametri che sono passati nella $request all'interno di 
         // apposite variabili 
         // che pagina siamo 
-        $page = $request->query->get('page'); // get the requested page 
+        $page = $request->get('page'); // get the requested page 
         // quante righe restituire (in caso di nospan = false) 
-        $limit = $request->query->get('rows'); // get how many rows we want to have into the grid 
+        $limit = $request->get('rows'); // get how many rows we want to have into the grid 
         // su quale campo fare l'ordinamento
-        $sidx = $request->query->get('sidx'); // get index row - i.e. user click to sort 
+        $sidx = $request->get('sidx'); // get index row - i.e. user click to sort 
         // direzione dell'ordinamento 
-        $sord = $request->query->get('sord'); // get the direction if(!$sidx) $sidx =1;
+        $sord = $request->get('sord'); // get the direction if(!$sidx) $sidx =1;
         // se non è passato nessun campo (ipotesi peregrina) usa id 
         if (!$sidx) {
             $sidx = $nometabella . ".id";
         } elseif (strrpos($sidx, ".") == 0) {
-            $sidx = $nometabella . "." . $sidx;
+            if (strrpos($sidx, ",") == 0) {
+                $sidx = $nometabella . "." . $sidx; // un solo campo
+            } else { // più campi, passati separati da virgole
+                $parti = explode(",", $sidx);
+                $sidx = "";
+                foreach ($parti as $parte) {
+                    if (trim($sidx) != "") {
+                        $sidx = $sidx . ",";
+                    }
+                    $sidx = $sidx . $nometabella . "." . trim($parte);
+                }
+            }
         }
-
         // inizia la query 
         $entityName = $bundle . ':' . $nometabella;
         $q = $doctrine->createQueryBuilder();
@@ -618,6 +627,7 @@ class griglia extends FiController {
 
         // scorro ogni singola regola
         if (isset($regole)) {
+
             self::setRegole($q, $primo, array(
                 "regole" => $regole,
                 "doctrine" => $doctrine,
@@ -628,17 +638,11 @@ class griglia extends FiController {
             ));
         }
         // conta il numero di record di risposta
-        $query_tutti_records = $q->getQuery();
+        // $query_tutti_records = $q->getQuery();
+        // $quanti = count($query_tutti_records->getSingleScalarResult());
 
-        /*
-          print_r(array(
-          'sql' => $query_tutti_records->getSQL(),
-          'parameters' => $query_tutti_records->getParameters(),
-          ));
-          return;
-         */
-
-        $quanti = count($query_tutti_records->getScalarResult());
+        $paginator = new Paginator($q, true);
+        $quanti = count($paginator);
 
         // imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati
         $offset = ($limit * ($page - 1));
@@ -652,9 +656,9 @@ class griglia extends FiController {
             $q = ($offset ? $q->setFirstResult($offset) : $q);
         }
 
-        if ($sidx)
+        if ($sidx) {
             $q->orderBy($sidx, $sord);
-
+        }
         //Dall'oggetto querybuilder si ottiene la query da eseguire
         $query_paginata = $q->getQuery();
 
@@ -666,7 +670,8 @@ class griglia extends FiController {
         //Se il limire non è stato impostato si mette 1 (per calcolare la paginazione)
         $limit = ($limit ? $limit : 1);
         // calcola in mumero di pagine totali necessarie
-        $total_pages = ($quanti % $limit == 0 ? $quanti / ($limit == 0 ? 1 : $limit) : round(($quanti - 0.5) / ($limit == 0 ? 1 : $limit)) + 1);
+
+        $total_pages = ceil($quanti / ($limit == 0 ? 1 : $limit));
 
         // imposta in $vettorerisposta la risposta strutturata per essere compresa da jqgrid
         $vettorerisposta = array();
@@ -761,7 +766,7 @@ class griglia extends FiController {
                     }
                 }
             }
-            
+
             //Si costruisce la risposta json per la jqgrid
             ksort($vettoreriga);
             $vettorerigasorted = array();
@@ -775,7 +780,8 @@ class griglia extends FiController {
         return json_encode($vettorerisposta);
     }
 
-    static public function valorizzaVettore(&$vettoreriga, $parametri) {
+    static public
+            function valorizzaVettore(&$vettoreriga, $parametri) {
 
         $tabella = $parametri["tabella"];
         $nomecampo = $parametri["nomecampo"];
@@ -817,7 +823,8 @@ class griglia extends FiController {
         }
     }
 
-    static public function campoElencato($parametriCampoElencato) {
+    static public
+            function campoElencato($parametriCampoElencato) {
 
         $tabellej = $parametriCampoElencato["tabellej"];
         $nomecampo = $parametriCampoElencato["nomecampo"];
@@ -896,8 +903,9 @@ class griglia extends FiController {
         $tipofiltro = isset($genericofiltri->groupOp) ? $genericofiltri->groupOp : "";
         self::$decodificaop = array('eq' => ' è uguale a ', 'ne' => ' è diverso da ', 'lt' => ' è inferiore a ', 'le' => ' è inferiore o uguale a ', 'gt' => ' è maggiore di ', 'ge' => ' è maggiore o uguale di ', 'bw' => ' comincia con ', 'bn' => ' non comincia con ', 'in' => ' è uno fra ', 'ni' => ' non è uno fra ', 'ew' => ' finisce con ', 'en' => ' con finisce con ', 'cn' => ' contiene ', 'nc' => ' non contiene ', 'nu' => ' è vuoto', 'nn' => ' non è vuoto');
 
-        if (!isset($filtri) or ( !$filtri))
+        if (!isset($filtri) or ( !$filtri)) {
             return "";
+        }
 
         $filtrodescritto = ("I dati mostrati rispondono a" . ($tipofiltro == "AND" ? " tutti i" : "d almeno uno dei") . " seguenti criteri: ");
 
