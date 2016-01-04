@@ -11,11 +11,10 @@ class opzioniTabellaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('tabelle_id')
+            ->add('tabelle')
             ->add('descrizione')
             ->add('parametro')
             ->add('valore')
-            ->add('tabelle')
         ;
     }
 

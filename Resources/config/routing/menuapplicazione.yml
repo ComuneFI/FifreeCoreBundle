@@ -1,41 +1,41 @@
 menuApplicazione_container:
-    pattern:  /
+    path:  /
     defaults: { _controller: "FiCoreBundle:menuApplicazione:index" }
 
 menuApplicazione_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "FiCoreBundle:menuApplicazione:new" }
 
 menuApplicazione_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "FiCoreBundle:menuApplicazione:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 menuApplicazione_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "FiCoreBundle:menuApplicazione:edit" }
 
 menuApplicazione_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "FiCoreBundle:menuApplicazione:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 menuApplicazione_aggiorna:
-    pattern:  /aggiorna
+    path:  /aggiorna
     defaults: { _controller: "FiCoreBundle:menuApplicazione:aggiorna" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 menuApplicazione_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "FiCoreBundle:menuApplicazione:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 menuApplicazione_deletemultiple:
-    pattern:  /delete
+    path:  /delete
     defaults: { _controller: "FiCoreBundle:menuApplicazione:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 menuApplicazione_griglia:
-    pattern:  /griglia
+    path:  /griglia
     defaults: { _controller: "FiCoreBundle:menuApplicazione:griglia" }
-    requirements: { _method: get }
+    requirements: { methods: get }

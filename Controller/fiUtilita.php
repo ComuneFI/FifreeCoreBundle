@@ -27,7 +27,6 @@ class fiUtilita {
       $elemento = $parametri["elemento"];
     } else {
       return false;
-      
     }
 
     //parametri obbligatori
@@ -96,7 +95,7 @@ class fiUtilita {
 
         if ($posizioneinb == $i) {
           $partecento += 2;
-        } elseif ((($i + $tolleranzauno) >= $posizioneinb) and (($i - $tolleranzauno) <= $posizioneinb)) {
+        } elseif ((($i + $tolleranzauno) >= $posizioneinb) and ( ($i - $tolleranzauno) <= $posizioneinb)) {
           $partecento += 1;
         }
       }
@@ -201,19 +200,33 @@ class fiUtilita {
     return $formattata;
   }
 
-  static public function db2data($giorno) {
+  static public function db2data($giorno, $senzalinea = false) {
 
     if (substr($giorno, 2, 1) == "/") {
 
       return $giorno;
     }
 
-    $barra = strpos($giorno, "-");
-    $aaaa = substr($giorno, 0, $barra);
-    $restante = substr($giorno, $barra + 1);
-    $barra = strpos($restante, "-");
-    $mm = substr($restante, 0, $barra);
-    $gg = substr($restante, $barra + 1);
+    if ($senzalinea) {
+      $formattata = fiUtilita::senzalinea($giorno);
+    } else {
+
+      $barra = strpos($giorno, "-");
+      $aaaa = substr($giorno, 0, $barra);
+      $restante = substr($giorno, $barra + 1);
+      $barra = strpos($restante, "-");
+      $mm = substr($restante, 0, $barra);
+      $gg = substr($restante, $barra + 1);
+
+      $formattata = (strlen($gg) == 0 ? "" : "$gg/$mm/$aaaa");
+    }
+    return $formattata;
+  }
+
+  static private function senzalinea($giorno) {
+    $aaaa = substr($giorno, 0, 4);
+    $mm = substr($giorno, 4, 2);
+    $gg = substr($giorno, 6, 2);
 
     $formattata = (strlen($gg) == 0 ? "" : "$gg/$mm/$aaaa");
 
@@ -297,13 +310,11 @@ class fiUtilita {
     
   }
 
-  
   public function array_searchRecursive($needle, $haystack) {
     foreach ($haystack as $key => $val) {
       if (stripos(implode("", $val), $needle) > 0) {
-        return $key; 
-      } 
-      
+        return $key;
+      }
     }
     return false;
   }

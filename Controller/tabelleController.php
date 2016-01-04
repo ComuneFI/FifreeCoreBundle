@@ -4,6 +4,7 @@ namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Fi\CoreBundle\Controller\FiController;
 use Fi\CoreBundle\Entity\tabelle;
 use Fi\CoreBundle\Controller\stampatabellaController;
@@ -187,7 +188,6 @@ class tabelleController extends FiController {
                 $crea->setNomecampo($colonna);
 
                 if (isset($parametri["operatore"])) {
-
                     $crea->setOperatori($this->getDoctrine()->getRepository($nomebundle . ':operatori')
                                     ->findOneBy(array("id" => $parametri["operatore"]), array()));
 
@@ -197,7 +197,6 @@ class tabelleController extends FiController {
                             ->findOneBy($vettorericerca, array());
 
                     if ($ritrovato) {
-
                         $crea->setMostrastampa($ritrovato->getMostrastampa() ? true : false);
                         $crea->setMostraindex($ritrovato->getMostraindex() ? true : false);
                     }
@@ -214,8 +213,6 @@ class tabelleController extends FiController {
     }
 
     public function grigliapopupAction(Request $request, $chiamante) {
-
-//var_dump($chiamante);
         parent::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -234,7 +231,6 @@ class tabelleController extends FiController {
 
         $paricevuti["escludere"] = array("mostrastampa", "nometabella", "ordineindex", "larghezzaindex", "etichettaindex", "etichettastampa", "ordinestampa", "larghezzastampa", "operatori_id");
         $paricevuti["precondizioni"] = array("tabelle.nometabella" => $chiamante, "tabelle.operatori_id" => $operatore["id"]);
-
 
         return new Response(griglia::datiPerGriglia($paricevuti));
     }
@@ -259,4 +255,100 @@ class tabelleController extends FiController {
         return new Response(griglia::datiPerGriglia($paricevuti));
     }
 
+    public function listacampitabellaAction(Request $request) {
+        parent::setup($request);
+        $namespace = $this->getNamespace();
+        $bundle = $this->getBundle();
+        $controller = $this->getController();
+        $nomebundle = $namespace . $bundle . "Bundle";        
+
+        $nometabella = trim($request->get("tabella"));
+        if (!isset($nometabella)) {
+            return false;
+        }
+        
+        $escludiid = $request->get("escludiid");
+        if (!isset($escludiid)) {
+            $escludiid = 0;
+        }
+
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $bundles = $this->get('kernel')->getBundles();
+        foreach ($bundles as $type => $bundle) {
+            $className = get_class($bundle);
+            $entityClass = substr($className, 0, strrpos($className, '\\'));
+            $tableClassName = "\\" . $entityClass . "\\Entity\\" . $nometabella;
+            if (!class_exists($tableClassName)) {
+                $tableClassName = '';
+                continue;
+            } else {
+                break;
+            }
+        }
+
+        if (!$tableClassName) {
+            throw new \Exception("Entity per la tabella " . $nometabella . " non trovata", '-1');
+        }
+
+        $bundleClass = str_replace('\\', '', $entityClass);
+        $c = $em->getClassMetadata($bundleClass . ':' . $nometabella);
+        $colonne = $c->getColumnNames();
+        
+        $risposta = array();
+        if ($escludiid == 1) {
+            $gestionepermessi = new gestionepermessiController();
+            $gestionepermessi->setContainer($this->container);
+            $operatore = $gestionepermessi->utentecorrenteAction();
+            foreach ($colonne as $colonna) {
+                $nomecampo = trim(strtolower($colonna));
+                if (($nomecampo !== 'id') && (strpos($colonna, "_id") == FALSE)) {
+                    $qb = $this->getDoctrine()->getRepository("$nomebundle:$controller")
+                        ->createQueryBuilder('t')
+                        ->where("LOWER(t.nometabella) = :nometabella")
+                        ->andWhere("LOWER(t.nomecampo) = :nomecampo")
+                        ->andWhere("t.operatori_id = :operatori_id")
+                        ->setParameter("nometabella", $nometabella)
+                        ->setParameter("nomecampo", $nomecampo)
+                        ->setParameter("operatori_id", $operatore["id"])
+                        ->getQuery();
+                    $labeltrovata = $qb->getResult();
+                    if (!$labeltrovata) {
+                        $qb = $this->getDoctrine()->getRepository("$nomebundle:$controller")
+                            ->createQueryBuilder('t')
+                            ->where("LOWER(t.nometabella) = :nometabella")
+                            ->andWhere("LOWER(t.nomecampo) = :nomecampo")
+                            ->andWhere("t.operatori_id IS NULL")
+                            ->setParameter("nometabella", $nometabella)
+                            ->setParameter("nomecampo", $nomecampo)
+                            ->getQuery();
+                        $labeltrovata = $qb->getResult();
+                        if (!$labeltrovata) {
+                            $risposta[$colonna] = $colonna;
+                        } else {
+                            if (($labeltrovata[0]->getEtichettaindex()) && ($labeltrovata[0]->getEtichettaindex() != "")) {
+                                $risposta[$colonna] = trim($labeltrovata[0]->getEtichettaindex());
+                            } else {
+                                $risposta[$colonna] = $colonna;
+                            }
+                        }
+                    } else {
+                        if (($labeltrovata[0]->getEtichettaindex()) && ($labeltrovata[0]->getEtichettaindex() != "")) {
+                            $risposta[$colonna] = trim($labeltrovata[0]->getEtichettaindex());
+                        } else {
+                            $risposta[$colonna] = $colonna;
+                        }
+                    }
+                }
+            }            
+        } else {
+            foreach ($colonne as $colonna) {
+                $risposta[$colonna] = $colonna;
+            }
+        }
+        //natcasesort($risposta);
+        asort($risposta, SORT_NATURAL | SORT_FLAG_CASE);
+        return new JsonResponse($risposta);
+    }
+    
 }

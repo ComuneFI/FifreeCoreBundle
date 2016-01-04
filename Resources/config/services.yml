@@ -1,8 +1,13 @@
 parameters:
-#    fi_core.example.class: Fi\CoreBundle\Example
+#    fi_core.example.class: Fi\CoreBundle\Example 
+  ficorebundle.db.table_schema: 
   ficorebundle.db.table_prefix: __corebundle_
   
   fiQuery.class: Fi\OracleBundle\DependencyInjection\fiQuery
+  oracle_GPS:
+    utente: GPS
+    password: GPS
+    connessione: SIGRUDB
   oracle_P00:
     utente: P00
     password: F1PEZ0_1
@@ -34,6 +39,18 @@ services:
         - { name: twig.extension }
       arguments: [ '@twig.loader' ]
 
+    fi.twig.fi_utilita_extension:
+      class: Fi\CoreBundle\Twig\Extension\UtilitaExtension
+      tags:
+        - { name: twig.extension }
+      arguments: [ '@twig.loader' ]
+
+    fi.twig.fi_misc_extension:
+      class: Fi\CoreBundle\Twig\Extension\MiscExtension
+      tags:
+        - { name: twig.extension }
+      arguments: [ '@service_container' ]
+
     fi.twig.demo.listener:
         class: Fi\CoreBundle\EventListener\ControllerListener
         arguments: ['@fi.twig.fi_demo_extension']
@@ -52,11 +69,21 @@ services:
         arguments: [%ficorebundle.db.table_prefix%]
         tags:
             - { name: doctrine.event_subscriber }
+            
+    ficorebundle.tblschema_subscriber:
+        class: Fi\CoreBundle\Subscriber\TableSchemaSubscriber
+        arguments: [%ficorebundle.db.table_schema%]
+        tags:
+            - { name: doctrine.event_subscriber }
 
     #    fi_oracle.example.class: Fi\OracleBundle\Example
     #    fi_jfestere.example.class: Fi\JfestereBundle\Example
 
-
+    oracle_gps:
+        class:     "%fiQuery.class%"
+        #arguments: [@service_id, "plain_value", %parameter%]
+        arguments: [%oracle_GPS%]
+        
     oracle_sigru:
         class:     "%fiQuery.class%"
         #arguments: [@service_id, "plain_value", %parameter%]

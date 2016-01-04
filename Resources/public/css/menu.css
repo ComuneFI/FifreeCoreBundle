@@ -25,12 +25,18 @@
 
 }
 
+/*Se si aumenta o diminuisce questo font-size controllare anche ".ui-menu .ui-menu-item" e ""#bar1 .ui-menu" */
+/*Qusto è il font delle voci di menu*/
 #bar1 {
-  font-size: 12px; 
+  font-size: 13px; 
 }
 
 #bar1 .ui-menu {
-  width: 110px; 
+  width: 150px; 
+}
+
+.ui-menu .ui-menu-item {
+	padding: 0px 0em 5px 0em;
 }
 
 #bar1 { 
@@ -56,9 +62,9 @@
   margin-left: 0px;
   width: 400px;
   z-index: 99999;
-  display: none; // Enable this after jquery implementation 
+  display: none; /* Enable this after jquery implementation */
 }
-// Popup Arrow
+/* Popup Arrow */
 .notificationContainer:before {
   content: '';
   display: block;
@@ -121,7 +127,7 @@
   border-radius: 9px;
   -moz-border-radius: 9px;
   -webkit-border-radius: 9px;
-  //position: absolute;
+  /*position: absolute; */
   font-family: Arial,sans-serif;
   margin-top: 15px;
   font-size: 11px;
@@ -163,10 +169,11 @@
 #bar1 select 
 {
   font-family: Arial,sans-serif;
-  font-size: 0.9em; 
+  font-size: 1em; 
   color: black; 
 
 }
 
 #bar1 {
 }
+
