@@ -1448,7 +1448,7 @@ function trasparenzadiv() {
 function creadiv(parametri) {
 
   var caratteristiche = parametri["caratteristiche"];
-  var padre = "#" + (parametri["padre"] || "Secondo");
+  var padre = "#" + (parametri["padre"] || "corpo");
   // {id: "foo", class: "a"}
 
   var $div = $("<div>", caratteristiche);
@@ -1456,6 +1456,9 @@ function creadiv(parametri) {
 
   $("#" + parametri["caratteristiche"]["id"]).remove();
   $(padre).append($div);
+
+  $div.offset({top: 10, left: 30});
+
 
 
 }
