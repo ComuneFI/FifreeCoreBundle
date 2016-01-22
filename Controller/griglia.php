@@ -76,6 +76,12 @@ class griglia extends FiController {
             return false;
         }
 
+        if ((isset($parametri["output"])) && ($parametri["output"] == "stampa")) {
+            $output = "stampa";
+        } else {
+            $output = "index";
+        }
+
         $nometabella = $parametri["nometabella"];
 
         if (isset($parametri["em"])) {
@@ -99,29 +105,210 @@ class griglia extends FiController {
 
         $escludi = array();
 
-        $q = $doctrineficore->getRepository($bundle . ":tabelle")->
-                findBy(array("operatori_id" => $operatorecorrente["id"],
-            "nometabella" => $nometabella));
-
+        $q = $doctrineficore->getRepository($bundle . ":tabelle")->findBy(array("operatori_id" => $operatorecorrente["id"], "nometabella" => $nometabella));
 
         if (!$q) {
             unset($q);
-            $q = $doctrineficore->getRepository($bundle . ":tabelle")->
-                    findBy(array("operatori_id" => null,
-                "nometabella" => $nometabella));
+            $q = $doctrineficore->getRepository($bundle . ":tabelle")->findBy(array("operatori_id" => null, "nometabella" => $nometabella));
         }
 
         if ($q) {
             foreach ($q as $riga) {
-
-                if ($riga->getMostraindex() == false)
-                    $escludi[] = $riga->getNomecampo();
+                if ($output == "stampa") {
+                    if ($riga->getMostrastampa() == false) {
+                        $escludi[] = $riga->getNomecampo();
+                    }
+                } else {
+                    if ($riga->getMostraindex() == false) {
+                        $escludi[] = $riga->getNomecampo();
+                    }
+                }
             }
         }
 
         return $escludi;
     }
 
+    static function etichettecampi($parametri = array()) {
+
+        if (!isset($parametri["nometabella"])) {
+            return false;
+        }
+
+        if ((isset($parametri["output"])) && ($parametri["output"] == "stampa")) {
+            $output = "stampa";
+        } else {
+            $output = "index";
+        }
+
+        $nometabella = $parametri["nometabella"];
+
+        if (isset($parametri["em"])) {
+            $doctrine = $parametri["container"]->get("doctrine")->getManager($parametri["em"]);
+        } else {
+            $doctrine = $parametri["container"]->get("doctrine")->getManager();
+        }
+
+        if (isset($parametri["emficore"])) {
+            $doctrineficore = $parametri["container"]->get("doctrine")->getManager($parametri["emficore"]);
+        } else {
+            $doctrineficore = &$doctrine;
+        }
+
+        //$bundle = $parametri["nomebundle"];
+        //Fisso il CoreBundle perchè si passa sempre da questo bundle per le esclusioni
+        $bundle = "FiCoreBundle";
+
+        $gestionepermessi = new gestionepermessiController($parametri["container"]);
+        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
+
+        $etichette = array();
+
+        $q = $doctrineficore->getRepository($bundle . ":tabelle")->findBy(array("operatori_id" => $operatorecorrente["id"], "nometabella" => $nometabella));
+
+        if (!$q) {
+            unset($q);
+            $q = $doctrineficore->getRepository($bundle . ":tabelle")->findBy(array("operatori_id" => null, "nometabella" => $nometabella));
+        }
+
+        if ($q) {
+            foreach ($q as $riga) {
+                if ($output == "stampa") {
+                    $etichette[$riga->getNomecampo()] = $riga->getEtichettastampa();
+                } else {
+                    $etichette[$riga->getNomecampo()] = $riga->getEtichettaindex();
+                }
+            }
+        }
+
+        return $etichette;
+    }
+
+    static function larghezzecampi($parametri = array()) {
+
+        if (!isset($parametri["nometabella"])) {
+            return false;
+        }
+
+        if ((isset($parametri["output"])) && ($parametri["output"] == "stampa")) {
+            $output = "stampa";
+        } else {
+            $output = "index";
+        }
+
+        $nometabella = $parametri["nometabella"];
+
+        if (isset($parametri["em"])) {
+            $doctrine = $parametri["container"]->get("doctrine")->getManager($parametri["em"]);
+        } else {
+            $doctrine = $parametri["container"]->get("doctrine")->getManager();
+        }
+
+        if (isset($parametri["emficore"])) {
+            $doctrineficore = $parametri["container"]->get("doctrine")->getManager($parametri["emficore"]);
+        } else {
+            $doctrineficore = &$doctrine;
+        }
+
+        //$bundle = $parametri["nomebundle"];
+        //Fisso il CoreBundle perchè si passa sempre da questo bundle per le esclusioni
+        $bundle = "FiCoreBundle";
+
+        $gestionepermessi = new gestionepermessiController($parametri["container"]);
+        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
+
+        $etichette = array();
+
+        $q = $doctrineficore->getRepository($bundle . ":tabelle")->findBy(array("operatori_id" => $operatorecorrente["id"], "nometabella" => $nometabella));
+
+        if (!$q) {
+            unset($q);
+            $q = $doctrineficore->getRepository($bundle . ":tabelle")->findBy(array("operatori_id" => null, "nometabella" => $nometabella));
+        }
+
+        if ($q) {
+            foreach ($q as $riga) {
+                if ($output == "stampa") {
+                    $etichette[$riga->getNomecampo()] = $riga->getLarghezzastampa();
+                } else {
+                    $etichette[$riga->getNomecampo()] = $riga->getLarghezzaindex();
+                }
+            }
+        }
+
+        return $etichette;
+    }
+    
+    static function ordinecolonne($parametri = array()) {
+
+        if (!isset($parametri["nometabella"])) {
+            return false;
+        }
+
+        if ((isset($parametri["output"])) && ($parametri["output"] == "stampa")) {
+            $output = "stampa";
+        } else {
+            $output = "index";
+        }
+
+        $nometabella = $parametri["nometabella"];
+
+        if (isset($parametri["em"])) {
+            $doctrine = $parametri["container"]->get("doctrine")->getManager($parametri["em"]);
+        } else {
+            $doctrine = $parametri["container"]->get("doctrine")->getManager();
+        }
+
+        if (isset($parametri["emficore"])) {
+            $doctrineficore = $parametri["container"]->get("doctrine")->getManager($parametri["emficore"]);
+        } else {
+            $doctrineficore = &$doctrine;
+        }
+
+        //$bundle = $parametri["nomebundle"];
+        //Fisso il CoreBundle perchè si passa sempre da questo bundle per le esclusioni
+        $bundle = "FiCoreBundle";
+
+        $gestionepermessi = new gestionepermessiController($parametri["container"]);
+        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
+
+        $ordine = array();
+
+        $q = $doctrineficore->getRepository($bundle . ":tabelle")->findBy(array("operatori_id" => $operatorecorrente["id"], "nometabella" => $nometabella));
+
+        if (!$q) {
+            unset($q);
+            $q = $doctrineficore->getRepository($bundle . ":tabelle")->findBy(array("operatori_id" => null, "nometabella" => $nometabella));
+        }
+
+        if ($q) {
+            foreach ($q as $riga) {
+                if ($output == "stampa") {
+                    if ($riga->getOrdinestampa()) {
+                        $ordine[$riga->getOrdinestampa()] = $riga->getNomecampo();
+                    }
+                } else {
+                    if ($riga->getOrdineindex()) {
+                        $ordine[$riga->getOrdineindex()] = $riga->getNomecampo();
+                    }
+                }
+            }
+            if (count($ordine) > 0) {
+                ksort($ordine);
+            }
+        }
+
+        if (count($ordine) > 0) {
+            $ordinecolonne = array();
+            foreach ($ordine as $key => $value) {
+                $ordinecolonne[] = $value;
+            }
+        } else {
+            $ordinecolonne = NULL;
+        }
+        return $ordinecolonne;
+    }
+    
     static function leggiVettoreParametri($paricevuti = array()) {
         
     }
@@ -336,13 +523,20 @@ class griglia extends FiController {
      *                                        colonna link che prenda in automatico 
      *                                        parametro id = al valore dell'id della tabella 
      *                                        principale su cui si sta facendo la griglia
+     * @param string $paricevuti[output] : "index" se la testata serve per la griglia dell'index, "stampa" se la testata serve per la stampa
+     * 
      * @return array contentente i dati di testata per la griglia 
      * 
      */
     static function testataPerGriglia($paricevuti = array()) {
-
         $nometabella = $paricevuti["nometabella"];
         $bundle = $paricevuti["nomebundle"];
+
+        if ((isset($paricevuti["output"])) && ($paricevuti["output"] == "stampa")) {
+            $output = "stampa";
+        } else {
+            $output = "index";
+        }
 
         if (isset($paricevuti["em"])) {
             $doctrine = $paricevuti["container"]->get("doctrine")->getManager($paricevuti["em"]);
@@ -365,12 +559,17 @@ class griglia extends FiController {
         $colonne_link = isset($paricevuti["colonne_link"]) ? $paricevuti["colonne_link"] : array();
 
         $escludereutente = self::campiesclusi($paricevuti);
+        $etichetteutente = self::etichettecampi($paricevuti);
+        $larghezzeutente = self::larghezzecampi($paricevuti);
 
         $escludere = isset($paricevuti["escludere"]) ? $paricevuti["escludere"] : NULL;
 
         $campiextra = isset($paricevuti["campiextra"]) ? $paricevuti["campiextra"] : array();
 
         $ordinecolonne = isset($paricevuti["ordinecolonne"]) ? $paricevuti["ordinecolonne"] : NULL;
+        if (!isset($ordinecolonne)) {
+            $ordinecolonne = self::ordinecolonne($paricevuti);
+        }
 
         /* @var $em \Doctrine\ORM\EntityManager */
         //$em = $doctrine->getRepository($bundle . ":" . $nometabella)->findAll();
@@ -395,6 +594,9 @@ class griglia extends FiController {
                         if (isset($ordinecolonne)) {
                             $indicecolonna = array_search($chiave, $ordinecolonne);
                             if ($indicecolonna === FALSE) {
+                                if ($indice === 0) {
+                                    $indice = count($ordinecolonne);
+                                }
                                 $indice++;
                                 $indicecolonna = $indice;
                             } else {
@@ -411,17 +613,31 @@ class griglia extends FiController {
                             $singoloalias = get_object_vars($singoloalias);
                         }
 
-                        $nomicolonne[$indicecolonna] = isset($singoloalias["descrizione"]) ? $singoloalias["descrizione"] : griglia::to_camel_case(array("str" => $chiave, "primamaiuscola" => true));
-                        if (isset($singoloalias["tipo"]) && ($singoloalias["tipo"] == "select")) {
-                            $modellocolonne[$indicecolonna] = array("name" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "id" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "width" => isset($singoloalias["lunghezza"]) ? $singoloalias["lunghezza"] : ($colonna["length"] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna["length"] * $moltiplicatorelarghezza), "tipocampo" => isset($singoloalias["tipo"]) ? $singoloalias["tipo"] : $colonna["type"], "editoptions" => $singoloalias["valoricombo"]);
+                        if ( (isset($etichetteutente[$chiave])) && (trim($etichetteutente[$chiave]) != "") ) {
+                            $nomicolonne[$indicecolonna] = griglia::to_camel_case(array("str" => trim($etichetteutente[$chiave]), "primamaiuscola" => true));
                         } else {
-                            $modellocolonne[$indicecolonna] = array("name" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "id" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "width" => isset($singoloalias["lunghezza"]) ? $singoloalias["lunghezza"] : ($colonna["length"] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna["length"] * $moltiplicatorelarghezza), "tipocampo" => isset($singoloalias["tipo"]) ? $singoloalias["tipo"] : $colonna["type"]);
+                            $nomicolonne[$indicecolonna] = isset($singoloalias["descrizione"]) ? $singoloalias["descrizione"] : griglia::to_camel_case(array("str" => $chiave, "primamaiuscola" => true));
+                        }
+                        
+                        if ( (isset($larghezzeutente[$chiave])) && ($larghezzeutente[$chiave] != "") && ($larghezzeutente[$chiave] != 0) ) {
+                            $widthcampo = $larghezzeutente[$chiave];
+                        } else {
+                            $widthcampo = isset($singoloalias["lunghezza"]) ? $singoloalias["lunghezza"] : ($colonna["length"] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna["length"] * $moltiplicatorelarghezza);
+                        }
+                        
+                        if (isset($singoloalias["tipo"]) && ($singoloalias["tipo"] == "select")) {
+                            $modellocolonne[$indicecolonna] = array("name" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "id" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "width" => $widthcampo, "tipocampo" => isset($singoloalias["tipo"]) ? $singoloalias["tipo"] : $colonna["type"], "editable" => isset($singoloalias["editable"]) ? $singoloalias["editable"] : NULL, "editoptions" => $singoloalias["valoricombo"]);
+                        } else {
+                            $modellocolonne[$indicecolonna] = array("name" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "id" => isset($singoloalias["nomecampo"]) ? $singoloalias["nomecampo"] : $chiave, "width" => $widthcampo, "tipocampo" => isset($singoloalias["tipo"]) ? $singoloalias["tipo"] : $colonna["type"], "editable" => isset($singoloalias["editable"]) ? $singoloalias["editable"] : NULL);
                         }
                     }
                 } else {
                     if (isset($ordinecolonne)) {
                         $indicecolonna = array_search($chiave, $ordinecolonne);
                         if ($indicecolonna === FALSE) {
+                            if ($indice === 0) {
+                                $indice = count($ordinecolonne);
+                            }
                             $indice++;
                             $indicecolonna = $indice;
                         } else {
@@ -433,21 +649,34 @@ class griglia extends FiController {
                         $indice++;
                         $indicecolonna = $indice;
                     }
-                    $nomicolonne[$indicecolonna] = griglia::to_camel_case(array("str" => $chiave, "primamaiuscola" => true));
-                    $modellocolonne[$indicecolonna] = array("name" => $chiave, "id" => $chiave, "width" => ($colonna["length"] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna["length"] * $moltiplicatorelarghezza), "tipocampo" => $colonna["type"]);
+                    if ( (isset($etichetteutente[$chiave])) && (trim($etichetteutente[$chiave]) != "") ) {
+                        $nomicolonne[$indicecolonna] = griglia::to_camel_case(array("str" => trim($etichetteutente[$chiave]), "primamaiuscola" => true));
+                    } else {
+                        $nomicolonne[$indicecolonna] = griglia::to_camel_case(array("str" => $chiave, "primamaiuscola" => true));
+                    }
+                    
+                    if ( (isset($larghezzeutente[$chiave])) && ($larghezzeutente[$chiave] != "") && ($larghezzeutente[$chiave] != 0) ) {
+                        $widthcampo = $larghezzeutente[$chiave];
+                    } else {
+                        $widthcampo = ($colonna["length"] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna["length"] * $moltiplicatorelarghezza);
+                    }
+                    
+                    $modellocolonne[$indicecolonna] = array("name" => $chiave, "id" => $chiave, "width" => $widthcampo, "tipocampo" => $colonna["type"]);
                 }
             }
         }
 
-        // Controlla se alcune colonne devono essere dei link
-        if (isset($colonne_link)) {
-            foreach ($colonne_link as $colonna_link) {
-                foreach ($colonna_link as $nomecolonna => $parametricolonna) {
-                    foreach ($modellocolonne as $key => $value) {
-                        foreach ($value as $keyv => $valuev) {
-                            if (($keyv == "name") && ($valuev == $nomecolonna)) {
-                                $modellocolonne[$key]["formatter"] = 'showlink';
-                                $modellocolonne[$key]["formatoptions"] = $parametricolonna;
+        if ($output != "stampa") {
+            // Controlla se alcune colonne devono essere dei link
+            if (isset($colonne_link)) {
+                foreach ($colonne_link as $colonna_link) {
+                    foreach ($colonna_link as $nomecolonna => $parametricolonna) {
+                        foreach ($modellocolonne as $key => $value) {
+                            foreach ($value as $keyv => $valuev) {
+                                if (($keyv == "name") && ($valuev == $nomecolonna)) {
+                                    $modellocolonne[$key]["formatter"] = 'showlink';
+                                    $modellocolonne[$key]["formatoptions"] = $parametricolonna;
+                                }
                             }
                         }
                     }
@@ -476,6 +705,7 @@ class griglia extends FiController {
         $testata["tabella"] = $nometabella;
         $testata["nomicolonne"] = $nomicolonnesorted;
         $testata["modellocolonne"] = $modellocolonnesorted;
+        $testata["output"] = $output;
 
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $doctrineficore->createQueryBuilder();
@@ -521,11 +751,18 @@ class griglia extends FiController {
      * @param array $paricevuti[decodifiche] = array contenente eventuali decodifiche dei valori di
      *                                         una colonna che non può essere tradotta con una join
      *                                         ad una tabella
+     * @param string $paricevuti[output] : "index" se i dati servono per la griglia dell'index, "stampa" se i dati servono per la stampa
      * 
      * @return JSON con i dati richiesti 
      */
     static function datiPerGriglia($paricevuti = array()) {
         $request = $paricevuti["request"];
+
+        if ((isset($paricevuti["output"])) && ($paricevuti["output"] == "stampa")) {
+            $output = "stampa";
+        } else {
+            $output = "index";
+        }
 
         if (isset($paricevuti["em"])) {
             $doctrine = $paricevuti["container"]->get("doctrine")->getManager($paricevuti["em"]);
@@ -561,6 +798,9 @@ class griglia extends FiController {
         $parametri_link = (isset($paricevuti["parametri_link"]) ? $paricevuti["parametri_link"] : NULL); //$paricevuti["parametri_link"];
         $campiextra = (isset($paricevuti["campiextra"]) ? $paricevuti["campiextra"] : NULL);
         $ordinecolonne = (isset($paricevuti["ordinecolonne"]) ? $paricevuti["ordinecolonne"] : NULL);
+        if (!isset($ordinecolonne)) {
+            $ordinecolonne = self::ordinecolonne($paricevuti);
+        }
         // inserisco i filtri passati in un vettore
         $filtri = json_decode($request->get('filters'), true);
 
@@ -647,13 +887,20 @@ class griglia extends FiController {
         // imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati
         $offset = ($limit * ($page - 1));
 
-
-        // se nospan non tiene conto di limite e offset ovvero risponde con tutti i dati 
-        if (!($nospan)) {
-            //Imposta il limite ai record da estrarre
-            $q = ($limit ? $q->setMaxResults($limit) : $q);
-            //E imposta il primo record da visualizzare (per la paginazione)
-            $q = ($offset ? $q->setFirstResult($offset) : $q);
+        // se si mandano i dati in stampa non tiene conto di limite e offset ovvero risponde con tutti i dati 
+        if ($output != "stampa") {
+            // se nospan non tiene conto di limite e offset ovvero risponde con tutti i dati 
+            if (!($nospan)) {
+                //Imposta il limite ai record da estrarre
+                $q = ($limit ? $q->setMaxResults($limit) : $q);
+                //E imposta il primo record da visualizzare (per la paginazione)
+                $q = ($offset ? $q->setFirstResult($offset) : $q);
+            }
+        } else {
+            if ($quanti > 1000) {
+                set_time_limit(960);
+                ini_set("memory_limit", "2048M");
+            }
         }
 
         if ($sidx) {
@@ -701,6 +948,9 @@ class griglia extends FiController {
                             if (isset($ordinecolonne)) {
                                 $indicecolonna = array_search($nomecampo, $ordinecolonne);
                                 if ($indicecolonna === FALSE) {
+                                    if ($indice === 0) {
+                                        $indice = count($ordinecolonne);
+                                    }                                        
                                     $indice++;
                                     $indicecolonna = $indice;
                                 } else {
@@ -729,6 +979,9 @@ class griglia extends FiController {
                         if (isset($ordinecolonne)) {
                             $indicecolonna = array_search($nomecampo, $ordinecolonne);
                             if ($indicecolonna === FALSE) {
+                                if ($indice === 0) {
+                                    $indice = count($ordinecolonne);
+                                }                                        
                                 $indice++;
                                 $indicecolonna = $indice;
                             } else {

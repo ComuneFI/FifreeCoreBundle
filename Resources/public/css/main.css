@@ -164,3 +164,13 @@ html, body {
 .ui-tooltip {
     white-space: pre-line;
 }
+
+.ui-jqgrid .ui-jqgrid-htable th div {
+    height: auto;
+    overflow: hidden;
+    padding-right: 4px;
+    padding-top: 2px;
+    position: relative;
+    vertical-align: text-top;
+    white-space: normal !important;
+}
