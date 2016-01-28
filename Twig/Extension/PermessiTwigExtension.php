@@ -6,11 +6,11 @@ use Fi\CoreBundle\Controller\gestionepermessiController;
 
 class PermessiTwigExtension extends \Twig_Extension {
 
-  protected $request;
+  protected $requeststack;
 
-  public function __construct($container, $request) {
+  public function __construct($container, $request_stack) {
     $this->container = $container;
-    $this->request = $request;
+    $this->requeststack = $request_stack;
   }
 
   /**
@@ -19,7 +19,7 @@ class PermessiTwigExtension extends \Twig_Extension {
   public function getControllerName() {
     $pattern = "#Controller\\\([a-zA-Z]*)Controller#";
     $matches = array();
-    preg_match($pattern, $this->request->get('_controller'), $matches);
+    preg_match($pattern, $this->requeststack->getCurrentRequest()->get('_controller'), $matches);
 
     return $matches[1];
   }
