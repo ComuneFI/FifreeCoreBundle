@@ -16,33 +16,63 @@ use Fi\CoreBundle\Controller\stampatabellaController;
 class tabelleController extends FiController {
 
     public function aggiornaAction(Request $request) {
-
         if ($request->get("oper") == "edit") {
+            $gestionepermessi = new gestionepermessiController();
+            $gestionepermessi->setContainer($this->container);
+            $operatore = $gestionepermessi->utentecorrenteAction();
+            
             $id = $request->get("id");
 
             $em = $this->getDoctrine()->getManager();
             $tabelle = $em->getRepository('FiCoreBundle:tabelle')->find($id);
-            if ($request->get("operatori_id") !== null)
+            /*if ($request->get("operatori_id") !== NULL) {
                 $tabelle->setOperatoriId($request->get("operatori_id"));
-            if ($request->get("nometabella") !== null)
+            } else {
+                $tabelle->setOperatoriId(NULL);
+            }*/
+            $tabelle->setOperatoriId($operatore["id"]);
+            if ($request->get("nometabella") !== NULL) {
                 $tabelle->setNometabella($request->get("nometabella"));
-            if ($request->get("nomecampo") !== null)
+            }
+            if ($request->get("nomecampo") !== NULL) {
                 $tabelle->setNomecampo($request->get("nomecampo"));
-            if ($request->get("mostraindex") !== null)
+            }
+            if ($request->get("mostraindex") !== NULL) {
                 $tabelle->setMostraindex($request->get("mostraindex"));
-            if ($request->get("ordineindex") !== null)
+            }
+            if (($request->get("ordineindex") !== NULL) && ($request->get("ordineindex") !== "")) {
                 $tabelle->setOrdineindex($request->get("ordineindex"));
-            if ($request->get("etichettaindex") !== null)
+            } else {
+                $tabelle->setOrdineindex(NULL);
+            }
+            if (($request->get("etichettaindex") !== NULL) && ($request->get("etichettaindex") !== "")) {
                 $tabelle->setEtichettaindex($request->get("etichettaindex"));
-            if ($request->get("mostrastampa") !== null)
+            } else {
+                $tabelle->setEtichettaindex(NULL);
+            }
+            if (($request->get("larghezzaindex") !== NULL) && ($request->get("larghezzaindex") !== "")) {
+                $tabelle->setLarghezzaindex($request->get("larghezzaindex"));
+            } else {
+                $tabelle->setLarghezzaindex(NULL);
+            }
+            if ($request->get("mostrastampa") !== NULL) {
                 $tabelle->setMostrastampa($request->get("mostrastampa"));
-            if ($request->get("ordinestampa") !== null)
+            }
+            if (($request->get("ordinestampa") !== NULL) && ($request->get("ordinestampa") !== "")) {
                 $tabelle->setOrdinestampa($request->get("ordinestampa"));
-            if ($request->get("larghezzastampa") !== null)
-                $tabelle->setSarghezzastampa($request->get("larghezzastampa"));
-            if ($request->get("etichettastampa") !== null)
+            } else {
+                $tabelle->setOrdinestampa(NULL);
+            }
+            if (($request->get("etichettastampa") !== NULL) && ($request->get("etichettastampa") !== "")) {
                 $tabelle->setEtichettastampa($request->get("etichettastampa"));
-
+            } else {
+                $tabelle->setEtichettastampa(NULL);
+            }
+            if (($request->get("larghezzastampa") !== NULL) && ($request->get("larghezzastampa") !== "")) {
+                $tabelle->setLarghezzastampa($request->get("larghezzastampa"));
+            } else {
+                $tabelle->setLarghezzastampa(NULL);
+            }
             $em->flush();
         }
 
@@ -82,23 +112,32 @@ class tabelleController extends FiController {
         $em = $this->getDoctrine()->getManager();
         $entities = $em->getRepository($nomebundle . ':' . $controller)->findAll();
 
-        $dettaglij = array("operatori_id" => array(
-                array("nomecampo" => "operatori.username", "lunghezza" => "200", "descrizione" => "Username", "tipo" => "text"),
-                array("nomecampo" => "operatori.operatore", "lunghezza" => "200", "descrizione" => "Operatore", "tipo" => "text")
-            )
+        $dettaglij = array(/*"operatori_id" => array(array("nomecampo" => "operatori.username", "lunghezza" => "100", "descrizione" => "Username", "tipo" => "text"),
+                                                    array("nomecampo" => "operatori.operatore", "lunghezza" => "100", "descrizione" => "Operatore", "tipo" => "text")),*/
+                            "nomecampo" => array(array("nomecampo" => "nomecampo", "lunghezza" => "150", "descrizione" => "Campo", "tipo" => "text", "editable" => FALSE)),
+                            "mostraindex" => array(array("nomecampo" => "mostraindex", "lunghezza" => "100", "descrizione" => "Vedi in griglia", "tipo" => "boolean")),
+                            "ordineindex" => array(array("nomecampo" => "ordineindex", "lunghezza" => "100", "descrizione" => "Ordine in griglia", "tipo" => "text")),
+                            "etichettaindex" => array(array("nomecampo" => "etichettaindex", "lunghezza" => "150", "descrizione" => "Label in griglia", "tipo" => "text")),
+                            "larghezzaindex" => array(array("nomecampo" => "larghezzaindex", "lunghezza" => "100", "descrizione" => "Largh. in griglia", "tipo" => "text")),
+                            "mostrastampa" => array(array("nomecampo" => "mostrastampa", "lunghezza" => "100", "descrizione" => "Vedi in stampa", "tipo" => "boolean")),
+                            "ordinestampa" => array(array("nomecampo" => "ordinestampa", "lunghezza" => "100", "descrizione" => "Ordine in stampa", "tipo" => "text")),
+                            "etichettastampa" => array(array("nomecampo" => "etichettastampa", "lunghezza" => "150", "descrizione" => "Label in stampa", "tipo" => "text")),
+                            "larghezzastampa" => array(array("nomecampo" => "larghezzastampa", "lunghezza" => "100", "descrizione" => "Largh. in stampa", "tipo" => "text")),
         );
 
         $paricevuti = array("doctrine" => $em, "nomebundle" => $nomebundle, "nometabella" => $controller, "dettaglij" => $dettaglij, "container" => $container);
 
-        $paricevuti["escludere"] = array("mostrastampa", "nometabella", "ordineindex", "larghezzaindex", "etichettaindex", "etichettastampa", "ordinestampa", "larghezzastampa", "operatori_id");
+        //$paricevuti["escludere"] = array("mostrastampa", "nometabella", "ordineindex", "larghezzaindex", "etichettaindex", "etichettastampa", "ordinestampa", "larghezzastampa", "operatori_id");
+        $paricevuti["escludere"] = array("nometabella", "operatori_id");
 
         $testata = griglia::testataPerGriglia($paricevuti);
 
-
+        $testata["titolo"] = "Configurazione colonne per tabella $nometabella";
         $testata["multisearch"] = 0;
         $testata["showdel"] = 0;
         $testata["showadd"] = 0;
         $testata["showedit"] = 0;
+        $testata["showprint"] = 0;
         $testata["editinline"] = 1;
         $testata["nomelist"] = "#listconfigura";
         $testata["nomepager"] = "#pagerconfigura";
@@ -107,7 +146,7 @@ class tabelleController extends FiController {
         $testata["chiamante"] = $nometabella;
         $testata["percorsogriglia"] = $nometabella . "/grigliapopup";
         $testata["altezzagriglia"] = "300";
-        $testata["larghezzagriglia"] = "700";
+        $testata["larghezzagriglia"] = "900";
 
         $testata["permessiedit"] = 1;
         $testata["permessidelete"] = 1;
@@ -166,35 +205,28 @@ class tabelleController extends FiController {
         $colonne = $c->getColumnNames();
 
         foreach ($colonne as $colonna) {
-
             $vettorericerca = array(
                 "nometabella" => $nometabella,
                 "nomecampo" => $colonna
             );
 
-
             if (isset($parametri["operatore"])) {
                 $vettorericerca["operatori_id"] = $parametri["operatore"];
             }
 
-            $trovato = $this->getDoctrine()->getRepository($nomebundle . ':tabelle')
-                    ->findBy($vettorericerca, array());
-
+            $trovato = $this->getDoctrine()->getRepository($nomebundle . ':tabelle')->findBy($vettorericerca, array());
 
             if (!$trovato) {
-
                 $crea = new tabelle();
                 $crea->setNometabella($nometabella);
                 $crea->setNomecampo($colonna);
 
                 if (isset($parametri["operatore"])) {
-                    $crea->setOperatori($this->getDoctrine()->getRepository($nomebundle . ':operatori')
-                                    ->findOneBy(array("id" => $parametri["operatore"]), array()));
+                    $crea->setOperatori($this->getDoctrine()->getRepository($nomebundle . ':operatori')->findOneBy(array("id" => $parametri["operatore"]), array()));
 
                     unset($vettorericerca["operatori_id"]);
                     $vettorericerca["operatori_id"] = null;
-                    $ritrovato = $this->getDoctrine()->getRepository($nomebundle . ':tabelle')
-                            ->findOneBy($vettorericerca, array());
+                    $ritrovato = $this->getDoctrine()->getRepository($nomebundle . ':tabelle')->findOneBy($vettorericerca, array());
 
                     if ($ritrovato) {
                         $crea->setMostrastampa($ritrovato->getMostrastampa() ? true : false);
@@ -229,7 +261,8 @@ class tabelleController extends FiController {
 
         $paricevuti = array("request" => $request, "doctrine" => $em, "container" => $this->container, "nomebundle" => $nomebundle, "nometabella" => $controller, "tabellej" => $tabellej);
 
-        $paricevuti["escludere"] = array("mostrastampa", "nometabella", "ordineindex", "larghezzaindex", "etichettaindex", "etichettastampa", "ordinestampa", "larghezzastampa", "operatori_id");
+        //$paricevuti["escludere"] = array("mostrastampa", "nometabella", "ordineindex", "larghezzaindex", "etichettaindex", "etichettastampa", "ordinestampa", "larghezzastampa", "operatori_id");
+        $paricevuti["escludere"] = array("nometabella", "operatori_id");
         $paricevuti["precondizioni"] = array("tabelle.nometabella" => $chiamante, "tabelle.operatori_id" => $operatore["id"]);
 
         return new Response(griglia::datiPerGriglia($paricevuti));

@@ -185,10 +185,11 @@ class operatori extends BaseUser {
     }
 
     public function __toString() {
-        if ($this->getOperatore()){
+        if ($this->getOperatore()) {
             return $this->getOperatore();
-        }else{
-            return '';
+        } else {
+            //return '';
+            return $this->getUsername();
         }
     }
 

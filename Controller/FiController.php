@@ -358,23 +358,25 @@ class FiController extends Controller {
             $parametritesta["container"] = $container;
             $parametritesta["doctrine"] = $em;
             $parametritesta["request"] = $request;
+            $parametritesta["output"] = "stampa";
         }
-        $testatagriglia = griglia::testataPerGriglia($request->get("parametritesta") ? $parametritesta : $paricevuti);
 
-        //var_dump($request);
+        $testatagriglia = griglia::testataPerGriglia($request->get("parametritesta") ? $parametritesta : $paricevuti);
+        if ($request->get("titolo")) {
+            $testatagriglia["titolo"] = $request->get("titolo");
+        }
 
         if ($request->get("parametrigriglia")) {
             $parametrigriglia = get_object_vars(json_decode($request->get("parametrigriglia")));
             $parametrigriglia["container"] = $container;
             $parametrigriglia["doctrine"] = $em;
             $parametrigriglia["request"] = $request;
+            $parametrigriglia["output"] = "stampa";
         }
-
 
         $corpogriglia = griglia::datiPerGriglia($request->get("parametrigriglia") ? $parametrigriglia : $paricevuti);
 
         $parametri = array("request" => $request, "testata" => $testatagriglia, "griglia" => $corpogriglia);
-
 
         $pdf->stampa($parametri);
 
