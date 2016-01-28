@@ -125,7 +125,7 @@ class FiController extends Controller {
         $entity = new $classbundle();
         $formType = $formbundle . "Type";
         $form = $this->createForm(new $formType(), $entity);
-        $form->submit($request);
+        $form->submit($request->request->get($form->getName()));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -139,7 +139,7 @@ class FiController extends Controller {
                 return $this->redirect($this->generateUrl($controller . '_edit', array('id' => $entity->getId())));
             }
         }
-
+        
         return $this->render($nomebundle . ':' . $controller . ':new.html.twig', array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
@@ -239,7 +239,7 @@ class FiController extends Controller {
 
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new $formType(), $entity);
-        $editForm->submit($request);
+        $editForm->submit($request->request->get($editForm->getName()));
 
         if ($editForm->isValid()) {
             $em->persist($entity);
@@ -332,7 +332,7 @@ class FiController extends Controller {
      */
     protected function createDeleteForm($id) {
         return $this->createFormBuilder(array('id' => $id))
-                        ->add('id', 'hidden')
+                        ->add('id', \Symfony\Component\Form\Extension\Core\Type\HiddenType::class)
                         ->getForm()
         ;
     }
