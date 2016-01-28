@@ -124,7 +124,7 @@ class FiController extends Controller {
 
         $entity = new $classbundle();
         $formType = $formbundle . "Type";
-        $form = $this->createForm(new $formType(), $entity);
+        $form = $this->createForm($formType, $entity);
         $form->submit($request->request->get($form->getName()));
 
         if ($form->isValid()) {
@@ -163,7 +163,7 @@ class FiController extends Controller {
         $formType = $formbundle . "Type";
 
         $entity = new $classbundle();
-        $form = $this->createForm(new $formType(), $entity, array("attr" => array(
+        $form = $this->createForm($formType, $entity, array("attr" => array(
                 'id' => "formdati" . $controller,
             ),
             'action' => $this->generateUrl($controller . "_create")
@@ -199,7 +199,7 @@ class FiController extends Controller {
             throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
 
-        $editForm = $this->createForm(new $formType(), $entity, array("attr" => array(
+        $editForm = $this->createForm($formType, $entity, array("attr" => array(
                 'id' => "formdati" . $controller,
             ),
             'action' => $this->generateUrl($controller . "_update", array("id" => $entity->getId()))
