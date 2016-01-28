@@ -238,7 +238,7 @@ class FiController extends Controller {
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new $formType(), $entity);
+        $editForm = $this->createForm($formType, $entity);
         $editForm->submit($request->request->get($editForm->getName()));
 
         if ($editForm->isValid()) {
