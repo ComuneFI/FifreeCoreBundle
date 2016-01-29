@@ -28,7 +28,7 @@ services:
 
     fi.twig.fi_permessi_extension:
         class: Fi\CoreBundle\Twig\Extension\PermessiTwigExtension
-        arguments: [ '@service_container', '@request' ]
+        arguments: [ '@service_container', '@request_stack' ]
         tags:
             - { name: twig.extension }
             

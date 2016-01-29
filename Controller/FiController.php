@@ -124,8 +124,8 @@ class FiController extends Controller {
 
         $entity = new $classbundle();
         $formType = $formbundle . "Type";
-        $form = $this->createForm(new $formType(), $entity);
-        $form->submit($request);
+        $form = $this->createForm($formType, $entity);
+        $form->submit($request->request->get($form->getName()));
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -139,7 +139,7 @@ class FiController extends Controller {
                 return $this->redirect($this->generateUrl($controller . '_edit', array('id' => $entity->getId())));
             }
         }
-
+        
         return $this->render($nomebundle . ':' . $controller . ':new.html.twig', array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
@@ -163,7 +163,7 @@ class FiController extends Controller {
         $formType = $formbundle . "Type";
 
         $entity = new $classbundle();
-        $form = $this->createForm(new $formType(), $entity, array("attr" => array(
+        $form = $this->createForm($formType, $entity, array("attr" => array(
                 'id' => "formdati" . $controller,
             ),
             'action' => $this->generateUrl($controller . "_create")
@@ -199,7 +199,7 @@ class FiController extends Controller {
             throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
 
-        $editForm = $this->createForm(new $formType(), $entity, array("attr" => array(
+        $editForm = $this->createForm($formType, $entity, array("attr" => array(
                 'id' => "formdati" . $controller,
             ),
             'action' => $this->generateUrl($controller . "_update", array("id" => $entity->getId()))
@@ -238,8 +238,8 @@ class FiController extends Controller {
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new $formType(), $entity);
-        $editForm->submit($request);
+        $editForm = $this->createForm($formType, $entity);
+        $editForm->submit($request->request->get($editForm->getName()));
 
         if ($editForm->isValid()) {
             $em->persist($entity);
@@ -332,7 +332,7 @@ class FiController extends Controller {
      */
     protected function createDeleteForm($id) {
         return $this->createFormBuilder(array('id' => $id))
-                        ->add('id', 'hidden')
+                        ->add('id', \Symfony\Component\Form\Extension\Core\Type\HiddenType::class)
                         ->getForm()
         ;
     }
