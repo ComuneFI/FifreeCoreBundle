@@ -25,9 +25,10 @@ class menuController extends FiController {
 
         $gestionepermessi = $this->initGestionePermessi();
         $utentecorrente = $gestionepermessi->utentecorrenteAction();
-
-        $risposta[] = array("percorso" =>
-            $this->getUrlObject($this->container->getParameter('appname'), "/", ""),
+        $router = $this->get('router')->match('/')['_route'];
+        //$homeurl = $this->generateUrl($router, array(), true);
+        
+        $risposta[] = array("percorso" => $this->getUrlObject($this->container->getParameter('appname'), $router, ""),
             "nome" => $this->container->getParameter('appname'),
             "target" => ""
         );
