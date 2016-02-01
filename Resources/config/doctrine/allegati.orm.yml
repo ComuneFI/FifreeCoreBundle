@@ -1,4 +1,4 @@
-Fi\OverCoreBundle\Entity\allegati:
+Fi\CoreBundle\Entity\allegati:
     type: entity
     #schema: fifree2
     table: allegati
