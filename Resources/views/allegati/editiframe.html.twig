@@ -1,0 +1,62 @@
+{% extends 'FiCoreBundle::layout.html.twig' %}
+
+{% block menu %}
+
+{% endblock %}
+
+{% block fibody %}
+
+  <div id="corpodettaglio" class="ui-jqdialog-content ui-widget-content">
+    {% if (errori is defined and errori is not null)  %}
+      <ul class="error_list">
+        <li>{{ errori  }}</li>
+      </ul>
+    {% endif  %}
+
+    {{ form_start(edit_form) }}
+    <input type="submit" />
+    <input type="hidden" name="_method" value="PUT" />
+    {{ form_widget(edit_form) }}
+    {{ form_end(edit_form) }}
+  </div>
+
+  <script type="text/javascript">
+
+
+
+    /*$(document).keypress(function (event) {
+     switch (event.key)
+     {
+     case "Esc":
+     event.preventDefault();
+     $(".fi-default-chiudi").click();
+     break;
+     case "Enter":
+     if (event.shiftKey) {
+     event.preventDefault();
+     $(".fi-default-salva").click();
+     $(".fi-default-salva").removeClass("fi-default-salva");
+     }
+     break;
+     case "Del":
+     if (event.shiftKey) {
+     event.preventDefault();
+     $(".fi-default-elimina").click();
+     $(".fi-default-elimina").removeClass("fi-default-elimina");
+     }
+     break;
+     }
+     });*/
+
+    //setTimeout( function() { $("#id_input_sulqualeimporstare_focus").focus(); }, 500 );  
+
+    $(function () {
+      $(".ficorebundle_datepicker").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'dd/mm/yy'
+      });
+
+    });
+  </script>
+{% endblock %}
