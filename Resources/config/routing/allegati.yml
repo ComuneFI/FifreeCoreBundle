@@ -1,0 +1,80 @@
+allegati:
+    path:  /
+    defaults: { _controller: "FiCoreBundle:allegati:index" }
+
+allegati_popup:
+    path:  /popup/{nometabella}/{id}
+    defaults: { _controller: "FiCoreBundle:allegati:popup" }
+    requirements: { methods: post|put|get }
+
+allegati_configura:
+    path:  /configura/{nometabella}
+    defaults: { _controller: "FiCoreBundle:allegati:configura" }
+    requirements: { methods: post|put|get }
+
+allegati_stampatabella:
+    path:  /stampatabella/{nometabella}
+    defaults: { _controller: "FiCoreBundle:allegati:stampatabella" }
+    requirements: { methods: post|put|get }
+    
+allegati_grigliapopup:
+    path:  /{chiamante}/grigliapopup
+    defaults: { _controller: "FiCoreBundle:allegati:grigliapopup" }
+    requirements: { methods: post|put|get }
+
+allegati_show:
+    path:  /{id}/show
+    defaults: { _controller: "FiCoreBundle:allegati:show" }
+
+allegati_new:
+    path:  /new
+    defaults: { _controller: "FiCoreBundle:allegati:new" }
+
+allegati_newiframe:
+    path:  /newiframe
+    defaults: { _controller: "FiCoreBundle:allegati:newiframe" }
+
+allegati_create:
+    path:  /create
+    defaults: { _controller: "FiCoreBundle:allegati:create" }
+    requirements: { methods: post }
+
+allegati_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "FiCoreBundle:allegati:edit" }
+
+allegati_editiframe:
+    path:  /{id}/editiframe
+    defaults: { _controller: "FiCoreBundle:allegati:editiframe" }
+
+
+allegati_aggiorna:
+    path:  /aggiorna
+    defaults: { _controller: "FiCoreBundle:allegati:aggiorna" }
+    requirements: { methods: post|put }
+
+allegati_update:
+    path:  /{id}/update
+    defaults: { _controller: "FiCoreBundle:allegati:update" }
+    requirements: { methods: post|put }
+
+allegati_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "FiCoreBundle:allegati:delete" }
+    requirements: { methods: post|delete }
+    
+allegati_deletemultiple:
+    path:  /delete
+    defaults: { _controller: "FiCoreBundle:allegati:delete" }
+    requirements: { methods: post|delete }
+
+allegati_griglia:
+    path:  /griglia
+    defaults: { _controller: "FiCoreBundle:allegati:griglia" }
+    requirements: { methods: get }
+    
+allegati_listacampitabella:
+    path:  /listacampitabella
+    defaults: { _controller: "FiCoreBundle:allegati:listacampitabella" }
+    requirements: { methods: get }
+    

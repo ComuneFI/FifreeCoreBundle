@@ -1,0 +1,23 @@
+{% extends 'FiCoreBundle::layout.html.twig' %}
+
+{% block menu %}
+
+{% endblock %}
+
+{% block fibody %}
+
+  <div id="corpodettaglio" class="ui-jqdialog-content ui-widget-content">
+    {% if (errori is defined and errori is not null)  %}
+      <ul class="error_list">
+        <li>{{ errori  }}</li>
+      </ul>
+    {% endif  %}
+
+    {{ form_start(form) }}
+
+    {{ form_widget(form) }}
+
+    <input type="submit" />
+    {{ form_end(form) }}
+
+  {% endblock %}

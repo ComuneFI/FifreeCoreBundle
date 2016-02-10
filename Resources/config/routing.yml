@@ -34,6 +34,11 @@ FiCoreBundle_tabelle:
     resource: "@FiCoreBundle/Resources/config/routing/tabelle.yml"
     prefix:   /tabelle
 
+FiCoreBundle_allegati:
+    resource: "@FiCoreBundle/Resources/config/routing/allegati.yml"
+    prefix:   /allegati
+
+
 FiCoreBundle_opzioniTabella: 
   resource: "@FiCoreBundle/Resources/config/routing/opzionitabella.yml"
   prefix: /opzioniTabella
