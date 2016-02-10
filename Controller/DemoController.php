@@ -480,7 +480,14 @@ class DemoController extends Controller {
         if ($fs->exists($fileattestato)) {
             $fs->remove($fileattestato);
         }
+
         $document->saveAs($fileattestato);
+        
+        if (!($fs->exists($fileattestato))) {
+            echo "Impossibile creare il file " . $fileattestato;
+            exit;
+        }
+
         $outdir = $this->get('kernel')->getRootDir() . "/tmp/pdf/";
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
         $fs->mkdir($outdir, 0777);
