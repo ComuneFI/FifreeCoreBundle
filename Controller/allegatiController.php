@@ -160,7 +160,8 @@ class allegatiController extends FiController {
     $entity = new $classbundle();
     $formType = $formbundle . "Type";
     $form = $this->createForm($formType, $entity);
-    $form->submit($request->request->get($form->getName()));
+    $form->handleRequest($request);
+    //var_dump($request);exit;
 
     if ($form->isValid()) {
       $em = $this->getDoctrine()->getManager();
