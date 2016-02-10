@@ -72,7 +72,7 @@ class DemoController extends Controller {
         //$qb->setFirstResult( $offset )
         //$qb->setMaxResults( $limit );
         $resultset = $qb->getQuery()->getResult();
-        
+
         foreach ($resultset as $row) {
             /* ... per ogni elemento ... */
         }
@@ -485,6 +485,11 @@ class DemoController extends Controller {
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
         $fs->mkdir($outdir, 0777);
 
+        if (!($fs->exists($outdir))) {
+            echo "Impossibile creare la cartella " . $outdir;
+            exit;
+        }
+
         $libreofficePath = "/usr/bin/libreoffice";
 
         $convertcmd = $libreofficePath . " --headless --convert-to pdf " . $fileattestato . " --outdir " . $outdir;
@@ -499,7 +504,7 @@ class DemoController extends Controller {
             exit;
         } else {
             //echo $process->getOutput();exit;
-            $pdf = $this->get('kernel')->getRootDir() . "/tmp/pdf/" . $filename . ".pdf";
+            $pdf = $outdir . $filename . ".pdf";
             if ($fs->exists($pdf)) {
                 $response = new Response();
 
