@@ -500,8 +500,12 @@ class DemoController extends Controller {
         $libreofficePath = "/usr/bin/libreoffice";
 
         $convertcmd = $libreofficePath . " --headless --convert-to pdf " . $fileattestato . " --outdir " . $outdir;
-
+        /* @var $process \Symfony\Component\Process\Process */
         $process = new \Symfony\Component\Process\Process($convertcmd);
+        
+        //Per poter generare il file tramite libreoffice è necessario impostare la variabile env HOME per apache
+        $process->setEnv(array("HOME"=>"/tmp"));
+
         $process->run();
 
         //Si presume esista libreoffice, quindi controllare che sia installato 
