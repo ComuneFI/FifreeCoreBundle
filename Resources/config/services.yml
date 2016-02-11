@@ -33,12 +33,6 @@ services:
             - { name: twig.extension }
             
             
-    fi.twig.fi_demo_extension:
-      class: Fi\CoreBundle\Twig\Extension\DemoExtension
-      tags:
-        - { name: twig.extension }
-      arguments: [ '@twig.loader' ]
-
     fi.twig.fi_utilita_extension:
       class: Fi\CoreBundle\Twig\Extension\UtilitaExtension
       tags:
@@ -51,12 +45,6 @@ services:
         - { name: twig.extension }
       arguments: [ '@service_container' ]
 
-    fi.twig.demo.listener:
-        class: Fi\CoreBundle\EventListener\ControllerListener
-        arguments: ['@fi.twig.fi_demo_extension']
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller,method: onKernelController }
-    
     #Informazioni connessione database su Web Debug Toolbar
     data_collector.databaseinfo:
         class: Fi\CoreBundle\Collector\DatabaseInfoDataCollector

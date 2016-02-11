@@ -2,10 +2,6 @@ fi_core_homepage:
     path:  /coredemo/
     defaults: { _controller: FiCoreBundle:Default:index }
 
-FiCoreBundle_demo:
-    resource: "@FiCoreBundle/Resources/config/routing/demoutility.yml"
-    prefix:   /demo
-
 FiCoreBundle_Ffprincipale:
     resource: "@FiCoreBundle/Resources/config/routing/ffprincipale.yml"
     prefix:   /ffprincipale
