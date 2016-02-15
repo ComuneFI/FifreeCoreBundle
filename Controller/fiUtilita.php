@@ -173,7 +173,7 @@ class fiUtilita {
     return $risposta;
   }
 
-  static public function data2db($giorno, $invertito = false) {
+  static public function data2db($giorno, $invertito = false, $senzalinea = false) {
 
     if ($giorno == "") {
       return NULL;
@@ -195,7 +195,7 @@ class fiUtilita {
     $mm = ($invertito ? $gg : $mm);
     $gg = $appogg;
 
-    $formattata = (strlen($gg) == 0 ? "" : "$aaaa-$mm-$gg");
+    $formattata = (strlen($gg) == 0 ? "" : $aaaa . ($senzalinea?"":"-") . $mm . ($senzalinea?"":"-") . $gg);
 
     return $formattata;
   }
