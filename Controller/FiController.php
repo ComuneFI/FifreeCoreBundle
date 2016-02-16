@@ -336,17 +336,9 @@ class FiController extends Controller {
      * @return \Symfony\Component\Form\Form The form
      */
     protected function createDeleteForm($id) {
-        if (version_compare(PHP_VERSION, '5.5.0') >= 0) {
-            return $this->createFormBuilder(array('id' => $id))
-                            ->add('id', \Symfony\Component\Form\Extension\Core\Type\HiddenType::class)
-                            ->getForm()
-            ;
-        } else {
-            return $this->createFormBuilder(array('id' => $id))
-                            ->add('id', 'hidden')
-                            ->getForm()
-            ;
-        }
+        return $this->createFormBuilder(array('id' => $id))
+                        ->add('id', get_class(new \Symfony\Component\Form\Extension\Core\Type\HiddenType))
+                        ->getForm();
     }
 
     public function stampatabellaAction(Request $request) {
