@@ -12,6 +12,11 @@ tabelle_stampatabella:
     defaults: { _controller: "FiCoreBundle:tabelle:stampatabella" }
     requirements: { methods: post|put|get }
     
+tabelle_esportaexceltabella:
+    path:  /esportaexcel/{nometabella}
+    defaults: { _controller: "FiCoreBundle:tabelle:esportaexcel" }
+    requirements: { methods: post|put|get }
+    
 tabelle_grigliapopup:
     path:  /{chiamante}/grigliapopup
     defaults: { _controller: "FiCoreBundle:tabelle:grigliapopup" }

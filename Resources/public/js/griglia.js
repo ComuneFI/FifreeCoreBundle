@@ -55,7 +55,7 @@ function caricaGriglia(parametrijs) {
   var overlayopen = (parametrijs["overlayopen"] == 1) ? true : false;
   var imgwaiturl = parametrijs['imgwaiturl'] || '/bundles/ficore/images/wait.gif';
   var allegati = (parametrijs["allegati"] == 1) ? 1 : 0;
-  var indirizzoexcel = (parametrijs["indirizzoexcel"]) ? parametrijs["indirizzoexcel"] : parametrijs["tabella"] + "/esportaexcel";
+  var indirizzoexcel = (parametrijs["indirizzoexcel"]) ? parametrijs["indirizzoexcel"] : "tabelle/esportaexcel/"+parametrijs["tabella"];
     
   var parametriaggiuntivi_edit = parametrijs["parametriaggiuntivi_edit"] || {};
   var stringapar_edit = "";
