@@ -131,14 +131,15 @@ class stampatabellaController extends FiController {
 
         //Scrittura su file
         $sheet = $objPHPExcel->getActiveSheet();
-        $sheet->setTitle("Esportazione " . $testata["tabella"]);
+        $titolosheet = "Esportazione " . $testata["tabella"];
+        $sheet->setTitle(substr($titolosheet, 0, 30));
         $sheet->getDefaultStyle()->getFont()->setName('Verdana');
         $indicecolonna = 0;
         foreach ($modellicolonne as $modellocolonna) {
             //Si imposta la larghezza delle colonne
             $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonna);
             $width = (int) $modellocolonna["width"] / 10;
-            $coltitle = strtoupper(isset($testata["nomicolonne"][$indicecolonna])?$testata["nomicolonne"][$indicecolonna]:$modellocolonna["name"]);
+            $coltitle = strtoupper(isset($testata["nomicolonne"][$indicecolonna]) ? $testata["nomicolonne"][$indicecolonna] : $modellocolonna["name"]);
             $sheet->setCellValueByColumnAndRow($indicecolonna, 1, $coltitle); /**/
             $sheet->getColumnDimension($letteracolonna)->setWidth($width);
 
@@ -172,8 +173,16 @@ class stampatabellaController extends FiController {
             $vettorecelle = $riga->cell;
             $col = 0;
             foreach ($vettorecelle as $vettorecella) {
+                if (($modellicolonne[$col]["tipocampo"] == "date")) {
+                    $d = substr($vettorecella, 0, 2);
+                    $m = substr($vettorecella, 3, 2);
+                    $y = substr($vettorecella, 6, 4);
+                    $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
+                    $sheet->setCellValueByColumnAndRow($col, $row, $t_date);
+                } else {
+                    $sheet->setCellValueByColumnAndRow($col, $row, $vettorecella);
+                }
 
-                $sheet->setCellValueByColumnAndRow($col, $row, $vettorecella);
                 $col = $col + 1;
             }
             $sheet->getRowDimension($row)->setRowHeight(18);
