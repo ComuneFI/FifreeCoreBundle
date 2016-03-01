@@ -17,7 +17,9 @@ function caricaGriglia(parametrijs) {
   var showdel = (parametrijs["showdel"] == 0) ? false : (parametrijs["permessidelete"] == 0 ? false : true);
   var captiondel = parametrijs["captiondel"] || "";
   var showprint = (parametrijs["showprint"] == 0) ? false : true;
+  var showexcel = (parametrijs["showexcel"] == 1) ? true : false;
   var captionprint = parametrijs["captionprint"] || "";
+  var captionexcel = parametrijs["captionexcel"] || "";
   var showconfig = (parametrijs["showconfig"] == 1) ? true : false;
   var captionconfig = parametrijs["captionconfig"] || "";
   var editinline = (parametrijs["editinline"] == 1) ? true : false;
@@ -53,7 +55,8 @@ function caricaGriglia(parametrijs) {
   var overlayopen = (parametrijs["overlayopen"] == 1) ? true : false;
   var imgwaiturl = parametrijs['imgwaiturl'] || '/bundles/ficore/images/wait.gif';
   var allegati = (parametrijs["allegati"] == 1) ? 1 : 0;
-
+  var indirizzoexcel = (parametrijs["indirizzoexcel"]) ? parametrijs["indirizzoexcel"] : parametrijs["tabella"] + "/esportaexcel";
+    
   var parametriaggiuntivi_edit = parametrijs["parametriaggiuntivi_edit"] || {};
   var stringapar_edit = "";
   for (var key in parametriaggiuntivi_edit) {
@@ -88,6 +91,16 @@ function caricaGriglia(parametrijs) {
     'titolo': titolo,
     'parametritesta': parametritesta,
     'parametrigriglia': parametrigriglia
+            //'filtri': jQuery(nomelist).getGridParam("postData").filters
+  };
+
+  var parametriexcel = {
+    'tabella': tabella,
+    'nomelist': nomelist,
+    'titolo': titolo,
+    'parametritesta': parametritesta,
+    'parametrigriglia': parametrigriglia,
+    'indirizzoexcel': indirizzoexcel
             //'filtri': jQuery(nomelist).getGridParam("postData").filters
   };
 
@@ -558,7 +571,22 @@ function caricaGriglia(parametrijs) {
     });
 
   }
+	
+  //Se si hanno i diritti per stampare si imposta il pulsante e la funizonalità
+  if (showexcel) {
+    jQuery(nomelist).navGrid(nomepager).navButtonAdd(nomepager, {
+      caption: captionexcel,
+      buttonicon: ((captionexcel === "") ? "ui-icon-circle-arrow-s" : "none"),
+      onClickButton: function () {
+        esportaexcel(parametriexcel);
+      },
+      position: "last",
+      title: "",
+      cursor: "pointer"
+    });
 
+  }
+	
   //Se si hanno i diritti per modificare la configurazioen della griglia si imposta il pulsante e la funizonalità
   if (showconfig) {
     jQuery(nomelist).navGrid(nomepager).navButtonAdd(nomepager, {
@@ -986,6 +1014,50 @@ function stampa(parametristampa) {
   document.body.appendChild(formstp);    // Not entirely sure if this is necessary
   document.formstampa.submit();
   jQuery("#formstampa").remove();
+
+}
+
+function esportaexcel(parametriexcel) {
+  var creaformxls = jQuery("<form id='formesportaexcel' name='formesportaexcel'> </form>");
+  if (!jQuery("#formesportaexcel").lenght) {
+    jQuery("#nascosto").append(creaformxls);
+  }
+
+  var tabella = parametriexcel["tabella"] || "";
+  var nomelist = parametriexcel["nomelist"] || "#list1";
+
+  var indirizzoexcel = parametriexcel["indirizzoexcel"];
+
+  var filtro = jQuery(nomelist).getGridParam("postData");
+
+  var formxls = document.formesportaexcel;
+  formxls.setAttribute("method", "post");
+  formxls.setAttribute("action", baseUrl + '/' + indirizzoexcel);
+  formxls.setAttribute("target", "_blank");
+
+  jQuery.each(parametriexcel, function (key, value) {
+    if (!filtro[key]) {
+      var hiddenField = document.createElement("input");
+      hiddenField.setAttribute("name", key);
+      hiddenField.setAttribute("value", value);
+      hiddenField.setAttribute("type", "hidden");
+      formxls.appendChild(hiddenField);
+    }
+  });
+
+  jQuery.each(filtro, function (key, value) {
+    var hiddenField = document.createElement("input");
+    hiddenField.setAttribute("name", key);
+    hiddenField.setAttribute("value", value);
+    hiddenField.setAttribute("type", "hidden");
+    formxls.appendChild(hiddenField);
+
+
+  });
+
+  document.body.appendChild(formxls);    // Not entirely sure if this is necessary
+  document.formesportaexcel.submit();
+  jQuery("#formesportaexcel").remove();
 
 }
 

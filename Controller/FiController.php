@@ -387,6 +387,56 @@ class FiController extends Controller {
         return new Response("OK");
     }
 
+    public function esportaexcelAction(Request $request) {
+        self::setup($request);
+        $xls = new stampatabellaController($this->container);
+
+        $namespace = $this->getNamespace();
+        $bundle = $this->getBundle();
+        $controller = $this->getController();
+        $container = $this->container;
+        $nomebundle = $namespace . $bundle . "Bundle";
+
+
+        $em = $this->getDoctrine()->getManager();
+
+        $paricevuti = array("nomebundle" => $nomebundle, "nometabella" => $request->get("nometabella"), "container" => $container, "request" => $request);
+
+        if ($request->get("parametritesta")) {
+            $parametritesta = get_object_vars(json_decode($request->get("parametritesta")));
+            $parametritesta["container"] = $container;
+            $parametritesta["doctrine"] = $em;
+            $parametritesta["request"] = $request;
+            $parametritesta["output"] = "stampa";
+        }
+
+        $testatagriglia = griglia::testataPerGriglia($request->get("parametritesta") ? $parametritesta : $paricevuti);
+        if ($request->get("titolo")) {
+            $testatagriglia["titolo"] = $request->get("titolo");
+        }
+
+        if ($request->get("parametrigriglia")) {
+            $parametrigriglia = get_object_vars(json_decode($request->get("parametrigriglia")));
+            $parametrigriglia["container"] = $container;
+            $parametrigriglia["doctrine"] = $em;
+            $parametrigriglia["request"] = $request;
+            $parametrigriglia["output"] = "stampa";
+        }
+
+        $corpogriglia = griglia::datiPerGriglia($request->get("parametrigriglia") ? $parametrigriglia : $paricevuti);
+
+        $parametri = array("request" => $request, "testata" => $testatagriglia, "griglia" => $corpogriglia);
+
+        $fileexcel = $xls->esportaexcel($parametri);
+        $response = new Response();
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . basename($fileexcel) . '"');
+
+        $response->setContent(file_get_contents($fileexcel));
+        return $response;
+    }
+
     public function getNamespace() {
         return self::$namespace;
     }

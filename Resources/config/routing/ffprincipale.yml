@@ -39,3 +39,8 @@ ffprincipale_griglia:
     path:  /griglia
     defaults: { _controller: "FiCoreBundle:ffprincipale:griglia" }
     requirements: { methods: get }
+
+ffprincipale_esportaexcel:
+    path:  /esportaexcel
+    defaults: { _controller: "FiCoreBundle:ffprincipale:esportaexcel" }
+    requirements: { methods: get|post }
