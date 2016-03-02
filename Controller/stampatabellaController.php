@@ -173,14 +173,20 @@ class stampatabellaController extends FiController {
             $vettorecelle = $riga->cell;
             $col = 0;
             foreach ($vettorecelle as $vettorecella) {
-                if (($modellicolonne[$col]["tipocampo"] == "date")) {
-                    $d = substr($vettorecella, 0, 2);
-                    $m = substr($vettorecella, 3, 2);
-                    $y = substr($vettorecella, 6, 4);
-                    $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
-                    $sheet->setCellValueByColumnAndRow($col, $row, $t_date);
-                } else {
-                    $sheet->setCellValueByColumnAndRow($col, $row, $vettorecella);
+                switch ($modellicolonne[$col]["tipocampo"]) {
+                    case "date":
+                        $d = substr($vettorecella, 0, 2);
+                        $m = substr($vettorecella, 3, 2);
+                        $y = substr($vettorecella, 6, 4);
+                        $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
+                        $sheet->setCellValueByColumnAndRow($col, $row, $t_date);
+                        break;
+                    case "boolean":
+                        $sheet->setCellValueByColumnAndRow($col, $row, ($vettorecella == 1) ? "SI" : "NO");
+                        break;
+                    default:
+                        $sheet->setCellValueByColumnAndRow($col, $row, $vettorecella);
+                        break;
                 }
 
                 $col = $col + 1;
@@ -192,30 +198,50 @@ class stampatabellaController extends FiController {
         $indicecolonna = 0;
         foreach ($modellicolonne as $modellocolonna) {
             $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonna);
-            if (($modellocolonna["tipocampo"] == "text") || ($modellocolonna["tipocampo"] == "string")) {
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
-                        ->getNumberFormat()
-                        ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+            switch ($modellocolonna["tipocampo"]) {
+                case "text":
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                    break;
+                case "string":
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                    break;
+                case "integer":
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+                    break;
+                case "float":
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode("#,##0.00");
+                    break;
+                case "number":
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode("#,##0.00");
+                    break;
+                case "datetime":
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode('dd/mm/yyyy');
+                    break;
+                case "date":
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode('dd/mm/yyyy');
+                    break;
+                default:
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                    break;
             }
 
-            if (($modellocolonna["tipocampo"] == "float") || ($modellocolonna["tipocampo"] == "integer") || ($modellocolonna["tipocampo"] == "number")) {
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
-                        ->getNumberFormat()
-                        ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-            }
 
-            if (($modellocolonna["tipocampo"] == "datetime") || ($modellocolonna["tipocampo"] == "date")) {
-                \PHPExcel_Cell::setValueBinder(new \PHPExcel_Cell_DefaultValueBinder());
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
-                        ->getNumberFormat()
-                        ->setFormatCode('dd/mm/yyyy');
-            }
-
-            if (($modellocolonna["tipocampo"] == "float") || ($modellocolonna["tipocampo"] == "number")) {
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
-                        ->getNumberFormat()
-                        ->setFormatCode("#,##0.00");
-            }
             $indicecolonna++;
         }
 
@@ -236,52 +262,6 @@ class stampatabellaController extends FiController {
         $objWriter->save($filename);
 
         return $filename;
-
-        // Dati
-        $risposta = json_decode($rispostaj);
-        $righe = $risposta->rows;
-        foreach ($righe as $riga) {
-            $fill = !$fill;
-            $vettorecelle = $riga->cell;
-
-            $arr_heights = array();
-            foreach ($vettorecelle as $posizione => $valore) {
-                if (!is_object($valore)) {
-                    if (isset($modellicolonne[$posizione])) {
-                        $width = ((297 * $modellicolonne[$posizione]["width"]) / $larghezzaform) / 2;
-                    } else {
-                        $width = ((297 * 100) / $larghezzaform) / 2;
-                    }
-                    $arr_heights[] = $pdf->getNumLines($valore, $width);
-                }
-            }
-            //work out the number of lines required
-            $rowcount = max($arr_heights);
-            $startY = $pdf->GetY();
-            if (($startY + $rowcount * $h) + $dimensions['bm'] > ($dimensions['hk'])) {
-                // page break
-                $pdf->AddPage("L");
-                // stampa testata
-                $this->stampaTestata($pdf, $nomicolonne, $modellicolonne, $larghezzaform, $h, $border, $align, $fill, $ln);
-            }
-            //now draw it
-            foreach ($vettorecelle as $posizione => $valore) {
-                if (!is_object($valore)) {
-                    if (isset($modellicolonne[$posizione])) {
-                        $width = ((297 * $modellicolonne[$posizione]["width"]) / $larghezzaform) / 2;
-                    } else {
-                        $width = ((297 * 100) / $larghezzaform) / 2;
-                    }
-                    $pdf->MultiCell($width, $rowcount * $h, $valore, $border, $align, $fill, $ln);
-                }
-            }
-            $pdf->Ln();
-        }
-
-        $pdf->Cell(0, 10, griglia::traduciFiltri(array("filtri" => $risposta->filtri)), 0, false, 'L', 0, '', 0, false, 'T', 'M');
-
-        $pdf->Output($request->get("nometabella") . '.pdf', 'I');
-        exit;
     }
 
     private function stampaTestata($pdf, $nomicolonne, $modellicolonne, $larghezzaform, $h, $border, $align, $fill, $ln) {
