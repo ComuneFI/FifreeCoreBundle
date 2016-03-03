@@ -124,7 +124,14 @@ class FiController extends Controller {
 
         $entity = new $classbundle();
         $formType = $formbundle . "Type";
-        $form = $this->createForm($formType, $entity);
+
+        // Questo codice per versioni che usano un symfony inferiore a 2.8
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
+            $form = $this->createForm($formType, $entity);
+        } else {
+            $form = $this->createForm(new $formType(), $entity);
+        }
+
         $form->submit($request->request->get($form->getName()));
 
         if ($form->isValid()) {
@@ -163,11 +170,22 @@ class FiController extends Controller {
         $formType = $formbundle . "Type";
 
         $entity = new $classbundle();
-        $form = $this->createForm($formType, $entity, array("attr" => array(
-                'id' => "formdati" . $controller,
-            ),
-            'action' => $this->generateUrl($controller . "_create")
-        ));
+
+        // Questo codice per versioni che usano un symfony inferiore a 2.8
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
+            $form = $this->createForm($formType, $entity, array("attr" => array(
+                    'id' => "formdati" . $controller,
+                ),
+                'action' => $this->generateUrl($controller . "_create")
+            ));
+        } else {
+
+            $form = $this->createForm(new $formType(), $entity, array("attr" => array(
+                    'id' => "formdati" . $controller,
+                ),
+                'action' => $this->generateUrl($controller . "_create")
+            ));
+        }
 
         return $this->render($nomebundle . ':' . $controller . ':new.html.twig', array(
                     'nomecontroller' => $controller,
@@ -201,11 +219,22 @@ class FiController extends Controller {
             throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
 
-        $editForm = $this->createForm($formType, $entity, array("attr" => array(
-                'id' => "formdati" . $controller,
-            ),
-            'action' => $this->generateUrl($controller . "_update", array("id" => $entity->getId()))
-        ));
+        // Questo codice per versioni che usano un symfony inferiore a 2.8
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
+            $editForm = $this->createForm($formType, $entity, array("attr" => array(
+                    'id' => "formdati" . $controller,
+                ),
+                'action' => $this->generateUrl($controller . "_update", array("id" => $entity->getId()))
+            ));
+        } else {
+
+            $editForm = $this->createForm(new $formType(), $entity, array("attr" => array(
+                    'id' => "formdati" . $controller,
+                ),
+                'action' => $this->generateUrl($controller . "_update", array("id" => $entity->getId()))
+            ));
+        }
+
         $deleteForm = $this->createDeleteForm($id);
 
 
@@ -243,7 +272,14 @@ class FiController extends Controller {
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm($formType, $entity);
+
+        // Questo codice per versioni che usano un symfony inferiore a 2.8
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
+            $editForm = $this->createForm($formType, $entity);
+        } else {
+            $editForm = $this->createForm(new $formType(), $entity);
+        }
+
         $editForm->submit($request->request->get($editForm->getName()));
 
         if ($editForm->isValid()) {
@@ -336,9 +372,15 @@ class FiController extends Controller {
      * @return \Symfony\Component\Form\Form The form
      */
     protected function createDeleteForm($id) {
-        return $this->createFormBuilder(array('id' => $id))
-                        ->add('id', get_class(new \Symfony\Component\Form\Extension\Core\Type\HiddenType))
-                        ->getForm();
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
+            return $this->createFormBuilder(array('id' => $id))
+                            ->add('id', get_class(new \Symfony\Component\Form\Extension\Core\Type\HiddenType))
+                            ->getForm();
+        } else {
+            return $this->createFormBuilder(array('id' => $id))
+                            ->add('id', "hidden")
+                            ->getForm();
+        }
     }
 
     public function stampatabellaAction(Request $request) {
