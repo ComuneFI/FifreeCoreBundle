@@ -138,7 +138,7 @@ class stampatabellaController extends FiController {
         foreach ($modellicolonne as $modellocolonna) {
             //Si imposta la larghezza delle colonne
             $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonna);
-            $width = (int) $modellocolonna["width"] / 10;
+            $width = (int) $modellocolonna["width"] / 7;
             $coltitle = strtoupper(isset($testata["nomicolonne"][$indicecolonna]) ? $testata["nomicolonne"][$indicecolonna] : $modellocolonna["name"]);
             $sheet->setCellValueByColumnAndRow($indicecolonna, 1, $coltitle); /**/
             $sheet->getColumnDimension($letteracolonna)->setWidth($width);
