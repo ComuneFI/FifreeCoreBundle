@@ -66,6 +66,8 @@ class stampatabellaController extends FiController {
             $vettorecelle = $riga->cell;
 
             $arr_heights = array();
+            // store current object
+            $pdf->startTransaction();
             foreach ($vettorecelle as $posizione => $valore) {
                 if (!is_object($valore)) {
                     if (isset($modellicolonne[$posizione])) {
@@ -73,9 +75,13 @@ class stampatabellaController extends FiController {
                     } else {
                         $width = ((297 * 100) / $larghezzaform) / 2;
                     }
-                    $arr_heights[] = $pdf->getNumLines($valore, $width);
+                    // get the number of lines
+                    $arr_heights[] = $pdf->MultiCell($width, 0, $valore, $border, $align, $fill, 0, '', '', true, 0, false, true, 0);
+                    //$arr_heights[] = $pdf->getNumLines($valore, $width);
                 }
             }
+            // restore previous object
+            $pdf->rollbackTransaction(true);
             //work out the number of lines required
             $rowcount = max($arr_heights);
             $startY = $pdf->GetY();
@@ -268,14 +274,20 @@ class stampatabellaController extends FiController {
         // Testata
         $pdf->SetFont('helvetica', 'B', 9);
         $arr_heights = array();
+        // store current object
+        $pdf->startTransaction();
         foreach ($nomicolonne as $posizione => $nomecolonna) {
             if (isset($modellicolonne[$posizione])) {
                 $width = ((297 * $modellicolonne[$posizione]["width"]) / $larghezzaform) / 2;
             } else {
                 $width = ((297 * 100) / $larghezzaform) / 2;
             }
-            $arr_heights[] = $pdf->getNumLines($nomecolonna, $width, FALSE, TRUE, '', 1);
+            // get the number of lines
+            $arr_heights[] = $pdf->MultiCell($width, 0, $nomecolonna, $border, $align, $fill, 0, '', '', true, 0, false, true, 0);
+            //$arr_heights[] = $pdf->getNumLines($nomecolonna, $width, FALSE, TRUE, '', 1);
         }
+        // restore previous object
+        $pdf->rollbackTransaction(true);        
         //work out the number of lines required
         $rowcount = max($arr_heights);
         //now draw it

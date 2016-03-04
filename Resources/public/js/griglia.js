@@ -1204,6 +1204,8 @@ function salvaDettaglio(parametri) {
   var list = parametri['list'] || "#list1";
   var parametriaggiuntivi = parametri["parametriaggiuntivi"] || {};
   var parametrireloadcombo = parametri["parametrireloadcombo"] || {};
+  var funzionedaeseguireloadcomplete = parametri["funzionedaeseguireloadcomplete"] || null;
+  
   if (parametri["overlayclose"] === 0)
     parametri["overlayclose"] = 0;
   else
@@ -1242,6 +1244,10 @@ function salvaDettaglio(parametri) {
           }
         }
       }
+    }
+    
+    if (funzionedaeseguireloadcomplete != null) {
+      funzionedaeseguireloadcomplete();
     }
 
     jQuery(list).trigger("reloadGrid", [{
@@ -1377,6 +1383,7 @@ function eliminaDettaglio(parametri) {
   var nometestodialog = parametri['nometestodialog'] || "#testodialog";
   var div = parametri['div'] || "#dettaglio";
   var rowid = parametri['id'] || $(list).jqGrid('getGridParam', 'selrow');
+  var funzionedaeseguiredelcomplete = parametri["funzionedaeseguiredelcomplete"] || null;
 
   if (parametri["overlayclose"] === 0)
     parametri["overlayclose"] = 0;
@@ -1408,6 +1415,9 @@ function eliminaDettaglio(parametri) {
         }
         if (continua === 0) {
           chiudiDettaglio(parametri);
+        }
+        if (funzionedaeseguiredelcomplete != null) {
+          funzionedaeseguiredelcomplete();
         }
       }
     });
