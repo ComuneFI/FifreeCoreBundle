@@ -12,17 +12,12 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "fi\\fifree2corebundle\\": ""
+            "Fi\\CoreBundle\\": ""
         }
     },
     "require": {
         "php": ">=5.4.0",
         "vich/uploader-bundle": "^0.14.0", 
         "oneup/flysystem-bundle": "@stable"
-    },
-    "extra": {
-        "branch-alias": {
-            "master": "1.0.28"
-        }
     }
 }
