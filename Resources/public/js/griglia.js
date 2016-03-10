@@ -58,6 +58,7 @@ function caricaGriglia(parametrijs) {
   var indirizzoexcel = (parametrijs["indirizzoexcel"]) ? parametrijs["indirizzoexcel"] : "tabelle/esportaexcel/"+parametrijs["tabella"];
     
   var parametriaggiuntivi_edit = parametrijs["parametriaggiuntivi_edit"] || {};
+  var open_new_window = parametrijs["open_new_window"] || 0;
   var stringapar_edit = "";
   for (var key in parametriaggiuntivi_edit) {
     if (stringapar_edit != "")
@@ -242,7 +243,8 @@ function caricaGriglia(parametrijs) {
             'div': div,
             'divtesta': divtesta,
             'parametripassa': stringapar_edit,
-            'allegati': allegati
+            'allegati': allegati,
+            'open_new_window': open_new_window
           });
         }
       }
@@ -288,7 +290,8 @@ function caricaGriglia(parametrijs) {
                 'list': nomelist,
                 'div': div,
                 'divtesta': divtesta,
-                'parametripassa': stringapar_edit
+                'parametripassa': stringapar_edit,
+                'open_new_window': open_new_window
               });
             }
           },
@@ -307,7 +310,8 @@ function caricaGriglia(parametrijs) {
                 'list': nomelist,
                 'div': div,
                 'divtesta': divtesta,
-                'parametripassa': stringapar_new
+                'parametripassa': stringapar_new,
+                'open_new_window': open_new_window
               });
             }
           },
@@ -436,7 +440,8 @@ function caricaGriglia(parametrijs) {
           'list': nomelist,
           'div': div,
           'divtesta': divtesta,
-          'parametripassa': stringapar_new
+          'parametripassa': stringapar_new,
+          'open_new_window': open_new_window
         });
       },
       position: "last",
@@ -494,7 +499,8 @@ function caricaGriglia(parametrijs) {
           'list': nomelist,
           'div': div,
           'divtesta': divtesta,
-          'parametripassa': stringapar_edit
+          'parametripassa': stringapar_edit,
+          'open_new_window': open_new_window
         });
         lastsel = 0;
         jQuery(nomelist).jqGrid('resetSelection');
@@ -1079,9 +1085,8 @@ function apriDettaglio(parametri) {
   var nomedialog = parametri['nomedialog'] || "#dialog";
   var nometestodialog = parametri['nometestodialog'] || "#testodialog";
   var overlay = parametri['overlay'] || "#overlay";
+  var open_new_window = parametri['open_new_window'] || 0;
 
-
-  creadiv({"caratteristiche": {id: div.substr(1), class: "ui-widget ui-widget-content ui-jqdialog ui-corner-all"}});
 
   var rowid;
   if (tipo === "new") {
@@ -1093,44 +1098,57 @@ function apriDettaglio(parametri) {
       rowid = $(list).jqGrid('getGridParam', 'selrow');
   }
 
-  var editUrl = baseUrl + '/' + tabella + "/" + (rowid > 0 ? rowid + "/" : "") + tipo;
+  
   if ((rowid) || (tipo === "new")) {
-    if (altezza !== 0)
-      jQuery(div).height(altezza);
-    if (larghezza !== 0)
-      jQuery(div).width(larghezza);
+    if (open_new_window === 0) {
+        creadiv({"caratteristiche": {id: div.substr(1), class: "ui-widget ui-widget-content ui-jqdialog ui-corner-all"}});
+        if (altezza !== 0) {
+          jQuery(div).height(altezza);
+        }
+        if (larghezza !== 0) {
+          jQuery(div).width(larghezza);
+        }
+        
+        var editUrl = baseUrl + '/' + tabella + "/" + (rowid > 0 ? rowid + "/" : "") + tipo;
+        jQuery(div).append('<img src="' + imgwaiturl + '" style="position: absolute;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);" />')
+        jQuery(div).load(editUrl, parametripassa, function (responseText, textStatus) {
+          if (textStatus === 'error') {
+            jQuery(div).html('<p>Si è verificato il seguente errore sul server: </p><br/>' + responseText);
+          }
 
-    jQuery(div).append('<img src="' + imgwaiturl + '" style="position: absolute;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);" />')
-    jQuery(div).load(editUrl, parametripassa, function (responseText, textStatus) {
-      if (textStatus === 'error') {
-        jQuery(div).html('<p>Si è verificato il seguente errore sul server: </p><br/>' + responseText);
-      }
+          jQuery(div).show();
+          if (is_draggable) {
+            jQuery(div).draggable({
+              handle: divtesta
+            });
+          }
 
-      jQuery(div).show();
-      if (is_draggable) {
-        jQuery(div).draggable({
-          handle: divtesta
+          jQuery(div).resizable();
+
+          if (sinistra > 0 || alto > 0) {
+            var o = {
+              left: sinistra,
+              top: alto
+            };
+
+            jQuery(div).offset(o);
+          }
+
+          if (overlayopen) {
+            $(overlay).fadeIn('fast');
+            $(div).fadeIn('slow');
+          }
+          //Funzione di overlay per ottenere l'effetto di finestra in backgroud trasparenti nel caso di sovrapposizione
+          trasparenzadiv();
         });
-      }
-
-      jQuery(div).resizable();
-
-      if (sinistra > 0 || alto > 0) {
-        var o = {
-          left: sinistra,
-          top: alto
-        };
-
-        jQuery(div).offset(o);
-      }
-
-      if (overlayopen) {
-        $(overlay).fadeIn('fast');
-        $(div).fadeIn('slow');
-      }
-      //Funzione di overlay per ottenere l'effetto di finestra in backgroud trasparenti nel caso di sovrapposizione
-      trasparenzadiv();
-    });
+    } else {
+        var editUrl = baseUrl + '/' + tabella + "?id=" + rowid;
+        if (parametripassa !== "") {
+            window.open(editUrl + '&' + parametripassa);
+        } else {
+            window.open(editUrl);
+        }
+    }
   } else {
     if (tipo != "new") {
       $(nomedialog).dialog({

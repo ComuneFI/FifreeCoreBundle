@@ -57,14 +57,14 @@ class FiController extends Controller {
 
         $gestionepermessi = new gestionepermessiController();
         $gestionepermessi->setContainer($this->container);
-        $utentecorrente = $gestionepermessi->utentecorrenteAction();
+//        $utentecorrente = $gestionepermessi->utentecorrenteAction();
         $canRead = ($gestionepermessi->leggereAction(array("modulo" => $controller)) ? 1 : 0);
-
+        $idpassato = $request->get("id");
 
         $nomebundle = $namespace . $bundle . "Bundle";
 
         $em = $container->get("doctrine")->getManager();
-        $entities = $em->getRepository($nomebundle . ':' . $controller)->findAll();
+//        $entities = $em->getRepository($nomebundle . ':' . $controller)->findAll();
 
         $paricevuti = array("nomebundle" => $nomebundle, "nometabella" => $controller, "container" => $container);
 
@@ -94,10 +94,11 @@ class FiController extends Controller {
         $testata = json_encode($testatagriglia);
 
         return $this->render($nomebundle . ':' . $controller . ':index.html.twig', array(
-                    'entities' => $entities,
+//                    'entities' => $entities,
                     'nomecontroller' => $controller,
                     'testata' => $testata,
                     'canread' => $canRead,
+                    'idpassato' => $idpassato
         ));
     }
 

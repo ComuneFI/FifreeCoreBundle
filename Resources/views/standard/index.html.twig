@@ -51,7 +51,7 @@
                         /*
                          if (lastsel){
                          apriDettaglio({
-                         'tabella': '{{ nomecontroller }}',
+                         'tabella': '{#{ nomecontroller }#}',
                          'tipo': 'edit',
                          'id':lastsel,
                          'altezza': testata.altezzaform,
@@ -73,10 +73,30 @@
 
         $(document).ready(function() {
         {% if ((canread is defined and canread == 0)) %}
-                alert("Non si hanno i permessi per visualizzare questo contenuto");
+            alert("Non si hanno i permessi per visualizzare questo contenuto");
         {% else %}
-                caricaGriglia({{ testata|raw }});
-                $(".ui-jqgrid-bdiv").focus();
+            caricaGriglia({{ testata|raw }});
+            $(".ui-jqgrid-bdiv").focus();
+            {% if (idpassato is defined and idpassato is not null) %}
+                var datitestata = {{ testata|raw }};
+                {% if (idpassato > 0) %}
+                    apriDettaglio({
+                      'tabella': '{{ nomecontroller }}',
+                      'tipo': 'edit',
+                      'id': {{ idpassato }} ,
+                      'altezza': datitestata['altezzaform'],
+                      'larghezza': datitestata['larghezzaform']
+                    });
+                {% else %}
+                    apriDettaglio({
+                      'tabella': '{{ nomecontroller }}',
+                      'tipo': 'new',
+                      'id': 0,
+                      'altezza': datitestata['altezzaform'],
+                      'larghezza': datitestata['larghezzaform']
+                    });
+                {% endif %}
+            {% endif %}            
         {% endif %}
             });
     </script>
