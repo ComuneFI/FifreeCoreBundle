@@ -5,6 +5,22 @@
     "authors": [{
             "name": "Andrea Manzi",
             "email": "andrea.manzi@comune.fi.it"
+        },
+        {
+            "name": "Emidio Picariello",
+            "email": "emidio.picariello@comune.fi.it"
+        },
+        {
+            "name": "Angela Bianchi",
+            "email": "angela.bianchi@comune.fi.it"
+        },
+        {
+            "name": "Lisa Pescini",
+            "email": "lisa.pescini@comune.fi.it"
+        },
+        {
+            "name": "Paolo Pescini",
+            "email": "paolo.pescini@comune.fi.it"
         }],
     "keywords": [
         "Core fifree2 bundle"
@@ -16,8 +32,8 @@
         }
     },
     "require": {
-        "php": ">=5.4.0",
-        "vich/uploader-bundle": "^0.14.0",
+        "php": ">=5.5.0",
+        "vich/uploader-bundle": "~1.0",
         "oneup/flysystem-bundle": "@stable"
     },
     "extra": {
