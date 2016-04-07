@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
+use Fi\OsBundle\DependencyInjection\OsFunctions;
 
 class fifree2checkpermissionCommand extends ContainerAwareCommand {
 
@@ -31,8 +32,8 @@ class fifree2checkpermissionCommand extends ContainerAwareCommand {
         $uploaddir = $webdir . DIRECTORY_SEPARATOR . "/uploads";
 
 
-        $phpcmd = $this->getPHPExecutableFromPath();
-        if (self::isWindows()) {
+        $phpcmd = OsFunctions::getPHPExecutableFromPath();
+        if (OsFunctions::isWindows()) {
             echo "Non previsto in ambiente windows";
             exit;
         }
@@ -52,37 +53,9 @@ class fifree2checkpermissionCommand extends ContainerAwareCommand {
         if (!is_writable($logdir)) {
             echo $logdir . " non scrivibile";
         }
-        
+
         if (file_exists($uploaddir) && !is_writable($uploaddir)) {
             echo $uploaddir . " non scrivibile";
-        }
-
-        
-    }
-
-    static function getPHPExecutableFromPath() {
-        $phpPath = exec("which php");
-        if (file_exists($phpPath)) {
-            return $phpPath;
-        } elseif (file_exists("/usr/bin/php")) {
-            return "/usr/bin/php";
-        }
-        $paths = explode(PATH_SEPARATOR, getenv('PATH'));
-        foreach ($paths as $path) {
-            $php_executable = $path . DIRECTORY_SEPARATOR . "php" . (isset($_SERVER["WINDIR"]) ? ".exe" : "");
-            if (file_exists($php_executable) && is_file($php_executable)) {
-                return $php_executable;
-            }
-        }
-        echo "Php non trovato";
-        return FALSE; // not found
-    }
-
-    static function isWindows() {
-        if (PHP_OS == "WINNT") {
-            return true;
-        } else {
-            return false;
         }
     }
 

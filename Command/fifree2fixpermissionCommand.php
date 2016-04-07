@@ -31,8 +31,8 @@ class fifree2fixpermissionCommand extends ContainerAwareCommand {
         $uploaddir = $webdir . DIRECTORY_SEPARATOR . "uploads";
 
 
-        $phpcmd = $this->getPHPExecutableFromPath();
-        if (self::isWindows()) {
+        $phpcmd = OsFunctions::getPHPExecutableFromPath();
+        if (OsFunctions::isWindows()) {
             echo "Non previsto in ambiente windows";
             exit;
         }
@@ -46,9 +46,9 @@ class fifree2fixpermissionCommand extends ContainerAwareCommand {
          */
         $commandutil = 'sudo chown -R $(stat -c "%U:%G" ' . $rootdir . ') ' . $rootdir;
         echo $commandutil . "\n";
-        
-        
-        
+
+
+
         $commandutil = "APACHEUSER=`ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data' | grep -v root | head -1 | cut -d\  -f1`";
         echo $commandutil . "\n";
         $commandutil = 'sudo setfacl -R -m u:"$APACHEUSER":rwX -m u:`whoami`:rwX ' . $cachedir;
@@ -96,32 +96,6 @@ class fifree2fixpermissionCommand extends ContainerAwareCommand {
         //$outputshell = shell_exec($commandutil . " 2>&1");  //system call
         //echo $outputshell;
         echo $commandutil . "\n";
-    }
-
-    static function getPHPExecutableFromPath() {
-        $phpPath = exec("which php");
-        if (file_exists($phpPath)) {
-            return $phpPath;
-        } elseif (file_exists("/usr/bin/php")) {
-            return "/usr/bin/php";
-        }
-        $paths = explode(PATH_SEPARATOR, getenv('PATH'));
-        foreach ($paths as $path) {
-            $php_executable = $path . DIRECTORY_SEPARATOR . "php" . (isset($_SERVER["WINDIR"]) ? ".exe" : "");
-            if (file_exists($php_executable) && is_file($php_executable)) {
-                return $php_executable;
-            }
-        }
-        echo "Php non trovato";
-        return FALSE; // not found
-    }
-
-    static function isWindows() {
-        if (PHP_OS == "WINNT") {
-            return true;
-        } else {
-            return false;
-        }
     }
 
 }
