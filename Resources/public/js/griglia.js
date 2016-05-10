@@ -1101,7 +1101,7 @@ function apriDettaglio(parametri) {
   
   if ((rowid) || (tipo === "new")) {
     if (open_new_window === 0) {
-        creadiv({"caratteristiche": {id: div.substr(1), class: "ui-widget ui-widget-content ui-jqdialog ui-corner-all"}});
+        creadiv({"caratteristiche": {"id": div.substr(1), "class": "ui-widget ui-widget-content ui-jqdialog ui-corner-all"}});
         if (altezza !== 0) {
           jQuery(div).height(altezza);
         }
@@ -1193,9 +1193,9 @@ function gestioneAllegati(parametri) {
   var div = parametri['div'] || "#gestioneallegati";
 
   creadiv({
-    caratteristiche: {
-      id: div.substr(1),
-      class: "ui-widget ui-widget-content ui-jqdialog ui-corner-all ui-draggable ui-resizable"
+    "caratteristiche": {
+      "id": div.substr(1),
+      "class": "ui-widget ui-widget-content ui-jqdialog ui-corner-all ui-draggable ui-resizable"
     },
     draggable: 1,
     divtesta: "#testataallegatipopup",
