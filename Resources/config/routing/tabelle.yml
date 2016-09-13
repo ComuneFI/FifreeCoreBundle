@@ -1,71 +1,71 @@
-tabelle:
+Tabelle:
     path:  /
-    defaults: { _controller: "FiCoreBundle:tabelle:index" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:index" }
 
-tabelle_configura:
+Tabelle_configura:
     path:  /configura/{nometabella}
-    defaults: { _controller: "FiCoreBundle:tabelle:configura" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:configura" }
     requirements: { methods: post|put|get }
 
-tabelle_stampatabella:
+Tabelle_stampatabella:
     path:  /stampatabella/{nometabella}
-    defaults: { _controller: "FiCoreBundle:tabelle:stampatabella" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:stampatabella" }
     requirements: { methods: post|put|get }
     
-tabelle_esportaexceltabella:
+Tabelle_esportaexceltabella:
     path:  /esportaexcel/{nometabella}
-    defaults: { _controller: "FiCoreBundle:tabelle:esportaexcel" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:esportaexcel" }
     requirements: { methods: post|put|get }
     
-tabelle_grigliapopup:
+Tabelle_grigliapopup:
     path:  /{chiamante}/grigliapopup
-    defaults: { _controller: "FiCoreBundle:tabelle:grigliapopup" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:grigliapopup" }
     requirements: { methods: post|put|get }
 
-tabelle_show:
+Tabelle_show:
     path:  /{id}/show
-    defaults: { _controller: "FiCoreBundle:tabelle:show" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:show" }
 
-tabelle_new:
+Tabelle_new:
     path:  /new
-    defaults: { _controller: "FiCoreBundle:tabelle:new" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:new" }
 
-tabelle_create:
+Tabelle_create:
     path:  /create
-    defaults: { _controller: "FiCoreBundle:tabelle:create" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:create" }
     requirements: { methods: post }
 
-tabelle_edit:
+Tabelle_edit:
     path:  /{id}/edit
-    defaults: { _controller: "FiCoreBundle:tabelle:edit" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:edit" }
 
-tabelle_aggiorna:
+Tabelle_aggiorna:
     path:  /aggiorna
-    defaults: { _controller: "FiCoreBundle:tabelle:aggiorna" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:aggiorna" }
     requirements: { methods: post|put }
 
-tabelle_update:
+Tabelle_update:
     path:  /{id}/update
-    defaults: { _controller: "FiCoreBundle:tabelle:update" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:update" }
     requirements: { methods: post|put }
 
-tabelle_delete:
+Tabelle_delete:
     path:  /{id}/delete
-    defaults: { _controller: "FiCoreBundle:tabelle:delete" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:delete" }
     requirements: { methods: post|delete }
     
-tabelle_deletemultiple:
+Tabelle_deletemultiple:
     path:  /delete
-    defaults: { _controller: "FiCoreBundle:tabelle:delete" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:delete" }
     requirements: { methods: post|delete }
 
-tabelle_griglia:
+Tabelle_griglia:
     path:  /griglia
-    defaults: { _controller: "FiCoreBundle:tabelle:griglia" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:Griglia" }
     requirements: { methods: get }
     
-tabelle_listacampitabella:
+Tabelle_listacampitabella:
     path:  /listacampitabella
-    defaults: { _controller: "FiCoreBundle:tabelle:listacampitabella" }
+    defaults: { _controller: "FiCoreBundle:Tabelle:listacampitabella" }
     requirements: { methods: get }
     

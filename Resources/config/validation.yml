@@ -1,4 +1,4 @@
-Fi\CoreBundle\Entity\ffprincipale:
+Fi\CoreBundle\Entity\Ffprincipale:
     properties:
         descrizione:
             - NotBlank: ~

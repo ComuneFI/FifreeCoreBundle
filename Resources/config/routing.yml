@@ -4,11 +4,11 @@ fi_core_homepage:
 
 FiCoreBundle_Ffprincipale:
     resource: "@FiCoreBundle/Resources/config/routing/ffprincipale.yml"
-    prefix:   /ffprincipale
+    prefix:   /Ffprincipale
 
 FiCoreBundle_Ffsecondaria:
     resource: "@FiCoreBundle/Resources/config/routing/ffsecondaria.yml"
-    prefix:   /ffsecondaria    
+    prefix:   /Ffsecondaria    
 
 FiCoreBundle_Funzioni:
     resource: "@FiCoreBundle/Resources/config/routing/funzioni.yml"
@@ -16,32 +16,32 @@ FiCoreBundle_Funzioni:
         
 FiCoreBundle_ruoli:
     resource: "@FiCoreBundle/Resources/config/routing/ruoli.yml"
-    prefix:   /ruoli
+    prefix:   /Ruoli
         
 FiCoreBundle_operatori:
     resource: "@FiCoreBundle/Resources/config/routing/operatori.yml"
-    prefix:   /operatori
+    prefix:   /Operatori
     
 FiCoreBundle_permessi:
     resource: "@FiCoreBundle/Resources/config/routing/permessi.yml"
-    prefix:   /permessi
+    prefix:   /Permessi
     
 FiCoreBundle_tabelle:
     resource: "@FiCoreBundle/Resources/config/routing/tabelle.yml"
-    prefix:   /tabelle
+    prefix:   /Tabelle
 
 FiCoreBundle_allegati:
     resource: "@FiCoreBundle/Resources/config/routing/allegati.yml"
-    prefix:   /allegati
+    prefix:   /Allegati
 
 
 FiCoreBundle_opzioniTabella: 
   resource: "@FiCoreBundle/Resources/config/routing/opzionitabella.yml"
-  prefix: /opzioniTabella
+  prefix: /OpzioniTabella
 
 FiCoreBundle_menuApplicazione: 
   resource: "@FiCoreBundle/Resources/config/routing/menuapplicazione.yml"
-  prefix: /menuApplicazione
+  prefix: /MenuApplicazione
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"

@@ -3,14 +3,12 @@
 namespace Fi\CoreBundle\DependencyInjection;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DomCrawler\Crawler;
-use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Symfony\Component\HttpFoundation\Response;
 
-class FifreeTest extends WebTestCase {
-
+class FifreeTest extends WebTestCase
+{
     private $clientNonAutorizzato;
     private $clientAutorizzato;
     private $crawler;
@@ -21,45 +19,55 @@ class FifreeTest extends WebTestCase {
      */
     private $em;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->clientNonAutorizzato = static::createClient();
-        $this->clientAutorizzato = $this->createAuthorizedClient($this->clientNonAutorizzato);
+        $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient());
 
         $this->em = $this->clientAutorizzato->getContainer()->get('doctrine')->getManager();
     }
 
-    public function setClassName($testclassname) {
+    public function setClassName($testclassname)
+    {
         $this->testclassname = $testclassname;
     }
 
-    public function getClassName() {
+    public function getClassName()
+    {
         return $this->testclassname;
     }
 
-    public function getEm() {
+    public function getEm()
+    {
         return $this->em;
     }
 
-    public function getEntityManager() {
+    public function getEntityManager()
+    {
         return $this->em;
     }
 
-    public function getClientNonAutorizzato() {
+    public function getClientNonAutorizzato()
+    {
         return $this->clientNonAutorizzato;
     }
 
-    public function getClientAutorizzato() {
+    public function getClientAutorizzato()
+    {
         return $this->clientAutorizzato;
     }
 
-    public function getControllerNameByClassName() {
+    public function getControllerNameByClassName()
+    {
         $classnamearray = explode('\\', $this->testclassname);
         $classname = $classnamearray[count($classnamearray) - 1];
         $controllerName = preg_replace('/ControllerTest/', '', $classname);
+
         return $controllerName;
     }
 
-    public function fifreeDbBaseTest($entity) {
+    public function fifreeDbBaseTest($entity)
+    {
         if (!$this->clientAutorizzato->getContainer()->getParameter('testdb')) {
             return true;
         }
@@ -86,14 +94,15 @@ class FifreeTest extends WebTestCase {
         //$this->assertGreaterThan(0, $crawler->filter('corsi')->count());
     }
 
-    public function fifreeBaseTest() {
+    public function fifreeBaseTest()
+    {
         //ini_set('memory_limit', '32M');
         if (!$this->clientAutorizzato->getContainer()->getParameter('testroutes')) {
             return true;
         }
 
         $controller = $this->getControllerNameByClassName();
-        $url = $this->clientAutorizzato->getContainer()->get('router')->generate($controller . '_container', array(), false);
+        $url = $this->clientAutorizzato->getContainer()->get('router')->generate($controller.'_container', array(), false);
         $this->clientAutorizzato->request('GET', $url);
 
         //$crawler = new Crawler($client->getResponse()->getContent());
@@ -109,13 +118,18 @@ class FifreeTest extends WebTestCase {
         //$this->assertGreaterThan(0, $crawler->filter('corsi')->count());
     }
 
-    static function createAuthorizedClient($client) {
+    public static function createAuthorizedClient($client)
+    {
         $container = $client->getContainer();
 
         $session = $container->get('session');
-        /** @var $userManager \FOS\UserBundle\Doctrine\UserManager */
+        /**
+         * @var \FOS\UserBundle\Doctrine\UserManager
+         */
         $userManager = $container->get('fos_user.user_manager');
-        /** @var $loginManager \FOS\UserBundle\Security\LoginManager */
+        /**
+         * @var \FOS\UserBundle\Security\LoginManager
+         */
         $loginManager = $container->get('fos_user.security.login_manager');
         $firewallName = $container->getParameter('fos_user.firewall_name');
 
@@ -124,7 +138,7 @@ class FifreeTest extends WebTestCase {
         $loginManager->loginUser($firewallName, $user);
 
         // save the login token into the session and put it in a cookie
-        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.context')->getToken()));
+        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.context')->getToken()));
         $container->get('session')->save();
         $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
 
@@ -132,9 +146,10 @@ class FifreeTest extends WebTestCase {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
         $this->em->close();
     }

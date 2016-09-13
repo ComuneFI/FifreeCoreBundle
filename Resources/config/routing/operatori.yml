@@ -1,40 +1,40 @@
-operatori:
+Operatori:
     path:  /
-    defaults: { _controller: "FiCoreBundle:operatori:index" }
+    defaults: { _controller: "FiCoreBundle:Operatori:index" }
 
-operatori_show:
+Operatori_show:
     path:  /{id}/show
-    defaults: { _controller: "FiCoreBundle:operatori:show" }
+    defaults: { _controller: "FiCoreBundle:Operatori:show" }
 
-operatori_new:
+Operatori_new:
     path:  /new
-    defaults: { _controller: "FiCoreBundle:operatori:new" }
+    defaults: { _controller: "FiCoreBundle:Operatori:new" }
 
-operatori_create:
+Operatori_create:
     path:  /create
-    defaults: { _controller: "FiCoreBundle:operatori:create" }
+    defaults: { _controller: "FiCoreBundle:Operatori:create" }
     requirements: { methods: post }
 
-operatori_edit:
+Operatori_edit:
     path:  /{id}/edit
-    defaults: { _controller: "FiCoreBundle:operatori:edit" }
+    defaults: { _controller: "FiCoreBundle:Operatori:edit" }
 
-operatori_update:
+Operatori_update:
     path:  /{id}/update
-    defaults: { _controller: "FiCoreBundle:operatori:update" }
+    defaults: { _controller: "FiCoreBundle:Operatori:update" }
     requirements: { methods: post|put }
 
-operatori_delete:
+Operatori_delete:
     path:  /{id}/delete
-    defaults: { _controller: "FiCoreBundle:operatori:delete" }
+    defaults: { _controller: "FiCoreBundle:Operatori:delete" }
     requirements: { methods: post|delete }
 
-operatori_deletemultiple:
+Operatori_deletemultiple:
     path:  /delete
-    defaults: { _controller: "FiCoreBundle:operatori:delete" }
+    defaults: { _controller: "FiCoreBundle:Operatori:delete" }
     requirements: { methods: post|delete }
 
-operatori_griglia:
+Operatori_griglia:
     path:  /griglia
-    defaults: { _controller: "FiCoreBundle:operatori:griglia" }
+    defaults: { _controller: "FiCoreBundle:Operatori:Griglia" }
     requirements: { methods: get }

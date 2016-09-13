@@ -1,46 +1,46 @@
-ffprincipale:
+Ffprincipale:
     path:  /
-    defaults: { _controller: "FiCoreBundle:ffprincipale:index" }
+    defaults: { _controller: "FiCoreBundle:Ffprincipale:index" }
 
-ffprincipale_new:
+Ffprincipale_new:
     path:  /new
-    defaults: { _controller: "FiCoreBundle:ffprincipale:new" }
+    defaults: { _controller: "FiCoreBundle:Ffprincipale:new" }
 
-ffprincipale_create:
+Ffprincipale_create:
     path:  /create
-    defaults: { _controller: "FiCoreBundle:ffprincipale:create" }
+    defaults: { _controller: "FiCoreBundle:Ffprincipale:create" }
     requirements: { methods: post }
 
-ffprincipale_edit:
+Ffprincipale_edit:
     path:  /{id}/edit
-    defaults: { _controller: "FiCoreBundle:ffprincipale:edit" }
+    defaults: { _controller: "FiCoreBundle:Ffprincipale:edit" }
 
-ffprincipale_update:
+Ffprincipale_update:
     path:  /{id}/update
-    defaults: { _controller: "FiCoreBundle:ffprincipale:update" }
+    defaults: { _controller: "FiCoreBundle:Ffprincipale:update" }
     requirements: { methods: post|put }
 
-ffprincipale_aggiorna:
+Ffprincipale_aggiorna:
     path:  /aggiorna
-    defaults: { _controller: "FiCoreBundle:ffprincipale:aggiorna" }
+    defaults: { _controller: "FiCoreBundle:Ffprincipale:aggiorna" }
     requirements: { methods: post|put }
 
-ffprincipale_delete:
+Ffprincipale_delete:
     path:  /{id}/delete
-    defaults: { _controller: "FiCoreBundle:ffprincipale:delete" }
+    defaults: { _controller: "FiCoreBundle:Ffprincipale:delete" }
     requirements: { methods: post|delete }
 
-ffprincipale_deletemultiple:
+Ffprincipale_deletemultiple:
     path:  /delete
-    defaults: { _controller: "FiCoreBundle:ffprincipale:delete" }
+    defaults: { _controller: "FiCoreBundle:Ffprincipale:delete" }
     requirements: { methods: post|delete }
 
-ffprincipale_griglia:
+Ffprincipale_griglia:
     path:  /griglia
-    defaults: { _controller: "FiCoreBundle:ffprincipale:griglia" }
+    defaults: { _controller: "FiCoreBundle:Ffprincipale:Griglia" }
     requirements: { methods: get }
 
-ffprincipale_esportaexcel:
+Ffprincipale_esportaexcel:
     path:  /esportaexcel
-    defaults: { _controller: "FiCoreBundle:ffprincipale:esportaexcel" }
+    defaults: { _controller: "FiCoreBundle:Ffprincipale:esportaexcel" }
     requirements: { methods: get|post }

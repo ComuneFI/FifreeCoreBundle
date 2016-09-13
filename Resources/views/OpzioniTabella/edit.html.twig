@@ -1,0 +1,26 @@
+{% include 'FiCoreBundle:Standard:edit.html.twig' %}
+
+<script type="text/javascript">
+
+    var availableTags = [
+        "titolo", "showedit", "captionedit", "showadd", "captionadd", "showdel", "captiondel", "showprint", "captionprint",
+        "multisearch", "multisel", "showconfig", "captionconfig", "editinline", "altezzaform", "larghezzaform",
+        "sinistraform", "altezzagriglia", "larghezzagriglia", "is_draggable", "numrighe", "sortname", "sortorder", "nomelist",
+        "nomepager", "tastonascondi", "tastochiudi", "percorsogriglia", "div", "chiamante", "parametritesta", "parametrigriglia",
+        "richiamata", "selezionaprimo", "nascondicaption", "nascondifilter", "ridimensionabile",
+        "filterToolbar_stringResult", "filterToolbar_searchOnEnter", "filterToolbar_searchOperators", "filterToolbar_clearSearch"
+    ];
+
+    $("#fi_corebundle_opzionitabellatype_parametro").autocomplete({
+        source: availableTags,
+        minLength: 0,
+        autoFocus: true,
+        appendTo: "#corpodettaglio"
+    });
+
+    $("#fi_corebundle_opzionitabellatype_parametro").bind('focus', function() {
+        $(this).autocomplete("search");
+    });
+
+</script>
+

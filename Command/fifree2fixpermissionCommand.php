@@ -3,37 +3,33 @@
 namespace Fi\CoreBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
 
-class fifree2fixpermissionCommand extends ContainerAwareCommand {
-
-    protected function configure() {
+class fifree2fixpermissionCommand extends ContainerAwareCommand
+{
+    protected function configure()
+    {
         $this
-                ->setName('fifree2:fixpermission')
-                ->setDescription('Correzione permessi ambiente fifree')
-                ->setHelp('Sistema i privilegi delle cartelle del progetto')
-        ;
+            ->setName('fifree2:fixpermission')
+            ->setDescription('Correzione permessi ambiente fifree')
+            ->setHelp('Sistema i privilegi delle cartelle del progetto');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
-        $rootdir = $this->getContainer()->get('kernel')->getRootDir() . "/..";
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $rootdir = $this->getContainer()->get('kernel')->getRootDir().'/..';
         $appdir = $this->getContainer()->get('kernel')->getRootDir();
-        $cachedir = $appdir . DIRECTORY_SEPARATOR . "cache";
-        $logdir = $appdir . DIRECTORY_SEPARATOR . "logs";
-        $tmpdir = $appdir . DIRECTORY_SEPARATOR . "tmp";
-        $srcdir = $rootdir . DIRECTORY_SEPARATOR . "src";
-        $webdir = $rootdir . DIRECTORY_SEPARATOR . "web";
-        $uploaddir = $webdir . DIRECTORY_SEPARATOR . "uploads";
-
+        $cachedir = $appdir.DIRECTORY_SEPARATOR.'cache';
+        $logdir = $appdir.DIRECTORY_SEPARATOR.'logs';
+        $tmpdir = $appdir.DIRECTORY_SEPARATOR.'tmp';
+        $srcdir = $rootdir.DIRECTORY_SEPARATOR.'src';
+        $webdir = $rootdir.DIRECTORY_SEPARATOR.'web';
+        $uploaddir = $webdir.DIRECTORY_SEPARATOR.'uploads';
 
         $phpcmd = OsFunctions::getPHPExecutableFromPath();
         if (OsFunctions::isWindows()) {
-            echo "Non previsto in ambiente windows";
+            echo 'Non previsto in ambiente windows';
             exit;
         }
 
@@ -44,60 +40,54 @@ class fifree2fixpermissionCommand extends ContainerAwareCommand {
           $commandutil = $phpcmd . " " .$appdir . DIRECTORY_SEPARATOR . "console cache:clear --env=prod";
           echo shell_exec($commandutil . " 2>&1");  //system call
          */
-        $commandutil = 'sudo chown -R $(stat -c "%U:%G" ' . $rootdir . ') ' . $rootdir;
-        echo $commandutil . "\n";
-
-
+        $commandutil = 'sudo chown -R $(stat -c "%U:%G" '.$rootdir.') '.$rootdir;
+        echo $commandutil."\n";
 
         $commandutil = "APACHEUSER=`ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data' | grep -v root | head -1 | cut -d\  -f1`";
-        echo $commandutil . "\n";
-        $commandutil = 'sudo setfacl -R -m u:"$APACHEUSER":rwX -m u:`whoami`:rwX ' . $cachedir;
-        echo $commandutil . "\n";
-        $commandutil = 'sudo setfacl -R -m u:"$APACHEUSER":rwX -m u:`whoami`:rwX ' . $logdir;
-        echo $commandutil . "\n";
-        $commandutil = 'sudo setfacl -dR -m u:"$APACHEUSER":rwX -m u:`whoami`:rwX ' . $cachedir;
-        echo $commandutil . "\n";
-        $commandutil = 'sudo setfacl -dR -m u:"$APACHEUSER":rwX -m u:`whoami`:rwX ' . $logdir;
-        echo $commandutil . "\n";
-
+        echo $commandutil."\n";
+        $commandutil = 'sudo setfacl -R -m u:"$APACHEUSER":rwX -m u:`whoami`:rwX '.$cachedir;
+        echo $commandutil."\n";
+        $commandutil = 'sudo setfacl -R -m u:"$APACHEUSER":rwX -m u:`whoami`:rwX '.$logdir;
+        echo $commandutil."\n";
+        $commandutil = 'sudo setfacl -dR -m u:"$APACHEUSER":rwX -m u:`whoami`:rwX '.$cachedir;
+        echo $commandutil."\n";
+        $commandutil = 'sudo setfacl -dR -m u:"$APACHEUSER":rwX -m u:`whoami`:rwX '.$logdir;
+        echo $commandutil."\n";
 
         //Si da il 755 alla cartella principale e sottocartelle del progetto
-        $commandutil = 'sudo chmod -R 755 ' . $rootdir;
+        $commandutil = 'sudo chmod -R 755 '.$rootdir;
         //$outputshell = shell_exec($commandutil . " 2>&1");  //system call
         //echo $outputshell;
-        echo $commandutil . "\n";
+        echo $commandutil."\n";
 
         //Si da il full access alla cartella principale e sottocartelle tmp
-        $commandutil = 'sudo chmod -R 777 ' . $tmpdir;
+        $commandutil = 'sudo chmod -R 777 '.$tmpdir;
         //$outputshell = shell_exec($commandutil . " 2>&1");  //system call
         //echo $outputshell;
-        echo $commandutil . "\n";
+        echo $commandutil."\n";
 
         //Si da il full access solo alla cartella principale src
-        $commandutil = 'sudo chmod 777 ' . $srcdir;
+        $commandutil = 'sudo chmod 777 '.$srcdir;
         //$outputshell = shell_exec($commandutil . " 2>&1");  //system call
         //echo $outputshell;
-        echo $commandutil . "\n";
+        echo $commandutil."\n";
 
         //Si da il full access alla cartella principale e sottocartelle log
-        $commandutil = 'sudo chmod -R 777 ' . $logdir;
+        $commandutil = 'sudo chmod -R 777 '.$logdir;
         //$outputshell = shell_exec($commandutil . " 2>&1");  //system call
         //echo $outputshell;
-        echo $commandutil . "\n";
+        echo $commandutil."\n";
 
         //Si da il full access alla cartella principale e sottocartelle cache
-        $commandutil = 'sudo chmod -R 777 ' . $cachedir;
+        $commandutil = 'sudo chmod -R 777 '.$cachedir;
         //$outputshell = shell_exec($commandutil . " 2>&1");  //system call
         //echo $outputshell;
-        echo $commandutil . "\n";
+        echo $commandutil."\n";
 
         //Si da il full access alla cartella principale e sottocartelle upload
-        $commandutil = 'sudo chmod -R 777 ' . $uploaddir;
+        $commandutil = 'sudo chmod -R 777 '.$uploaddir;
         //$outputshell = shell_exec($commandutil . " 2>&1");  //system call
         //echo $outputshell;
-        echo $commandutil . "\n";
+        echo $commandutil."\n";
     }
-
 }
-
-?>

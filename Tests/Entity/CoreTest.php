@@ -4,14 +4,15 @@ namespace Fi\CoreBundle\Tests\Entity;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class CoreTest extends KernelTestCase {
-
+class CoreTest extends KernelTestCase
+{
     /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $em;
 
-    public function setUp() {
+    public function setUp()
+    {
         self::bootKernel();
 
         $this->em = static::$kernel->getContainer()
@@ -19,34 +20,38 @@ class CoreTest extends KernelTestCase {
                 ->getManager();
     }
 
-    public function testfindBySuperadmin() {
+    public function testfindBySuperadmin()
+    {
         $operatori = $this->em
-                ->getRepository('FiCoreBundle:ruoli')
+                ->getRepository('FiCoreBundle:Ruoli')
                 ->findBy(array('is_superadmin' => true));
 
-        $this->assertCount(1, $operatori, "Non trovato il ruolo super admin");
+        $this->assertCount(1, $operatori, 'Non trovato il ruolo super admin');
     }
 
-    public function testfindruoli() {
+    public function testfindruoli()
+    {
         $operatori = $this->em
-                ->getRepository('FiCoreBundle:ruoli')
+                ->getRepository('FiCoreBundle:Ruoli')
                 ->findAll()
         ;
-        $this->assertGreaterThan(0, count($operatori), "Non trovati ruoli");
+        $this->assertGreaterThan(0, count($operatori), 'Non trovati ruoli');
     }
 
-    public function testfindoperatori() {
+    public function testfindoperatori()
+    {
         $operatori = $this->em
-                ->getRepository('FiCoreBundle:operatori')
+                ->getRepository('FiCoreBundle:Operatori')
                 ->findAll()
         ;
-        $this->assertGreaterThan(0, count($operatori), "Non trovati operatori");
+        $this->assertGreaterThan(0, count($operatori), 'Non trovati operatori');
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
         $this->em->close();
     }
@@ -81,6 +86,6 @@ class CoreTest extends KernelTestCase {
       } */
 }
 
-class DummyUser {
-    
+class DummyUser
+{
 }

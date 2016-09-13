@@ -2,7 +2,7 @@
 
 namespace Fi\CoreBundle\Twig\Extension;
 
-use Fi\CoreBundle\Controller\gestionepermessiController;
+use Fi\CoreBundle\Controller\GestionepermessiController;
 
 class PermessiTwigExtension extends \Twig_Extension {
 
@@ -38,7 +38,7 @@ class PermessiTwigExtension extends \Twig_Extension {
 
   public function singoloPermesso($lettera) {
 
-    $gestionepermessi = new gestionepermessiController();
+    $gestionepermessi = new GestionepermessiController();
     $gestionepermessi->setContainer($this->container);
 
     $parametri = array();

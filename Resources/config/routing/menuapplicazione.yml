@@ -1,41 +1,41 @@
-menuApplicazione_container:
+MenuApplicazione_container:
     path:  /
-    defaults: { _controller: "FiCoreBundle:menuApplicazione:index" }
+    defaults: { _controller: "FiCoreBundle:MenuApplicazione:index" }
 
-menuApplicazione_new:
+MenuApplicazione_new:
     path:  /new
-    defaults: { _controller: "FiCoreBundle:menuApplicazione:new" }
+    defaults: { _controller: "FiCoreBundle:MenuApplicazione:new" }
 
-menuApplicazione_create:
+MenuApplicazione_create:
     path:  /create
-    defaults: { _controller: "FiCoreBundle:menuApplicazione:create" }
+    defaults: { _controller: "FiCoreBundle:MenuApplicazione:create" }
     requirements: { methods: post }
 
-menuApplicazione_edit:
+MenuApplicazione_edit:
     path:  /{id}/edit
-    defaults: { _controller: "FiCoreBundle:menuApplicazione:edit" }
+    defaults: { _controller: "FiCoreBundle:MenuApplicazione:edit" }
 
-menuApplicazione_update:
+MenuApplicazione_update:
     path:  /{id}/update
-    defaults: { _controller: "FiCoreBundle:menuApplicazione:update" }
+    defaults: { _controller: "FiCoreBundle:MenuApplicazione:update" }
     requirements: { methods: post|put }
 
-menuApplicazione_aggiorna:
+MenuApplicazione_aggiorna:
     path:  /aggiorna
-    defaults: { _controller: "FiCoreBundle:menuApplicazione:aggiorna" }
+    defaults: { _controller: "FiCoreBundle:MenuApplicazione:aggiorna" }
     requirements: { methods: post|put }
 
-menuApplicazione_delete:
+MenuApplicazione_delete:
     path:  /{id}/delete
-    defaults: { _controller: "FiCoreBundle:menuApplicazione:delete" }
+    defaults: { _controller: "FiCoreBundle:MenuApplicazione:delete" }
     requirements: { methods: post|delete }
 
-menuApplicazione_deletemultiple:
+MenuApplicazione_deletemultiple:
     path:  /delete
-    defaults: { _controller: "FiCoreBundle:menuApplicazione:delete" }
+    defaults: { _controller: "FiCoreBundle:MenuApplicazione:delete" }
     requirements: { methods: post|delete }
 
-menuApplicazione_griglia:
+MenuApplicazione_griglia:
     path:  /griglia
-    defaults: { _controller: "FiCoreBundle:menuApplicazione:griglia" }
+    defaults: { _controller: "FiCoreBundle:MenuApplicazione:Griglia" }
     requirements: { methods: get }

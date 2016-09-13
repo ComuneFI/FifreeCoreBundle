@@ -2,13 +2,14 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-class jsonResponse {
-
+class jsonResponse
+{
     private $errcode = -123456789;
-    private $message = "";
+    private $message = '';
     private $parms = array();
 
-    public function __construct($errcode, $message, $parms = null) {
+    public function __construct($errcode, $message, $parms = null)
+    {
         $this->errcode = $errcode;
         $this->message = $message;
         if ($parms) {
@@ -16,18 +17,18 @@ class jsonResponse {
         }
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getEncodedResponse();
     }
 
-    public function getEncodedResponse() {
-        return json_encode(array("errcode" => $this->errcode, "message" => $this->message, "parms" => $this->parms));
+    public function getEncodedResponse()
+    {
+        return json_encode(array('errcode' => $this->errcode, 'message' => $this->message, 'parms' => $this->parms));
     }
 
-    public function getArrayResponse() {
-        return array("errcode" => $this->errcode, "message" => $this->message, "parms" => $this->parms);
+    public function getArrayResponse()
+    {
+        return array('errcode' => $this->errcode, 'message' => $this->message, 'parms' => $this->parms);
     }
-
 }
-
-?>

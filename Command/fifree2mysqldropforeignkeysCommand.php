@@ -3,25 +3,24 @@
 namespace Fi\CoreBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class fifree2mysqldropforeignkeysCommand extends ContainerAwareCommand {
-
-    protected function configure() {
+class fifree2mysqldropforeignkeysCommand extends ContainerAwareCommand
+{
+    protected function configure()
+    {
         $this
-                ->setName('fifree2:mysqldropforeignkeys')
-                ->setDescription('Cancella le foreign keys dal db')
+            ->setName('fifree2:mysqldropforeignkeys')
+            ->setDescription('Cancella le foreign keys dal db')
         //->setHelp('Modifica il motore mysql delle tabelle')
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         set_time_limit(0);
         ini_set('memory_limit', '-1');
-
 
         $inizio = microtime(true);
         /* @var $em \Doctrine\ORM\EntityManager */
@@ -34,7 +33,7 @@ class fifree2mysqldropforeignkeysCommand extends ContainerAwareCommand {
         $conn = $em->getConnection();
         $rows = $conn->fetchAll($sql);
         foreach ($rows as $row) {
-            $fk = $row["FKNAME"];
+            $fk = $row['FKNAME'];
             $sqlalter = $fk;
             $output->writeln($sqlalter);
             $conn->exec($sqlalter);
@@ -42,12 +41,9 @@ class fifree2mysqldropforeignkeysCommand extends ContainerAwareCommand {
 
         //var_dump($sql);exit;
         $fine = microtime(true);
-        $tempo = gmdate("H:i:s", $fine - $inizio);
+        $tempo = gmdate('H:i:s', $fine - $inizio);
 
-        $text = "Fine in " . $tempo . " secondi";
+        $text = 'Fine in '.$tempo.' secondi';
         $output->writeln($text);
     }
-
 }
-
-?>

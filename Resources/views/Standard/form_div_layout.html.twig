@@ -1,0 +1,13 @@
+{% block form_errors %}
+{% spaceless %}
+    {% import "FiCoreBundle:Standard:form.html.twig" as macros %}
+    {% if not form.parent and not form.vars.valid %}
+         {% import _self as forms %}
+        <div class="alert alert-block alert-error">
+            {{ macros.display_error(form) }}
+        </div>
+    {% else %}
+        {#{ parent() }#}
+    {% endif %}
+{% endspaceless %}
+{% endblock %}

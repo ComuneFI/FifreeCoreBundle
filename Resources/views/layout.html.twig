@@ -23,11 +23,11 @@
             </div>
         {% endfor %}
         {% block menu %}
-            {{ render(controller('FiCoreBundle:menu:generamenu')) }}
+            {{ render(controller('FiCoreBundle:Menu:generamenu')) }}
         {% endblock %}
 
         {% block contextMenu %}
-            {{ include('FiCoreBundle:menu:contextMenu.html.twig') }}
+            {{ include('FiCoreBundle:Menu:contextMenu.html.twig') }}
         {% endblock %}
 
         {% block fibody %}

@@ -1,0 +1,41 @@
+Fi\CoreBundle\Entity\Permessi:
+    type: entity
+    table: permessi
+    indexes:
+        fk_permessi_operatori1_idx:
+            columns: [operatori_id]
+        fk_permessi_ruoli1_idx:
+            columns: [ruoli_id]
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        modulo:
+            type: string
+            length: 255
+            nullable: true
+        crud:
+            type: string
+            length: 45
+            nullable: true
+        operatori_id:
+            type: integer
+            nullable: true
+        ruoli_id:
+            type: integer
+            nullable: true
+    manyToOne:
+        operatori:
+            targetEntity: Operatori
+            inversedBy: permessis
+            joinColumn:
+                name: operatori_id
+                referencedColumnName: id
+        ruoli:
+            targetEntity: Ruoli
+            inversedBy: permessis
+            joinColumn:
+                name: ruoli_id
+                referencedColumnName: id

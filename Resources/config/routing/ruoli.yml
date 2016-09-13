@@ -1,40 +1,40 @@
-ruoli:
+Ruoli:
     path:  /
-    defaults: { _controller: "FiCoreBundle:ruoli:index" }
+    defaults: { _controller: "FiCoreBundle:Ruoli:index" }
 
-ruoli_show:
+Ruoli_show:
     path:  /{id}/show
-    defaults: { _controller: "FiCoreBundle:ruoli:show" }
+    defaults: { _controller: "FiCoreBundle:Ruoli:show" }
 
-ruoli_new:
+Ruoli_new:
     path:  /new
-    defaults: { _controller: "FiCoreBundle:ruoli:new" }
+    defaults: { _controller: "FiCoreBundle:Ruoli:new" }
 
-ruoli_create:
+Ruoli_create:
     path:  /create
-    defaults: { _controller: "FiCoreBundle:ruoli:create" }
+    defaults: { _controller: "FiCoreBundle:Ruoli:create" }
     requirements: { methods: post }
 
-ruoli_edit:
+Ruoli_edit:
     path:  /{id}/edit
-    defaults: { _controller: "FiCoreBundle:ruoli:edit" }
+    defaults: { _controller: "FiCoreBundle:Ruoli:edit" }
 
-ruoli_update:
+Ruoli_update:
     path:  /{id}/update
-    defaults: { _controller: "FiCoreBundle:ruoli:update" }
+    defaults: { _controller: "FiCoreBundle:Ruoli:update" }
     requirements: { methods: post|put }
 
-ruoli_delete:
+Ruoli_delete:
     path:  /{id}/delete
-    defaults: { _controller: "FiCoreBundle:ruoli:delete" }
+    defaults: { _controller: "FiCoreBundle:Ruoli:delete" }
     requirements: { methods: post|delete }
     
-ruoli_deletemultiple:
+Ruoli_deletemultiple:
     path:  /delete
-    defaults: { _controller: "FiCoreBundle:ruoli:delete" }
+    defaults: { _controller: "FiCoreBundle:Ruoli:delete" }
     requirements: { methods: post|delete }
 
-ruoli_griglia:
+Ruoli_griglia:
     path:  /griglia
-    defaults: { _controller: "FiCoreBundle:ruoli:griglia" }
+    defaults: { _controller: "FiCoreBundle:Ruoli:Griglia" }
     requirements: { methods: get }

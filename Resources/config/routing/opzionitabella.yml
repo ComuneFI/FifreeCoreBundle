@@ -1,41 +1,41 @@
-opzioniTabella:
+OpzioniTabella:
     path:  /
-    defaults: { _controller: "FiCoreBundle:opzioniTabella:index" }
+    defaults: { _controller: "FiCoreBundle:OpzioniTabella:index" }
 
-opzioniTabella_new:
+OpzioniTabella_new:
     path:  /new
-    defaults: { _controller: "FiCoreBundle:opzioniTabella:new" }
+    defaults: { _controller: "FiCoreBundle:OpzioniTabella:new" }
 
-opzioniTabella_create:
+OpzioniTabella_create:
     path:  /create
-    defaults: { _controller: "FiCoreBundle:opzioniTabella:create" }
+    defaults: { _controller: "FiCoreBundle:OpzioniTabella:create" }
     requirements: { methods: post }
 
-opzioniTabella_edit:
+OpzioniTabella_edit:
     path:  /{id}/edit
-    defaults: { _controller: "FiCoreBundle:opzioniTabella:edit" }
+    defaults: { _controller: "FiCoreBundle:OpzioniTabella:edit" }
 
-opzioniTabella_update:
+OpzioniTabella_update:
     path:  /{id}/update
-    defaults: { _controller: "FiCoreBundle:opzioniTabella:update" }
+    defaults: { _controller: "FiCoreBundle:OpzioniTabella:update" }
     requirements: { methods: post|put }
 
-opzioniTabella_aggiorna:
+OpzioniTabella_aggiorna:
     path:  /aggiorna
-    defaults: { _controller: "FiCoreBundle:opzioniTabella:aggiorna" }
+    defaults: { _controller: "FiCoreBundle:OpzioniTabella:aggiorna" }
     requirements: { methods: post|put }
 
-opzioniTabella_delete:
+OpzioniTabella_delete:
     path:  /{id}/delete
-    defaults: { _controller: "FiCoreBundle:opzioniTabella:delete" }
+    defaults: { _controller: "FiCoreBundle:OpzioniTabella:delete" }
     requirements: { methods: post|delete }
 
-opzioniTabella_deletemultiple:
+OpzioniTabella_deletemultiple:
     path:  /delete
-    defaults: { _controller: "FiCoreBundle:opzioniTabella:delete" }
+    defaults: { _controller: "FiCoreBundle:OpzioniTabella:delete" }
     requirements: { methods: post|delete }
 
-opzioniTabella_griglia:
+OpzioniTabella_griglia:
     path:  /griglia
-    defaults: { _controller: "FiCoreBundle:opzioniTabella:griglia" }
+    defaults: { _controller: "FiCoreBundle:OpzioniTabella:Griglia" }
     requirements: { methods: get }

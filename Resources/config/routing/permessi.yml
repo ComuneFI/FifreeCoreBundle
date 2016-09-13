@@ -1,40 +1,40 @@
-permessi:
+Permessi:
     path:  /
-    defaults: { _controller: "FiCoreBundle:permessi:index" }
+    defaults: { _controller: "FiCoreBundle:Permessi:index" }
 
-permessi_show:
+Permessi_show:
     path:  /{id}/show
-    defaults: { _controller: "FiCoreBundle:permessi:show" }
+    defaults: { _controller: "FiCoreBundle:Permessi:show" }
 
-permessi_new:
+Permessi_new:
     path:  /new
-    defaults: { _controller: "FiCoreBundle:permessi:new" }
+    defaults: { _controller: "FiCoreBundle:Permessi:new" }
 
-permessi_create:
+Permessi_create:
     path:  /create
-    defaults: { _controller: "FiCoreBundle:permessi:create" }
+    defaults: { _controller: "FiCoreBundle:Permessi:create" }
     requirements: { methods: post }
 
-permessi_edit:
+Permessi_edit:
     path:  /{id}/edit
-    defaults: { _controller: "FiCoreBundle:permessi:edit" }
+    defaults: { _controller: "FiCoreBundle:Permessi:edit" }
 
-permessi_update:
+Permessi_update:
     path:  /{id}/update
-    defaults: { _controller: "FiCoreBundle:permessi:update" }
+    defaults: { _controller: "FiCoreBundle:Permessi:update" }
     requirements: { methods: post|put }
 
-permessi_delete:
+Permessi_delete:
     path:  /{id}/delete
-    defaults: { _controller: "FiCoreBundle:permessi:delete" }
+    defaults: { _controller: "FiCoreBundle:Permessi:delete" }
     requirements: { methods: post|delete }
 
-permessi_deletemultiple:
+Permessi_deletemultiple:
     path:  /delete
-    defaults: { _controller: "FiCoreBundle:permessi:delete" }
+    defaults: { _controller: "FiCoreBundle:Permessi:delete" }
     requirements: { methods: post|delete }
 
-permessi_griglia:
+Permessi_griglia:
     path:  /griglia
-    defaults: { _controller: "FiCoreBundle:permessi:griglia" }
+    defaults: { _controller: "FiCoreBundle:Permessi:Griglia" }
     requirements: { methods: get }
