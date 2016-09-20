@@ -31,6 +31,12 @@
             "Fi\\CoreBundle\\": ""
         }
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://satis.comune.intranet"
+        }
+    ],
     "require": {
         "php": ">=5.5.0",
         "fi/osbundle": "~1.0",
