@@ -39,7 +39,7 @@
     ],
     "require": {
         "php": ">=5.5.0",
-        "fi/osbundle": "~1.0",
+        "fi/osbundle": "~2.0",
         "vich/uploader-bundle": "~1.0",
         "oneup/flysystem-bundle": "@stable"
     },
