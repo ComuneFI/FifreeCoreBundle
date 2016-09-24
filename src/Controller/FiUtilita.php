@@ -288,20 +288,22 @@ class FiUtilita {
      */
     public function proSelect($parametri = array()) {
         $stringaproselect = '';
-
-        //parametri obbligatori
-        if (isset($parametri['elementi'])) {
-            $elementi = $parametri['elementi'];
-        } else {
+        if (!isset($parametri['elementi'])) {
             return false;
         }
+
+        //parametri obbligatori
+        $elementi = $parametri['elementi'];
 
         $selezionato = (isset($parametri['selezionato']) ? $parametri['selezionato'] : false);
         $nomecodice = (isset($parametri['nomecodice']) ? $parametri['nomecodice'] : 'codice');
         $nomedescrizione = (isset($parametri['nomedescrizione']) ? $parametri['nomedescrizione'] : 'descrizione');
 
         foreach ($elementi as $elemento) {
-            $stringaproselect .= '<option value=' . $elemento[$nomecodice] . '' . ($elemento[$nomecodice] === $selezionato ? " selected='yes'" : '') . '>' . $elemento[$nomedescrizione] . '</option>';
+            $elementonomecodice = $elemento[$nomecodice];
+            $elementonomedescrizione = $elemento[$nomedescrizione];
+            $elementoselezionato = ($elementonomecodice === $selezionato ? " selected='yes'" : '');
+            $stringaproselect .= '<option value=' . $elementonomecodice . $elementoselezionato . '>' . $elementonomedescrizione . '</option>';
         }
 
         return $stringaproselect;
