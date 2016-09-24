@@ -214,9 +214,10 @@ class FiUtilita {
             return $giorno;
         }
 
-        $barra = strpos($giorno, '/');
-        $gg = substr($giorno, 0, $barra);
-        $restante = substr($giorno, $barra + 1);
+        $barragiorno = strpos($giorno, '/');
+        $gg = substr($giorno, 0, $barragiorno);
+        $restante = substr($giorno, $barragiorno + 1);
+
         $barra = strpos($restante, '/');
         $mm = substr($restante, 0, $barra);
         $aaaa = substr($restante, $barra + 1);
@@ -225,7 +226,11 @@ class FiUtilita {
         $mm = ($invertito ? $gg : $mm);
         $gg = $appogg;
 
-        $formattata = (strlen($gg) == 0 ? '' : $aaaa . ($senzalinea ? '' : '-') . $mm . ($senzalinea ? '' : '-') . $gg);
+        $separator = ($senzalinea ? '' : '-');
+        
+        $nuovadata = $aaaa . $separator . $mm . $separator . $gg;
+        
+        $formattata = (strlen($gg) == 0 ? '' : $nuovadata);
 
         return $formattata;
     }
