@@ -333,8 +333,8 @@ class FiController extends Controller
         $controller = $this->getController();
 
         $nomebundle = $namespace.$bundle.'Bundle';
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
-        $formType = $formbundle.'Type';
+        /* $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller; */
+        /* $formType = $formbundle.'Type'; */
 
         $id = $this->get('request')->request->get('id');
 
@@ -412,7 +412,7 @@ class FiController extends Controller
 
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
-        $controller = $this->getController();
+        /* $controller = $this->getController(); */
         $container = $this->container;
 
         $nomebundle = $namespace.$bundle.'Bundle';
@@ -428,8 +428,8 @@ class FiController extends Controller
             $parametritesta['request'] = $request;
             $parametritesta['output'] = 'stampa';
         }
-
-        $testatagriglia = Griglia::testataPerGriglia($request->get('parametritesta') ? $parametritesta : $paricevuti);
+        $parametripertestatagriglia = $request->get('parametritesta') ? $parametritesta : $paricevuti;
+        $testatagriglia = Griglia::testataPerGriglia($parametripertestatagriglia);
         if ($request->get('titolo')) {
             $testatagriglia['titolo'] = $request->get('titolo');
         }
@@ -458,7 +458,7 @@ class FiController extends Controller
 
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
-        $controller = $this->getController();
+        /* $controller = $this->getController(); */
         $container = $this->container;
         $nomebundle = $namespace.$bundle.'Bundle';
 

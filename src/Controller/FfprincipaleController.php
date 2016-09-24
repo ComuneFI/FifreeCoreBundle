@@ -23,7 +23,7 @@ class FfprincipaleController extends FiController
 
         $gestionepermessi = new GestionepermessiController();
         $gestionepermessi->setContainer($this->container);
-        $utentecorrente = $gestionepermessi->utentecorrenteAction();
+        $gestionepermessi->utentecorrenteAction();
         $canRead = ($gestionepermessi->leggereAction(array('modulo' => $controller)) ? 1 : 0);
 
         $nomebundle = $namespace.$bundle.'Bundle';
