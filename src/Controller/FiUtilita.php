@@ -8,8 +8,8 @@ namespace Fi\CoreBundle\Controller;
  *
  * @author Emidio Picariello
  */
-class FiUtilita
-{
+class FiUtilita {
+
     /**
      * @param array  $parametri
      * @param string $parametri["elemento"] l'elemento da confrontare
@@ -17,10 +17,7 @@ class FiUtilita
      *
      * @return array
      */
-    public function percentualiConfrontoStringheVettore($parametri = array())
-    {
-        $stringhepercento = array();
-
+    public function percentualiConfrontoStringheVettore($parametri = array()) {
         //parametri obbligatori
         if (isset($parametri['elemento'])) {
             $elemento = $parametri['elemento'];
@@ -61,44 +58,86 @@ class FiUtilita
      *
      * @return int
      */
-    public function percentualiConfrontoStringhe($parametri = array())
-    {
-
+    public function percentualiConfrontoStringhe($parametri = array()) {
         //parametri obbligatori
-        if (isset($parametri['stringaa'])) {
-            $stringaa = $parametri['stringaa'];
-        } else {
+        if (!isset($parametri['stringaa']) || !isset($parametri['stringab'])) {
             return false;
         }
-
-        //parametri obbligatori
-        if (isset($parametri['stringab'])) {
-            $stringab = $parametri['stringab'];
-        } else {
-            return false;
-        }
+        $stringaa = $parametri['stringaa'];
+        $stringab = $parametri['stringab'];
 
         $tolleranzauno = (isset($parametri['tolleranza']) ? $parametri['tolleranza'] : 1);
         $partecento = 0;
+        $strlensa = strlen($stringaa);
+        $strlensb = strlen($stringab);
+        $totalecento = $strlensa + $strlensb;
 
-        $totalecento = strlen($stringaa) + strlen($stringab);
+        for ($i = 0; $i < $strlensb; ++$i) {
+            $caratterea = ($strlensa >= $i ? substr($stringaa, $i, 1) : false);
+            $lowestringb = strtolower($stringab);
+            $lowercaratterea = strtolower($caratterea);
+            $difftolleranzauno = $i - $tolleranzauno;
+            $offset = ($difftolleranzauno >= 0) ? $difftolleranzauno : 0;
+            $strpos = strpos($lowestringb, $lowercaratterea, $offset);
+            $posizioneinb = $caratterea ? $strpos : false;
 
-        for ($i = 0; $i < (strlen($stringab)); ++$i) {
-            $caratterea = (strlen($stringaa) >= $i ? substr($stringaa, $i, 1) : false);
+            $partecento = $this->partecento($i, $posizioneinb, $tolleranzauno, $partecento);
+        }
+        $perc = (($partecento * 100) / $totalecento);
 
-            $posizioneinb = ($caratterea ? strpos(strtolower($stringab), strtolower($caratterea), (($i - $tolleranzauno) >= 0 ? ($i - $tolleranzauno) : 0)) : false);
+        return $perc;
+    }
 
-            if (!($posizioneinb === false)) {
-                if ($posizioneinb == $i) {
-                    $partecento += 2;
-                } elseif ((($i + $tolleranzauno) >= $posizioneinb) and (($i - $tolleranzauno) <= $posizioneinb)) {
-                    $partecento += 1;
-                }
+    private function partecento($i, $posizioneinb, $tolleranzauno, $partecento) {
+        if (!($posizioneinb === false)) {
+            if ($posizioneinb == $i) {
+                $partecento += 2;
+            } elseif (($i + $tolleranzauno >= $posizioneinb) and ( $i - $tolleranzauno <= $posizioneinb)) {
+                $partecento += 1;
             }
         }
-
-        return $partecento * 100 / $totalecento;
+        return $partecento;
     }
+
+    /* Fatta da Emidio, sopra Andrea l'ha semplificata ma non sapendo la "tolleranza" lascio il backup qui
+      public function percentualiConfrontoStringhe($parametri = array())
+      {
+
+      //parametri obbligatori
+      if (isset($parametri['stringaa'])) {
+      $stringaa = $parametri['stringaa'];
+      } else {
+      return false;
+      }
+
+      //parametri obbligatori
+      if (isset($parametri['stringab'])) {
+      $stringab = $parametri['stringab'];
+      } else {
+      return false;
+      }
+
+      $tolleranzauno = (isset($parametri['tolleranza']) ? $parametri['tolleranza'] : 1);
+      $partecento = 0;
+
+      $totalecento = strlen($stringaa) + strlen($stringab);
+
+      for ($i = 0; $i < (strlen($stringab)); ++$i) {
+      $caratterea = (strlen($stringaa) >= $i ? substr($stringaa, $i, 1) : false);
+
+      $posizioneinb = ($caratterea ? strpos(strtolower($stringab), strtolower($caratterea), (($i - $tolleranzauno) >= 0 ? ($i - $tolleranzauno) : 0)) : false);
+
+      if (!($posizioneinb === false)) {
+      if ($posizioneinb == $i) {
+      $partecento += 2;
+      } elseif ((($i + $tolleranzauno) >= $posizioneinb) and (($i - $tolleranzauno) <= $posizioneinb)) {
+      $partecento += 1;
+      }
+      }
+      }
+
+      return $partecento * 100 / $totalecento;
+      } */
 
     /**
      * @param array          $parametri
@@ -106,8 +145,7 @@ class FiUtilita
      *
      * @return int
      */
-    public function sommaMinuti($parametri = array())
-    {
+    public function sommaMinuti($parametri = array()) {
         $restotminuti = array();
         $resminuti = 0;
         $resore = 0;
@@ -134,8 +172,7 @@ class FiUtilita
      *
      * @return Array("segnouno"=>"xx", "segnodue"=>"yy") dove segnodue non obbligatorio
      */
-    public function operatoreQuery($parametri = array())
-    {
+    public function operatoreQuery($parametri = array()) {
         $risposta = array();
 
         if (isset($parametri['tipo'])) {
@@ -145,19 +182,19 @@ class FiUtilita
         }
 
         switch ($tipocampo) {
-        case 'date':
-        case 'integer':
-        case 'double':
-            $operatore = '>=';
-            $operatoredue = '<=';
-            break;
-        case 'string':
-        case 'text':
-            $operatore = 'LIKE';
-            break;
-        default:
-            $operatore = '=';
-            break;
+            case 'date':
+            case 'integer':
+            case 'double':
+                $operatore = '>=';
+                $operatoredue = '<=';
+                break;
+            case 'string':
+            case 'text':
+                $operatore = 'LIKE';
+                break;
+            default:
+                $operatore = '=';
+                break;
         }
 
         $risposta['segnouno'] = $operatore;
@@ -168,8 +205,7 @@ class FiUtilita
         return $risposta;
     }
 
-    public static function data2db($giorno, $invertito = false, $senzalinea = false)
-    {
+    public static function data2db($giorno, $invertito = false, $senzalinea = false) {
         if ($giorno == '') {
             return null;
         }
@@ -189,13 +225,12 @@ class FiUtilita
         $mm = ($invertito ? $gg : $mm);
         $gg = $appogg;
 
-        $formattata = (strlen($gg) == 0 ? '' : $aaaa.($senzalinea ? '' : '-').$mm.($senzalinea ? '' : '-').$gg);
+        $formattata = (strlen($gg) == 0 ? '' : $aaaa . ($senzalinea ? '' : '-') . $mm . ($senzalinea ? '' : '-') . $gg);
 
         return $formattata;
     }
 
-    public static function db2data($giorno, $senzalinea = false)
-    {
+    public static function db2data($giorno, $senzalinea = false) {
         if (substr($giorno, 2, 1) == '/') {
             return $giorno;
         }
@@ -216,8 +251,7 @@ class FiUtilita
         return $formattata;
     }
 
-    private static function senzalinea($giorno)
-    {
+    private static function senzalinea($giorno) {
         $aaaa = substr($giorno, 0, 4);
         $mm = substr($giorno, 4, 2);
         $gg = substr($giorno, 6, 2);
@@ -236,8 +270,7 @@ class FiUtilita
      *
      * @return string
      */
-    public function proSelect($parametri = array())
-    {
+    public function proSelect($parametri = array()) {
         $stringaproselect = '';
 
         //parametri obbligatori
@@ -252,7 +285,7 @@ class FiUtilita
         $nomedescrizione = (isset($parametri['nomedescrizione']) ? $parametri['nomedescrizione'] : 'descrizione');
 
         foreach ($elementi as $elemento) {
-            $stringaproselect .= '<option value='.$elemento[$nomecodice].''.($elemento[$nomecodice] === $selezionato ? " selected='yes'" : '').'>'.$elemento[$nomedescrizione].'</option>';
+            $stringaproselect .= '<option value=' . $elemento[$nomecodice] . '' . ($elemento[$nomecodice] === $selezionato ? " selected='yes'" : '') . '>' . $elemento[$nomedescrizione] . '</option>';
         }
 
         return $stringaproselect;
@@ -265,8 +298,7 @@ class FiUtilita
      *
      * @return $vettorenuovo
      */
-    public function cancellaDaVettore($parametri = array())
-    {
+    public function cancellaDaVettore($parametri = array()) {
 
         //parametri obbligatori
         if (isset($parametri['vettore'])) {
@@ -300,12 +332,11 @@ class FiUtilita
         return $vettorenuovo;
     }
 
-    public function creaBottone()
-    {
+    public function creaBottone() {
+        
     }
 
-    public function array_searchRecursive($needle, $haystack)
-    {
+    public function array_searchRecursive($needle, $haystack) {
         foreach ($haystack as $key => $val) {
             if (stripos(implode('', $val), $needle) > 0) {
                 return $key;
@@ -314,4 +345,5 @@ class FiUtilita
 
         return false;
     }
+
 }
