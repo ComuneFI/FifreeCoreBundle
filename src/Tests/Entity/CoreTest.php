@@ -53,7 +53,6 @@ class CoreTest extends KernelTestCase
     protected function tearDown()
     {
         parent::tearDown();
-        $this->em->close();
     }
 
     /* public function testFindUserBy()
@@ -84,8 +83,4 @@ class CoreTest extends KernelTestCase
 
       return new $userClass();
       } */
-}
-
-class DummyUser
-{
 }
