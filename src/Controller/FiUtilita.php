@@ -8,156 +8,26 @@ namespace Fi\CoreBundle\Controller;
  *
  * @author Emidio Picariello
  */
+use Fi\CoreBundle\DependencyInjection\PercentualiStringhe;
+
 class FiUtilita {
 
-    /**
-     * @param array  $parametri
-     * @param string $parametri["elemento"] l'elemento da confrontare
-     * @param array  $parameti["elenco"]    l'elenco degli elementi con cui effettuare il confronto
-     *
-     * @return array
-     */
     public function percentualiConfrontoStringheVettore($parametri = array()) {
-        //parametri obbligatori
-        if (isset($parametri['elemento'])) {
-            $elemento = $parametri['elemento'];
-        } else {
-            return false;
-        }
-
-        //parametri obbligatori
-        if (isset($parametri['elenco'])) {
-            $elenco = $parametri['elenco'];
-        } else {
-            return false;
-        }
-
-        $rigarisposta = array();
-        $risposta = array();
-
-        foreach ($elenco as $elementoelenco) {
-            $rigarisposta['elementoa'] = $elemento;
-            $rigarisposta['elementob'] = $elementoelenco;
-            $rigarisposta['percentuale'] = $this->percentualiConfrontoStringhe(array('stringaa' => $elemento, 'stringab' => $elementoelenco));
-            $risposta[] = $rigarisposta;
-        }
-
-        return $risposta;
+        $percentuali = new PercentualiStringhe();
+        return $percentuali->percentualiConfrontoStringheVettore($parametri);
     }
 
-    /**
-     * confronta due stringhe e restiutisce la percentuale di somiglianza in base
-     * alla posizione delle lettere uguali
-     * se ci sono molte lettere uguali nella stessa posizione o in posizioni vicine
-     * (con un parametro di tolleranza) allora la percentuale si alza.
-     *
-     * @param array  $parametri
-     * @param string $parametri["stringaa"]   prima stringa da confrontare
-     * @param string $parametri["stringab"]   seconda stringa da confrontare
-     * @param int    $parametri["tolleranza"] numero di posizioni prima e dopo in cui cercare
-     *
-     * @return int
-     */
     public function percentualiConfrontoStringhe($parametri = array()) {
-        //parametri obbligatori
-        if (!isset($parametri['stringaa']) || !isset($parametri['stringab'])) {
-            return false;
-        }
-        $stringaa = $parametri['stringaa'];
-        $stringab = $parametri['stringab'];
-
-        $tolleranzauno = (isset($parametri['tolleranza']) ? $parametri['tolleranza'] : 1);
-
-        $partecento = 0;
-        $strlensa = strlen($stringaa);
-        $strlensb = strlen($stringab);
-        $totalecento = $strlensa + $strlensb;
-
-        for ($i = 0; $i < $strlensb; ++$i) {
-            $caratterea = $this->getCarattereAPercentualeConfrontoStringhe($i, $stringaa, $strlensa);
-            $offset = $this->getOffsetPercentualeConfrontoStringhe($i, $tolleranzauno);
-            $strpos = strpos(strtolower($stringab), strtolower($caratterea), $offset);
-            $posizioneinb = $caratterea ? $strpos : false;
-
-            $partecento = $this->partecento($i, $posizioneinb, $tolleranzauno, $partecento);
-        }
-        $perc = (($partecento * 100) / $totalecento);
-
-        return $perc;
+        $percentuali = new PercentualiStringhe();
+        return $percentuali->percentualiConfrontoStringhe($parametri);
     }
 
-    private function getCarattereAPercentualeConfrontoStringhe($i, $stringaa, $strlensa) {
-        return ($strlensa >= $i ? substr($stringaa, $i, 1) : false);
-    }
-
-    private function getOffsetPercentualeConfrontoStringhe($i, $tolleranzauno) {
-        return (($i - $tolleranzauno) >= 0) ? ($i - $tolleranzauno) : 0;
-    }
-
-    private function partecento($i, $posizioneinb, $tolleranzauno, $partecento) {
-
-        if (!($posizioneinb === false)) {
-            if ($posizioneinb == $i) {
-                $partecento += 2;
-            } elseif (($i + $tolleranzauno >= $posizioneinb) and ( $i - $tolleranzauno <= $posizioneinb)) {
-                $partecento += 1;
-            }
-        }
-        return $partecento;
-    }
-
-    /* Fatta da Emidio, sopra Andrea l'ha semplificata ma non sapendo la "tolleranza" lascio il backup qui
-      public function percentualiConfrontoStringhe($parametri = array())
-      {
-
-      //parametri obbligatori
-      if (isset($parametri['stringaa'])) {
-      $stringaa = $parametri['stringaa'];
-      } else {
-      return false;
-      }
-
-      //parametri obbligatori
-      if (isset($parametri['stringab'])) {
-      $stringab = $parametri['stringab'];
-      } else {
-      return false;
-      }
-
-      $tolleranzauno = (isset($parametri['tolleranza']) ? $parametri['tolleranza'] : 1);
-      $partecento = 0;
-
-      $totalecento = strlen($stringaa) + strlen($stringab);
-
-      for ($i = 0; $i < (strlen($stringab)); ++$i) {
-      $caratterea = (strlen($stringaa) >= $i ? substr($stringaa, $i, 1) : false);
-
-      $posizioneinb = ($caratterea ? strpos(strtolower($stringab), strtolower($caratterea), (($i - $tolleranzauno) >= 0 ? ($i - $tolleranzauno) : 0)) : false);
-
-      if (!($posizioneinb === false)) {
-      if ($posizioneinb == $i) {
-      $partecento += 2;
-      } elseif ((($i + $tolleranzauno) >= $posizioneinb) and (($i - $tolleranzauno) <= $posizioneinb)) {
-      $partecento += 1;
-      }
-      }
-      }
-
-      return $partecento * 100 / $totalecento;
-      } */
-
-    /**
-     * @param array          $parametri
-     * @param Array(x,x,x,x) $parametri["minuti"]
-     *
-     * @return int
-     */
     public function sommaMinuti($parametri = array()) {
         $restotminuti = array();
         $resminuti = 0;
         $resore = 0;
 
-        //parametri obbligatori
+//parametri obbligatori
         if (isset($parametri['minuti'])) {
             $minuti = $parametri['minuti'];
         } else {
@@ -292,7 +162,7 @@ class FiUtilita {
             return false;
         }
 
-        //parametri obbligatori
+//parametri obbligatori
         $elementi = $parametri['elementi'];
         $attributi = $this->getProSelectAttribute($parametri);
         $selezionato = $attributi["selezionato"];
@@ -325,21 +195,21 @@ class FiUtilita {
      */
     public function cancellaDaVettore($parametri = array()) {
 
-        //parametri obbligatori
+//parametri obbligatori
         if (isset($parametri['vettore'])) {
             $vettore = $parametri['vettore'];
         } else {
             return false;
         }
 
-        //parametri obbligatori
+//parametri obbligatori
         if (isset($parametri['chiave'])) {
             $chiave = $parametri['chiave'];
         } else {
             return $vettore;
         }
 
-        //parametri obbligatori
+//parametri obbligatori
         if (isset($parametri['valore'])) {
             $valore = $parametri['valore'];
         } else {
@@ -355,10 +225,6 @@ class FiUtilita {
         }
 
         return $vettorenuovo;
-    }
-
-    public function creaBottone() {
-        
     }
 
     public function array_searchRecursive($needle, $haystack) {
