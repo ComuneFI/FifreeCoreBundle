@@ -290,7 +290,7 @@ class TabelleController extends FiController {
         $em = $this->getDoctrine()->getEntityManager();
 
         $bundles = $this->get('kernel')->getBundles();
-        foreach ($bundles as $type => $bundle) {
+        foreach ($bundles as $bundle) {
             $className = get_class($bundle);
             $entityClass = substr($className, 0, strrpos($className, '\\'));
             $tableClassName = '\\' . $entityClass . '\\Entity\\' . $nometabella;

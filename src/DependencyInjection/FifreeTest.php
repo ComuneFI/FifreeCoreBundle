@@ -11,7 +11,6 @@ class FifreeTest extends WebTestCase
 {
     private $clientNonAutorizzato;
     private $clientAutorizzato;
-    private $crawler;
     private $testclassname;
 
     /**

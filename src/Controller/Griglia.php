@@ -4,14 +4,13 @@ namespace Fi\CoreBundle\Controller;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-class Griglia extends FiController
-{
+class Griglia extends FiController {
+
     public static $decodificaop;
     public static $precarattere;
     public static $postcarattere;
 
-    public static function init()
-    {
+    public static function init() {
         // i possibili operatori di ciascuna ricerca sono questi:
         //['eq','ne','lt','le','gt','ge','bw','bn','in','ni','ew','en','cn','nc', 'nu', 'nn']
         //significano questo
@@ -25,8 +24,7 @@ class Griglia extends FiController
         self::$postcarattere = array('eq' => '', 'ne' => '', 'lt' => '', 'le' => '', 'gt' => '', 'ge' => '', 'bw' => '%\')', 'bn' => '%\')', 'in' => ')', 'ni' => ')', 'ew' => '\')', 'en' => '\')', 'cn' => '%\')', 'nc' => '%\')', 'nu' => '', 'nn' => '', 'nt' => '');
     }
 
-    public static function setVettoriPerData()
-    {
+    public static function setVettoriPerData() {
         self::$precarattere['eq'] = "'";
         self::$precarattere['ne'] = "'";
         self::$precarattere['lt'] = "'";
@@ -41,8 +39,7 @@ class Griglia extends FiController
         self::$postcarattere['ge'] = "'";
     }
 
-    public static function setVettoriPerStringa()
-    {
+    public static function setVettoriPerStringa() {
         self::$precarattere['eq'] = "lower('";
         self::$precarattere['ne'] = "lower('";
         self::$precarattere['lt'] = "lower('";
@@ -57,8 +54,7 @@ class Griglia extends FiController
         self::$postcarattere['ge'] = "')";
     }
 
-    public static function setVettoriPerNumero()
-    {
+    public static function setVettoriPerNumero() {
         self::$precarattere['eq'] = '';
         self::$precarattere['ne'] = '';
         self::$precarattere['lt'] = '';
@@ -73,8 +69,7 @@ class Griglia extends FiController
         self::$postcarattere['ge'] = '';
     }
 
-    public static function campiesclusi($parametri = array())
-    {
+    public static function campiesclusi($parametri = array()) {
         if (!isset($parametri['nometabella'])) {
             return false;
         }
@@ -108,11 +103,11 @@ class Griglia extends FiController
 
         $escludi = array();
 
-        $q = $doctrineficore->getRepository($bundle.':tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
+        $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
 
         if (!$q) {
             unset($q);
-            $q = $doctrineficore->getRepository($bundle.':tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
+            $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
         }
 
         if ($q) {
@@ -132,8 +127,7 @@ class Griglia extends FiController
         return $escludi;
     }
 
-    public static function etichettecampi($parametri = array())
-    {
+    public static function etichettecampi($parametri = array()) {
         if (!isset($parametri['nometabella'])) {
             return false;
         }
@@ -167,11 +161,11 @@ class Griglia extends FiController
 
         $etichette = array();
 
-        $q = $doctrineficore->getRepository($bundle.':tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
+        $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
 
         if (!$q) {
             unset($q);
-            $q = $doctrineficore->getRepository($bundle.':tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
+            $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
         }
 
         if ($q) {
@@ -187,8 +181,7 @@ class Griglia extends FiController
         return $etichette;
     }
 
-    public static function larghezzecampi($parametri = array())
-    {
+    public static function larghezzecampi($parametri = array()) {
         if (!isset($parametri['nometabella'])) {
             return false;
         }
@@ -222,11 +215,11 @@ class Griglia extends FiController
 
         $etichette = array();
 
-        $q = $doctrineficore->getRepository($bundle.':tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
+        $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
 
         if (!$q) {
             unset($q);
-            $q = $doctrineficore->getRepository($bundle.':tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
+            $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
         }
 
         if ($q) {
@@ -242,8 +235,7 @@ class Griglia extends FiController
         return $etichette;
     }
 
-    public static function ordinecolonne($parametri = array())
-    {
+    public static function ordinecolonne($parametri = array()) {
         if (!isset($parametri['nometabella'])) {
             return false;
         }
@@ -277,11 +269,11 @@ class Griglia extends FiController
 
         $ordine = array();
 
-        $q = $doctrineficore->getRepository($bundle.':tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
+        $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
 
         if (!$q) {
             unset($q);
-            $q = $doctrineficore->getRepository($bundle.':tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
+            $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
         }
 
         if ($q) {
@@ -313,12 +305,7 @@ class Griglia extends FiController
         return $ordinecolonne;
     }
 
-    public static function leggiVettoreParametri($paricevuti = array())
-    {
-    }
-
-    public static function setRegole(&$q, &$primo, $parametri = array())
-    {
+    public static function setRegole(&$q, &$primo, $parametri = array()) {
         $regole = $parametri['regole'];
         $doctrine = $parametri['doctrine'];
         $nometabella = $parametri['nometabella'];
@@ -337,7 +324,7 @@ class Griglia extends FiController
                     $tipo = $type['type'];
 
                     //Si aggiunge l'alias al campo altrimenti da Doctrine2 fallisce la query
-                    $regola['field'] = $nometabella.'.'.$regola['field'];
+                    $regola['field'] = $nometabella . '.' . $regola['field'];
                 }
             } else {
                 //Altrimenti stiamo analizzando il campo di una tabella in leftjoin pertanto si cercano le informazioni sul tipo
@@ -345,7 +332,7 @@ class Griglia extends FiController
                 $tablejoined = substr($regola['field'], 0, strrpos($regola['field'], '.'));
                 $fieldjoined = substr($regola['field'], strrpos($regola['field'], '.') + 1);
 
-                $entityNametablejoined = $bundle.':'.$tablejoined;
+                $entityNametablejoined = $bundle . ':' . $tablejoined;
 
                 $type = $doctrine->getClassMetadata($entityNametablejoined)->getFieldMapping($fieldjoined);
                 $tipo = $type['type'];
@@ -358,7 +345,7 @@ class Griglia extends FiController
                 $regola['data'] = fiUtilita::data2db($regola['data']);
             } elseif ($tipo && $tipo == 'string') {
                 self::setVettoriPerStringa();
-                $regola['field'] = 'lower('.$regola['field'].')';
+                $regola['field'] = 'lower(' . $regola['field'] . ')';
             } else {
                 self::setVettoriPerNumero();
             }
@@ -377,15 +364,14 @@ class Griglia extends FiController
             }
 
             if ($tipof == 'OR') {
-                $q->orWhere($regola['field'].' '.self::$decodificaop[$regola['op']].' '.self::$precarattere[$regola['op']].$regola['data'].self::$postcarattere[$regola['op']]);
+                $q->orWhere($regola['field'] . ' ' . self::$decodificaop[$regola['op']] . ' ' . self::$precarattere[$regola['op']] . $regola['data'] . self::$postcarattere[$regola['op']]);
             } else {
-                $q->andWhere($regola['field'].' '.self::$decodificaop[$regola['op']].' '.self::$precarattere[$regola['op']].$regola['data'].self::$postcarattere[$regola['op']]);
+                $q->andWhere($regola['field'] . ' ' . self::$decodificaop[$regola['op']] . ' ' . self::$precarattere[$regola['op']] . $regola['data'] . self::$postcarattere[$regola['op']]);
             }
         }
     }
 
-    public static function setTabelleJoin(&$q, $parametri = array())
-    {
+    public static function setTabelleJoin(&$q, $parametri = array()) {
         $tabellej = $parametri['tabellej'];
         $nometabella = $parametri['nometabella'];
 
@@ -396,12 +382,11 @@ class Griglia extends FiController
             //Serve per far venire nella getArrayResult() anche i campi della tabella il leftjoin
             //altrimenti mostra solo quelli della tabella con alias a
             $q->addSelect(array($tabellaj['tabella']));
-            $q = $q->leftJoin((isset($tabellaj['padre']) ? $tabellaj['padre'] : $nometabella).'.'.$tabellaj['tabella'], $tabellaj['tabella']);
+            $q = $q->leftJoin((isset($tabellaj['padre']) ? $tabellaj['padre'] : $nometabella) . '.' . $tabellaj['tabella'], $tabellaj['tabella']);
         }
     }
 
-    public static function setPrecondizioni(&$q, &$primo, $parametri = array())
-    {
+    public static function setPrecondizioni(&$q, &$primo, $parametri = array()) {
         $precondizioni = $parametri['precondizioni'];
 
         //var_dump($precondizioni);
@@ -420,8 +405,7 @@ class Griglia extends FiController
         }
     }
 
-    public static function setPrecondizioniAvanzate(&$q, &$primo, $parametri = array())
-    {
+    public static function setPrecondizioniAvanzate(&$q, &$primo, $parametri = array()) {
         $doctrine = $parametri['doctrine'];
         $nometabella = $parametri['nometabella'];
         $entityName = $parametri['entityName'];
@@ -473,21 +457,20 @@ class Griglia extends FiController
             $tipof = $operatorelogicoprecondizione;
 
             self::setRegole(
-                $q, $primo, array(
+                    $q, $primo, array(
                 'regole' => $regole,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
                 'entityName' => $entityName,
                 'bundle' => $bundle,
                 'tipof' => $tipof,
-                )
+                    )
             );
             $primo = false;
         }
     }
 
-    public static function getColonne($parametri = array())
-    {
+    public static function getColonne($parametri = array()) {
         $entityName = $parametri['entityName'];
         /* @var $doctrine \Doctrine\ORM\EntityManager */
         $doctrine = $parametri['doctrine'];
@@ -539,8 +522,7 @@ class Griglia extends FiController
      *
      * @return array contentente i dati di testata per la griglia
      */
-    public static function testataPerGriglia($paricevuti = array())
-    {
+    public static function testataPerGriglia($paricevuti = array()) {
         $nometabella = $paricevuti['nometabella'];
         $bundle = $paricevuti['nomebundle'];
 
@@ -585,7 +567,7 @@ class Griglia extends FiController
 
         /* @var $em \Doctrine\ORM\EntityManager */
         //$em = $doctrine->getRepository($bundle . ":" . $nometabella)->findAll();
-        $entityName = $bundle.':'.$nometabella;
+        $entityName = $bundle . ':' . $nometabella;
 
         $colonne = self::getColonne(array('entityName' => $entityName, 'doctrine' => $doctrine));
 
@@ -768,8 +750,7 @@ class Griglia extends FiController
      *
      * @return JSON con i dati richiesti
      */
-    public static function datiPerGriglia($paricevuti = array())
-    {
+    public static function datiPerGriglia($paricevuti = array()) {
         $request = $paricevuti['request'];
 
         if ((isset($paricevuti['output'])) && ($paricevuti['output'] == 'stampa')) {
@@ -810,7 +791,7 @@ class Griglia extends FiController
         $precondizioni = (isset($paricevuti['precondizioni']) ? $paricevuti['precondizioni'] : false);
 
         $precondizioniAvanzate = (isset($paricevuti['precondizioniAvanzate']) ? $paricevuti['precondizioniAvanzate'] : false);
-        $parametri_link = (isset($paricevuti['parametri_link']) ? $paricevuti['parametri_link'] : null); //$paricevuti["parametri_link"];
+        /* $parametri_link = (isset($paricevuti['parametri_link']) ? $paricevuti['parametri_link'] : null); //$paricevuti["parametri_link"]; */
         $campiextra = (isset($paricevuti['campiextra']) ? $paricevuti['campiextra'] : null);
         $ordinecolonne = (isset($paricevuti['ordinecolonne']) ? $paricevuti['ordinecolonne'] : null);
         if (!isset($ordinecolonne)) {
@@ -831,26 +812,26 @@ class Griglia extends FiController
         $sord = $request->get('sord'); // get the direction if(!$sidx) $sidx =1;
         // se non è passato nessun campo (ipotesi peregrina) usa id
         if (!$sidx) {
-            $sidx = $nometabella.'.id';
+            $sidx = $nometabella . '.id';
         } elseif (strrpos($sidx, '.') == 0) {
             if (strrpos($sidx, ',') == 0) {
-                $sidx = $nometabella.'.'.$sidx; // un solo campo
+                $sidx = $nometabella . '.' . $sidx; // un solo campo
             } else { // più campi, passati separati da virgole
                 $parti = explode(',', $sidx);
                 $sidx = '';
                 foreach ($parti as $parte) {
                     if (trim($sidx) != '') {
-                        $sidx = $sidx.',';
+                        $sidx = $sidx . ',';
                     }
-                    $sidx = $sidx.$nometabella.'.'.trim($parte);
+                    $sidx = $sidx . $nometabella . '.' . trim($parte);
                 }
             }
         }
         // inizia la query
-        $entityName = $bundle.':'.$nometabella;
+        $entityName = $bundle . ':' . $nometabella;
         $q = $doctrine->createQueryBuilder();
         $q->select($nometabella)
-            ->from($entityName, $nometabella);
+                ->from($entityName, $nometabella);
 
         // scorre le tabelle collegate e crea la leftjoin usando come alias il nome stesso della tabella
         if (isset($tabellej)) {
@@ -873,25 +854,25 @@ class Griglia extends FiController
         //se ci sono delle precondizioni avanzate le imposta qui
         if ($precondizioniAvanzate) {
             self::setPrecondizioniAvanzate(
-                $q, $primo, array('precondizioniAvanzate' => $precondizioniAvanzate,
+                    $q, $primo, array('precondizioniAvanzate' => $precondizioniAvanzate,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
                 'entityName' => $entityName,
-                'bundle' => $bundle, )
+                'bundle' => $bundle,)
             );
         }
 
         // scorro ogni singola regola
         if (isset($regole)) {
             self::setRegole(
-                $q, $primo, array(
+                    $q, $primo, array(
                 'regole' => $regole,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
                 'entityName' => $entityName,
                 'bundle' => $bundle,
                 'tipof' => $tipof,
-                )
+                    )
             );
         }
         // conta il numero di record di risposta
@@ -1011,7 +992,7 @@ class Griglia extends FiController
                             $indicecolonna = $indice;
                         }
 
-                        self::valorizzaVettore($vettoreriga, array('singolocampo' => $singolocampo, 'tabella' => $bundle.':'.$nometabella, 'nomecampo' => $nomecampo, 'doctrine' => $doctrine, 'ordinecampo' => $indicecolonna, 'decodifiche' => $decodifiche));
+                        self::valorizzaVettore($vettoreriga, array('singolocampo' => $singolocampo, 'tabella' => $bundle . ':' . $nometabella, 'nomecampo' => $nomecampo, 'doctrine' => $doctrine, 'ordinecampo' => $indicecolonna, 'decodifiche' => $decodifiche));
                     }
                 }
             }
@@ -1021,7 +1002,7 @@ class Griglia extends FiController
                 if (count($campiextra) > 1) {
                     foreach ($campiextra as $vettore) {
                         foreach ($vettore as $nomecampo => $singolocampo) {
-                            $campo = 'get'.ucfirst($singolocampo);
+                            $campo = 'get' . ucfirst($singolocampo);
                             /* @var $doctrine \Doctrine\ORM\EntityManager */
                             $objTabella = $doctrine->find($entityName, $singolo['id']);
                             $vettoreriga[] = $objTabella->$campo();
@@ -1029,7 +1010,7 @@ class Griglia extends FiController
                     }
                 } else {
                     foreach ($campiextra as $nomecampo => $singolocampo) {
-                        $campo = 'get'.ucfirst($singolocampo);
+                        $campo = 'get' . ucfirst($singolocampo);
                         /* @var $doctrine \Doctrine\ORM\EntityManager */
                         $objTabella = $doctrine->find($entityName, $singolo['id']);
                         $vettoreriga[] = $objTabella->$campo();
@@ -1040,7 +1021,7 @@ class Griglia extends FiController
             //Si costruisce la risposta json per la jqgrid
             ksort($vettoreriga);
             $vettorerigasorted = array();
-            foreach ($vettoreriga as $key => $value) {
+            foreach ($vettoreriga as $value) {
                 $vettorerigasorted[] = $value;
             }
             $vettorerisposta['rows'][] = array('id' => $singolo['id'], 'cell' => $vettorerigasorted);
@@ -1050,8 +1031,7 @@ class Griglia extends FiController
         return json_encode($vettorerisposta);
     }
 
-    public static function valorizzaVettore(&$vettoreriga, $parametri)
-    {
+    public static function valorizzaVettore(&$vettoreriga, $parametri) {
         $tabella = $parametri['tabella'];
         $nomecampo = $parametri['nomecampo'];
         $doctrine = $parametri['doctrine'];
@@ -1091,8 +1071,7 @@ class Griglia extends FiController
         }
     }
 
-    public static function campoElencato($parametriCampoElencato)
-    {
+    public static function campoElencato($parametriCampoElencato) {
         $tabellej = $parametriCampoElencato['tabellej'];
         $nomecampo = $parametriCampoElencato['nomecampo'];
         $campoelencato = $parametriCampoElencato['campoelencato'];
@@ -1128,7 +1107,7 @@ class Griglia extends FiController
             } else {
                 $fields = $singolo[$tabellej[$nomecampo]['tabella']] ? $singolo[$tabellej[$nomecampo]['tabella']][$campoelencato] : '';
             }
-            self::valorizzaVettore($vettoreriga, array('singolocampo' => $fields, 'tabella' => $bundle.':'.$tabellej[$nomecampo]['tabella'], 'nomecampo' => $campoelencato, 'doctrine' => $doctrine, 'ordinecampo' => $ordinecampo, 'decodifiche' => $decodifiche));
+            self::valorizzaVettore($vettoreriga, array('singolocampo' => $fields, 'tabella' => $bundle . ':' . $tabellej[$nomecampo]['tabella'], 'nomecampo' => $campoelencato, 'doctrine' => $doctrine, 'ordinecampo' => $ordinecampo, 'decodifiche' => $decodifiche));
         }
 
         return $vettoreriga;
@@ -1143,8 +1122,7 @@ class Griglia extends FiController
      *
      * @return string $str translated into camel caps
      */
-    public static function to_camel_case($parametri = array())
-    {
+    public static function to_camel_case($parametri = array()) {
         $str = $parametri['str'];
         $capitalise_first_char = isset($parametri['primamaiuscola']) ? $parametri['primamaiuscola'] : false;
 
@@ -1166,29 +1144,29 @@ class Griglia extends FiController
      *
      * @return string
      */
-    public static function traduciFiltri($parametri = array())
-    {
+    public static function traduciFiltri($parametri = array()) {
         $genericofiltri = $parametri['filtri'];
 
         $filtri = isset($genericofiltri->rules) ? $genericofiltri->rules : '';
         $tipofiltro = isset($genericofiltri->groupOp) ? $genericofiltri->groupOp : '';
         self::$decodificaop = array('eq' => ' è uguale a ', 'ne' => ' è diverso da ', 'lt' => ' è inferiore a ', 'le' => ' è inferiore o uguale a ', 'gt' => ' è maggiore di ', 'ge' => ' è maggiore o uguale di ', 'bw' => ' comincia con ', 'bn' => ' non comincia con ', 'in' => ' è uno fra ', 'ni' => ' non è uno fra ', 'ew' => ' finisce con ', 'en' => ' con finisce con ', 'cn' => ' contiene ', 'nc' => ' non contiene ', 'nu' => ' è vuoto', 'nn' => ' non è vuoto');
 
-        if (!isset($filtri) or (!$filtri)) {
+        if (!isset($filtri) or ( !$filtri)) {
             return '';
         }
 
-        $filtrodescritto = ('I dati mostrati rispondono a'.($tipofiltro == 'AND' ? ' tutti i' : 'd almeno uno dei').' seguenti criteri: ');
+        $filtrodescritto = ('I dati mostrati rispondono a' . ($tipofiltro == 'AND' ? ' tutti i' : 'd almeno uno dei') . ' seguenti criteri: ');
 
         foreach ($filtri as $indice => $filtro) {
             $campo = $filtro->field;
             $operatore = $filtro->op;
             $data = $filtro->data;
-            $filtrodescritto .= ($indice !== 0 ? ($tipofiltro == 'AND' ? ' e ' : ' o ') : '').self::to_camel_case(array('str' => $campo, 'primamaiuscola' => true)).self::$decodificaop[$operatore]."\"$data\"";
+            $filtrodescritto .= ($indice !== 0 ? ($tipofiltro == 'AND' ? ' e ' : ' o ') : '') . self::to_camel_case(array('str' => $campo, 'primamaiuscola' => true)) . self::$decodificaop[$operatore] . "\"$data\"";
         }
 
         $filtrodescritto .= '.';
 
         return $filtrodescritto;
     }
+
 }
