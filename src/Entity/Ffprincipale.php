@@ -85,7 +85,7 @@ class Ffprincipale
      */
     public function removeFfsecondaria(\Fi\CoreBundle\Entity\Ffsecondaria $Ffsecondarias)
     {
-        $this->ffsecondarias->removeElement($ffsecondarias);
+        $this->ffsecondarias->removeElement($Ffsecondarias);
     }
 
     /**
