@@ -953,7 +953,7 @@ function mostraConfigurazione(parametristampa) {
   var sinistra = -1;
   var alto = -1;
 
-  parametripassa = {};
+  var parametripassa = {};
 
   jQuery(div).load(baseUrl + '/' + "Tabelle/configura/" + tabella, parametripassa, function (responseText, textStatus) {
     jQuery(div).show();
