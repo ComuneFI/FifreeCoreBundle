@@ -5,3 +5,12 @@ fi_pannello_amministrazione:
 fi_core:
     resource: "@FiCoreBundle/Resources/config/routing.yml"
     prefix:   /
+
+#HOMEPAGE ROUTE
+homepage:
+    prefix:   /
+    path:      /
+    defaults: { _controller: FiCoreBundle:Ffprincipale:index }
+    requirements:
+      methods:  GET
+
