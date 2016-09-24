@@ -22,11 +22,6 @@ class TabelleController extends FiController {
 
             $em = $this->getDoctrine()->getManager();
             $tabelle = $em->getRepository('FiCoreBundle:Tabelle')->find($id);
-            /* if ($request->get("operatori_id") !== NULL) {
-              $tabelle->setOperatoriId($request->get("operatori_id"));
-              } else {
-              $tabelle->setOperatoriId(NULL);
-              } */
             $tabelle->setOperatoriId($operatore['id']);
             $nometabella = $this->getRequestValue($request, 'nometabella');
             if ($nometabella) {
@@ -37,13 +32,9 @@ class TabelleController extends FiController {
                 $tabelle->setNomecampo($nomecampo);
             }
             $mostraindex = $this->getRequestValue($request, 'mostraindex');
-            if ($mostraindex) {
-                $tabelle->setMostraindex($mostraindex);
-            }
+            $tabelle->setMostraindex($mostraindex);
             $ordineindex = $this->getRequestValue($request, 'ordineindex');
-            if ($ordineindex) {
-                $tabelle->setOrdineindex($ordineindex);
-            }
+            $tabelle->setOrdineindex($ordineindex);
             $etichettaindex = $this->getRequestValue($request, 'etichettaindex');
             $tabelle->setEtichettaindex($etichettaindex);
 
@@ -51,9 +42,7 @@ class TabelleController extends FiController {
             $tabelle->setLarghezzaindex($larghezzaindex);
 
             $mostrastampa = $this->getRequestValue($request, 'mostrastampa');
-            if ($mostrastampa) {
-                $tabelle->setMostrastampa($mostrastampa);
-            }
+            $tabelle->setMostrastampa($mostrastampa);
 
             $ordinestampa = $this->getRequestValue($request, 'ordinestampa');
             $tabelle->setOrdinestampa($ordinestampa);
@@ -250,7 +239,7 @@ class TabelleController extends FiController {
         $gestionepermessi = new GestionepermessiController();
         $gestionepermessi->setContainer($this->container);
         $operatore = $gestionepermessi->utentecorrenteAction();
-        
+
         $tabellej['operatori_id'] = array('tabella' => 'operatori', 'campi' => array('username', 'operatore'));
 
         $paricevuti = array('request' => $request, 'doctrine' => $em, 'container' => $this->container, 'nomebundle' => $nomebundle, 'nometabella' => $controller, 'tabellej' => $tabellej);
