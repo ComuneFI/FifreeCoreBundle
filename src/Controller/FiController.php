@@ -410,7 +410,8 @@ class FiController extends Controller {
         $paricevuti = array('nomebundle' => $nomebundle, 'nometabella' => $request->get('nometabella'), 'container' => $container, 'request' => $request);
 
         if ($request->get('parametritesta')) {
-            $parametritesta = get_object_vars(json_decode($request->get('parametritesta')));
+            $jsonparms = json_decode($request->get('parametritesta'));
+            $parametritesta = get_object_vars($jsonparms);
             $parametritesta['container'] = $container;
             $parametritesta['doctrine'] = $em;
             $parametritesta['request'] = $request;
@@ -425,7 +426,8 @@ class FiController extends Controller {
         }
 
         if ($request->get('parametrigriglia')) {
-            $parametrigriglia = get_object_vars(json_decode($request->get('parametrigriglia')));
+            $jsonparms = json_decode($request->get('parametrigriglia'));
+            $parametrigriglia = get_object_vars($jsonparms);
             $parametrigriglia['container'] = $container;
             $parametrigriglia['doctrine'] = $em;
             $parametrigriglia['request'] = $request;
@@ -457,7 +459,8 @@ class FiController extends Controller {
         $paricevuti = array('nomebundle' => $nomebundle, 'nometabella' => $request->get('nometabella'), 'container' => $container, 'request' => $request);
 
         if ($request->get('parametritesta')) {
-            $parametritesta = get_object_vars(json_decode($request->get('parametritesta')));
+            $jsonparms = json_decode($request->get('parametritesta'));
+            $parametritesta = get_object_vars($jsonparms);
             $parametritesta['container'] = $container;
             $parametritesta['doctrine'] = $em;
             $parametritesta['request'] = $request;
@@ -471,7 +474,8 @@ class FiController extends Controller {
         }
 
         if ($request->get('parametrigriglia')) {
-            $parametrigriglia = get_object_vars(json_decode($request->get('parametrigriglia')));
+            $jsonparms = json_decode($request->get('parametrigriglia'));
+            $parametrigriglia = get_object_vars($jsonparms);
             $parametrigriglia['container'] = $container;
             $parametrigriglia['doctrine'] = $em;
             $parametrigriglia['request'] = $request;
