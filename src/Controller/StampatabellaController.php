@@ -99,7 +99,7 @@ class StampatabellaController extends FiController {
         $pdf->Cell(0, 10, Griglia::traduciFiltri(array('filtri' => $risposta->filtri)), 0, false, 'L', 0, '', 0, false, 'T', 'M');
 
         $pdf->Output($request->get('nometabella') . '.pdf', 'I');
-        exit;
+        return 0;
     }
 
     public function esportaexcel($parametri = array()) {

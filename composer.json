@@ -39,7 +39,7 @@
         "friendsofsymfony/user-bundle": "2.0.*@dev",
         "vich/uploader-bundle": "~1.0",
         "oneup/flysystem-bundle": "@stable",
-        "tecnickcom/tcpdf": "~6.0",
+        "tecnickcom/tcpdf": "^6.2",
         "phpoffice/phpexcel": "~1.8",
         "phpoffice/phpword": "~0.11"
     },
