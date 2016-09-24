@@ -25,7 +25,7 @@ class fifree2mysqldropforeignkeysCommand extends ContainerAwareCommand
         $inizio = microtime(true);
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $this->getContainer()->get('doctrine')->getManager();
-        $dbname = $this->getContainer()->get('database_connection')->getDatabase();
+        $this->getContainer()->get('database_connection')->getDatabase();
 
         $sql = "select concat('alter table ',table_schema,'.',table_name,' DROP FOREIGN KEY ',constraint_name,';') FKNAME
             from information_schema.table_constraints

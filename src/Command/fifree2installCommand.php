@@ -44,19 +44,19 @@ class fifree2installCommand extends ContainerAwareCommand
         }
 
         $commanddb = $this->getApplication()->find('fifree2:createdatabase');
-        $arguments = array('command' => 'fifree2:createdatabase');
-        $input = new ArrayInput($arguments);
-        $returnCode = $commanddb->run($input, $output);
+        $argumentsdb = array('command' => 'fifree2:createdatabase');
+        $inputc = new ArrayInput($argumentsdb);
+        $commanddb->run($inputc, $output);
 
         $commandschema = $this->getApplication()->find('doctrine:schema:create');
-        $arguments = array('');
-        $input = new ArrayInput($arguments);
-        $returnCode = $commandschema->run($input, $output);
+        $argumentsc = array('');
+        $inputsc = new ArrayInput($argumentsc);
+        $commandschema->run($inputsc, $output);
 
         $commandfos = $this->getApplication()->find('fos:user:create');
-        $arguments = array('command' => 'fos:user:create', '--super-admin' => true, 'username' => $admin, 'email' => $adminemail, 'password' => $adminpass);
-        $input = new ArrayInput($arguments);
-        $returnCode = $commandfos->run($input, $output);
+        $argumentsfos = array('command' => 'fos:user:create', '--super-admin' => true, 'username' => $admin, 'email' => $adminemail, 'password' => $adminpass);
+        $inputfos = new ArrayInput($argumentsfos);
+        $commandfos->run($inputfos, $output);
 
         $this->loadDefaultValues($admin);
     }
@@ -65,27 +65,27 @@ class fifree2installCommand extends ContainerAwareCommand
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
 
-        $ruolo = new \Fi\CoreBundle\Entity\ruoli();
-        $ruolo->setRuolo('Super Admin');
-        $ruolo->setPaginainiziale('/adminpanel');
-        $ruolo->setIsSuperadmin(true);
-        $ruolo->setIsAdmin(true);
-        $ruolo->setIsUser(false);
-        $em->persist($ruolo);
-        $ruolo = new \Fi\CoreBundle\Entity\ruoli();
-        $ruolo->setRuolo('Amministratore');
-        $ruolo->setPaginainiziale('/adminpanel');
-        $ruolo->setIsSuperadmin(false);
-        $ruolo->setIsAdmin(true);
-        $ruolo->setIsUser(false);
-        $em->persist($ruolo);
-        $ruolo = new \Fi\CoreBundle\Entity\ruoli();
-        $ruolo->setRuolo('Utente');
-        $ruolo->setPaginainiziale('/ffprincipale');
-        $ruolo->setIsSuperadmin(false);
-        $ruolo->setIsAdmin(false);
-        $ruolo->setIsUser(true);
-        $em->persist($ruolo);
+        $ruolos = new \Fi\CoreBundle\Entity\ruoli();
+        $ruolos->setRuolo('Super Admin');
+        $ruolos->setPaginainiziale('/adminpanel');
+        $ruolos->setIsSuperadmin(true);
+        $ruolos->setIsAdmin(true);
+        $ruolos->setIsUser(false);
+        $em->persist($ruolos);
+        $ruoloa = new \Fi\CoreBundle\Entity\ruoli();
+        $ruoloa->setRuolo('Amministratore');
+        $ruoloa->setPaginainiziale('/adminpanel');
+        $ruoloa->setIsSuperadmin(false);
+        $ruoloa->setIsAdmin(true);
+        $ruoloa->setIsUser(false);
+        $em->persist($ruoloa);
+        $ruolou = new \Fi\CoreBundle\Entity\ruoli();
+        $ruolou->setRuolo('Utente');
+        $ruolou->setPaginainiziale('/ffprincipale');
+        $ruolou->setIsSuperadmin(false);
+        $ruolou->setIsAdmin(false);
+        $ruolou->setIsUser(true);
+        $em->persist($ruolou);
         $em->flush();
 
         //Si tiene in memoria l'id del super admin
@@ -102,21 +102,21 @@ class fifree2installCommand extends ContainerAwareCommand
         $em->persist($menutabelle);
         $em->flush();
 
-        $menu = new \Fi\CoreBundle\Entity\menuApplicazione();
-        $menu->setPadre($menutabelle->getId());
-        $menu->setNome('FFprincipale');
-        $menu->setPercorso('Ffprincipale');
-        $menu->setAttivo(true);
-        $menu->setOrdine(10);
-        $em->persist($menu);
+        $menufp = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menufp->setPadre($menutabelle->getId());
+        $menufp->setNome('FFprincipale');
+        $menufp->setPercorso('Ffprincipale');
+        $menufp->setAttivo(true);
+        $menufp->setOrdine(10);
+        $em->persist($menufp);
 
-        $menu = new \Fi\CoreBundle\Entity\menuApplicazione();
-        $menu->setPadre($menutabelle->getId());
-        $menu->setNome('FFsecondaria');
-        $menu->setPercorso('Ffsecondaria');
-        $menu->setAttivo(true);
-        $menu->setOrdine(10);
-        $em->persist($menu);
+        $menufs = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menufs->setPadre($menutabelle->getId());
+        $menufs->setNome('FFsecondaria');
+        $menufs->setPercorso('Ffsecondaria');
+        $menufs->setAttivo(true);
+        $menufs->setOrdine(10);
+        $em->persist($menufs);
         $em->flush();
 
         $menuAmministrazione = new \Fi\CoreBundle\Entity\menuApplicazione();
@@ -127,29 +127,29 @@ class fifree2installCommand extends ContainerAwareCommand
         $em->persist($menuAmministrazione);
         $em->flush();
 
-        $menu = new \Fi\CoreBundle\Entity\menuApplicazione();
-        $menu->setPadre($menuAmministrazione->getId());
-        $menu->setNome('Operatori');
-        $menu->setPercorso('Operatori');
-        $menu->setAttivo(true);
-        $menu->setOrdine(10);
-        $em->persist($menu);
+        $menuop = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menuop->setPadre($menuAmministrazione->getId());
+        $menuop->setNome('Operatori');
+        $menuop->setPercorso('Operatori');
+        $menuop->setAttivo(true);
+        $menuop->setOrdine(10);
+        $em->persist($menuop);
 
-        $menu = new \Fi\CoreBundle\Entity\menuApplicazione();
-        $menu->setPadre($menuAmministrazione->getId());
-        $menu->setNome('Ruoli');
-        $menu->setPercorso('Ruoli');
-        $menu->setAttivo(true);
-        $menu->setOrdine(20);
-        $em->persist($menu);
+        $menuruo = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menuruo->setPadre($menuAmministrazione->getId());
+        $menuruo->setNome('Ruoli');
+        $menuruo->setPercorso('Ruoli');
+        $menuruo->setAttivo(true);
+        $menuruo->setOrdine(20);
+        $em->persist($menuruo);
 
-        $menu = new \Fi\CoreBundle\Entity\menuApplicazione();
-        $menu->setPadre($menuAmministrazione->getId());
-        $menu->setNome('Permessi');
-        $menu->setPercorso('Permessi');
-        $menu->setAttivo(true);
-        $menu->setOrdine(30);
-        $em->persist($menu);
+        $menuapp = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menuapp->setPadre($menuAmministrazione->getId());
+        $menuapp->setNome('Permessi');
+        $menuapp->setPercorso('Permessi');
+        $menuapp->setAttivo(true);
+        $menuapp->setOrdine(30);
+        $em->persist($menuapp);
 
         $menutbl = new \Fi\CoreBundle\Entity\menuApplicazione();
         $menutbl->setPadre($menuAmministrazione->getId());
@@ -160,108 +160,108 @@ class fifree2installCommand extends ContainerAwareCommand
         $em->persist($menutbl);
         $em->flush();
 
-        $menu = new \Fi\CoreBundle\Entity\menuApplicazione();
-        $menu->setPadre($menutbl->getId());
-        $menu->setNome('Tabelle');
-        $menu->setPercorso('Tabelle');
-        $menu->setAttivo(true);
-        $menu->setOrdine(10);
-        $em->persist($menu);
+        $menutbs = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menutbs->setPadre($menutbl->getId());
+        $menutbs->setNome('Tabelle');
+        $menutbs->setPercorso('Tabelle');
+        $menutbs->setAttivo(true);
+        $menutbs->setOrdine(10);
+        $em->persist($menutbs);
 
-        $menu = new \Fi\CoreBundle\Entity\menuApplicazione();
-        $menu->setPadre($menutbl->getId());
-        $menu->setNome('Opzioni tabella');
-        $menu->setPercorso('OpzioniTabella');
-        $menu->setAttivo(true);
-        $menu->setOrdine(20);
-        $em->persist($menu);
+        $menuopt = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menuopt->setPadre($menutbl->getId());
+        $menuopt->setNome('Opzioni tabella');
+        $menuopt->setPercorso('OpzioniTabella');
+        $menuopt->setAttivo(true);
+        $menuopt->setOrdine(20);
+        $em->persist($menuopt);
 
-        $menu = new \Fi\CoreBundle\Entity\menuApplicazione();
-        $menu->setPadre($menuAmministrazione->getId());
-        $menu->setNome('Menu Applicazione');
-        $menu->setPercorso('MenuApplicazione_container');
-        $menu->setAttivo(true);
-        $menu->setOrdine(50);
-        $em->persist($menu);
+        $menumnuapp = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menumnuapp->setPadre($menuAmministrazione->getId());
+        $menumnuapp->setNome('Menu Applicazione');
+        $menumnuapp->setPercorso('MenuApplicazione_container');
+        $menumnuapp->setAttivo(true);
+        $menumnuapp->setOrdine(50);
+        $em->persist($menumnuapp);
 
-        $menu = new \Fi\CoreBundle\Entity\menuApplicazione();
-        $menu->setPadre($menuAmministrazione->getId());
-        $menu->setNome('Utilità');
-        $menu->setPercorso('fi_pannello_amministrazione_homepage');
-        $menu->setAttivo(true);
-        $menu->setOrdine(100);
-        $em->persist($menu);
+        $menuutil = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menuutil->setPadre($menuAmministrazione->getId());
+        $menuutil->setNome('Utilità');
+        $menuutil->setPercorso('fi_pannello_amministrazione_homepage');
+        $menuutil->setAttivo(true);
+        $menuutil->setOrdine(100);
+        $em->persist($menuutil);
 
-        $menu = new \Fi\CoreBundle\Entity\menuApplicazione();
-        $menu->setPadre($menuAmministrazione->getId());
-        $menu->setNome('FiDemo');
-        $menu->setPercorso('fi_demo_index');
-        $menu->setAttivo(false);
-        $menu->setOrdine(150);
-        $em->persist($menu);
+        $menudemo = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menudemo->setPadre($menuAmministrazione->getId());
+        $menudemo->setNome('FiDemo');
+        $menudemo->setPercorso('fi_demo_index');
+        $menudemo->setAttivo(false);
+        $menudemo->setOrdine(150);
+        $em->persist($menudemo);
         $em->flush();
 
+        $permessimnuapp = new \Fi\CoreBundle\Entity\permessi();
+        $permessimnuapp->setRuoli($ruolo);
+        $permessimnuapp->setModulo('MenuApplicazione');
+        $permessimnuapp->setCrud('crud');
+        $em->persist($permessimnuapp);
+
+        $permessiopt = new \Fi\CoreBundle\Entity\permessi();
+        $permessiopt->setRuoli($ruolo);
+        $permessiopt->setModulo('OpzioniTabella');
+        $permessiopt->setCrud('crud');
+        $em->persist($permessiopt);
+
+        $permessitbl = new \Fi\CoreBundle\Entity\permessi();
+        $permessitbl->setRuoli($ruolo);
+        $permessitbl->setModulo('Tabelle');
+        $permessitbl->setCrud('crud');
+        $em->persist($permessitbl);
+
         $permessi = new \Fi\CoreBundle\Entity\permessi();
         $permessi->setRuoli($ruolo);
-        $permessi->setModulo('MenuApplicazione');
+        $permessi->setModulo('Permessi');
         $permessi->setCrud('crud');
         $em->persist($permessi);
 
-        $permessi = new \Fi\CoreBundle\Entity\permessi();
-        $permessi->setRuoli($ruolo);
-        $permessi->setModulo('OpzioniTabella');
-        $permessi->setCrud('crud');
-        $em->persist($permessi);
+        $permessiope = new \Fi\CoreBundle\Entity\permessi();
+        $permessiope->setRuoli($ruolo);
+        $permessiope->setModulo('Operatori');
+        $permessiope->setCrud('cru');
+        $em->persist($permessiope);
 
-        $permessi = new \Fi\CoreBundle\Entity\permessi();
-        $permessi->setRuoli($ruolo);
-        $permessi->setModulo('Tabelle');
-        $permessi->setCrud('crud');
-        $em->persist($permessi);
+        $permessiruo = new \Fi\CoreBundle\Entity\permessi();
+        $permessiruo->setRuoli($ruolo);
+        $permessiruo->setModulo('Ruoli');
+        $permessiruo->setCrud('crud');
+        $em->persist($permessiruo);
 
-        $permessi = new \Fi\CoreBundle\Entity\permessi();
-        $permessi->setRuoli($ruolo);
-        $permessi->setModulo('permessi');
-        $permessi->setCrud('crud');
-        $em->persist($permessi);
+        $permessifp = new \Fi\CoreBundle\Entity\permessi();
+        $permessifp->setRuoli($ruolo);
+        $permessifp->setModulo('Ffprincipale');
+        $permessifp->setCrud('crud');
+        $em->persist($permessifp);
 
-        $permessi = new \Fi\CoreBundle\Entity\permessi();
-        $permessi->setRuoli($ruolo);
-        $permessi->setModulo('Operatori');
-        $permessi->setCrud('cru');
-        $em->persist($permessi);
+        $permessifs = new \Fi\CoreBundle\Entity\permessi();
+        $permessifs->setRuoli($ruolo);
+        $permessifs->setModulo('Ffsecondaria');
+        $permessifs->setCrud('crud');
+        $em->persist($permessifs);
 
-        $permessi = new \Fi\CoreBundle\Entity\permessi();
-        $permessi->setRuoli($ruolo);
-        $permessi->setModulo('Ruoli');
-        $permessi->setCrud('crud');
-        $em->persist($permessi);
-
-        $permessi = new \Fi\CoreBundle\Entity\permessi();
-        $permessi->setRuoli($ruolo);
-        $permessi->setModulo('Ffprincipale');
-        $permessi->setCrud('crud');
-        $em->persist($permessi);
-
-        $permessi = new \Fi\CoreBundle\Entity\permessi();
-        $permessi->setRuoli($ruolo);
-        $permessi->setModulo('Ffsecondaria');
-        $permessi->setCrud('crud');
-        $em->persist($permessi);
-
-        $ffprincipale = new \Fi\CoreBundle\Entity\ffprincipale();
-        $ffprincipale->setDescrizione('Descrizione primo record');
-        $em->persist($ffprincipale);
+        $ffprincipalerow = new \Fi\CoreBundle\Entity\ffprincipale();
+        $ffprincipalerow->setDescrizione('Descrizione primo record');
+        $em->persist($ffprincipalerow);
         $em->flush();
-        $ffsecondaria = new \Fi\CoreBundle\Entity\Ffsecondaria();
-        $ffsecondaria->setFfprincipale($ffprincipale);
-        $ffsecondaria->setDescsec('1° secondaria legato al 1° record principale');
-        $em->persist($ffsecondaria);
+        $ffsecondariarow1 = new \Fi\CoreBundle\Entity\Ffsecondaria();
+        $ffsecondariarow1->setFfprincipale($ffprincipalerow);
+        $ffsecondariarow1->setDescsec('1° secondaria legato al 1° record principale');
+        $em->persist($ffsecondariarow1);
 
-        $ffsecondaria = new \Fi\CoreBundle\Entity\Ffsecondaria();
-        $ffsecondaria->setFfprincipale($ffprincipale);
-        $ffsecondaria->setDescsec('2° secondaria legato al 1° record principale');
-        $em->persist($ffsecondaria);
+        $ffsecondariarow2 = new \Fi\CoreBundle\Entity\Ffsecondaria();
+        $ffsecondariarow2->setFfprincipale($ffprincipalerow);
+        $ffsecondariarow2->setDescsec('2° secondaria legato al 1° record principale');
+        $em->persist($ffsecondariarow2);
 
         $ffprincipale = new \Fi\CoreBundle\Entity\ffprincipale();
         $ffprincipale->setDescrizione('Descrizione secondo record');

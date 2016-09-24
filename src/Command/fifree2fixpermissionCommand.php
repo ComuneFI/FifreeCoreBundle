@@ -27,10 +27,9 @@ class fifree2fixpermissionCommand extends ContainerAwareCommand
         $webdir = $rootdir.DIRECTORY_SEPARATOR.'web';
         $uploaddir = $webdir.DIRECTORY_SEPARATOR.'uploads';
 
-        $phpcmd = OsFunctions::getPHPExecutableFromPath();
         if (OsFunctions::isWindows()) {
             echo 'Non previsto in ambiente windows';
-            exit;
+            return 1;
         }
 
         /* $commandutil = $phpcmd . " " .$appdir . DIRECTORY_SEPARATOR . "console cache:clear --env=dev";

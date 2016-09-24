@@ -21,14 +21,12 @@ class fifree2checkpermissionCommand extends ContainerAwareCommand
     {
         $rootdir = $this->getContainer()->get('kernel')->getRootDir().'/..';
         $appdir = $this->getContainer()->get('kernel')->getRootDir();
-        $cachedir = $appdir.DIRECTORY_SEPARATOR.'cache';
         $logdir = $appdir.DIRECTORY_SEPARATOR.'logs';
         $tmpdir = $appdir.DIRECTORY_SEPARATOR.'/tmp';
         $srcdir = $rootdir.DIRECTORY_SEPARATOR.'/src';
         $webdir = $rootdir.DIRECTORY_SEPARATOR.'/web';
         $uploaddir = $webdir.DIRECTORY_SEPARATOR.'/uploads';
 
-        $phpcmd = OsFunctions::getPHPExecutableFromPath();
         if (OsFunctions::isWindows()) {
             echo 'Non previsto in ambiente windows';
             exit;

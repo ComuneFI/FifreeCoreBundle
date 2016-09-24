@@ -7,21 +7,20 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class fifree2createdatabaseCommand extends ContainerAwareCommand
-{
-    protected function configure()
-    {
+class fifree2createdatabaseCommand extends ContainerAwareCommand {
+
+    protected function configure() {
         $this
-            ->setName('fifree2:createdatabase')
-            ->setDescription('Creazione database fifree')
-            ->setHelp('Creazione di un nuovo database di fifree');
+                ->setName('fifree2:createdatabase')
+                ->setDescription('Creazione database fifree')
+                ->setHelp('Creazione di un nuovo database di fifree');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
+    protected function execute(InputInterface $input, OutputInterface $output) {
         $command = $this->getApplication()->find('doctrine:database:create');
         $arguments = array('');
-        $input = new ArrayInput($arguments);
-        $returnCode = $command->run($input, $output);
+        $inputcmd = new ArrayInput($arguments);
+        $command->run($inputcmd, $output);
     }
+
 }
