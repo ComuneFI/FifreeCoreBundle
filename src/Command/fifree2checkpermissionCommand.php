@@ -29,7 +29,7 @@ class fifree2checkpermissionCommand extends ContainerAwareCommand
 
         if (OsFunctions::isWindows()) {
             echo 'Non previsto in ambiente windows';
-            exit;
+            return 1;
         }
 
         //Si da il 755 alla cartella principale e sottocartelle del progetto
