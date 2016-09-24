@@ -21,7 +21,7 @@ class MenuController extends FiController
     public function generamenuAction()
     {
         $gestionepermessi = $this->initGestionePermessi();
-        $utentecorrente = $gestionepermessi->utentecorrenteAction();
+        $gestionepermessi->utentecorrenteAction();
         $router = $this->get('router')->match('/')['_route'];
         //$homeurl = $this->generateUrl($router, array(), true);
 
@@ -88,7 +88,7 @@ class MenuController extends FiController
     protected function getMenu($menu)
     {
         $gestionepermessi = $this->initGestionePermessi();
-        $utentecorrente = $gestionepermessi->utentecorrenteAction();
+        $gestionepermessi->utentecorrenteAction();
 
         $risposta = array();
         $em = $this->get('doctrine')->getManager();
@@ -136,7 +136,7 @@ class MenuController extends FiController
     protected function getSubMenu($submenu)
     {
         $gestionepermessi = $this->initGestionePermessi();
-        $utentecorrente = $gestionepermessi->utentecorrenteAction();
+        $gestionepermessi->utentecorrenteAction();
 
         $sottomenutabelle = array();
         foreach ($submenu as $subitem) {

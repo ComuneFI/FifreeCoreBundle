@@ -5,25 +5,15 @@ namespace Fi\CoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use TCPDF;
 
-class StampatabellaController extends FiController
-{
-    public function __construct($container = null)
-    {
+class StampatabellaController extends FiController {
+
+    public function __construct($container = null) {
         if ($container) {
             $this->setContainer($container);
         }
     }
 
-    public function stampaCampoSN($parametri = array())
-    {
-        $tabella = $parametri['tabella'];
-        $campo = $parametri['campo'];
-
-        return true;
-    }
-
-    public function stampa($parametri = array())
-    {
+    public function stampa($parametri = array()) {
         $testata = $parametri['testata'];
         $rispostaj = $parametri['griglia'];
         $request = $parametri['request'];
@@ -36,7 +26,7 @@ class StampatabellaController extends FiController
 
         //echo PDF_HEADER_LOGO;
 
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'FiFree2', isset($testata['titolo']) && ($testata['titolo'] != '') ? $testata['titolo'] : 'Elenco '.$request->get('nometabella'), array(0, 0, 0), array(0, 0, 0));
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'FiFree2', isset($testata['titolo']) && ($testata['titolo'] != '') ? $testata['titolo'] : 'Elenco ' . $request->get('nometabella'), array(0, 0, 0), array(0, 0, 0));
         $pdf->setFooterData(array(0, 0, 0), array(0, 0, 0));
 
         $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -108,12 +98,11 @@ class StampatabellaController extends FiController
 
         $pdf->Cell(0, 10, Griglia::traduciFiltri(array('filtri' => $risposta->filtri)), 0, false, 'L', 0, '', 0, false, 'T', 'M');
 
-        $pdf->Output($request->get('nometabella').'.pdf', 'I');
-        exit;
+        $pdf->Output($request->get('nometabella') . '.pdf', 'I');
+        return true;
     }
 
-    public function esportaexcel($parametri = array())
-    {
+    public function esportaexcel($parametri = array()) {
         set_time_limit(960);
         ini_set('memory_limit', '2048M');
 
@@ -132,29 +121,55 @@ class StampatabellaController extends FiController
 
         $testata = $parametri['testata'];
         $rispostaj = $parametri['griglia'];
-        $request = $parametri['request'];
-        $nomicolonne = $testata['nomicolonne'];
 
         $modellicolonne = $testata['modellocolonne'];
 
         //Scrittura su file
         $sheet = $objPHPExcel->getActiveSheet();
-        $titolosheet = 'Esportazione '.$testata['tabella'];
+        $titolosheet = 'Esportazione ' . $testata['tabella'];
         $sheet->setTitle(substr($titolosheet, 0, 30));
         $sheet->getDefaultStyle()->getFont()->setName('Verdana');
-        $indicecolonna = 0;
-        foreach ($modellicolonne as $modellocolonna) {
-            //Si imposta la larghezza delle colonne
-            $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonna);
-            $width = (int) $modellocolonna['width'] / 7;
-            $coltitle = strtoupper(isset($testata['nomicolonne'][$indicecolonna]) ? $testata['nomicolonne'][$indicecolonna] : $modellocolonna['name']);
-            $sheet->setCellValueByColumnAndRow($indicecolonna, 1, $coltitle);
-            $sheet->getColumnDimension($letteracolonna)->setWidth($width);
 
-            ++$indicecolonna;
+        $this->printHeaderXls($modellicolonne, $testata, $sheet);
+
+        $risposta = json_decode($rispostaj);
+        $righe = $risposta->rows;
+
+        $this->printBodyXls($righe, $modellicolonne, $sheet);
+
+        //Si crea un oggetto
+        $objWriter = new \PHPExcel_Writer_Excel5($objPHPExcel);
+        $todaydate = date('d-m-y');
+
+        //$todaydate = $todaydate . '-' . date("H-i-s");
+        $filename = 'Exportazione_' . $testata['tabella'];
+        $filename = $filename . '-' . $todaydate . '-' . strtoupper(md5(uniqid(rand(), true)));
+        $filename = $filename . '.xls';
+        $filename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $filename;
+
+        if (file_exists($filename)) {
+            unlink($filename);
         }
 
-        if ($indicecolonna > 0) {
+        $objWriter->save($filename);
+
+        return $filename;
+    }
+
+    private function printHeaderXls($modellicolonne, $testata, $sheet) {
+        $indicecolonnaheader = 0;
+        foreach ($modellicolonne as $modellocolonna) {
+            //Si imposta la larghezza delle colonne
+            $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonnaheader);
+            $width = (int) $modellocolonna['width'] / 7;
+            $coltitle = strtoupper(isset($testata['nomicolonne'][$indicecolonnaheader]) ? $testata['nomicolonne'][$indicecolonnaheader] : $modellocolonna['name']);
+            $sheet->setCellValueByColumnAndRow($indicecolonnaheader, 1, $coltitle);
+            $sheet->getColumnDimension($letteracolonna)->setWidth($width);
+
+            ++$indicecolonnaheader;
+        }
+
+        if ($indicecolonnaheader > 0) {
             //Si imposta il colore dello sfondo delle celle
             //Colore header
             $style_header = array(
@@ -167,33 +182,32 @@ class StampatabellaController extends FiController
                     'color' => array('rgb' => 'FFFFFF'),
                 ),
             );
-            $sheet->getStyle('A1:'.$letteracolonna.'1')->applyFromArray($style_header);
+            $sheet->getStyle('A1:' . $letteracolonna . '1')->applyFromArray($style_header);
         }
 
         $sheet->getRowDimension('1')->setRowHeight(20);
+    }
 
-        $risposta = json_decode($rispostaj);
-        $righe = $risposta->rows;
-
+    private function printBodyXls($righe, $modellicolonne, $sheet) {
         $row = 2;
         foreach ($righe as $riga) {
             $vettorecelle = $riga->cell;
             $col = 0;
             foreach ($vettorecelle as $vettorecella) {
                 switch ($modellicolonne[$col]['tipocampo']) {
-                case 'date':
-                    $d = substr($vettorecella, 0, 2);
-                    $m = substr($vettorecella, 3, 2);
-                    $y = substr($vettorecella, 6, 4);
-                    $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
-                    $sheet->setCellValueByColumnAndRow($col, $row, $t_date);
-                    break;
-                case 'boolean':
-                    $sheet->setCellValueByColumnAndRow($col, $row, ($vettorecella == 1) ? 'SI' : 'NO');
-                    break;
-                default:
-                    $sheet->setCellValueByColumnAndRow($col, $row, $vettorecella);
-                    break;
+                    case 'date':
+                        $d = substr($vettorecella, 0, 2);
+                        $m = substr($vettorecella, 3, 2);
+                        $y = substr($vettorecella, 6, 4);
+                        $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
+                        $sheet->setCellValueByColumnAndRow($col, $row, $t_date);
+                        break;
+                    case 'boolean':
+                        $sheet->setCellValueByColumnAndRow($col, $row, ($vettorecella == 1) ? 'SI' : 'NO');
+                        break;
+                    default:
+                        $sheet->setCellValueByColumnAndRow($col, $row, $vettorecella);
+                        break;
                 }
 
                 $col = $col + 1;
@@ -206,72 +220,53 @@ class StampatabellaController extends FiController
         foreach ($modellicolonne as $modellocolonna) {
             $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonna);
             switch ($modellocolonna['tipocampo']) {
-            case 'text':
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
-                break;
-            case 'string':
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
-                break;
-            case 'integer':
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-                break;
-            case 'float':
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode('#,##0.00');
-                break;
-            case 'number':
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode('#,##0.00');
-                break;
-            case 'datetime':
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode('dd/mm/yyyy');
-                break;
-            case 'date':
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode('dd/mm/yyyy');
-                break;
-            default:
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
-                break;
+                case 'text':
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                    break;
+                case 'string':
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                    break;
+                case 'integer':
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+                    break;
+                case 'float':
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode('#,##0.00');
+                    break;
+                case 'number':
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode('#,##0.00');
+                    break;
+                case 'datetime':
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode('dd/mm/yyyy');
+                    break;
+                case 'date':
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode('dd/mm/yyyy');
+                    break;
+                default:
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                            ->getNumberFormat()
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                    break;
             }
 
             ++$indicecolonna;
         }
-
-        //Si crea un oggetto
-        $objWriter = new \PHPExcel_Writer_Excel5($objPHPExcel);
-        $todaydate = date('d-m-y');
-
-        //$todaydate = $todaydate . '-' . date("H-i-s");
-        $filename = 'Exportazione_'.$testata['tabella'];
-        $filename = $filename.'-'.$todaydate.'-'.strtoupper(md5(uniqid(rand(), true)));
-        $filename = $filename.'.xls';
-        $filename = sys_get_temp_dir().DIRECTORY_SEPARATOR.$filename;
-
-        if (file_exists($filename)) {
-            unlink($filename);
-        }
-
-        $objWriter->save($filename);
-
-        return $filename;
     }
 
-    private function stampaTestata($pdf, $nomicolonne, $modellicolonne, $larghezzaform, $h, $border, $align, $fill, $ln)
-    {
+    private function stampaTestata($pdf, $nomicolonne, $modellicolonne, $larghezzaform, $h, $border, $align, $fill, $ln) {
         // Testata
         $pdf->SetFont('helvetica', 'B', 9);
         $arr_heights = array();
