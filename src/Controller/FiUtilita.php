@@ -226,13 +226,17 @@ class FiUtilita {
         $mm = ($invertito ? $gg : $mm);
         $gg = $appogg;
 
-        $separator = ($senzalinea ? '' : '-');
-        
-        $nuovadata = $aaaa . $separator . $mm . $separator . $gg;
-        
-        $formattata = (strlen($gg) == 0 ? '' : $nuovadata);
+        $formattata = self::getDataFormattata($aaaa, $mm, $gg, $senzalinea);
 
         return $formattata;
+    }
+
+    private static function getDataFormattata($aaaa, $mm, $gg, $senzalinea) {
+        $separatore = ($senzalinea ? '' : '-');
+
+        $nuovadata = $aaaa . $separatore . $mm . $separatore . $gg;
+
+        return (strlen($gg) == 0 ? '' : $nuovadata);
     }
 
     public static function db2data($giorno, $senzalinea = false) {
