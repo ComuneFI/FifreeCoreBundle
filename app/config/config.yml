@@ -40,7 +40,7 @@ twig:
         database_user: "%database_user%"
         solosso: %solosso%
     form_themes:
-        - FiCoreBundle:standard:form_div_layout.html.twig
+        - FiCoreBundle:Standard:form_div_layout.html.twig
 
 # Doctrine Configuration
 doctrine:
