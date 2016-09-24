@@ -409,32 +409,14 @@ class FiController extends Controller {
 
         $paricevuti = array('nomebundle' => $nomebundle, 'nometabella' => $request->get('nometabella'), 'container' => $container, 'request' => $request);
 
-        if ($request->get('parametritesta')) {
-            $jsonparms = json_decode($request->get('parametritesta'));
-            $parametritesta = get_object_vars($jsonparms);
-            $parametritesta['container'] = $container;
-            $parametritesta['doctrine'] = $em;
-            $parametritesta['request'] = $request;
-            $parametritesta['output'] = 'stampa';
-        }
+        $parametripertestatagriglia = $this->getParametersTestataPerGriglia($request, $container, $em, $paricevuti);
 
-        $parametripertestatagriglia = $request->get('parametritesta') ? $parametritesta : $paricevuti;
         $testatagriglia = Griglia::testataPerGriglia($parametripertestatagriglia);
 
         if ($request->get('titolo')) {
             $testatagriglia['titolo'] = $request->get('titolo');
         }
-
-        if ($request->get('parametrigriglia')) {
-            $jsonparms = json_decode($request->get('parametrigriglia'));
-            $parametrigriglia = get_object_vars($jsonparms);
-            $parametrigriglia['container'] = $container;
-            $parametrigriglia['doctrine'] = $em;
-            $parametrigriglia['request'] = $request;
-            $parametrigriglia['output'] = 'stampa';
-        }
-
-        $parametridatipergriglia = $request->get('parametrigriglia') ? $parametrigriglia : $paricevuti;
+        $parametridatipergriglia = $this->getParametersDatiPerGriglia($request, $container, $em, $paricevuti);
         $corpogriglia = Griglia::datiPerGriglia($parametridatipergriglia);
 
         $parametri = array('request' => $request, 'testata' => $testatagriglia, 'griglia' => $corpogriglia);
@@ -458,31 +440,14 @@ class FiController extends Controller {
 
         $paricevuti = array('nomebundle' => $nomebundle, 'nometabella' => $request->get('nometabella'), 'container' => $container, 'request' => $request);
 
-        if ($request->get('parametritesta')) {
-            $jsonparms = json_decode($request->get('parametritesta'));
-            $parametritesta = get_object_vars($jsonparms);
-            $parametritesta['container'] = $container;
-            $parametritesta['doctrine'] = $em;
-            $parametritesta['request'] = $request;
-            $parametritesta['output'] = 'stampa';
-        }
-
-        $parametripertestatagriglia = $request->get('parametritesta') ? $parametritesta : $paricevuti;
+        $parametripertestatagriglia = $this->getParametersTestataPerGriglia($request, $container, $em, $paricevuti);
         $testatagriglia = Griglia::testataPerGriglia($parametripertestatagriglia);
         if ($request->get('titolo')) {
             $testatagriglia['titolo'] = $request->get('titolo');
         }
 
-        if ($request->get('parametrigriglia')) {
-            $jsonparms = json_decode($request->get('parametrigriglia'));
-            $parametrigriglia = get_object_vars($jsonparms);
-            $parametrigriglia['container'] = $container;
-            $parametrigriglia['doctrine'] = $em;
-            $parametrigriglia['request'] = $request;
-            $parametrigriglia['output'] = 'stampa';
-        }
+        $parametridatipergriglia = $this->getParametersDatiPerGriglia($request, $container, $em, $paricevuti);
 
-        $parametridatipergriglia = $request->get('parametrigriglia') ? $parametrigriglia : $paricevuti;
         $corpogriglia = Griglia::datiPerGriglia($parametridatipergriglia);
 
         $parametri = array('request' => $request, 'testata' => $testatagriglia, 'griglia' => $corpogriglia);
@@ -496,6 +461,32 @@ class FiController extends Controller {
         $response->setContent(file_get_contents($fileexcel));
 
         return $response;
+    }
+
+    private function getParametersTestataPerGriglia($request, $container, $em, $paricevuti) {
+        if ($request->get('parametritesta')) {
+            $jsonparms = json_decode($request->get('parametritesta'));
+            $parametritesta = get_object_vars($jsonparms);
+            $parametritesta['container'] = $container;
+            $parametritesta['doctrine'] = $em;
+            $parametritesta['request'] = $request;
+            $parametritesta['output'] = 'stampa';
+        }
+
+        return $request->get('parametritesta') ? $parametritesta : $paricevuti;
+    }
+
+    private function getParametersDatiPerGriglia($request, $container, $em, $paricevuti) {
+        if ($request->get('parametrigriglia')) {
+            $jsonparms = json_decode($request->get('parametrigriglia'));
+            $parametrigriglia = get_object_vars($jsonparms);
+            $parametrigriglia['container'] = $container;
+            $parametrigriglia['doctrine'] = $em;
+            $parametrigriglia['request'] = $request;
+            $parametrigriglia['output'] = 'stampa';
+        }
+
+        return $request->get('parametrigriglia') ? $parametrigriglia : $paricevuti;
     }
 
     public function getNamespace() {
