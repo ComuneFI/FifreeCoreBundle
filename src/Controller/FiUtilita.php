@@ -67,18 +67,16 @@ class FiUtilita {
         $stringab = $parametri['stringab'];
 
         $tolleranzauno = (isset($parametri['tolleranza']) ? $parametri['tolleranza'] : 1);
+
         $partecento = 0;
         $strlensa = strlen($stringaa);
         $strlensb = strlen($stringab);
         $totalecento = $strlensa + $strlensb;
 
         for ($i = 0; $i < $strlensb; ++$i) {
-            $caratterea = ($strlensa >= $i ? substr($stringaa, $i, 1) : false);
-            $lowestringb = strtolower($stringab);
-            $lowercaratterea = strtolower($caratterea);
-            $difftolleranzauno = $i - $tolleranzauno;
-            $offset = ($difftolleranzauno >= 0) ? $difftolleranzauno : 0;
-            $strpos = strpos($lowestringb, $lowercaratterea, $offset);
+            $caratterea = $this->getCarattereAPercentualeConfrontoStringhe($i, $stringaa, $strlensa);
+            $offset = $this->getOffsetPercentualeConfrontoStringhe($i, $tolleranzauno);
+            $strpos = strpos(strtolower($stringab), strtolower($caratterea), $offset);
             $posizioneinb = $caratterea ? $strpos : false;
 
             $partecento = $this->partecento($i, $posizioneinb, $tolleranzauno, $partecento);
@@ -88,7 +86,16 @@ class FiUtilita {
         return $perc;
     }
 
+    private function getCarattereAPercentualeConfrontoStringhe($i, $stringaa, $strlensa) {
+        return ($strlensa >= $i ? substr($stringaa, $i, 1) : false);
+    }
+
+    private function getOffsetPercentualeConfrontoStringhe($i, $tolleranzauno) {
+        return (($i - $tolleranzauno) >= 0) ? ($i - $tolleranzauno) : 0;
+    }
+
     private function partecento($i, $posizioneinb, $tolleranzauno, $partecento) {
+
         if (!($posizioneinb === false)) {
             if ($posizioneinb == $i) {
                 $partecento += 2;
