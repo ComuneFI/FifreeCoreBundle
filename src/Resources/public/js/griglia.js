@@ -55,7 +55,7 @@ function caricaGriglia(parametrijs) {
   var overlayopen = (parametrijs["overlayopen"] == 1) ? true : false;
   var imgwaiturl = parametrijs['imgwaiturl'] || '/bundles/ficore/images/wait.gif';
   var allegati = (parametrijs["allegati"] == 1) ? 1 : 0;
-  var indirizzoexcel = (parametrijs["indirizzoexcel"]) ? parametrijs["indirizzoexcel"] : "tabelle/esportaexcel/"+parametrijs["tabella"];
+  var indirizzoexcel = (parametrijs["indirizzoexcel"]) ? parametrijs["indirizzoexcel"] : "Tabelle/esportaexcel/"+parametrijs["tabella"];
     
   var parametriaggiuntivi_edit = parametrijs["parametriaggiuntivi_edit"] || {};
   var open_new_window = parametrijs["open_new_window"] || 0;
@@ -955,7 +955,7 @@ function mostraConfigurazione(parametristampa) {
 
   parametripassa = {};
 
-  jQuery(div).load(baseUrl + '/' + "tabelle/configura/" + tabella, parametripassa, function (responseText, textStatus) {
+  jQuery(div).load(baseUrl + '/' + "Tabelle/configura/" + tabella, parametripassa, function (responseText, textStatus) {
     jQuery(div).show();
 
     if (sinistra > 0 || alto > 0) {
@@ -988,7 +988,7 @@ function stampa(parametristampa) {
   var tabella = parametristampa["tabella"] || "";
   var nomelist = parametristampa["nomelist"] || "#list1";
 
-  var indirizzo = parametristampa["indirizzo"] || "tabelle/stampatabella/" + tabella;
+  var indirizzo = parametristampa["indirizzo"] || "Tabelle/stampatabella/" + tabella;
 
   var filtro = jQuery(nomelist).getGridParam("postData");
 
