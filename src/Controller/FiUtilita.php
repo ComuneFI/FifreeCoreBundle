@@ -23,16 +23,15 @@ class FiUtilita {
     }
 
     public function sommaMinuti($parametri = array()) {
+        //parametri obbligatori
+        if (!isset($parametri['minuti'])) {
+            return false;
+        }
         $restotminuti = array();
         $resminuti = 0;
         $resore = 0;
 
-//parametri obbligatori
-        if (isset($parametri['minuti'])) {
-            $minuti = $parametri['minuti'];
-        } else {
-            return false;
-        }
+        $minuti = $parametri['minuti'];
 
         $totminuti = array_sum($minuti);
         $resminuti = $totminuti % 60;
@@ -173,7 +172,7 @@ class FiUtilita {
             $elementonomecodice = $elemento[$nomecodice];
             $elementonomedescrizione = $elemento[$nomedescrizione];
             $elementoselezionato = ($elementonomecodice === $selezionato ? " selected='yes'" : '');
-            $stringaproselect .= '<option value=' . $elementonomecodice . $elementoselezionato . '>' . $elementonomedescrizione . '</option>';
+            $stringaproselect .= '<option value="' . $elementonomecodice .'"'. $elementoselezionato . '>' . $elementonomedescrizione . '</option>';
         }
 
         return $stringaproselect;
@@ -184,6 +183,7 @@ class FiUtilita {
         $arrayritorno["selezionato"] = (isset($parametri['selezionato']) ? $parametri['selezionato'] : false);
         $arrayritorno["nomecodice"] = (isset($parametri['nomecodice']) ? $parametri['nomecodice'] : 'codice');
         $arrayritorno["nomedescrizione"] = (isset($parametri['nomedescrizione']) ? $parametri['nomedescrizione'] : 'descrizione');
+        return $arrayritorno;
     }
 
     /**
