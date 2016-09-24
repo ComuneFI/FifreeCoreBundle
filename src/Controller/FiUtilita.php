@@ -294,10 +294,10 @@ class FiUtilita {
 
         //parametri obbligatori
         $elementi = $parametri['elementi'];
-
-        $selezionato = (isset($parametri['selezionato']) ? $parametri['selezionato'] : false);
-        $nomecodice = (isset($parametri['nomecodice']) ? $parametri['nomecodice'] : 'codice');
-        $nomedescrizione = (isset($parametri['nomedescrizione']) ? $parametri['nomedescrizione'] : 'descrizione');
+        $attributi = $this->getProSelectAttribute($parametri);
+        $selezionato = $attributi["selezionato"];
+        $nomecodice = $attributi["nomecodice"];
+        $nomedescrizione = $attributi["nomedescrizione"];
 
         foreach ($elementi as $elemento) {
             $elementonomecodice = $elemento[$nomecodice];
@@ -307,6 +307,13 @@ class FiUtilita {
         }
 
         return $stringaproselect;
+    }
+
+    public function getProSelectAttribute($parametri) {
+        $arrayritorno = array();
+        $arrayritorno["selezionato"] = (isset($parametri['selezionato']) ? $parametri['selezionato'] : false);
+        $arrayritorno["nomecodice"] = (isset($parametri['nomecodice']) ? $parametri['nomecodice'] : 'codice');
+        $arrayritorno["nomedescrizione"] = (isset($parametri['nomedescrizione']) ? $parametri['nomedescrizione'] : 'descrizione');
     }
 
     /**
