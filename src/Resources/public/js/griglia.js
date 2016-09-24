@@ -1038,7 +1038,7 @@ function esportaexcel(parametriexcel) {
 
   var formxls = document.formesportaexcel;
   formxls.setAttribute("method", "post");
-  formxls.setAttribute("action", indirizzoexcel);
+  formxls.setAttribute("action", baseUrl + '/' + indirizzoexcel);
   formxls.setAttribute("target", "_blank");
 
   jQuery.each(parametriexcel, function (key, value) {

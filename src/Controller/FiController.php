@@ -396,7 +396,7 @@ class FiController extends Controller {
 
     public function stampatabellaAction(Request $request) {
         self::setup($request);
-        $pdf = new stampatabellaController($this->container);
+        $pdf = new StampatabellaController($this->container);
 
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -428,7 +428,7 @@ class FiController extends Controller {
 
     public function esportaexcelAction(Request $request) {
         self::setup($request);
-        $xls = new stampatabellaController($this->container);
+        $xls = new StampatabellaController($this->container);
 
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
