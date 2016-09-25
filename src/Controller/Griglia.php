@@ -304,19 +304,19 @@ class Griglia extends FiController {
         } else {
             if ($tipo == 'date' || $tipo == 'datetime') {
                 self::setVettoriPerData();
-                $regola['data'] = fiUtilita::data2db($regola['data']);
+                $regola['data'] = FiUtilita::data2db($regola['data']);
             } elseif ($tipo == 'string') {
                 self::setVettoriPerStringa();
                 $regola['field'] = 'lower(' . $regola['field'] . ')';
             }
-            if ($tipo == 'boolean' && $regola['data'] == 'null') {
-                $regola = null;
-                return $regola;
-            }
 
-            if (($tipo == 'boolean') && $regola['data'] == 'false') {
-                $regola['op'] = 'nt';
-                $regola['data'] = '';
+            if (($tipo == 'boolean') && ($regola['data'] === 'false' || $regola['data'] === false)) {
+                $regola['op'] = 'eq';
+                $regola['data'] = 0;
+            }
+            if (($tipo == 'boolean') && ($regola['data'] === 'true' || $regola['data'] === true)) {
+                $regola['op'] = 'eq';
+                $regola['data'] = 1;
             }
         }
         $regolareturn = self::getRegolaPerData($regola);

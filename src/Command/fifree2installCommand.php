@@ -149,7 +149,7 @@ class fifree2installCommand extends ContainerAwareCommand {
         $ffsecondariarow1 = new \Fi\CoreBundle\Entity\Ffsecondaria();
         $ffsecondariarow1->setFfprincipale($ffprincipalerow);
         $ffsecondariarow1->setDescsec('1° secondaria legato al 1° record principale');
-        $ffsecondariarow1->setData(\DateTime::createFromFormat("y-m-d", date("y-m-d")));
+        $ffsecondariarow1->setData(\DateTime::createFromFormat("Y-m-d", date("Y-m-d")));
         $ffsecondariarow1->setIntero(10);
         $ffsecondariarow1->setImporto(12.34);
         $ffsecondariarow1->setNota("Super Nota ffsecondaria");
@@ -159,7 +159,7 @@ class fifree2installCommand extends ContainerAwareCommand {
         $ffsecondariarow2 = new \Fi\CoreBundle\Entity\Ffsecondaria();
         $ffsecondariarow2->setFfprincipale($ffprincipalerow);
         $ffsecondariarow2->setDescsec('2° secondaria legato al 1° record principale');
-        $ffsecondariarow2->setData(\DateTime::createFromFormat("y-m-d", date("y-m-d")));
+        $ffsecondariarow2->setData(\DateTime::createFromFormat("Y-m-d", date("Y-m-d")));
         $ffsecondariarow2->setIntero(1);
         $ffsecondariarow2->setImporto(1.23);
         $ffsecondariarow2->setNota("Nota ffsecondaria");
@@ -175,7 +175,7 @@ class fifree2installCommand extends ContainerAwareCommand {
         $ffsecondaria = new \Fi\CoreBundle\Entity\Ffsecondaria();
         $ffsecondaria->setFfprincipale($ffprincipale);
         $ffsecondaria->setDescsec('3° secondaria legato al 2° record principale');
-        $ffsecondaria->setData(\DateTime::createFromFormat("y-m-d", date("y-m-d")));
+        $ffsecondaria->setData(\DateTime::createFromFormat("Y-m-d", date("Y-m-d")));
         $ffsecondaria->setIntero(1000);
         $ffsecondaria->setImporto(1000.12);
         $ffsecondaria->setNota("Nota altra ffsecondaria");

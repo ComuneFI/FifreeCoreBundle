@@ -7,20 +7,19 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Ffsecondaria controller.
  */
-class FfsecondariaController extends FiController
-{
-    public function indexAction(Request $request)
-    {
+class FfsecondariaController extends FiController {
+
+    public function indexAction(Request $request) {
         parent::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
         $container = $this->container;
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
 
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository($nomebundle.':'.$controller)->findAll();
+        $entities = $em->getRepository($nomebundle . ':' . $controller)->findAll();
 
         $dettaglij = array(
             'descsec' => array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text')),
@@ -51,26 +50,47 @@ class FfsecondariaController extends FiController
         $testata = json_encode($testatagriglia);
 
         return $this->render(
-            $nomebundle.':'.$controller.':index.html.twig', array(
+                        $nomebundle . ':' . $controller . ':index.html.twig', array(
                     'entities' => $entities,
                     'nomecontroller' => $controller,
                     'testata' => $testata,
-            )
+                        )
         );
     }
 
-    public function setParametriGriglia($prepar = array())
-    {
+    public function setParametriGriglia($prepar = array()) {
         self::setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array();
         $tabellej['ffprincipale_id'] = array('tabella' => 'ffprincipale', 'campi' => array('descrizione'));
 
-        $paricevuti = array('container' => $this->container, 'nomebundle' => $nomebundle, 'tabellej' => $tabellej, 'nometabella' => $controller, 'escludere' => $escludi);
+        $precondizioniAvanzate[] = array("nometabella" => "Ffsecondaria",
+            "nomecampo" => "intero",
+            "operatore" => ">=",
+            "valorecampo" => 1);
+        $precondizioniAvanzate[] = array("nometabella" => "Ffsecondaria",
+            "nomecampo" => "data",
+            "operatore" => "<=",
+            "valorecampo" => date("Y-m-d"),
+            "operatorelogico" => "AND");
+        
+        $precondizioniAvanzate[] = array("nometabella" => "Ffsecondaria",
+            "nomecampo" => "attivo",
+            "operatore" => "=",
+            "valorecampo" => true,
+            "operatorelogico" => "AND");
+
+
+        $paricevuti = array('container' => $this->container,
+            'nomebundle' => $nomebundle,
+            'tabellej' => $tabellej,
+            'nometabella' => $controller,
+            'escludere' => $escludi,
+            "precondizioniAvanzate" => $precondizioniAvanzate);
 
         if ($prepar) {
             $paricevuti = array_merge($paricevuti, $prepar);
@@ -78,4 +98,5 @@ class FfsecondariaController extends FiController
 
         self::$parametrigriglia = $paricevuti;
     }
+
 }
