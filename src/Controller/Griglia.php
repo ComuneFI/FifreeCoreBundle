@@ -109,22 +109,32 @@ class Griglia extends FiController {
             unset($q);
             $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
         }
+        if (!$q) {
+            return $escludi;
+        }
 
-        if ($q) {
-            foreach ($q as $riga) {
-                if ($output == 'stampa') {
-                    if ($riga->getMostrastampa() == false) {
-                        $escludi[] = $riga->getNomecampo();
-                    }
-                } else {
-                    if ($riga->getMostraindex() == false) {
-                        $escludi[] = $riga->getNomecampo();
-                    }
-                }
+        foreach ($q as $riga) {
+            $campo = self::getCampiEsclusi($riga, $output);
+            if ($campo) {
+                $escludi[] = $campo;
             }
         }
 
         return $escludi;
+    }
+
+    public static function getCampiEsclusi($riga, $output) {
+        $campoescluso = null;
+        if ($output == 'stampa') {
+            if ($riga->hasMostrastampa() == false) {
+                $campoescluso = $riga->getNomecampo();
+            }
+        } else {
+            if ($riga->hasMostraindex() == false) {
+                $campoescluso = $riga->getNomecampo();
+            }
+        }
+        return $campoescluso;
     }
 
     public static function etichettecampi($parametri = array()) {

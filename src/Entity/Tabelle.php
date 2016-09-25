@@ -149,7 +149,7 @@ class Tabelle
      *
      * @return bool
      */
-    public function getMostraindex()
+    public function hasMostraindex()
     {
         return $this->mostraindex;
     }
@@ -245,7 +245,7 @@ class Tabelle
      *
      * @return bool
      */
-    public function getMostrastampa()
+    public function hasMostrastampa()
     {
         return $this->mostrastampa;
     }

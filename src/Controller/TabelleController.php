@@ -212,8 +212,8 @@ class TabelleController extends FiController {
                     $ritrovato = $this->getDoctrine()->getRepository($nomebundle . ':tabelle')->findOneBy($vettorericerca, array());
 
                     if ($ritrovato) {
-                        $crea->setMostrastampa($ritrovato->getMostrastampa() ? true : false);
-                        $crea->setMostraindex($ritrovato->getMostraindex() ? true : false);
+                        $crea->setMostrastampa($ritrovato->hasMostrastampa() ? true : false);
+                        $crea->setMostraindex($ritrovato->hasMostraindex() ? true : false);
                     }
                 } else {
                     $crea->setMostrastampa(true);
