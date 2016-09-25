@@ -5,8 +5,8 @@ namespace Fi\CoreBundle\Entity;
 /**
  * Ffsecondaria.
  */
-class Ffsecondaria
-{
+class Ffsecondaria {
+
     /**
      * @var int
      */
@@ -28,12 +28,31 @@ class Ffsecondaria
     private $ffprincipale;
 
     /**
+     * @var \DateTime
+     */
+    private $data;
+
+    /**
+     * @var float
+     */
+    private $importo;
+
+    /**
+     * @var string
+     */
+    private $nota;
+
+    /**
+     * @var boolean
+     */
+    private $attivo;
+
+    /**
      * Get id.
      *
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -44,8 +63,7 @@ class Ffsecondaria
      *
      * @return ffsecondaria
      */
-    public function setDescsec($descsec)
-    {
+    public function setDescsec($descsec) {
         $this->descsec = $descsec;
 
         return $this;
@@ -56,8 +74,7 @@ class Ffsecondaria
      *
      * @return string
      */
-    public function getDescsec()
-    {
+    public function getDescsec() {
         return $this->descsec;
     }
 
@@ -68,8 +85,7 @@ class Ffsecondaria
      *
      * @return ffsecondaria
      */
-    public function setFfprincipaleId($ffprincipaleId)
-    {
+    public function setFfprincipaleId($ffprincipaleId) {
         $this->ffprincipale_id = $ffprincipaleId;
 
         return $this;
@@ -80,8 +96,7 @@ class Ffsecondaria
      *
      * @return int
      */
-    public function getFfprincipaleId()
-    {
+    public function getFfprincipaleId() {
         return $this->ffprincipale_id;
     }
 
@@ -92,8 +107,7 @@ class Ffsecondaria
      *
      * @return ffsecondaria
      */
-    public function setFfprincipale(\Fi\CoreBundle\Entity\Ffprincipale $ffprincipale)
-    {
+    public function setFfprincipale(\Fi\CoreBundle\Entity\Ffprincipale $ffprincipale) {
         $this->ffprincipale = $ffprincipale;
 
         return $this;
@@ -104,13 +118,127 @@ class Ffsecondaria
      *
      * @return \Fi\CoreBundle\Entity\Ffprincipale
      */
-    public function getFfprincipale()
-    {
+    public function getFfprincipale() {
         return $this->ffprincipale;
     }
 
-    public function __toString()
-    {
+    /**
+     * Set data
+     *
+     * @param \DateTime $data
+     *
+     * @return Ffsecondaria
+     */
+    public function setData($data) {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * Get data
+     *
+     * @return \DateTime
+     */
+    public function getData() {
+        return $this->data;
+    }
+
+    /**
+     * Set importo
+     *
+     * @param float $importo
+     *
+     * @return Ffsecondaria
+     */
+    public function setImporto($importo) {
+        $this->importo = $importo;
+
+        return $this;
+    }
+
+    /**
+     * Get importo
+     *
+     * @return float
+     */
+    public function getImporto() {
+        return $this->importo;
+    }
+
+    /**
+     * Set nota
+     *
+     * @param string $nota
+     *
+     * @return Ffsecondaria
+     */
+    public function setNota($nota) {
+        $this->nota = $nota;
+
+        return $this;
+    }
+
+    /**
+     * Get nota
+     *
+     * @return string
+     */
+    public function getNota() {
+        return $this->nota;
+    }
+
+    /**
+     * Set attivo
+     *
+     * @param boolean $attivo
+     *
+     * @return Ffsecondaria
+     */
+    public function setAttivo($attivo) {
+        $this->attivo = $attivo;
+
+        return $this;
+    }
+
+    /**
+     * Get attivo
+     *
+     * @return boolean
+     */
+    public function isAttivo() {
+        return $this->attivo;
+    }
+
+    /**
+     * @var integer
+     */
+    private $intero;
+
+    /**
+     * Set intero
+     *
+     * @param integer $intero
+     *
+     * @return Ffsecondaria
+     */
+    public function setIntero($intero) {
+        $this->intero = $intero;
+
+        return $this;
+    }
+
+    /**
+     * Get intero
+     *
+     * @return integer
+     */
+    public function getIntero() {
+        return $this->intero;
+    }
+
+    public function __toString() {
         return $this->getDescsec();
     }
+
 }

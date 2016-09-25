@@ -16,6 +16,24 @@ Fi\CoreBundle\Entity\Ffsecondaria:
             nullable: true
         ffprincipale_id:
             type: integer
+        data:
+            type: date
+            nullable: true
+        intero:
+            type: integer
+            nullable: true
+        importo:
+            type: float
+            precision: 10
+            scale: 2
+            nullable: true
+        nota:
+            type: string
+            length: 4000
+            nullable: true
+        attivo:
+            type: boolean
+            nullable: true
     manyToOne:
         ffprincipale:
             targetEntity: Ffprincipale

@@ -13,6 +13,11 @@ class FfsecondariaType extends AbstractType
         $builder
             ->add('descsec')
             ->add('ffprincipale')
+            ->add('data')
+            ->add('intero')
+            ->add('importo')
+            ->add('nota')
+            ->add('attivo')
         ;
     }
 
