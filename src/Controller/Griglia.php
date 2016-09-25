@@ -85,13 +85,7 @@ class Griglia extends FiController {
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
 
         $escludi = array();
-
-        $q = $doctrineficore->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
-
-        if (!$q) {
-            unset($q);
-            $q = $doctrineficore->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
-        }
+        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
         if (!$q) {
             return $escludi;
         }
@@ -104,6 +98,16 @@ class Griglia extends FiController {
         }
 
         return $escludi;
+    }
+
+    private static function getUserCustomTableFields($em, $nometabella, $operatore) {
+        $q = $em->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => $operatore['id'], 'nometabella' => $nometabella));
+
+        if (!$q) {
+            unset($q);
+            $q = $em->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
+        }
+        return $q;
     }
 
     public static function getOuputCampiEsclusi($parametri) {
@@ -163,21 +167,12 @@ class Griglia extends FiController {
         $doctrine = self::getDoctrineByEm($parametri);
         $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
 
-        //$bundle = $parametri["nomebundle"];
-        //Fisso il CoreBundle perchè si passa sempre da questo bundle per le esclusioni
-        $bundle = 'FiCoreBundle';
-
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
 
         $etichette = array();
 
-        $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
-
-        if (!$q) {
-            unset($q);
-            $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
-        }
+        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
 
         if ($q) {
             foreach ($q as $riga) {
@@ -213,12 +208,7 @@ class Griglia extends FiController {
 
         $etichette = array();
 
-        $q = $doctrineficore->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
-
-        if (!$q) {
-            unset($q);
-            $q = $doctrineficore->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
-        }
+        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
 
         if ($q) {
             foreach ($q as $riga) {
@@ -254,12 +244,7 @@ class Griglia extends FiController {
 
         $ordine = array();
 
-        $q = $doctrineficore->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
-
-        if (!$q) {
-            unset($q);
-            $q = $doctrineficore->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
-        }
+        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
 
         if ($q) {
             foreach ($q as $riga) {
@@ -278,15 +263,20 @@ class Griglia extends FiController {
             }
         }
 
+        $ordinecolonne = self::getOrdineColonne($ordine);
+
+        return $ordinecolonne;
+    }
+
+    private static function getOrdineColonne($ordine) {
+        $ordinecolonne = null;
+
         if (count($ordine) > 0) {
             $ordinecolonne = array();
             foreach ($ordine as $value) {
                 $ordinecolonne[] = $value;
             }
-        } else {
-            $ordinecolonne = null;
         }
-
         return $ordinecolonne;
     }
 
