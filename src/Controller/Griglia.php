@@ -73,7 +73,7 @@ class Griglia extends FiController {
         if (!isset($parametri['nometabella'])) {
             return false;
         }
-        
+
         $output = self::getOuputCampiEsclusi($parametri);
 
         $nometabella = $parametri['nometabella'];
@@ -160,17 +160,8 @@ class Griglia extends FiController {
 
         $nometabella = $parametri['nometabella'];
 
-        if (isset($parametri['em'])) {
-            $doctrine = $parametri['container']->get('doctrine')->getManager($parametri['em']);
-        } else {
-            $doctrine = $parametri['container']->get('doctrine')->getManager();
-        }
-
-        if (isset($parametri['emficore'])) {
-            $doctrineficore = $parametri['container']->get('doctrine')->getManager($parametri['emficore']);
-        } else {
-            $doctrineficore = &$doctrine;
-        }
+        $doctrine = self::getDoctrineByEm($parametri);
+        $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         //$bundle = $parametri["nomebundle"];
         //Fisso il CoreBundle perchè si passa sempre da questo bundle per le esclusioni
@@ -214,32 +205,19 @@ class Griglia extends FiController {
 
         $nometabella = $parametri['nometabella'];
 
-        if (isset($parametri['em'])) {
-            $doctrine = $parametri['container']->get('doctrine')->getManager($parametri['em']);
-        } else {
-            $doctrine = $parametri['container']->get('doctrine')->getManager();
-        }
-
-        if (isset($parametri['emficore'])) {
-            $doctrineficore = $parametri['container']->get('doctrine')->getManager($parametri['emficore']);
-        } else {
-            $doctrineficore = &$doctrine;
-        }
-
-        //$bundle = $parametri["nomebundle"];
-        //Fisso il CoreBundle perchè si passa sempre da questo bundle per le esclusioni
-        $bundle = 'FiCoreBundle';
+        $doctrine = self::getDoctrineByEm($parametri);
+        $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
 
         $etichette = array();
 
-        $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
+        $q = $doctrineficore->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
 
         if (!$q) {
             unset($q);
-            $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
+            $q = $doctrineficore->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
         }
 
         if ($q) {
@@ -268,32 +246,19 @@ class Griglia extends FiController {
 
         $nometabella = $parametri['nometabella'];
 
-        if (isset($parametri['em'])) {
-            $doctrine = $parametri['container']->get('doctrine')->getManager($parametri['em']);
-        } else {
-            $doctrine = $parametri['container']->get('doctrine')->getManager();
-        }
-
-        if (isset($parametri['emficore'])) {
-            $doctrineficore = $parametri['container']->get('doctrine')->getManager($parametri['emficore']);
-        } else {
-            $doctrineficore = &$doctrine;
-        }
-
-        //$bundle = $parametri["nomebundle"];
-        //Fisso il CoreBundle perchè si passa sempre da questo bundle per le esclusioni
-        $bundle = 'FiCoreBundle';
+        $doctrine = self::getDoctrineByEm($parametri);
+        $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
 
         $ordine = array();
 
-        $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
+        $q = $doctrineficore->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
 
         if (!$q) {
             unset($q);
-            $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
+            $q = $doctrineficore->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
         }
 
         if ($q) {
@@ -552,17 +517,8 @@ class Griglia extends FiController {
             $output = 'index';
         }
 
-        if (isset($paricevuti['em'])) {
-            $doctrine = $paricevuti['container']->get('doctrine')->getManager($paricevuti['em']);
-        } else {
-            $doctrine = $paricevuti['container']->get('doctrine')->getManager();
-        }
-
-        if (isset($paricevuti['emficore'])) {
-            $doctrineficore = $paricevuti['container']->get('doctrine')->getManager($paricevuti['emficore']);
-        } else {
-            $doctrineficore = &$doctrine;
-        }
+        $doctrine = self::getDoctrineByEm($paricevuti);
+        $doctrineficore = self::getDoctrineFiCoreByEm($paricevuti, $doctrine);
 
         $alias = isset($paricevuti['dettaglij']) ? $paricevuti['dettaglij'] : array();
 
@@ -779,17 +735,8 @@ class Griglia extends FiController {
             $output = 'index';
         }
 
-        if (isset($paricevuti['em'])) {
-            $doctrine = $paricevuti['container']->get('doctrine')->getManager($paricevuti['em']);
-        } else {
-            $doctrine = $paricevuti['container']->get('doctrine')->getManager();
-        }
-
-        if (isset($paricevuti['emficore'])) {
-            $doctrineficore = $paricevuti['container']->get('doctrine')->getManager($paricevuti['emficore']);
-        } else {
-            $doctrineficore = &$doctrine;
-        }
+        $doctrine = self::getDoctrineByEm($paricevuti);
+        $doctrineficore = self::getDoctrineFiCoreByEm($paricevuti, $doctrine);
 
         $bundle = $paricevuti['nomebundle'];
         $nometabella = $paricevuti['nometabella'];
