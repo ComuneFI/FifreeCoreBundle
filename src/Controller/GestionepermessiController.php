@@ -50,7 +50,7 @@ class GestionepermessiController extends FiController
         $isSuperAdmin = false;
         if ($q) {
             if ($q->getRuoli()) {
-                $isSuperAdmin = $q->getRuoli()->getIsSuperadmin();
+                $isSuperAdmin = $q->getRuoli()->isSuperadmin();
             }
         }
 
@@ -71,7 +71,7 @@ class GestionepermessiController extends FiController
         $isSuperAdmin = false;
         if ($q) {
             if ($q->getRuoli()) {
-                $isSuperAdmin = $q->getRuoli()->getIsSuperadmin();
+                $isSuperAdmin = $q->getRuoli()->isSuperadmin();
             }
         }
 
@@ -92,7 +92,7 @@ class GestionepermessiController extends FiController
         $isSuperAdmin = false;
         if ($q) {
             if ($q->getRuoli()) {
-                $isSuperAdmin = $q->getRuoli()->getIsSuperadmin();
+                $isSuperAdmin = $q->getRuoli()->isSuperadmin();
             }
         }
 
@@ -113,7 +113,7 @@ class GestionepermessiController extends FiController
         $isSuperAdmin = false;
         if ($q) {
             if ($q->getRuoli()) {
-                $isSuperAdmin = $q->getRuoli()->getIsSuperadmin();
+                $isSuperAdmin = $q->getRuoli()->isSuperadmin();
             }
         }
 
