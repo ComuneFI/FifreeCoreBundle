@@ -96,7 +96,7 @@ class MenuController extends FiController
         foreach ($menu as $item) {
             $visualizzare = true;
 
-            if ($item->getAutorizzazionerichiesta()) {
+            if ($item->isAutorizzazionerichiesta()) {
                 $visualizzare = $gestionepermessi->sulmenuAction(array('modulo' => $item->getTag()));
             }
 
@@ -120,7 +120,7 @@ class MenuController extends FiController
                     'nome' => $item->getNome(),
                     'sottolivello' => $sottomenutabelle,
                     'target' => $item->getTarget(),
-                    'notifiche' => $item->getNotifiche(),
+                    'notifiche' => $item->hasNotifiche(),
                     'tag' => $item->getTag(),
                     'percorsonotifiche' => $this->getUrlObject($item->getNome(), $item->getPercorsonotifiche(), ''),
                 );
@@ -141,7 +141,7 @@ class MenuController extends FiController
         $sottomenutabelle = array();
         foreach ($submenu as $subitem) {
             $visualizzare = true;
-            if ($subitem->getAutorizzazionerichiesta()) {
+            if ($subitem->isAutorizzazionerichiesta()) {
                 $visualizzare = $gestionepermessi->sulmenuAction(array('modulo' => $subitem->getTag()));
             }
 

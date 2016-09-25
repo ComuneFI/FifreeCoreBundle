@@ -305,7 +305,7 @@ class Griglia extends FiController {
 
         if (count($ordine) > 0) {
             $ordinecolonne = array();
-            foreach ($ordine as $key => $value) {
+            foreach ($ordine as $value) {
                 $ordinecolonne[] = $value;
             }
         } else {

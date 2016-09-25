@@ -206,7 +206,7 @@ class Ruoli
      *
      * @return bool
      */
-    public function getIsSuperadmin()
+    public function isSuperadmin()
     {
         return $this->is_superadmin;
     }
@@ -230,7 +230,7 @@ class Ruoli
      *
      * @return bool
      */
-    public function getIsAdmin()
+    public function isAdmin()
     {
         return $this->is_admin;
     }
@@ -254,7 +254,7 @@ class Ruoli
      *
      * @return bool
      */
-    public function getIsUser()
+    public function isUser()
     {
         return $this->is_user;
     }

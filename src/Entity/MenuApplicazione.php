@@ -167,7 +167,7 @@ class MenuApplicazione
      *
      * @return bool
      */
-    public function getAttivo()
+    public function isAttivo()
     {
         return $this->attivo;
     }
@@ -254,7 +254,7 @@ class MenuApplicazione
      *
      * @return bool
      */
-    public function getNotifiche()
+    public function hasNotifiche()
     {
         return $this->notifiche;
     }
@@ -278,7 +278,7 @@ class MenuApplicazione
      *
      * @return bool
      */
-    public function getAutorizzazionerichiesta()
+    public function isAutorizzazionerichiesta()
     {
         return $this->autorizzazionerichiesta;
     }
