@@ -299,28 +299,35 @@ class Griglia extends FiController {
     }
 
     public static function setSingolaRegola($tipo, $regola) {
-
-        if ($tipo && ($tipo == 'date' || $tipo == 'datetime')) {
-            self::setVettoriPerData();
-            $regola['data'] = fiUtilita::data2db($regola['data']);
-        } elseif ($tipo && $tipo == 'string') {
-            self::setVettoriPerStringa();
-            $regola['field'] = 'lower(' . $regola['field'] . ')';
-        } else {
+        if (!$tipo) {
             self::setVettoriPerNumero();
-        }
-        if ($tipo && $tipo == 'boolean' && $regola['data'] == 'null') {
-            unset($regola);
-            return $regola;
-        }
+        } else {
+            if ($tipo == 'date' || $tipo == 'datetime') {
+                self::setVettoriPerData();
+                $regola['data'] = fiUtilita::data2db($regola['data']);
+            } elseif ($tipo == 'string') {
+                self::setVettoriPerStringa();
+                $regola['field'] = 'lower(' . $regola['field'] . ')';
+            }
+            if ($tipo == 'boolean' && $regola['data'] == 'null') {
+                $regola = null;
+                return $regola;
+            }
 
-        if ($tipo && ($tipo == 'boolean') && $regola['data'] == 'false') {
-            $regola['op'] = 'nt';
-            $regola['data'] = '';
+            if (($tipo == 'boolean') && $regola['data'] == 'false') {
+                $regola['op'] = 'nt';
+                $regola['data'] = '';
+            }
         }
+        $regolareturn = self::getRegolaPerData($regola);
+        return $regolareturn;
+    }
+
+    private static function getRegolaPerData($regola) {
         if ((substr($regola['data'], 0, 1) == "'") && (substr($regola['data'], strlen($regola['data']) - 1, 1) == "'")) {
             $regola['data'] = substr($regola['data'], 1, strlen($regola['data']) - 2);
         }
+
         return $regola;
     }
 
@@ -333,7 +340,7 @@ class Griglia extends FiController {
             $tipo = self::getTipoRegola($regola, $parametri);
 
             $regola = self::setSingolaRegola($tipo, $regola);
-            if (!isset($regola)) {
+            if (!$regola) {
                 continue;
             }
 
