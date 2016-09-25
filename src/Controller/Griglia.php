@@ -73,41 +73,24 @@ class Griglia extends FiController {
         if (!isset($parametri['nometabella'])) {
             return false;
         }
-
-        if ((isset($parametri['output'])) && ($parametri['output'] == 'stampa')) {
-            $output = 'stampa';
-        } else {
-            $output = 'index';
-        }
+        
+        $output = self::getOuputCampiEsclusi($parametri);
 
         $nometabella = $parametri['nometabella'];
 
-        if (isset($parametri['em'])) {
-            $doctrine = $parametri['container']->get('doctrine')->getManager($parametri['em']);
-        } else {
-            $doctrine = $parametri['container']->get('doctrine')->getManager();
-        }
-
-        if (isset($parametri['emficore'])) {
-            $doctrineficore = $parametri['container']->get('doctrine')->getManager($parametri['emficore']);
-        } else {
-            $doctrineficore = &$doctrine;
-        }
-
-        //$bundle = $parametri["nomebundle"];
-        //Fisso il CoreBundle perchè si passa sempre da questo bundle per le esclusioni
-        $bundle = 'FiCoreBundle';
+        $doctrine = self::getDoctrineByEm($parametri);
+        $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
 
         $escludi = array();
 
-        $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
+        $q = $doctrineficore->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => $operatorecorrente['id'], 'nometabella' => $nometabella));
 
         if (!$q) {
             unset($q);
-            $q = $doctrineficore->getRepository($bundle . ':tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
+            $q = $doctrineficore->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
         }
         if (!$q) {
             return $escludi;
@@ -121,6 +104,33 @@ class Griglia extends FiController {
         }
 
         return $escludi;
+    }
+
+    public static function getOuputCampiEsclusi($parametri) {
+        if ((isset($parametri['output'])) && ($parametri['output'] == 'stampa')) {
+            $output = 'stampa';
+        } else {
+            $output = 'index';
+        }
+        return $output;
+    }
+
+    public static function getDoctrineByEm($parametri) {
+        if (isset($parametri['em'])) {
+            $doctrine = $parametri['container']->get('doctrine')->getManager($parametri['em']);
+        } else {
+            $doctrine = $parametri['container']->get('doctrine')->getManager();
+        }
+        return $doctrine;
+    }
+
+    public static function getDoctrineFiCoreByEm($parametri, $doctrine) {
+        if (isset($parametri['emficore'])) {
+            $doctrineficore = $parametri['container']->get('doctrine')->getManager($parametri['emficore']);
+        } else {
+            $doctrineficore = &$doctrine;
+        }
+        return $doctrineficore;
     }
 
     public static function getCampiEsclusi($riga, $output) {
