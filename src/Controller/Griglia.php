@@ -298,6 +298,32 @@ class Griglia extends FiController {
         return $tipo;
     }
 
+    public static function setSingolaRegola($tipo, $regola) {
+
+        if ($tipo && ($tipo == 'date' || $tipo == 'datetime')) {
+            self::setVettoriPerData();
+            $regola['data'] = fiUtilita::data2db($regola['data']);
+        } elseif ($tipo && $tipo == 'string') {
+            self::setVettoriPerStringa();
+            $regola['field'] = 'lower(' . $regola['field'] . ')';
+        } else {
+            self::setVettoriPerNumero();
+        }
+        if ($tipo && $tipo == 'boolean' && $regola['data'] == 'null') {
+            unset($regola);
+            return $regola;
+        }
+
+        if ($tipo && ($tipo == 'boolean') && $regola['data'] == 'false') {
+            $regola['op'] = 'nt';
+            $regola['data'] = '';
+        }
+        if ((substr($regola['data'], 0, 1) == "'") && (substr($regola['data'], strlen($regola['data']) - 1, 1) == "'")) {
+            $regola['data'] = substr($regola['data'], 1, strlen($regola['data']) - 2);
+        }
+        return $regola;
+    }
+
     public static function setRegole(&$q, &$primo, $parametri = array()) {
         $regole = $parametri['regole'];
         $tipof = $parametri['tipof'];
@@ -305,27 +331,10 @@ class Griglia extends FiController {
         foreach ($regole as $regola) {
             //Se il campo non ha il . significa che è necessario aggiungere il nometabella
             $tipo = self::getTipoRegola($regola, $parametri);
-            if ($tipo && ($tipo == 'date' || $tipo == 'datetime')) {
-                self::setVettoriPerData();
-                $regola['data'] = fiUtilita::data2db($regola['data']);
-            } elseif ($tipo && $tipo == 'string') {
-                self::setVettoriPerStringa();
-                $regola['field'] = 'lower(' . $regola['field'] . ')';
-            } else {
-                self::setVettoriPerNumero();
-            }
 
-            if ($tipo && $tipo == 'boolean' && $regola['data'] == 'null') {
-                unset($regola);
+            $regola = self::setSingolaRegola($tipo, $regola);
+            if (!isset($regola)) {
                 continue;
-            }
-
-            if ($tipo && ($tipo == 'boolean') && $regola['data'] == 'false') {
-                $regola['op'] = 'nt';
-                $regola['data'] = '';
-            }
-            if ((substr($regola['data'], 0, 1) == "'") && (substr($regola['data'], strlen($regola['data']) - 1, 1) == "'")) {
-                $regola['data'] = substr($regola['data'], 1, strlen($regola['data']) - 2);
             }
 
             if ($tipof == 'OR') {
