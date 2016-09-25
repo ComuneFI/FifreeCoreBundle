@@ -658,6 +658,9 @@ class Griglia extends FiController {
         if (isset($campiextra)) {
             foreach ($campiextra as $chiave => $colonna) {
                 ++$indice;
+                if (is_object($colonna)) {
+                    $colonna = get_object_vars($colonna);
+                }
                 $nomicolonne[$indice] = isset($colonna['descrizione']) ? $colonna['descrizione'] : self::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
                 $modellocolonne[$indice] = array('name' => isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave, 'id' => isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave, 'width' => isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna['length'] * $moltiplicatorelarghezza), 'tipocampo' => isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'], 'search' => false);
             }
