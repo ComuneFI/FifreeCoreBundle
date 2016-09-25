@@ -74,7 +74,7 @@ class Griglia extends FiController {
             return false;
         }
 
-        $output = self::getOuputCampiEsclusi($parametri);
+        $output = self::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
@@ -110,7 +110,7 @@ class Griglia extends FiController {
         return $q;
     }
 
-    public static function getOuputCampiEsclusi($parametri) {
+    public static function getOuputType($parametri) {
         if ((isset($parametri['output'])) && ($parametri['output'] == 'stampa')) {
             $output = 'stampa';
         } else {
@@ -156,11 +156,7 @@ class Griglia extends FiController {
             return false;
         }
 
-        if ((isset($parametri['output'])) && ($parametri['output'] == 'stampa')) {
-            $output = 'stampa';
-        } else {
-            $output = 'index';
-        }
+        $output = self::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
@@ -192,11 +188,7 @@ class Griglia extends FiController {
             return false;
         }
 
-        if ((isset($parametri['output'])) && ($parametri['output'] == 'stampa')) {
-            $output = 'stampa';
-        } else {
-            $output = 'index';
-        }
+        $output = self::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
@@ -228,11 +220,7 @@ class Griglia extends FiController {
             return false;
         }
 
-        if ((isset($parametri['output'])) && ($parametri['output'] == 'stampa')) {
-            $output = 'stampa';
-        } else {
-            $output = 'index';
-        }
+        $output = self::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
@@ -280,41 +268,43 @@ class Griglia extends FiController {
         return $ordinecolonne;
     }
 
-    public static function setRegole(&$q, &$primo, $parametri = array()) {
-        $regole = $parametri['regole'];
+    private static function getTipoRegola($regola, $parametri) {
         $doctrine = $parametri['doctrine'];
         $nometabella = $parametri['nometabella'];
         $entityName = $parametri['entityName'];
         $bundle = $parametri['bundle'];
-        $tipof = $parametri['tipof'];
 
         $elencocampi = $doctrine->getClassMetadata($entityName)->getFieldNames();
+        $tipo = null;
+        if (strrpos($regola['field'], '.') == 0) {
+            if (in_array($regola['field'], $elencocampi) == true) {
+                $type = $doctrine->getClassMetadata($entityName)->getFieldMapping($regola['field']);
+                $tipo = $type['type'];
+
+                //Si aggiunge l'alias al campo altrimenti da Doctrine2 fallisce la query
+                $regola['field'] = $nometabella . '.' . $regola['field'];
+            }
+        } else {
+            //Altrimenti stiamo analizzando il campo di una tabella in leftjoin pertanto si cercano le informazioni sul tipo
+            //dei campi nella tabella "joinata"
+            $tablejoined = substr($regola['field'], 0, strrpos($regola['field'], '.'));
+            $fieldjoined = substr($regola['field'], strrpos($regola['field'], '.') + 1);
+
+            $entityNametablejoined = $bundle . ':' . $tablejoined;
+
+            $type = $doctrine->getClassMetadata($entityNametablejoined)->getFieldMapping($fieldjoined);
+            $tipo = $type['type'];
+        }
+        return $tipo;
+    }
+
+    public static function setRegole(&$q, &$primo, $parametri = array()) {
+        $regole = $parametri['regole'];
+        $tipof = $parametri['tipof'];
 
         foreach ($regole as $regola) {
-            // echo $regola["field"];
             //Se il campo non ha il . significa che è necessario aggiungere il nometabella
-            if (strrpos($regola['field'], '.') == 0) {
-                if (in_array($regola['field'], $elencocampi) == true) {
-                    $type = $doctrine->getClassMetadata($entityName)->getFieldMapping($regola['field']);
-                    $tipo = $type['type'];
-
-                    //Si aggiunge l'alias al campo altrimenti da Doctrine2 fallisce la query
-                    $regola['field'] = $nometabella . '.' . $regola['field'];
-                }
-            } else {
-                //Altrimenti stiamo analizzando il campo di una tabella in leftjoin pertanto si cercano le informazioni sul tipo
-                //dei campi nella tabella "joinata"
-                $tablejoined = substr($regola['field'], 0, strrpos($regola['field'], '.'));
-                $fieldjoined = substr($regola['field'], strrpos($regola['field'], '.') + 1);
-
-                $entityNametablejoined = $bundle . ':' . $tablejoined;
-
-                $type = $doctrine->getClassMetadata($entityNametablejoined)->getFieldMapping($fieldjoined);
-                $tipo = $type['type'];
-            }
-
-            //echo $tipo;exit;
-
+            $tipo = self::getTipoRegola($regola, $parametri);
             if ($tipo && ($tipo == 'date' || $tipo == 'datetime')) {
                 self::setVettoriPerData();
                 $regola['data'] = fiUtilita::data2db($regola['data']);
