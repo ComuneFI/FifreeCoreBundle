@@ -5,8 +5,8 @@ namespace Fi\CoreBundle\Entity;
 /**
  * Tabelle.
  */
-class Tabelle
-{
+class Tabelle {
+
     /**
      * @var int
      */
@@ -77,8 +77,7 @@ class Tabelle
      *
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -89,8 +88,7 @@ class Tabelle
      *
      * @return tabelle
      */
-    public function setNometabella($nometabella)
-    {
+    public function setNometabella($nometabella) {
         $this->nometabella = $nometabella;
 
         return $this;
@@ -101,8 +99,7 @@ class Tabelle
      *
      * @return string
      */
-    public function getNometabella()
-    {
+    public function getNometabella() {
         return $this->nometabella;
     }
 
@@ -113,8 +110,7 @@ class Tabelle
      *
      * @return tabelle
      */
-    public function setNomecampo($nomecampo)
-    {
+    public function setNomecampo($nomecampo) {
         $this->nomecampo = $nomecampo;
 
         return $this;
@@ -125,8 +121,7 @@ class Tabelle
      *
      * @return string
      */
-    public function getNomecampo()
-    {
+    public function getNomecampo() {
         return $this->nomecampo;
     }
 
@@ -137,8 +132,7 @@ class Tabelle
      *
      * @return tabelle
      */
-    public function setMostraindex($mostraindex)
-    {
+    public function setMostraindex($mostraindex) {
         $this->mostraindex = $mostraindex;
 
         return $this;
@@ -149,8 +143,7 @@ class Tabelle
      *
      * @return bool
      */
-    public function hasMostraindex()
-    {
+    public function hasMostraindex() {
         return $this->mostraindex;
     }
 
@@ -161,8 +154,7 @@ class Tabelle
      *
      * @return tabelle
      */
-    public function setOrdineindex($ordineindex)
-    {
+    public function setOrdineindex($ordineindex) {
         $this->ordineindex = $ordineindex;
 
         return $this;
@@ -173,8 +165,7 @@ class Tabelle
      *
      * @return int
      */
-    public function getOrdineindex()
-    {
+    public function getOrdineindex() {
         return $this->ordineindex;
     }
 
@@ -185,8 +176,7 @@ class Tabelle
      *
      * @return tabelle
      */
-    public function setLarghezzaindex($larghezzaindex)
-    {
+    public function setLarghezzaindex($larghezzaindex) {
         $this->larghezzaindex = $larghezzaindex;
 
         return $this;
@@ -197,8 +187,7 @@ class Tabelle
      *
      * @return int
      */
-    public function getLarghezzaindex()
-    {
+    public function getLarghezzaindex() {
         return $this->larghezzaindex;
     }
 
@@ -209,8 +198,7 @@ class Tabelle
      *
      * @return tabelle
      */
-    public function setEtichettaindex($etichettaindex)
-    {
+    public function setEtichettaindex($etichettaindex) {
         $this->etichettaindex = $etichettaindex;
 
         return $this;
@@ -221,8 +209,7 @@ class Tabelle
      *
      * @return string
      */
-    public function getEtichettaindex()
-    {
+    public function getEtichettaindex() {
         return $this->etichettaindex;
     }
 
@@ -233,8 +220,7 @@ class Tabelle
      *
      * @return tabelle
      */
-    public function setMostrastampa($mostrastampa)
-    {
+    public function setMostrastampa($mostrastampa) {
         $this->mostrastampa = $mostrastampa;
 
         return $this;
@@ -245,8 +231,7 @@ class Tabelle
      *
      * @return bool
      */
-    public function hasMostrastampa()
-    {
+    public function hasMostrastampa() {
         return $this->mostrastampa;
     }
 
@@ -257,8 +242,7 @@ class Tabelle
      *
      * @return tabelle
      */
-    public function setOrdinestampa($ordinestampa)
-    {
+    public function setOrdinestampa($ordinestampa) {
         $this->ordinestampa = $ordinestampa;
 
         return $this;
@@ -269,8 +253,7 @@ class Tabelle
      *
      * @return int
      */
-    public function getOrdinestampa()
-    {
+    public function getOrdinestampa() {
         return $this->ordinestampa;
     }
 
@@ -281,8 +264,7 @@ class Tabelle
      *
      * @return tabelle
      */
-    public function setLarghezzastampa($larghezzastampa)
-    {
+    public function setLarghezzastampa($larghezzastampa) {
         $this->larghezzastampa = $larghezzastampa;
 
         return $this;
@@ -293,8 +275,7 @@ class Tabelle
      *
      * @return int
      */
-    public function getLarghezzastampa()
-    {
+    public function getLarghezzastampa() {
         return $this->larghezzastampa;
     }
 
@@ -305,8 +286,7 @@ class Tabelle
      *
      * @return tabelle
      */
-    public function setEtichettastampa($etichettastampa)
-    {
+    public function setEtichettastampa($etichettastampa) {
         $this->etichettastampa = $etichettastampa;
 
         return $this;
@@ -317,8 +297,7 @@ class Tabelle
      *
      * @return string
      */
-    public function getEtichettastampa()
-    {
+    public function getEtichettastampa() {
         return $this->etichettastampa;
     }
 
@@ -329,8 +308,7 @@ class Tabelle
      *
      * @return tabelle
      */
-    public function setOperatoriId($operatoriId)
-    {
+    public function setOperatoriId($operatoriId) {
         $this->operatori_id = $operatoriId;
 
         return $this;
@@ -341,8 +319,7 @@ class Tabelle
      *
      * @return int
      */
-    public function getOperatoriId()
-    {
+    public function getOperatoriId() {
         return $this->operatori_id;
     }
 
@@ -353,8 +330,7 @@ class Tabelle
      *
      * @return tabelle
      */
-    public function setOperatori(\Fi\CoreBundle\Entity\Operatori $operatori = null)
-    {
+    public function setOperatori(\Fi\CoreBundle\Entity\Operatori $operatori = null) {
         $this->operatori = $operatori;
 
         return $this;
@@ -365,8 +341,7 @@ class Tabelle
      *
      * @return \Fi\CoreBundle\Entity\Operatori
      */
-    public function getOperatori()
-    {
+    public function getOperatori() {
         return $this->operatori;
     }
 
@@ -378,14 +353,12 @@ class Tabelle
     /**
      * Constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->opzioni_tabellas = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    public function __toString()
-    {
-        return $this->nometabella.' ['.$this->nomecampo.']';
+    public function __toString() {
+        return $this->nometabella . ' [' . $this->nomecampo . ']';
     }
 
     /**
@@ -395,8 +368,7 @@ class Tabelle
      *
      * @return tabelle
      */
-    public function addOpzioniTabella(\Fi\CoreBundle\Entity\opzioniTabella $opzioniTabellas)
-    {
+    public function addOpzioniTabella(\Fi\CoreBundle\Entity\opzioniTabella $opzioniTabellas) {
         $this->opzioni_tabellas[] = $opzioniTabellas;
 
         return $this;
@@ -407,8 +379,7 @@ class Tabelle
      *
      * @param \Fi\CoreBundle\Entity\opzioniTabella $opzioniTabellas
      */
-    public function removeOpzioniTabella(\Fi\CoreBundle\Entity\opzioniTabella $opzioniTabellas)
-    {
+    public function removeOpzioniTabella(\Fi\CoreBundle\Entity\opzioniTabella $opzioniTabellas) {
         $this->opzioni_tabellas->removeElement($opzioniTabellas);
     }
 
@@ -417,33 +388,8 @@ class Tabelle
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getOpzioniTabellas()
-    {
+    public function getOpzioniTabellas() {
         return $this->opzioni_tabellas;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $opzioniTabellas;
 
-
-    /**
-     * Get mostraindex
-     *
-     * @return boolean
-     */
-    public function getMostraindex()
-    {
-        return $this->mostraindex;
-    }
-
-    /**
-     * Get mostrastampa
-     *
-     * @return boolean
-     */
-    public function getMostrastampa()
-    {
-        return $this->mostrastampa;
-    }
 }

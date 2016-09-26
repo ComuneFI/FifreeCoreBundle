@@ -735,7 +735,7 @@ class Griglia extends FiController {
         }
 
         $doctrine = self::getDoctrineByEm($paricevuti);
-        $doctrineficore = self::getDoctrineFiCoreByEm($paricevuti, $doctrine);
+        /* $doctrineficore = self::getDoctrineFiCoreByEm($paricevuti, $doctrine); */
 
         $bundle = $paricevuti['nomebundle'];
         $nometabella = $paricevuti['nometabella'];
