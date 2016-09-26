@@ -1,9 +1,9 @@
 Fi\CoreBundle\Entity\Tabelle:
     type: entity
-    table: tabelle
+    table: Tabelle
     indexes:
         fk_table1_operatori1_idx:
-            columns: [operatori_id]
+            columns: [ operatori_id ]
     id:
         id:
             type: integer
@@ -48,13 +48,12 @@ Fi\CoreBundle\Entity\Tabelle:
             type: integer
             nullable: true
     oneToMany:
-        opzioni_tabellas:
+        opzioniTabellas:
             targetEntity: OpzioniTabella
             mappedBy: tabelle
             joinColumn:
-                name: tabelle_id
-                referencedColumnName: id
-                nullable: false
+                name: id
+                referencedColumnName: tabelle_id
     manyToOne:
         operatori:
             targetEntity: Operatori
@@ -62,3 +61,4 @@ Fi\CoreBundle\Entity\Tabelle:
             joinColumn:
                 name: operatori_id
                 referencedColumnName: id
+                nullable: true

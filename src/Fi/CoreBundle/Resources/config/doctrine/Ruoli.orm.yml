@@ -1,6 +1,6 @@
 Fi\CoreBundle\Entity\Ruoli:
     type: entity
-    table: ruoli
+    table: Ruoli
     id:
         id:
             type: integer
@@ -29,11 +29,11 @@ Fi\CoreBundle\Entity\Ruoli:
             targetEntity: Operatori
             mappedBy: ruoli
             joinColumn:
-                name: ruoli_id
-                referencedColumnName: id
+                name: id
+                referencedColumnName: ruoli_id
         permessis:
             targetEntity: Permessi
             mappedBy: ruoli
             joinColumn:
-                name: ruoli_id
-                referencedColumnName: id
+                name: id
+                referencedColumnName: ruoli_id

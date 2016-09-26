@@ -1,9 +1,9 @@
 Fi\CoreBundle\Entity\Operatori:
     type: entity
-    table: operatori
+    table: Operatori
     indexes:
         fk_operatori_ruoli1_idx:
-            columns: [ruoli_id]
+            columns: [ ruoli_id ]
     id:
         id:
             type: integer
@@ -22,14 +22,14 @@ Fi\CoreBundle\Entity\Operatori:
             targetEntity: Permessi
             mappedBy: operatori
             joinColumn:
-                name: operatori_id
-                referencedColumnName: id
+                name: id
+                referencedColumnName: operatori_id
         tabelles:
             targetEntity: Tabelle
             mappedBy: operatori
             joinColumn:
-                name: operatori_id
-                referencedColumnName: id
+                name: id
+                referencedColumnName: operatori_id
     manyToOne:
         ruoli:
             targetEntity: Ruoli
@@ -37,3 +37,4 @@ Fi\CoreBundle\Entity\Operatori:
             joinColumn:
                 name: ruoli_id
                 referencedColumnName: id
+                nullable: true

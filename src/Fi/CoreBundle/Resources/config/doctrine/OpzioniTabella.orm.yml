@@ -1,9 +1,9 @@
 Fi\CoreBundle\Entity\OpzioniTabella:
     type: entity
-    table: opzioni_tabella
+    table: Opzioni_tabella
     indexes:
         opzioni_tabella_tabelle_fk1_idx:
-            columns: [tabelle_id]
+            columns: [ tabelle_id ]
     id:
         id:
             type: integer
@@ -27,8 +27,7 @@ Fi\CoreBundle\Entity\OpzioniTabella:
     manyToOne:
         tabelle:
             targetEntity: Tabelle
-            inversedBy: opzioni_tabellas
+            inversedBy: opzioniTabellas
             joinColumn:
                 name: tabelle_id
                 referencedColumnName: id
-                nullable: false

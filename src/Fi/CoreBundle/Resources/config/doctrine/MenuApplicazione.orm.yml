@@ -1,6 +1,6 @@
 Fi\CoreBundle\Entity\MenuApplicazione:
     type: entity
-    table: menu_applicazione
+    table: Menu_applicazione
     id:
         id:
             type: integer

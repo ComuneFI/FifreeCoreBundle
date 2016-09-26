@@ -1,6 +1,6 @@
 Fi\CoreBundle\Entity\Ffprincipale:
     type: entity
-    table: ffprincipale
+    table: Ffprincipale
     id:
         id:
             type: integer
@@ -16,6 +16,5 @@ Fi\CoreBundle\Entity\Ffprincipale:
             targetEntity: Ffsecondaria
             mappedBy: ffprincipale
             joinColumn:
-                name: ffprincipale_id
-                referencedColumnName: id
-                nullable: false
+                name: id
+                referencedColumnName: ffprincipale_id

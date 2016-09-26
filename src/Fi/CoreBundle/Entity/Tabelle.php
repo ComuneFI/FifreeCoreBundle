@@ -421,4 +421,29 @@ class Tabelle
     {
         return $this->opzioni_tabellas;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $opzioniTabellas;
+
+
+    /**
+     * Get mostraindex
+     *
+     * @return boolean
+     */
+    public function getMostraindex()
+    {
+        return $this->mostraindex;
+    }
+
+    /**
+     * Get mostrastampa
+     *
+     * @return boolean
+     */
+    public function getMostrastampa()
+    {
+        return $this->mostrastampa;
+    }
 }

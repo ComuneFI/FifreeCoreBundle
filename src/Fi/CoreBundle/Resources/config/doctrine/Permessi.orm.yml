@@ -1,11 +1,11 @@
 Fi\CoreBundle\Entity\Permessi:
     type: entity
-    table: permessi
+    table: Permessi
     indexes:
         fk_permessi_operatori1_idx:
-            columns: [operatori_id]
+            columns: [ operatori_id ]
         fk_permessi_ruoli1_idx:
-            columns: [ruoli_id]
+            columns: [ ruoli_id ]
     id:
         id:
             type: integer
@@ -33,9 +33,11 @@ Fi\CoreBundle\Entity\Permessi:
             joinColumn:
                 name: operatori_id
                 referencedColumnName: id
+                nullable: true
         ruoli:
             targetEntity: Ruoli
             inversedBy: permessis
             joinColumn:
                 name: ruoli_id
                 referencedColumnName: id
+                nullable: true

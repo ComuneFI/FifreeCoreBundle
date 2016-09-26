@@ -1,7 +1,6 @@
 Fi\CoreBundle\Entity\Allegati:
     type: entity
-    #schema: fifree2
-    table: allegati
+    table: Allegati
     id:
         id:
             type: integer

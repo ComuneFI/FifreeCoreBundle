@@ -1,9 +1,9 @@
 Fi\CoreBundle\Entity\Ffsecondaria:
     type: entity
-    table: ffsecondaria
+    table: Ffsecondaria
     indexes:
         ffsecondaria_ffprincipale_fk_idx:
-            columns: [ffprincipale_id]
+            columns: [ ffprincipale_id ]
     id:
         id:
             type: integer
@@ -41,4 +41,3 @@ Fi\CoreBundle\Entity\Ffsecondaria:
             joinColumn:
                 name: ffprincipale_id
                 referencedColumnName: id
-                nullable: false
