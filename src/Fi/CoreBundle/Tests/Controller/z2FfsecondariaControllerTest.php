@@ -118,7 +118,7 @@ class z2FfsecondariaControllerTest extends FifreeTest {
         $page->find('css', 'a#dData')->click();
         sleep(1);
 
-        $this->printoperations(&$session, $page);
+        $this->printoperations($session, $page);
 
         $session->stop();
 
