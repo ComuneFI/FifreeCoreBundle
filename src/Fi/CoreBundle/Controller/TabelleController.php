@@ -313,6 +313,14 @@ class TabelleController extends FiController {
         $c = $em->getClassMetadata($bundleClass . ':' . $nometabella);
         $colonne = $c->getColumnNames();
 
+        $risposta = $this->listacampitabelladettagli($escludiid, $colonne, $nomebundle, $controller);
+        //natcasesort($risposta);
+        asort($risposta, SORT_NATURAL | SORT_FLAG_CASE);
+
+        return new JsonResponse($risposta);
+    }
+
+    private function listacampitabelladettagli($escludiid, $colonne, $nomebundle, $controller) {
         $risposta = array();
         if ($escludiid == 1) {
             $gestionepermessi = new GestionepermessiController();
@@ -364,10 +372,7 @@ class TabelleController extends FiController {
                 $risposta[$colonna] = $colonna;
             }
         }
-        //natcasesort($risposta);
-        asort($risposta, SORT_NATURAL | SORT_FLAG_CASE);
-
-        return new JsonResponse($risposta);
+        return $risposta;
     }
 
 }
