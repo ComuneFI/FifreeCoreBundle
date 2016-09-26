@@ -311,29 +311,83 @@ class fifree2installCommand extends ContainerAwareCommand {
 
         $em->persist($ffsecondariarow3);
 
+        $ffsecondariarow4 = new \Fi\CoreBundle\Entity\Ffsecondaria();
+        $ffsecondariarow4->setFfprincipale($ffprincipalerow);
+        $ffsecondariarow4->setDescsec('4° secondaria legato al 1° record principale');
+        $ffsecondariarow4->setData(\DateTime::createFromFormat("Y-m-d", date("Y-m-d")));
+        $ffsecondariarow4->setIntero(101);
+        $ffsecondariarow4->setImporto(101.34);
+        $ffsecondariarow4->setNota("Nota 4° ffsecondaria");
+        $ffsecondariarow4->setAttivo(true);
+
+
+        $em->persist($ffsecondariarow4);
+        
+        $ffsecondariarow5 = new \Fi\CoreBundle\Entity\Ffsecondaria();
+        $ffsecondariarow5->setFfprincipale($ffprincipalerow);
+        $ffsecondariarow5->setDescsec('5° secondaria legato al 1° record principale');
+        $ffsecondariarow5->setData(\DateTime::createFromFormat("Y-m-d", date("Y-m-d")));
+        $ffsecondariarow5->setIntero(101);
+        $ffsecondariarow5->setImporto(101.34);
+        $ffsecondariarow5->setNota("Nota 4° ffsecondaria");
+        $ffsecondariarow5->setAttivo(true);
+
+
+        $em->persist($ffsecondariarow5);
+
         $ffprincipale = new \Fi\CoreBundle\Entity\ffprincipale();
         $ffprincipale->setDescrizione('Descrizione secondo record');
         $em->persist($ffprincipale);
 
-        $ffsecondariarow4 = new \Fi\CoreBundle\Entity\Ffsecondaria();
-        $ffsecondariarow4->setFfprincipale($ffprincipale);
-        $ffsecondariarow4->setDescsec('4° secondaria legato al 2° record principale');
-        $ffsecondariarow4->setData(\DateTime::createFromFormat("Y-m-d", date("Y-m-d")));
-        $ffsecondariarow4->setIntero(1000);
-        $ffsecondariarow4->setImporto(1000.12);
-        $ffsecondariarow4->setNota("Nota altra ffsecondaria");
-        $ffsecondariarow4->setAttivo(true);
-        $em->persist($ffsecondariarow4);
+        $ffsecondariarow6 = new \Fi\CoreBundle\Entity\Ffsecondaria();
+        $ffsecondariarow6->setFfprincipale($ffprincipale);
+        $ffsecondariarow6->setDescsec('6° secondaria legato al 2° record principale');
+        $ffsecondariarow6->setData(\DateTime::createFromFormat("Y-m-d", date("Y-m-d")));
+        $ffsecondariarow6->setIntero(10006);
+        $ffsecondariarow6->setImporto(10006.12);
+        $ffsecondariarow6->setNota("Nota altra ffsecondaria");
+        $ffsecondariarow6->setAttivo(true);
+        
+        $em->persist($ffsecondariarow6);
+        
+        $ffsecondariarow7 = new \Fi\CoreBundle\Entity\Ffsecondaria();
+        $ffsecondariarow7->setFfprincipale($ffprincipale);
+        $ffsecondariarow7->setDescsec('7° secondaria legato al 2° record principale');
+        $ffsecondariarow7->setData(\DateTime::createFromFormat("Y-m-d", date("Y-m-d")));
+        $ffsecondariarow7->setIntero(10007);
+        $ffsecondariarow7->setImporto(10007.22);
+        $ffsecondariarow7->setNota("Nota altra 7 ffsecondaria");
+        $ffsecondariarow7->setAttivo(false);
+        
+        $ffsecondariarow8 = new \Fi\CoreBundle\Entity\Ffsecondaria();
+        $ffsecondariarow8->setFfprincipale($ffprincipale);
+        $ffsecondariarow8->setDescsec('8° secondaria legato al 2° record principale');
+        $ffsecondariarow8->setData(\DateTime::createFromFormat("Y-m-d", date("Y-m-d")));
+        $ffsecondariarow8->setIntero(10008);
+        $ffsecondariarow8->setImporto(10008.22);
+        $ffsecondariarow8->setNota("Nota altra 8 ffsecondaria");
+        $ffsecondariarow8->setAttivo(true);
+        
+        $em->persist($ffsecondariarow7);
+        $ffsecondariarow9 = new \Fi\CoreBundle\Entity\Ffsecondaria();
+        $ffsecondariarow9->setFfprincipale($ffprincipale);
+        $ffsecondariarow9->setDescsec('9° secondaria legato al 2° record principale');
+        $ffsecondariarow9->setData(\DateTime::createFromFormat("Y-m-d", date("Y-m-d")));
+        $ffsecondariarow9->setIntero(1000);
+        $ffsecondariarow9->setImporto(1000.12);
+        $ffsecondariarow9->setNota("Nota altra ffsecondaria");
+        $ffsecondariarow9->setAttivo(true);
+        $em->persist($ffsecondariarow9);
 
-        $ffsecondariarow5 = new \Fi\CoreBundle\Entity\Ffsecondaria();
-        $ffsecondariarow5->setFfprincipale($ffprincipale);
-        $ffsecondariarow5->setDescsec('5° secondaria legato al 2° record principale');
-        $ffsecondariarow5->setData(\DateTime::createFromFormat("Y-m-d", date("Y-m-d")));
-        $ffsecondariarow5->setIntero(1100);
-        $ffsecondariarow5->setImporto(1100.99);
-        $ffsecondariarow5->setNota("Nota 5° altra ffsecondaria");
-        $ffsecondariarow5->setAttivo(false);
-        $em->persist($ffsecondariarow5);
+        $ffsecondariarow10 = new \Fi\CoreBundle\Entity\Ffsecondaria();
+        $ffsecondariarow10->setFfprincipale($ffprincipale);
+        $ffsecondariarow10->setDescsec('10° secondaria legato al 2° record principale');
+        $ffsecondariarow10->setData(\DateTime::createFromFormat("Y-m-d", date("Y-m-d")));
+        $ffsecondariarow10->setIntero(1100);
+        $ffsecondariarow10->setImporto(1100.99);
+        $ffsecondariarow10->setNota("Nota 10° altra ffsecondaria");
+        $ffsecondariarow10->setAttivo(false);
+        $em->persist($ffsecondariarow10);
     }
 
 }
