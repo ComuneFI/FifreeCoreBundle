@@ -533,9 +533,9 @@ class Griglia extends FiController {
         $etichetteutente = self::etichettecampi($paricevuti);
         $larghezzeutente = self::larghezzecampi($paricevuti);
 
-        $escludere = isset($paricevuti['escludere']) ? $paricevuti['escludere'] : null;
+        $escludere = self::getCampiEsclusiTestataPerGriglia($paricevuti);
 
-        $campiextra = isset($paricevuti['campiextra']) ? $paricevuti['campiextra'] : array();
+        $campiextra = self::getCampiExtraTestataPerGriglia($paricevuti);
 
         $ordinecolonne = self::getOrdineColonneTestataPerGriglia($paricevuti);
 
@@ -653,7 +653,7 @@ class Griglia extends FiController {
                 $tipocolonna = isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'];
                 $idcolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
                 $nomecolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
-                
+
                 $modellocolonne[$indice] = array(
                     'name' => $nomecolonna,
                     'id' => $idcolonna,
@@ -677,6 +677,14 @@ class Griglia extends FiController {
         }
 
         return $testata;
+    }
+
+    private static function getCampiEsclusiTestataPerGriglia($paricevuti) {
+        return isset($paricevuti['escludere']) ? $paricevuti['escludere'] : null;
+    }
+
+    private static function getCampiExtraTestataPerGriglia($paricevuti) {
+        return isset($paricevuti['campiextra']) ? $paricevuti['campiextra'] : null;
     }
 
     private static function getNomiColonne($nomicolonne) {
