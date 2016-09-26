@@ -30,7 +30,7 @@ class GrigliaControllerTest extends FifreeTest {
         /* TESTATA */
         $nomebundle = $namespace . $bundle . 'Bundle';
         /* @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->container->get('doctrine')->getManager();
+        /* $em = $this->container->get('doctrine')->getManager(); */
 
         $dettaglij = array(
             'descsec' => array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text')),
@@ -40,8 +40,6 @@ class GrigliaControllerTest extends FifreeTest {
         );
         $escludi = array();
         $paricevuti = array('nomebundle' => $nomebundle, 'nometabella' => $controller, 'dettaglij' => $dettaglij, 'escludere' => $escludi, 'container' => $container);
-
-        $container = $this->container;
 
         /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
         $userManager = $container->get('fos_user.user_manager');
@@ -82,7 +80,7 @@ class GrigliaControllerTest extends FifreeTest {
         $testatanomicolonnegriglia = $testatagriglia["nomicolonne"];
 
         $this->assertEquals($controller, $tabellagriglia);
-        $this->assertEquals(8, count($nomicolonnegriglia));
+        $this->assertEquals(8, count($testatanomicolonnegriglia));
 
         /* $this->setClassName(get_class());
           $client = $this->getClientAutorizzato();
