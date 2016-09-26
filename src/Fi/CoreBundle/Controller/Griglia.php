@@ -1121,6 +1121,12 @@ class Griglia extends FiController {
             return '';
         }
 
+        $filtrodescritto = self::getFiltrodescritto($filtri, $tipofiltro);
+
+        return $filtrodescritto;
+    }
+
+    public static function getFiltrodescritto($filtri, $tipofiltro) {
         $filtrodescritto = ('I dati mostrati rispondono a' . ($tipofiltro == 'AND' ? ' tutti i' : 'd almeno uno dei') . ' seguenti criteri: ');
 
         foreach ($filtri as $indice => $filtro) {
@@ -1131,7 +1137,6 @@ class Griglia extends FiController {
         }
 
         $filtrodescritto .= '.';
-
         return $filtrodescritto;
     }
 
