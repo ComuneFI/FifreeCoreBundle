@@ -520,20 +520,12 @@ class Griglia extends FiController {
         $nometabella = $paricevuti['nometabella'];
         $bundle = $paricevuti['nomebundle'];
 
-        if ((isset($paricevuti['output'])) && ($paricevuti['output'] == 'stampa')) {
-            $output = 'stampa';
-        } else {
-            $output = 'index';
-        }
+        $output = self::getOuputType($paricevuti);
 
         $doctrine = self::getDoctrineByEm($paricevuti);
         $doctrineficore = self::getDoctrineFiCoreByEm($paricevuti, $doctrine);
 
-        $alias = isset($paricevuti['dettaglij']) ? $paricevuti['dettaglij'] : array();
-
-        if (is_object($alias)) {
-            $alias = get_object_vars($alias);
-        }
+        $alias = self::getAliasTestataPerGriglia($paricevuti);
 
         $colonne_link = isset($paricevuti['colonne_link']) ? $paricevuti['colonne_link'] : array();
 
@@ -545,10 +537,7 @@ class Griglia extends FiController {
 
         $campiextra = isset($paricevuti['campiextra']) ? $paricevuti['campiextra'] : array();
 
-        $ordinecolonne = isset($paricevuti['ordinecolonne']) ? $paricevuti['ordinecolonne'] : null;
-        if (!isset($ordinecolonne)) {
-            $ordinecolonne = self::ordinecolonne($paricevuti);
-        }
+        $ordinecolonne = self::getOrdineColonneTestataPerGriglia($paricevuti);
 
         /* @var $em \Doctrine\ORM\EntityManager */
         //$em = $doctrine->getRepository($bundle . ":" . $nometabella)->findAll();
@@ -648,18 +637,7 @@ class Griglia extends FiController {
         if ($output != 'stampa') {
             // Controlla se alcune colonne devono essere dei link
             if (isset($colonne_link)) {
-                foreach ($colonne_link as $colonna_link) {
-                    foreach ($colonna_link as $nomecolonna => $parametricolonna) {
-                        foreach ($modellocolonne as $key => $value) {
-                            foreach ($value as $keyv => $valuev) {
-                                if (($keyv == 'name') && ($valuev == $nomecolonna)) {
-                                    $modellocolonne[$key]['formatter'] = 'showlink';
-                                    $modellocolonne[$key]['formatoptions'] = $parametricolonna;
-                                }
-                            }
-                        }
-                    }
-                }
+                $modellocolonne = self::getColonneLink($colonne_link, $modellocolonne);
             }
         }
 
@@ -671,7 +649,13 @@ class Griglia extends FiController {
                     $colonna = get_object_vars($colonna);
                 }
                 $nomicolonne[$indice] = isset($colonna['descrizione']) ? $colonna['descrizione'] : self::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
-                $modellocolonne[$indice] = array('name' => isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave, 'id' => isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave, 'width' => isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna['length'] * $moltiplicatorelarghezza), 'tipocampo' => isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'], 'search' => false);
+                $width = isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna['length'] * $moltiplicatorelarghezza);
+                $modellocolonne[$indice] = array(
+                    'name' => isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave,
+                    'id' => isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave,
+                    'width' => $width,
+                    'tipocampo' => isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'],
+                    'search' => false);
             }
         }
         ksort($nomicolonne);
@@ -689,6 +673,20 @@ class Griglia extends FiController {
         $testata['modellocolonne'] = $modellocolonnesorted;
         $testata['output'] = $output;
 
+        $testata = self::getOpzioniTabella($doctrineficore, $nometabella, $testata);
+
+        if (isset($paricevuti['container'])) {
+            $permessi = new GestionepermessiController();
+            $permessi->setContainer($paricevuti['container']);
+
+            $vettorepermessi = $permessi->impostaPermessi(array('modulo' => $paricevuti['nometabella']));
+            $testata = array_merge($testata, $vettorepermessi);
+        }
+
+        return $testata;
+    }
+
+    private static function getOpzioniTabella($doctrineficore, $nometabella, $testata) {
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $doctrineficore->createQueryBuilder();
         $qb->select(array('a'));
@@ -702,16 +700,40 @@ class Griglia extends FiController {
         foreach ($opzioni as $opzione) {
             $testata[$opzione->getParametro()] = str_replace('%tabella%', $nometabella, $opzione->getValore());
         }
-
-        if (isset($paricevuti['container'])) {
-            $permessi = new GestionepermessiController();
-            $permessi->setContainer($paricevuti['container']);
-
-            $vettorepermessi = $permessi->impostaPermessi(array('modulo' => $paricevuti['nometabella']));
-            $testata = array_merge($testata, $vettorepermessi);
-        }
-
         return $testata;
+    }
+
+    private static function getColonneLink($colonne_link, $modellocolonne) {
+        foreach ($colonne_link as $colonna_link) {
+            foreach ($colonna_link as $nomecolonna => $parametricolonna) {
+                foreach ($modellocolonne as $key => $value) {
+                    foreach ($value as $keyv => $valuev) {
+                        if (($keyv == 'name') && ($valuev == $nomecolonna)) {
+                            $modellocolonne[$key]['formatter'] = 'showlink';
+                            $modellocolonne[$key]['formatoptions'] = $parametricolonna;
+                        }
+                    }
+                }
+            }
+        }
+        return $modellocolonne;
+    }
+
+    private static function getAliasTestataPerGriglia($paricevuti) {
+        $alias = isset($paricevuti['dettaglij']) ? $paricevuti['dettaglij'] : array();
+
+        if (is_object($alias)) {
+            $alias = get_object_vars($alias);
+        }
+        return $alias;
+    }
+
+    private static function getOrdineColonneTestataPerGriglia($paricevuti) {
+        $ordinecolonne = isset($paricevuti['ordinecolonne']) ? $paricevuti['ordinecolonne'] : null;
+        if (!isset($ordinecolonne)) {
+            $ordinecolonne = self::ordinecolonne($paricevuti);
+        }
+        return $ordinecolonne;
     }
 
     /**

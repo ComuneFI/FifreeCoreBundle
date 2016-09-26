@@ -392,4 +392,13 @@ class Tabelle {
         return $this->opzioni_tabellas;
     }
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $opzioniTabellas;
+
+    public function getOpzioni_tabellas() {
+        return $this->opzioniTabellas;
+    }
+
 }
