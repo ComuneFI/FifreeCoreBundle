@@ -7,7 +7,7 @@ use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class FfprincipaleControllerTest extends FifreeTest {
+class z1FfprincipaleControllerTest extends FifreeTest {
 
     /**
      * @test
@@ -75,7 +75,7 @@ class FfprincipaleControllerTest extends FifreeTest {
         $page->find('css', 'a#sDataFfprincipaleS')->click();
         sleep(1);
 
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");console.log(rowid);$("#list1").jqGrid("setSelection", rowid);}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");$("#list1").jqGrid("setSelection", rowid);}()');
         $element = $page->findAll('css', '.ui-icon-pencil');
 
         foreach ($element as $e) {
@@ -90,7 +90,7 @@ class FfprincipaleControllerTest extends FifreeTest {
         $page->find('css', 'a#sDataFfprincipaleS')->click();
         sleep(1);
         /* Cancellazione */
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");console.log(rowid);$("#list1").jqGrid("setSelection", rowid);}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");$("#list1").jqGrid("setSelection", rowid);}()');
         $element = $page->findAll('css', '.ui-icon-trash');
 
         foreach ($element as $e) {
@@ -128,8 +128,9 @@ class FfprincipaleControllerTest extends FifreeTest {
         }
         $windowNames = $session->getWindowNames();
         if (count($windowNames) > 1) {
-            $session->switchToWindow($windowNames[1]);
-            $session->executeScript('window.close()');
+            for ($x = 1; $x <= count($windowNames) - 1; $x++) {
+                $session->switchToWindow($windowNames[$x]);
+            }
             $mainwindow = $windowNames[0];
             $session->switchToWindow($mainwindow);
             $page = $session->getPage();
