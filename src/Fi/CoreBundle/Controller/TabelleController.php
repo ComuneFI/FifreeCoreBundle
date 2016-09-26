@@ -152,14 +152,14 @@ class TabelleController extends FiController {
 
     public function generaDB($parametri, Request $request) {
         parent::setup($request);
+        if (!isset($parametri['tabella'])) {
+            return false;
+        }
+
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
 
         $nomebundle = $namespace . $bundle . 'Bundle';
-
-        if (!isset($parametri['tabella'])) {
-            return false;
-        }
 
         $nometabella = $parametri['tabella'];
         $em = $this->getDoctrine()->getEntityManager();
@@ -186,7 +186,10 @@ class TabelleController extends FiController {
         $c = $em->getClassMetadata($bundleClass . ':' . $nometabella);
 
         $colonne = $c->getColumnNames();
+        $this->scriviDB($colonne, $nometabella, $nomebundle, $parametri);
+    }
 
+    private function scriviDB($colonne, $nometabella, $nomebundle, $parametri) {
         foreach ($colonne as $colonna) {
             $vettorericerca = array(
                 'nometabella' => $nometabella,
