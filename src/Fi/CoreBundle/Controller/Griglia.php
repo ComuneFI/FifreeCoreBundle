@@ -401,39 +401,33 @@ class Griglia extends FiController {
             $operatoreprecondizione = '=';
             $operatorelogicoprecondizione = '';
             foreach ($elem as $keypre => $valuepre) {
-                if ($keypre == 'nometabella') {
-                    $nometabellaprecondizione = $valuepre;
-                } elseif ($keypre == 'nomecampo') {
-                    $nomecampoprecondizione = $valuepre;
-                } elseif ($keypre == 'operatore') {
-                    $array_operatori = array('=' => 'eq', '<>' => 'ne', '<' => 'lt', '<=' => 'le', '>' => 'gt', '>=' => 'ge', 'LIKE' => 'bw', 'NOT LIKE' => 'bn', 'IN' => 'in', 'NOT IN' => 'ni', 'LIKE' => 'eq', 'NOT LIKE' => 'en', 'LIKE' => 'cn', 'NOT LIKE' => 'nc', 'IS' => 'nu', 'IS NOT' => 'nn'); //, '<>' => 'nt');
-                    $operatoreprecondizione = $array_operatori[strtoupper($valuepre)];
-                } elseif ($keypre == 'valorecampo') {
-                    if (is_array($valuepre)) {
-                        $type = $doctrine->getClassMetadata($parametri['entityName'])->getFieldMapping($nomecampoprecondizione);
-
-                        $tipo = $type['type'];
-                        if ($tipo && ($tipo == 'date' || $tipo == 'datetime')) {
-                            self::setVettoriPerData();
-                            foreach ($valuepre as $chiave => $valore) {
-                                $valuepre[$chiave] = fiUtilita::data2db($valore);
-                            }
-                        } elseif ($tipo && $tipo == 'string') {
-                            self::setVettoriPerStringa();
-                            foreach ($valuepre as $chiave => $valore) {
-                                $valuepre[$chiave] = strtolower($valore);
-                            }
+                switch ($keypre) {
+                    case 'nometabella':
+                        $nometabellaprecondizione = $valuepre;
+                        break;
+                    case 'nomecampo':
+                        $nomecampoprecondizione = $valuepre;
+                        break;
+                    case 'operatore':
+                        $array_operatori = array('=' => 'eq', '<>' => 'ne', '<' => 'lt', '<=' => 'le', '>' => 'gt', '>=' => 'ge', 'LIKE' => 'bw', 'NOT LIKE' => 'bn', 'IN' => 'in', 'NOT IN' => 'ni', 'LIKE' => 'eq', 'NOT LIKE' => 'en', 'LIKE' => 'cn', 'NOT LIKE' => 'nc', 'IS' => 'nu', 'IS NOT' => 'nn'); //, '<>' => 'nt');
+                        $operatoreprecondizione = $array_operatori[strtoupper($valuepre)];
+                        break;
+                    case 'valorecampo':
+                        if (is_array($valuepre)) {
+                            $type = $doctrine->getClassMetadata($parametri['entityName'])->getFieldMapping($nomecampoprecondizione);
+                            $valorecampoprecondizione = self::elaboravalorecampo($type, $valuepre);
                         } else {
-                            self::setVettoriPerNumero();
+                            $valorecampoprecondizione = $valuepre;
                         }
-                        $valorecampoprecondizione = implode(', ', $valuepre); // se si tratta di valori numerici tutto ok, altrimenti non funziona
-                    } else {
-                        $valorecampoprecondizione = $valuepre;
-                    }
-                } elseif ($keypre == 'operatorelogico') {
-                    $operatorelogicoprecondizione = strtoupper($valuepre);
+                        break;
+                    case 'operatorelogico':
+                        $operatorelogicoprecondizione = strtoupper($valuepre);
+                        break;
+                    default:
+                        break;
                 }
             }
+
             $regole[] = array('field' => "$nometabellaprecondizione.$nomecampoprecondizione", 'op' => $operatoreprecondizione, 'data' => $valorecampoprecondizione);
             $tipof = $operatorelogicoprecondizione;
 
@@ -449,6 +443,25 @@ class Griglia extends FiController {
             );
             $primo = false;
         }
+    }
+
+    private static function elaboravalorecampo($type, $valuepre) {
+        $tipo = $type['type'];
+        if ($tipo && ($tipo == 'date' || $tipo == 'datetime')) {
+            self::setVettoriPerData();
+            foreach ($valuepre as $chiave => $valore) {
+                $valuepre[$chiave] = fiUtilita::data2db($valore);
+            }
+        } elseif ($tipo && $tipo == 'string') {
+            self::setVettoriPerStringa();
+            foreach ($valuepre as $chiave => $valore) {
+                $valuepre[$chiave] = strtolower($valore);
+            }
+        } else {
+            self::setVettoriPerNumero();
+        }
+        // se si tratta di valori numerici tutto ok, altrimenti non funziona
+        return implode(', ', $valuepre);
     }
 
     public static function getColonne($parametri = array()) {
