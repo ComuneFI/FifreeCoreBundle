@@ -649,41 +649,60 @@ class Griglia extends FiController {
                     $colonna = get_object_vars($colonna);
                 }
                 $nomicolonne[$indice] = isset($colonna['descrizione']) ? $colonna['descrizione'] : self::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
-                $width = isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna['length'] * $moltiplicatorelarghezza);
+                $widthcolonna = isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna['length'] * $moltiplicatorelarghezza);
+                $tipocolonna = isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'];
+                $idcolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
+                $nomecolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
+                
                 $modellocolonne[$indice] = array(
-                    'name' => isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave,
-                    'id' => isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave,
-                    'width' => $width,
-                    'tipocampo' => isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'],
+                    'name' => $nomecolonna,
+                    'id' => $idcolonna,
+                    'width' => $widthcolonna,
+                    'tipocampo' => $tipocolonna,
                     'search' => false);
             }
         }
-        ksort($nomicolonne);
-        ksort($modellocolonne);
-        $nomicolonnesorted = array();
-        foreach ($nomicolonne as $key => $value) {
-            $nomicolonnesorted[] = $value;
-        }
-        $modellocolonnesorted = array();
-        foreach ($modellocolonne as $key => $value) {
-            $modellocolonnesorted[] = $value;
-        }
+
+        $testata['nomicolonne'] = self::getNomiColonne($nomicolonne);
+
+        $testata['modellocolonne'] = self::getModelloColonne($modellocolonne);
+
         $testata['tabella'] = $nometabella;
-        $testata['nomicolonne'] = $nomicolonnesorted;
-        $testata['modellocolonne'] = $modellocolonnesorted;
         $testata['output'] = $output;
 
         $testata = self::getOpzioniTabella($doctrineficore, $nometabella, $testata);
 
         if (isset($paricevuti['container'])) {
-            $permessi = new GestionepermessiController();
-            $permessi->setContainer($paricevuti['container']);
-
-            $vettorepermessi = $permessi->impostaPermessi(array('modulo' => $paricevuti['nometabella']));
-            $testata = array_merge($testata, $vettorepermessi);
+            $testata = self::getPermessiTabella($paricevuti['container'], $paricevuti['nometabella'], $testata);
         }
 
         return $testata;
+    }
+
+    private static function getNomiColonne($nomicolonne) {
+        ksort($nomicolonne);
+        $nomicolonnesorted = array();
+        foreach ($nomicolonne as $key => $value) {
+            $nomicolonnesorted[] = $value;
+        }
+        return $nomicolonnesorted;
+    }
+
+    private static function getModelloColonne($modellocolonne) {
+        ksort($modellocolonne);
+        $modellocolonnesorted = array();
+        foreach ($modellocolonne as $value) {
+            $modellocolonnesorted[] = $value;
+        }
+        return $modellocolonnesorted;
+    }
+
+    private static function getPermessiTabella($container, $nometabella, $testata) {
+        $permessi = new GestionepermessiController();
+        $permessi->setContainer($container);
+
+        $vettorepermessi = $permessi->impostaPermessi(array('modulo' => $nometabella));
+        return array_merge($testata, $vettorepermessi);
     }
 
     private static function getOpzioniTabella($doctrineficore, $nometabella, $testata) {
