@@ -101,6 +101,30 @@ class z1FfprincipaleControllerTest extends FifreeTest {
         $page->find('css', 'a#dData')->click();
         sleep(1);
 
+        $this->printoperations(&$session, $page);
+
+        $session->stop();
+
+
+        /* $client = $this->getClientAutorizzato();
+          // @var $em \Doctrine\ORM\EntityManager
+          $em = $client->getContainer()->get('doctrine')->getManager();
+
+          $qu = $em->createQueryBuilder();
+          $qu->select(array('c'))
+          ->from('FiCoreBundle:Ffprincipale', 'c')
+          ->where('c.descrizione = :descrizione')
+          ->setParameter('descrizione', $descrizionetest);
+          $ff = $qu->getQuery()->getSingleResult();
+          $this->assertEquals($ff->getDescrizione(), $descrizionetest);
+
+          $em->remove($ff);
+          $em->flush();
+          $em->clear();
+          $this->assertTrue(is_null($ff->getId())); */
+    }
+
+    private function printoperations($session, $page) {
         /* Print pdf */
         $element = $page->findAll('css', '.ui-icon-print');
 
@@ -111,7 +135,6 @@ class z1FfprincipaleControllerTest extends FifreeTest {
         }
         $windowNames = $session->getWindowNames();
         if (count($windowNames) > 1) {
-            $printwindow = $windowNames[1];
             $session->switchToWindow($windowNames[1]);
             $session->executeScript('window.close()');
             $mainwindow = $windowNames[0];
@@ -135,26 +158,6 @@ class z1FfprincipaleControllerTest extends FifreeTest {
             $session->switchToWindow($mainwindow);
             $page = $session->getPage();
         }
-
-        $session->stop();
-
-
-        /* $client = $this->getClientAutorizzato();
-          // @var $em \Doctrine\ORM\EntityManager
-          $em = $client->getContainer()->get('doctrine')->getManager();
-
-          $qu = $em->createQueryBuilder();
-          $qu->select(array('c'))
-          ->from('FiCoreBundle:Ffprincipale', 'c')
-          ->where('c.descrizione = :descrizione')
-          ->setParameter('descrizione', $descrizionetest);
-          $ff = $qu->getQuery()->getSingleResult();
-          $this->assertEquals($ff->getDescrizione(), $descrizionetest);
-
-          $em->remove($ff);
-          $em->flush();
-          $em->clear();
-          $this->assertTrue(is_null($ff->getId())); */
     }
 
 }
