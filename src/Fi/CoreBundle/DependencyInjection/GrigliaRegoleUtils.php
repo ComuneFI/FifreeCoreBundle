@@ -7,7 +7,7 @@ use Fi\CoreBundle\Controller\FiUtilita;
 
 class GrigliaRegoleUtils {
 
-    public static function getTipoRegola(&$tipo, $regola, $parametri) {
+    public static function getTipoRegola(&$tipo, &$regola, $parametri) {
         $doctrine = $parametri['doctrine'];
         $nometabella = $parametri['nometabella'];
         $entityName = $parametri['entityName'];
@@ -57,10 +57,6 @@ class GrigliaRegoleUtils {
             if (!$regola) {
                 continue;
             }
-            if (strpos($regola['field'], '.') <= 0) {
-                $regola['field'] = $tabella . '.' . $regola['field'];
-            }
-
             if ($tipof == 'OR') {
                 $q->orWhere($regola['field'] . ' ' . GrigliaUtils::$decodificaop[$regola['op']] . ' ' . GrigliaUtils::$precarattere[$regola['op']] . $regola['data'] . GrigliaUtils::$postcarattere[$regola['op']]);
             } else {
@@ -71,6 +67,7 @@ class GrigliaRegoleUtils {
 
     public static function setSingolaRegola($tipo, $regola) {
         $searchtype = false;
+
         if ($tipo == 'date' || $tipo == 'datetime') {
             GrigliaUtils::setVettoriPerData();
             $regola['data'] = FiUtilita::data2db($regola['data']);
