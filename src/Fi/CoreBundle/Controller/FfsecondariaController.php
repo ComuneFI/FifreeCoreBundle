@@ -19,7 +19,6 @@ class FfsecondariaController extends FiController {
         $nomebundle = $namespace . $bundle . 'Bundle';
 
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository($nomebundle . ':' . $controller)->findAll();
 
         $dettaglij = array(
             'descsec' => array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text')),
@@ -27,8 +26,20 @@ class FfsecondariaController extends FiController {
                 /* ,
                   array("nomecampo" => "ffprincipale.id", "lunghezza" => "40", "descrizione" => "IdP", "tipo" => "integer") */
         );
-        $escludi = array();
-        $paricevuti = array('nomebundle' => $nomebundle, 'nometabella' => $controller, 'dettaglij' => $dettaglij, 'escludere' => $escludi, 'container' => $container);
+        $escludi = array("nota");
+
+        $campiextra = array(
+            array('nomecampo' => 'lunghezzanota', 'lunghezza' => '400', 'descrizione' => 'Lunghezza Nota', 'tipo' => 'integer'),
+            array('nomecampo' => 'attivoToString', 'lunghezza' => '200', 'descrizione' => 'Attivo string', 'tipo' => 'text')
+        );
+
+        $paricevuti = array(
+            'nomebundle' => $nomebundle,
+            'nometabella' => $controller,
+            'dettaglij' => $dettaglij,
+            "campiextra" => $campiextra,
+            'escludere' => $escludi,
+            'container' => $container);
 
         $testatagriglia = Griglia::testataPerGriglia($paricevuti);
 
@@ -37,6 +48,8 @@ class FfsecondariaController extends FiController {
         $testatagriglia['showadd'] = 1;
         $testatagriglia['showedit'] = 1;
         $testatagriglia['showdel'] = 1;
+        
+        $testatagriglia['showexcel'] = 1;
 
         //$testatagriglia["filterToolbar_stringResult"] = false;
         //$testatagriglia["filterToolbar_searchOnEnter"] = true;
@@ -51,7 +64,6 @@ class FfsecondariaController extends FiController {
 
         return $this->render(
                         $nomebundle . ':' . $controller . ':index.html.twig', array(
-                    'entities' => $entities,
                     'nomecontroller' => $controller,
                     'testata' => $testata,
                         )
@@ -65,8 +77,12 @@ class FfsecondariaController extends FiController {
         $controller = $this->getController();
 
         $nomebundle = $namespace . $bundle . 'Bundle';
-        $escludi = array();
+        $escludi = array("nota", "ffprincipale");
         $tabellej['ffprincipale_id'] = array('tabella' => 'ffprincipale', 'campi' => array('descrizione'));
+
+        $campiextra = array(array("lunghezzanota"), array("attivoToString"));
+        //$campiextra = array(array("lunghezzanota"));
+        //$campiextra = array("lunghezzanota");
 
         $precondizioniAvanzate[] = array("nometabella" => "Ffsecondaria",
             "nomecampo" => "intero",
@@ -77,7 +93,7 @@ class FfsecondariaController extends FiController {
             "operatore" => "<=",
             "valorecampo" => date("Y-m-d"),
             "operatorelogico" => "AND");
-        
+
         $precondizioniAvanzate[] = array("nometabella" => "Ffsecondaria",
             "nomecampo" => "attivo",
             "operatore" => "=",
@@ -89,6 +105,7 @@ class FfsecondariaController extends FiController {
             'nomebundle' => $nomebundle,
             'tabellej' => $tabellej,
             'nometabella' => $controller,
+            "campiextra" => $campiextra,
             'escludere' => $escludi,
             "precondizioniAvanzate" => $precondizioniAvanzate);
 

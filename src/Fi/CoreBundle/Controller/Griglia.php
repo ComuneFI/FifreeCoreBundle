@@ -643,12 +643,25 @@ class Griglia extends FiController {
 
         // Controlla se ci sono dei campi extra da inserire in griglia (i campi extra non sono utilizzabili come filtri nella filtertoolbar della griglia)
         if (isset($campiextra)) {
+            //Se è un array di una dimensione si trasforma in bidimensionale
+            if (count($campiextra) == count($campiextra, \COUNT_RECURSIVE)) {
+                $campoextraarray = $campiextra;
+                unset($campiextra);
+                foreach ($campoextraarray as $campoextranormalize) {
+                    if (is_object($campoextranormalize)) {
+                        $campoextranormalize = get_object_vars($campoextranormalize);
+                        $campiextra[] = $campoextranormalize;
+                    }
+                }
+            }
             foreach ($campiextra as $chiave => $colonna) {
                 ++$indice;
+
                 if (is_object($colonna)) {
                     $colonna = get_object_vars($colonna);
                 }
                 $nomicolonne[$indice] = isset($colonna['descrizione']) ? $colonna['descrizione'] : self::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
+
                 $widthcolonna = isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna['length'] * $moltiplicatorelarghezza);
                 $tipocolonna = isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'];
                 $idcolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
@@ -1027,17 +1040,11 @@ class Griglia extends FiController {
 
             //Gestione per passare campi che non sono nella tabella ma metodi del model (o richiamabili tramite magic method get)
             if (isset($campiextra)) {
-                if (count($campiextra) > 1) {
-                    foreach ($campiextra as $vettore) {
-                        foreach ($vettore as $nomecampo => $singolocampo) {
-                            $campo = 'get' . ucfirst($singolocampo);
-                            /* @var $doctrine \Doctrine\ORM\EntityManager */
-                            $objTabella = $doctrine->find($entityName, $singolo['id']);
-                            $vettoreriga[] = $objTabella->$campo();
-                        }
-                    }
-                } else {
-                    foreach ($campiextra as $nomecampo => $singolocampo) {
+                if (count($campiextra) == count($campiextra, \COUNT_RECURSIVE)) {
+                    $campiextra[0] = $campiextra;
+                }
+                foreach ($campiextra as $vettore) {
+                    foreach ($vettore as $nomecampo => $singolocampo) {
                         $campo = 'get' . ucfirst($singolocampo);
                         /* @var $doctrine \Doctrine\ORM\EntityManager */
                         $objTabella = $doctrine->find($entityName, $singolo['id']);

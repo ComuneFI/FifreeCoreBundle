@@ -237,6 +237,24 @@ class Ffsecondaria {
         return $this->intero;
     }
 
+    /**
+     * Get attivo to string
+     *
+     * @return string
+     */
+    public function getAttivoToString() {
+        return ($this->attivo ? "SI" : "NO");
+    }
+
+    /**
+     * Get intero
+     *
+     * @return integer
+     */
+    public function getLunghezzanota() {
+        return strlen($this->nota);
+    }
+
     public function __toString() {
         return $this->getDescsec();
     }

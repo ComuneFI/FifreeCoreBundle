@@ -43,11 +43,30 @@ class z2FfsecondariaControllerTest extends FifreeTest {
         $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 
+        /**
+     * @test
+     */
+    public function testExcelFfsecondaria() {
+        parent::__construct();
+        $this->setClassName(get_class());
+        $client = $this->getClientAutorizzato();
+        $url = $client->getContainer()->get('router')->generate('Tabelle_esportaexceltabella', array("nometabella" => 'Ffsecondaria'));
+
+        $client->request('GET', $url);
+        $this->assertTrue(
+                $client->getResponse()->headers->contains(
+                        'Content-Type', 'text/csv; charset=UTF-8'
+                ), 'the "Content-Type" header is "text/csv; charset=UTF-8"' // optional message shown on failure
+        );
+        
+    }
+
+
     /*
      * @test
      */
 
-    public function testAddFfsecondaria() {
+    public function testFfsecondaria() {
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';
@@ -154,9 +173,24 @@ class z2FfsecondariaControllerTest extends FifreeTest {
         $windowNames = $session->getWindowNames();
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
+            sleep(1);
+            $page = $session->getPage();
+            $element = $page->find('css', ".textLayer");
+
+            if (empty($element)) {
+                throw new \Exception("No html element found for the selector 'textLayer'");
+            }
+            sleep(1);
+            $this->assertContains("FiFree2",$element->getText());
+            $this->assertContains("Ffsecondaria",$element->getText());
+            $this->assertContains("Descrizione secondo record",$element->getText());
+
+            sleep(1);
             $session->executeScript('window.close()');
             $mainwindow = $windowNames[0];
+            sleep(1);
             $session->switchToWindow($mainwindow);
+            sleep(1);
             $page = $session->getPage();
         }
         /* Print excel */
