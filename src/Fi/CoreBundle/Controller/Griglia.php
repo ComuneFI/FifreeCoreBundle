@@ -9,7 +9,7 @@ use Fi\CoreBundle\DependencyInjection\GrigliaCampiExtraUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaColonneUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiPrecondizioniUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaExtraFunzioniiUtils;
+use Fi\CoreBundle\DependencyInjection\GrigliaExtraFunzioniUtils;
 
 
 class Griglia extends FiController {
@@ -50,7 +50,7 @@ class Griglia extends FiController {
         GrigliaColonneUtils::getColonne($nomicolonne, $modellocolonne, $indice, $paricevuti);
 
 // Controlla se alcune colonne devono essere dei link
-        GrigliaExtraFunzioniiUtils::getColonneLink($paricevuti, $modellocolonne);
+        GrigliaExtraFunzioniUtils::getColonneLink($paricevuti, $modellocolonne);
 
 // Controlla se ci sono dei campi extra da inserire in griglia (i campi extra non sono utilizzabili come filtri nella filtertoolbar della griglia)
         GrigliaCampiExtraUtils::getCampiExtraTestataPerGriglia($paricevuti, $indice, $nomicolonne, $modellocolonne);

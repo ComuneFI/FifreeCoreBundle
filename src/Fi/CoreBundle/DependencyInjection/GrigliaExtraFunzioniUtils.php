@@ -5,7 +5,7 @@ namespace Fi\CoreBundle\DependencyInjection;
 use Fi\CoreBundle\Controller\GestionepermessiController;
 use Fi\CoreBundle\Controller\FiUtilita;
 
-class GrigliaExtraFunzioniiUtils {
+class GrigliaExtraFunzioniUtils {
 
     public static function getColonneLink($paricevuti, &$modellocolonne) {
         $output = GrigliaUtils::getOuputType($paricevuti);
