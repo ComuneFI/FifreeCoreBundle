@@ -253,23 +253,10 @@ class GrigliaColonneUtils {
         $larghezzeutente = GrigliaUtils::larghezzecampi($paricevuti);
         $ordinecolonne = GrigliaParametriUtils::getOrdineColonneTestataPerGriglia($paricevuti);
 
-        if (isset($ordinecolonne)) {
-            $indicecolonna = array_search($chiave, $ordinecolonne);
-            if ($indicecolonna === false) {
-                if ($indice === 0) {
-                    $indice = count($ordinecolonne);
-                }
-                ++$indice;
-                $indicecolonna = $indice;
-            } else {
-                if ($indicecolonna > $indice) {
-                    $indice = $indicecolonna;
-                }
-            }
-        } else {
-            ++$indice;
-            $indicecolonna = $indice;
-        }
+        $indicecolonna = 0;
+
+        self::setOrdineColonne($ordinecolonne, $chiave, $indice, $indicecolonna, $ordinecolonne);
+
         if ((isset($etichetteutente[$chiave])) && (trim($etichetteutente[$chiave]) != '')) {
             $nomicolonne[$indicecolonna] = GrigliaUtils::to_camel_case(array('str' => trim($etichetteutente[$chiave]), 'primamaiuscola' => true));
         } else {
