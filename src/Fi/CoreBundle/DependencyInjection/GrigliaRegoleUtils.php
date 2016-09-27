@@ -36,18 +36,15 @@ class GrigliaRegoleUtils {
         }
     }
 
-    public static function getRegolaPerData($regola) {
+    public static function getRegolaPerData(&$regola) {
         if ((substr($regola['data'], 0, 1) == "'") && (substr($regola['data'], strlen($regola['data']) - 1, 1) == "'")) {
             $regola['data'] = substr($regola['data'], 1, strlen($regola['data']) - 2);
         }
-
-        return $regola;
     }
 
     public static function setRegole(&$q, &$primo, $parametri = array()) {
         $regole = $parametri['regole'];
         $tipof = $parametri['tipof'];
-        $tabella = $parametri['nometabella'];
         $tipo = null;
         foreach ($regole as $regola) {
             //Se il campo non ha il . significa che è necessario aggiungere il nometabella
@@ -66,16 +63,15 @@ class GrigliaRegoleUtils {
     }
 
     public static function setSingolaRegola($tipo, $regola) {
-        $searchtype = false;
-
+        if (!$tipo) {
+            GrigliaUtils::setVettoriPerNumero();
+        }
         if ($tipo == 'date' || $tipo == 'datetime') {
             GrigliaUtils::setVettoriPerData();
             $regola['data'] = FiUtilita::data2db($regola['data']);
-            $searchtype = true;
         } elseif ($tipo == 'string') {
             GrigliaUtils::setVettoriPerStringa();
             $regola['field'] = 'lower(' . $regola['field'] . ')';
-            $searchtype = true;
         }
 
         if (($tipo == 'boolean') && ($regola['data'] === 'false' || $regola['data'] === false)) {
@@ -93,12 +89,9 @@ class GrigliaRegoleUtils {
         if ($tipo == 'boolean' && $regola['data'] == 'null') {
             return array();
         }
-        if (!$searchtype) {
-            GrigliaUtils::setVettoriPerNumero();
-        }
-
-        $regolareturn = GrigliaRegoleUtils::getRegolaPerData($regola);
-        return $regolareturn;
+        
+        GrigliaRegoleUtils::getRegolaPerData($regola);
+        return $regola;
     }
 
     public static function campiesclusi($parametri = array()) {
