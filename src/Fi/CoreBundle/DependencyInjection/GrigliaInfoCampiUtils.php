@@ -63,7 +63,7 @@ class GrigliaInfoCampiUtils {
         }
     }
 
-    public static function getOrdineColonne(&$chiave, &$indice, $ordinecolonne) {
+    public static function getOrdineColonne(&$chiave, &$indice, $ordinecolonne, &$indicecolonna) {
         $indicecolonna = array_search($chiave, $ordinecolonne);
         if ($indicecolonna === false) {
             if ($indice === 0) {
@@ -86,7 +86,7 @@ class GrigliaInfoCampiUtils {
 
     public static function setOrdineColonne(&$ordinecolonne, &$chiave, &$indice, &$indicecolonna, &$ordinecolonne) {
         if (isset($ordinecolonne)) {
-            GrigliaInfoCampiUtils::getOrdineColonne($chiave, $indice, $ordinecolonne);
+            GrigliaInfoCampiUtils::getOrdineColonne($chiave, $indice, $ordinecolonne, $indicecolonna);
         } else {
             ++$indice;
             $indicecolonna = $indice;
