@@ -270,9 +270,9 @@ class GrigliaUtils {
 
             $widthcolonna = self::getCampiExtraWidthColonna($colonna);
 
-            $tipocolonna = isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'];
-            $idcolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
-            $nomecolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
+            $tipocolonna = self::getCampiExtraTipoColonna($colonna);
+            $idcolonna = self::getCampiExtraNomeCampoColonna($colonna, $chiave);
+            $nomecolonna = self::getCampiExtraIdCampoColonna($colonna, $chiave);
 
             $modellocolonne[$indice] = array(
                 'name' => $nomecolonna,
@@ -281,6 +281,19 @@ class GrigliaUtils {
                 'tipocampo' => $tipocolonna,
                 'search' => false);
         }
+    }
+
+    public static function getCampiExtraIdCampoColonna($colonna, $chiave) {
+        return isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
+    }
+
+    public static function getCampiExtraTipoColonna($colonna) {
+        return isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'];
+        ;
+    }
+
+    public static function getCampiExtraNomeCampoColonna($colonna, $chiave) {
+        return isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
     }
 
     public static function getCampiExtraNomiColonne(&$colonna, $chiave) {
