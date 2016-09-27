@@ -8,87 +8,9 @@ use Fi\CoreBundle\DependencyInjection\GrigliaRegoleUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaCampiExtraUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaColonneUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiUtils;
+use Fi\CoreBundle\DependencyInjection\GrigliaDatiPrecondizioniUtils;
 
 class Griglia extends FiController {
-
-
-    public static function setPrecondizioniAvanzate(&$q, &$primo, $parametri = array()) {
-        $doctrine = $parametri['doctrine'];
-        $nometabella = $parametri['nometabella'];
-        $entityName = $parametri['entityName'];
-        $bundle = $parametri['bundle'];
-        $precondizioniAvanzate = $parametri['precondizioniAvanzate'];
-        $regole = array();
-
-        foreach ($precondizioniAvanzate as $elem) {
-            $nometabellaprecondizione = '';
-            $nomecampoprecondizione = '';
-            $valorecampoprecondizione = '';
-            $operatoreprecondizione = '=';
-            $operatorelogicoprecondizione = '';
-            foreach ($elem as $keypre => $valuepre) {
-                switch ($keypre) {
-                    case 'nometabella':
-                        $nometabellaprecondizione = $valuepre;
-                        break;
-                    case 'nomecampo':
-                        $nomecampoprecondizione = $valuepre;
-                        break;
-                    case 'operatore':
-                        $array_operatori = array('=' => 'eq', '<>' => 'ne', '<' => 'lt', '<=' => 'le', '>' => 'gt', '>=' => 'ge', 'LIKE' => 'bw', 'NOT LIKE' => 'bn', 'IN' => 'in', 'NOT IN' => 'ni', 'LIKE' => 'eq', 'NOT LIKE' => 'en', 'LIKE' => 'cn', 'NOT LIKE' => 'nc', 'IS' => 'nu', 'IS NOT' => 'nn'); //, '<>' => 'nt');
-                        $operatoreprecondizione = $array_operatori[strtoupper($valuepre)];
-                        break;
-                    case 'valorecampo':
-                        if (is_array($valuepre)) {
-                            $type = $doctrine->getClassMetadata($parametri['entityName'])->getFieldMapping($nomecampoprecondizione);
-                            $valorecampoprecondizione = self::elaboravalorecampo($type, $valuepre);
-                        } else {
-                            $valorecampoprecondizione = $valuepre;
-                        }
-                        break;
-                    case 'operatorelogico':
-                        $operatorelogicoprecondizione = strtoupper($valuepre);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            $regole[] = array('field' => "$nometabellaprecondizione.$nomecampoprecondizione", 'op' => $operatoreprecondizione, 'data' => $valorecampoprecondizione);
-            $tipof = $operatorelogicoprecondizione;
-
-            GrigliaRegoleUtils::setRegole(
-                    $q, $primo, array(
-                'regole' => $regole,
-                'doctrine' => $doctrine,
-                'nometabella' => $nometabella,
-                'entityName' => $entityName,
-                'bundle' => $bundle,
-                'tipof' => $tipof,
-                    )
-            );
-            $primo = false;
-        }
-    }
-
-    private static function elaboravalorecampo($type, $valuepre) {
-        $tipo = $type['type'];
-        if ($tipo && ($tipo == 'date' || $tipo == 'datetime')) {
-            GrigliaUtils::setVettoriPerData();
-            foreach ($valuepre as $chiave => $valore) {
-                $valuepre[$chiave] = fiUtilita::data2db($valore);
-            }
-        } elseif ($tipo && $tipo == 'string') {
-            GrigliaUtils::setVettoriPerStringa();
-            foreach ($valuepre as $chiave => $valore) {
-                $valuepre[$chiave] = strtolower($valore);
-            }
-        } else {
-            GrigliaUtils::setVettoriPerNumero();
-        }
-// se si tratta di valori numerici tutto ok, altrimenti non funziona
-        return implode(', ', $valuepre);
-    }
 
     /**
      * Questa funzione è compatibile con jqGrid e risponden con un formato JSON
@@ -126,7 +48,7 @@ class Griglia extends FiController {
         GrigliaColonneUtils::getColonne($nomicolonne, $modellocolonne, $indice, $paricevuti);
 
 // Controlla se alcune colonne devono essere dei link
-        Griglia::getColonneLink($paricevuti, $modellocolonne);
+        GrigliaColonneUtils::getColonneLink($paricevuti, $modellocolonne);
 
 // Controlla se ci sono dei campi extra da inserire in griglia (i campi extra non sono utilizzabili come filtri nella filtertoolbar della griglia)
         GrigliaCampiExtraUtils::getCampiExtraTestataPerGriglia($paricevuti, $indice, $nomicolonne, $modellocolonne);
@@ -142,27 +64,6 @@ class Griglia extends FiController {
         $testata['output'] = $output;
 
         return $testata;
-    }
-
-    public static function getColonneLink($paricevuti, &$modellocolonne) {
-        $output = GrigliaUtils::getOuputType($paricevuti);
-        $colonne_link = isset($paricevuti['colonne_link']) ? $paricevuti['colonne_link'] : array();
-        if (($output == 'stampa') || !isset($colonne_link)) {
-            return;
-        }
-
-        foreach ($colonne_link as $colonna_link) {
-            foreach ($colonna_link as $nomecolonna => $parametricolonna) {
-                foreach ($modellocolonne as $key => $value) {
-                    foreach ($value as $keyv => $valuev) {
-                        if (($keyv == 'name') && ($valuev == $nomecolonna)) {
-                            $modellocolonne[$key]['formatter'] = 'showlink';
-                            $modellocolonne[$key]['formatoptions'] = $parametricolonna;
-                        }
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -247,12 +148,12 @@ class Griglia extends FiController {
         /* se ci sono delle precondizioni le imposta qui */
         $primo = true;
         if ($precondizioni) {
-            GrigliaDatiUtils::setPrecondizioni($q, $primo, array('precondizioni' => $precondizioni));
+            GrigliaDatiPrecondizioniUtils::setPrecondizioni($q, $primo, array('precondizioni' => $precondizioni));
         }
 
-//se ci sono delle precondizioni avanzate le imposta qui
+        /* se ci sono delle precondizioni avanzate le imposta qui */
         if ($precondizioniAvanzate) {
-            self::setPrecondizioniAvanzate(
+            GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
                     $q, $primo, array('precondizioniAvanzate' => $precondizioniAvanzate,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
@@ -506,44 +407,6 @@ class Griglia extends FiController {
         return $vettoreriga;
     }
 
-    /**
-     * Funzione alla quale si passano i filtri nel formato gestito da jqGrid e
-     * che restituisce una stringa che contiene la descrizione in linguaggio
-     * naturale.
-     *
-     * @param array   $parametri
-     * @param stringa $filtri
-     *
-     * @return string
-     */
-    public static function traduciFiltri($parametri = array()) {
-        $genericofiltri = $parametri['filtri'];
-
-        $filtri = isset($genericofiltri->rules) ? $genericofiltri->rules : '';
-        $tipofiltro = isset($genericofiltri->groupOp) ? $genericofiltri->groupOp : '';
-        GrigliaUtils::$decodificaop = array('eq' => ' è uguale a ', 'ne' => ' è diverso da ', 'lt' => ' è inferiore a ', 'le' => ' è inferiore o uguale a ', 'gt' => ' è maggiore di ', 'ge' => ' è maggiore o uguale di ', 'bw' => ' comincia con ', 'bn' => ' non comincia con ', 'in' => ' è uno fra ', 'ni' => ' non è uno fra ', 'ew' => ' finisce con ', 'en' => ' con finisce con ', 'cn' => ' contiene ', 'nc' => ' non contiene ', 'nu' => ' è vuoto', 'nn' => ' non è vuoto');
-
-        if (!isset($filtri) or ( !$filtri)) {
-            return '';
-        }
-
-        $filtrodescritto = self::getFiltrodescritto($filtri, $tipofiltro);
-
-        return $filtrodescritto;
-    }
-
-    public static function getFiltrodescritto($filtri, $tipofiltro) {
-        $filtrodescritto = ('I dati mostrati rispondono a' . ($tipofiltro == 'AND' ? ' tutti i' : 'd almeno uno dei') . ' seguenti criteri: ');
-
-        foreach ($filtri as $indice => $filtro) {
-            $campo = $filtro->field;
-            $operatore = $filtro->op;
-            $data = $filtro->data;
-            $filtrodescritto .= ($indice !== 0 ? ($tipofiltro == 'AND' ? ' e ' : ' o ') : '') . GrigliaUtils::to_camel_case(array('str' => $campo, 'primamaiuscola' => true)) . GrigliaUtils::$decodificaop[$operatore] . "\"$data\"";
-        }
-
-        $filtrodescritto .= '.';
-        return $filtrodescritto;
-    }
+   
 
 }
