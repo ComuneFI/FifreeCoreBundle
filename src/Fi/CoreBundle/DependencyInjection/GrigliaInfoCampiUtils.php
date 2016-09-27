@@ -63,15 +63,6 @@ class GrigliaInfoCampiUtils {
         }
     }
 
-    public static function setOrdineColonne(&$ordinecolonne, &$chiave, &$indice, &$indicecolonna, &$ordinecolonne) {
-        if (isset($ordinecolonne)) {
-            self::getOrdineColonne($chiave, $indice, $ordinecolonne);
-        } else {
-            ++$indice;
-            $indicecolonna = $indice;
-        }
-    }
-
     public static function getOrdineColonne(&$chiave, &$indice, $ordinecolonne) {
         $indicecolonna = array_search($chiave, $ordinecolonne);
         if ($indicecolonna === false) {
@@ -90,6 +81,15 @@ class GrigliaInfoCampiUtils {
     public static function getSingoloAliasNormalizzato(&$singoloalias) {
         if (is_object($singoloalias)) {
             $singoloalias = get_object_vars($singoloalias);
+        }
+    }
+
+    public static function setOrdineColonne(&$ordinecolonne, &$chiave, &$indice, &$indicecolonna, &$ordinecolonne) {
+        if (isset($ordinecolonne)) {
+            GrigliaInfoCampiUtils::getOrdineColonne($chiave, $indice, $ordinecolonne);
+        } else {
+            ++$indice;
+            $indicecolonna = $indice;
         }
     }
 

@@ -73,7 +73,6 @@ class GrigliaColonneUtils {
         return $ordinecolonne;
     }
 
-
     public static function getAliasCampi(&$nomicolonne, &$modellocolonne, &$indice, &$chiave, &$colonna, $paricevuti) {
         $alias = GrigliaParametriUtils::getAliasTestataPerGriglia($paricevuti);
         $etichetteutente = GrigliaUtils::etichettecampi($paricevuti);
@@ -93,54 +92,6 @@ class GrigliaColonneUtils {
             GrigliaInfoCampiUtils::setNomiColonne($nomicolonne, $chiave, $singoloalias, $indicecolonna, $etichetteutente);
 
             GrigliaInfoCampiUtils::setModelliColonne($modellocolonne, $colonna, $chiave, $singoloalias, $indicecolonna, $larghezzeutente);
-        }
-    }
-
-    public static function setModelliColonne(&$modellocolonne, &$colonna, &$chiave, &$singoloalias, &$indicecolonna, $larghezzeutente) {
-        $widthcampo = GrigliaInfoCampiUtils::getWidthCampo($colonna, $chiave, $singoloalias, $larghezzeutente);
-
-        if (isset($singoloalias['tipo']) && ($singoloalias['tipo'] == 'select')) {
-            $modellocolonne[$indicecolonna] = GrigliaInfoCampiUtils::getIndiceModelloSelect($chiave, $colonna, $singoloalias, $widthcampo);
-        } else {
-            $modellocolonne[$indicecolonna] = GrigliaInfoCampiUtils::getIndiceModello($chiave, $colonna, $singoloalias, $widthcampo);
-        }
-    }
-
-    public static function setNomiColonne(&$nomicolonne, &$chiave, &$singoloalias, &$indicecolonna, &$etichetteutente) {
-        if ((isset($etichetteutente[$chiave])) && (trim($etichetteutente[$chiave]) != '')) {
-            $nomicolonne[$indicecolonna] = GrigliaInfoCampiUtils::getEtichettaNomeColonna($etichetteutente, $chiave);
-        } else {
-            $nomicolonne[$indicecolonna] = GrigliaInfoCampiUtils::getEtichettaDescrizioneColonna($singoloalias, $chiave);
-        }
-    }
-
-    public static function setOrdineColonne(&$ordinecolonne, &$chiave, &$indice, &$indicecolonna, &$ordinecolonne) {
-        if (isset($ordinecolonne)) {
-            GrigliaInfoCampiUtils::getOrdineColonne($chiave, $indice, $ordinecolonne);
-        } else {
-            ++$indice;
-            $indicecolonna = $indice;
-        }
-    }
-
-    public static function getSingoloAliasNormalizzato(&$singoloalias) {
-        if (is_object($singoloalias)) {
-            $singoloalias = get_object_vars($singoloalias);
-        }
-    }
-
-    public static function getOrdineColonne(&$chiave, &$indice, $ordinecolonne) {
-        $indicecolonna = array_search($chiave, $ordinecolonne);
-        if ($indicecolonna === false) {
-            if ($indice === 0) {
-                $indice = count($ordinecolonne);
-            }
-            ++$indice;
-            $indicecolonna = $indice;
-        } else {
-            if ($indicecolonna > $indice) {
-                $indice = $indicecolonna;
-            }
         }
     }
 
