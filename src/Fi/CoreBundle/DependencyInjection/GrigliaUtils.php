@@ -261,16 +261,14 @@ class GrigliaUtils {
             return;
         }
         self::getCampiExtraNormalizzati($campiextra);
-        
+
         foreach ($campiextra as $chiave => $colonna) {
             ++$indice;
-            if (is_object($colonna)) {
-                $colonna = get_object_vars($colonna);
-            }
-            
-            $nomicolonne[$indice] = isset($colonna['descrizione']) ? $colonna['descrizione'] : GrigliaUtils::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
-            
-            $widthcolonna = isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA > GrigliaUtils::LARGHEZZAMASSIMA ? GrigliaUtils::LARGHEZZAMASSIMA : $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA);
+            self::getCampiExtraColonneNormalizzate($colonna);
+
+            $nomicolonne[$indice] = self::getCampiExtraNomiColonne($colonna, $chiave);
+
+            $widthcolonna = self::getCampiExtraWidthColonna($colonna);
 
             $tipocolonna = isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'];
             $idcolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
@@ -282,6 +280,20 @@ class GrigliaUtils {
                 'width' => $widthcolonna,
                 'tipocampo' => $tipocolonna,
                 'search' => false);
+        }
+    }
+
+    public static function getCampiExtraNomiColonne(&$colonna, $chiave) {
+        return isset($colonna['descrizione']) ? $colonna['descrizione'] : GrigliaUtils::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
+    }
+
+    public static function getCampiExtraWidthColonna($colonna) {
+        return isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA > GrigliaUtils::LARGHEZZAMASSIMA ? GrigliaUtils::LARGHEZZAMASSIMA : $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA);
+    }
+
+    public static function getCampiExtraColonneNormalizzate(&$colonna) {
+        if (is_object($colonna)) {
+            $colonna = get_object_vars($colonna);
         }
     }
 
