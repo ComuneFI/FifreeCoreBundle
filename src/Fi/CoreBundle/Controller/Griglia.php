@@ -9,6 +9,8 @@ use Fi\CoreBundle\DependencyInjection\GrigliaCampiExtraUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaColonneUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiPrecondizioniUtils;
+use Fi\CoreBundle\DependencyInjection\GrigliaExtraFunzioniiUtils;
+
 
 class Griglia extends FiController {
 
@@ -48,7 +50,7 @@ class Griglia extends FiController {
         GrigliaColonneUtils::getColonne($nomicolonne, $modellocolonne, $indice, $paricevuti);
 
 // Controlla se alcune colonne devono essere dei link
-        GrigliaColonneUtils::getColonneLink($paricevuti, $modellocolonne);
+        GrigliaExtraFunzioniiUtils::getColonneLink($paricevuti, $modellocolonne);
 
 // Controlla se ci sono dei campi extra da inserire in griglia (i campi extra non sono utilizzabili come filtri nella filtertoolbar della griglia)
         GrigliaCampiExtraUtils::getCampiExtraTestataPerGriglia($paricevuti, $indice, $nomicolonne, $modellocolonne);
@@ -271,7 +273,7 @@ class Griglia extends FiController {
                             $parametriCampoElencato['ordinecampo'] = $indicecolonna;
                             $parametriCampoElencato['decodifiche'] = $decodifiche;
 
-                            $vettoreriga = self::campoElencato($parametriCampoElencato);
+                            $vettoreriga = GrigliaDatiUtils::campoElencato($parametriCampoElencato);
                         }
                     } else {
                         if (isset($ordinecolonne)) {
@@ -292,7 +294,7 @@ class Griglia extends FiController {
                             $indicecolonna = $indice;
                         }
 
-                        self::valorizzaVettore($vettoreriga, array('singolocampo' => $singolocampo, 'tabella' => $bundle . ':' . $nometabella, 'nomecampo' => $nomecampo, 'doctrine' => $doctrine, 'ordinecampo' => $indicecolonna, 'decodifiche' => $decodifiche));
+                        GrigliaDatiUtils::valorizzaVettore($vettoreriga, array('singolocampo' => $singolocampo, 'tabella' => $bundle . ':' . $nometabella, 'nomecampo' => $nomecampo, 'doctrine' => $doctrine, 'ordinecampo' => $indicecolonna, 'decodifiche' => $decodifiche));
                     }
                 }
             }
@@ -312,7 +314,7 @@ class Griglia extends FiController {
                 }
             }
 
-//Si costruisce la risposta json per la jqgrid
+            /* Si costruisce la risposta json per la jqgrid */
             ksort($vettoreriga);
             $vettorerigasorted = array();
             foreach ($vettoreriga as $value) {
@@ -324,89 +326,5 @@ class Griglia extends FiController {
 
         return json_encode($vettorerisposta);
     }
-
-    public static function valorizzaVettore(&$vettoreriga, $parametri) {
-        $tabella = $parametri['tabella'];
-        $nomecampo = $parametri['nomecampo'];
-        $doctrine = $parametri['doctrine'];
-        $ordinecampo = $parametri['ordinecampo'];
-        $decodifiche = $parametri['decodifiche'];
-
-        $vettoreparcampi = $doctrine->getMetadataFactory()->getMetadataFor($tabella)->fieldMappings;
-
-        if (is_object($vettoreparcampi)) {
-            $vettoreparcampi = get_object_vars($vettoreparcampi);
-        }
-
-        $singolocampo = $parametri['singolocampo'];
-
-        if (isset($decodifiche[$nomecampo])) {
-            $vettoreriga[] = $decodifiche[$nomecampo][$singolocampo];
-        } else {
-            if (isset($vettoreparcampi[$nomecampo]['type']) && ($vettoreparcampi[$nomecampo]['type'] == 'date' || $vettoreparcampi[$nomecampo]['type'] == 'datetime') && $singolocampo) {
-                if (isset($ordinecampo)) {
-                    $vettoreriga[$ordinecampo] = $singolocampo->format('d/m/Y');
-                } else {
-                    $vettoreriga[] = $singolocampo->format('d/m/Y');
-                }
-            } elseif (isset($vettoreparcampi[$nomecampo]['type']) && ($vettoreparcampi[$nomecampo]['type'] == 'time') && $singolocampo) {
-                if (isset($ordinecampo)) {
-                    $vettoreriga[$ordinecampo] = $singolocampo->format('H:i');
-                } else {
-                    $vettoreriga[] = $singolocampo->format('H:i');
-                }
-            } else {
-                if (isset($ordinecampo)) {
-                    $vettoreriga[$ordinecampo] = $singolocampo;
-                } else {
-                    $vettoreriga[] = $singolocampo;
-                }
-            }
-        }
-    }
-
-    public static function campoElencato($parametriCampoElencato) {
-        $tabellej = $parametriCampoElencato['tabellej'];
-        $nomecampo = $parametriCampoElencato['nomecampo'];
-        $campoelencato = $parametriCampoElencato['campoelencato'];
-        $vettoreriga = $parametriCampoElencato['vettoreriga'];
-        $singolo = $parametriCampoElencato['singolo'];
-        $doctrine = $parametriCampoElencato['doctrine'];
-        $bundle = $parametriCampoElencato['bundle'];
-        $decodifiche = $parametriCampoElencato['decodifiche'];
-
-        if (isset($parametriCampoElencato['ordinecampo'])) {
-            $ordinecampo = $parametriCampoElencato['ordinecampo'];
-        } else {
-            $ordinecampo = null;
-        }
-
-        if (isset($tabellej[$campoelencato])) {
-            foreach ($tabellej[$campoelencato]['campi'] as $campoelencatointerno) {
-                $parametriCampoElencatoInterno['tabellej'] = $tabellej;
-                $parametriCampoElencatoInterno['nomecampo'] = $campoelencato;
-                $parametriCampoElencatoInterno['campoelencato'] = $campoelencatointerno;
-                $parametriCampoElencatoInterno['vettoreriga'] = $vettoreriga;
-                $parametriCampoElencatoInterno['singolo'] = $singolo;
-                $parametriCampoElencatoInterno['doctrine'] = $doctrine;
-                $parametriCampoElencatoInterno['bundle'] = $bundle;
-                $parametriCampoElencatoInterno['ordinecampo'] = $ordinecampo;
-                $parametriCampoElencatoInterno['decodifiche'] = $decodifiche;
-
-                $vettoreriga = self::campoElencato($parametriCampoElencatoInterno);
-            }
-        } else {
-            if (isset($tabellej[$nomecampo]['padre'])) {
-                $fields = $singolo[$tabellej[$nomecampo]['padre']][$tabellej[$nomecampo]['tabella']] ? $singolo[$tabellej[$nomecampo]['padre']][$tabellej[$nomecampo]['tabella']][$campoelencato] : '';
-            } else {
-                $fields = $singolo[$tabellej[$nomecampo]['tabella']] ? $singolo[$tabellej[$nomecampo]['tabella']][$campoelencato] : '';
-            }
-            self::valorizzaVettore($vettoreriga, array('singolocampo' => $fields, 'tabella' => $bundle . ':' . $tabellej[$nomecampo]['tabella'], 'nomecampo' => $campoelencato, 'doctrine' => $doctrine, 'ordinecampo' => $ordinecampo, 'decodifiche' => $decodifiche));
-        }
-
-        return $vettoreriga;
-    }
-
-   
 
 }

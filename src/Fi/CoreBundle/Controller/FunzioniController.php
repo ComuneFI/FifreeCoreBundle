@@ -4,7 +4,7 @@ namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
+use Fi\CoreBundle\DependencyInjection\GrigliaFiltriUtils;
 
 class FunzioniController extends FiController
 {
@@ -12,6 +12,6 @@ class FunzioniController extends FiController
     {
         $tuttofiltri = $request->query->get('filters');
 
-        return new Response(GrigliaUtils::traduciFiltri(array('filtri' => json_decode($tuttofiltri))));
+        return new Response(GrigliaFiltriUtils::traduciFiltri(array('filtri' => json_decode($tuttofiltri))));
     }
 }

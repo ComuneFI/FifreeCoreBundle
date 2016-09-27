@@ -138,4 +138,87 @@ class GrigliaDatiUtils {
             $primo = false;
         }
     }
+
+    public static function valorizzaVettore(&$vettoreriga, $parametri) {
+        $tabella = $parametri['tabella'];
+        $nomecampo = $parametri['nomecampo'];
+        $doctrine = $parametri['doctrine'];
+        $ordinecampo = $parametri['ordinecampo'];
+        $decodifiche = $parametri['decodifiche'];
+
+        $vettoreparcampi = $doctrine->getMetadataFactory()->getMetadataFor($tabella)->fieldMappings;
+
+        if (is_object($vettoreparcampi)) {
+            $vettoreparcampi = get_object_vars($vettoreparcampi);
+        }
+
+        $singolocampo = $parametri['singolocampo'];
+
+        if (isset($decodifiche[$nomecampo])) {
+            $vettoreriga[] = $decodifiche[$nomecampo][$singolocampo];
+        } else {
+            if (isset($vettoreparcampi[$nomecampo]['type']) && ($vettoreparcampi[$nomecampo]['type'] == 'date' || $vettoreparcampi[$nomecampo]['type'] == 'datetime') && $singolocampo) {
+                if (isset($ordinecampo)) {
+                    $vettoreriga[$ordinecampo] = $singolocampo->format('d/m/Y');
+                } else {
+                    $vettoreriga[] = $singolocampo->format('d/m/Y');
+                }
+            } elseif (isset($vettoreparcampi[$nomecampo]['type']) && ($vettoreparcampi[$nomecampo]['type'] == 'time') && $singolocampo) {
+                if (isset($ordinecampo)) {
+                    $vettoreriga[$ordinecampo] = $singolocampo->format('H:i');
+                } else {
+                    $vettoreriga[] = $singolocampo->format('H:i');
+                }
+            } else {
+                if (isset($ordinecampo)) {
+                    $vettoreriga[$ordinecampo] = $singolocampo;
+                } else {
+                    $vettoreriga[] = $singolocampo;
+                }
+            }
+        }
+    }
+
+    public static function campoElencato($parametriCampoElencato) {
+        $tabellej = $parametriCampoElencato['tabellej'];
+        $nomecampo = $parametriCampoElencato['nomecampo'];
+        $campoelencato = $parametriCampoElencato['campoelencato'];
+        $vettoreriga = $parametriCampoElencato['vettoreriga'];
+        $singolo = $parametriCampoElencato['singolo'];
+        $doctrine = $parametriCampoElencato['doctrine'];
+        $bundle = $parametriCampoElencato['bundle'];
+        $decodifiche = $parametriCampoElencato['decodifiche'];
+
+        if (isset($parametriCampoElencato['ordinecampo'])) {
+            $ordinecampo = $parametriCampoElencato['ordinecampo'];
+        } else {
+            $ordinecampo = null;
+        }
+
+        if (isset($tabellej[$campoelencato])) {
+            foreach ($tabellej[$campoelencato]['campi'] as $campoelencatointerno) {
+                $parametriCampoElencatoInterno['tabellej'] = $tabellej;
+                $parametriCampoElencatoInterno['nomecampo'] = $campoelencato;
+                $parametriCampoElencatoInterno['campoelencato'] = $campoelencatointerno;
+                $parametriCampoElencatoInterno['vettoreriga'] = $vettoreriga;
+                $parametriCampoElencatoInterno['singolo'] = $singolo;
+                $parametriCampoElencatoInterno['doctrine'] = $doctrine;
+                $parametriCampoElencatoInterno['bundle'] = $bundle;
+                $parametriCampoElencatoInterno['ordinecampo'] = $ordinecampo;
+                $parametriCampoElencatoInterno['decodifiche'] = $decodifiche;
+
+                $vettoreriga = self::campoElencato($parametriCampoElencatoInterno);
+            }
+        } else {
+            if (isset($tabellej[$nomecampo]['padre'])) {
+                $fields = $singolo[$tabellej[$nomecampo]['padre']][$tabellej[$nomecampo]['tabella']] ? $singolo[$tabellej[$nomecampo]['padre']][$tabellej[$nomecampo]['tabella']][$campoelencato] : '';
+            } else {
+                $fields = $singolo[$tabellej[$nomecampo]['tabella']] ? $singolo[$tabellej[$nomecampo]['tabella']][$campoelencato] : '';
+            }
+            self::valorizzaVettore($vettoreriga, array('singolocampo' => $fields, 'tabella' => $bundle . ':' . $tabellej[$nomecampo]['tabella'], 'nomecampo' => $campoelencato, 'doctrine' => $doctrine, 'ordinecampo' => $ordinecampo, 'decodifiche' => $decodifiche));
+        }
+
+        return $vettoreriga;
+    }
+
 }

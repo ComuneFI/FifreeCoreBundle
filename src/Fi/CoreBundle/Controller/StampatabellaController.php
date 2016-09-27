@@ -3,7 +3,7 @@
 namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
+use Fi\CoreBundle\DependencyInjection\GrigliaFiltriUtils;
 use TCPDF;
 
 class StampatabellaController extends FiController {
@@ -97,7 +97,7 @@ class StampatabellaController extends FiController {
             $pdf->Ln();
         }
 
-        $pdf->Cell(0, 10, GrigliaUtils::traduciFiltri(array('filtri' => $risposta->filtri)), 0, false, 'L', 0, '', 0, false, 'T', 'M');
+        $pdf->Cell(0, 10, GrigliaFiltriUtils::traduciFiltri(array('filtri' => $risposta->filtri)), 0, false, 'L', 0, '', 0, false, 'T', 'M');
 
         /*
           I: send the file inline to the browser (default). The plug-in is used if available. The name given by name is used when one selects the “Save as” option on the link generating the PDF.
@@ -431,7 +431,7 @@ class StampatabellaController extends FiController {
       $pdf->Ln();
       }
 
-      $pdf->Cell(0, 10, GrigliaUtils::traduciFiltri(array("filtri" => $risposta->filtri)), 0, false, 'L', 0, '', 0, false, 'T', 'M');
+      $pdf->Cell(0, 10, GrigliaFiltriUtils::traduciFiltri(array("filtri" => $risposta->filtri)), 0, false, 'L', 0, '', 0, false, 'T', 'M');
 
       $pdf->Output($request->get("nometabella") . '.pdf', 'I');
       exit;
