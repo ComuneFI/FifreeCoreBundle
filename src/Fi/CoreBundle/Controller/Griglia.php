@@ -161,7 +161,7 @@ class Griglia extends FiController {
         Griglia::getColonneLink($paricevuti, $modellocolonne);
 
         // Controlla se ci sono dei campi extra da inserire in griglia (i campi extra non sono utilizzabili come filtri nella filtertoolbar della griglia)
-        GrigliaUtils::getCampiExtraTestataPerGriglia($paricevuti, $indice, $nomicolonne, $modellocolonne);
+        GrigliaColonneUtils::getCampiExtraTestataPerGriglia($paricevuti, $indice, $nomicolonne, $modellocolonne);
 
         GrigliaUtils::getOpzioniTabella($doctrineficore, $nometabella, $testata);
 

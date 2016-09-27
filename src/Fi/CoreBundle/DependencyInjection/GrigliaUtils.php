@@ -175,13 +175,15 @@ class GrigliaUtils {
 
         $q = GrigliaUtils::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
 
-        if ($q) {
-            foreach ($q as $riga) {
-                if ($output == 'stampa') {
-                    $etichette[$riga->getNomecampo()] = $riga->getLarghezzastampa();
-                } else {
-                    $etichette[$riga->getNomecampo()] = $riga->getLarghezzaindex();
-                }
+        if (!$q) {
+            return $etichette;
+        }
+
+        foreach ($q as $riga) {
+            if ($output == 'stampa') {
+                $etichette[$riga->getNomecampo()] = $riga->getLarghezzastampa();
+            } else {
+                $etichette[$riga->getNomecampo()] = $riga->getLarghezzaindex();
             }
         }
 
@@ -224,90 +226,9 @@ class GrigliaUtils {
             }
         }
 
-        $ordinecolonne = self::getOrdineColonne($ordine);
+        $ordinecolonne = GrigliaColonneUtils::getColonneOrdinate($ordine);
 
         return $ordinecolonne;
-    }
-
-    public static function getOrdineColonne($ordine) {
-        $ordinecolonne = null;
-
-        if (count($ordine) > 0) {
-            $ordinecolonne = array();
-            foreach ($ordine as $value) {
-                $ordinecolonne[] = $value;
-            }
-        }
-        return $ordinecolonne;
-    }
-
-    private static function getCampiExtraNormalizzati(&$campiextra) {
-        //Se è un array di una dimensione si trasforma in bidimensionale
-        if (count($campiextra) == count($campiextra, \COUNT_RECURSIVE)) {
-            $campoextraarray = $campiextra;
-            $campiextra = array();
-            foreach ($campoextraarray as $campoextranormalize) {
-                if (is_object($campoextranormalize)) {
-                    $campoextranormalize = get_object_vars($campoextranormalize);
-                    $campiextra[] = $campoextranormalize;
-                }
-            }
-        }
-    }
-
-    public static function getCampiExtraTestataPerGriglia($paricevuti, &$indice, &$nomicolonne, &$modellocolonne) {
-        $campiextra = GrigliaParametriUtils::getParametriCampiExtraTestataPerGriglia($paricevuti);
-        if (!isset($campiextra)) {
-            return;
-        }
-        self::getCampiExtraNormalizzati($campiextra);
-
-        foreach ($campiextra as $chiave => $colonna) {
-            ++$indice;
-            self::getCampiExtraColonneNormalizzate($colonna);
-
-            $nomicolonne[$indice] = self::getCampiExtraNomiColonne($colonna, $chiave);
-
-            $widthcolonna = self::getCampiExtraWidthColonna($colonna);
-
-            $tipocolonna = self::getCampiExtraTipoColonna($colonna);
-            $idcolonna = self::getCampiExtraNomeCampoColonna($colonna, $chiave);
-            $nomecolonna = self::getCampiExtraIdCampoColonna($colonna, $chiave);
-
-            $modellocolonne[$indice] = array(
-                'name' => $nomecolonna,
-                'id' => $idcolonna,
-                'width' => $widthcolonna,
-                'tipocampo' => $tipocolonna,
-                'search' => false);
-        }
-    }
-
-    public static function getCampiExtraIdCampoColonna($colonna, $chiave) {
-        return isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
-    }
-
-    public static function getCampiExtraTipoColonna($colonna) {
-        return isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'];
-        ;
-    }
-
-    public static function getCampiExtraNomeCampoColonna($colonna, $chiave) {
-        return isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
-    }
-
-    public static function getCampiExtraNomiColonne(&$colonna, $chiave) {
-        return isset($colonna['descrizione']) ? $colonna['descrizione'] : GrigliaUtils::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
-    }
-
-    public static function getCampiExtraWidthColonna($colonna) {
-        return isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA > GrigliaUtils::LARGHEZZAMASSIMA ? GrigliaUtils::LARGHEZZAMASSIMA : $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA);
-    }
-
-    public static function getCampiExtraColonneNormalizzate(&$colonna) {
-        if (is_object($colonna)) {
-            $colonna = get_object_vars($colonna);
-        }
     }
 
     /**
