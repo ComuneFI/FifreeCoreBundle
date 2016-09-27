@@ -86,37 +86,37 @@ class GrigliaColonneUtils {
 
         foreach ($moltialias as $singoloalias) {
 
-            self::setOrdineColonne($ordinecolonne, $chiave, $indice, $indicecolonna, $ordinecolonne);
+            GrigliaInfoCampiUtils::setOrdineColonne($ordinecolonne, $chiave, $indice, $indicecolonna, $ordinecolonne);
 
-            self::getSingoloAliasNormalizzato($singoloalias);
+            GrigliaInfoCampiUtils::getSingoloAliasNormalizzato($singoloalias);
 
-            self::setNomiColonne($nomicolonne, $chiave, $singoloalias, $indicecolonna, $etichetteutente);
+            GrigliaInfoCampiUtils::setNomiColonne($nomicolonne, $chiave, $singoloalias, $indicecolonna, $etichetteutente);
 
-            self::setModelliColonne($modellocolonne, $colonna, $chiave, $singoloalias, $indicecolonna, $larghezzeutente);
+            GrigliaInfoCampiUtils::setModelliColonne($modellocolonne, $colonna, $chiave, $singoloalias, $indicecolonna, $larghezzeutente);
         }
     }
 
     public static function setModelliColonne(&$modellocolonne, &$colonna, &$chiave, &$singoloalias, &$indicecolonna, $larghezzeutente) {
-        $widthcampo = self::getWidthCampo($colonna, $chiave, $singoloalias, $larghezzeutente);
+        $widthcampo = GrigliaInfoCampiUtils::getWidthCampo($colonna, $chiave, $singoloalias, $larghezzeutente);
 
         if (isset($singoloalias['tipo']) && ($singoloalias['tipo'] == 'select')) {
-            $modellocolonne[$indicecolonna] = self::getIndiceModelloSelect($chiave, $colonna, $singoloalias, $widthcampo);
+            $modellocolonne[$indicecolonna] = GrigliaInfoCampiUtils::getIndiceModelloSelect($chiave, $colonna, $singoloalias, $widthcampo);
         } else {
-            $modellocolonne[$indicecolonna] = self::getIndiceModello($chiave, $colonna, $singoloalias, $widthcampo);
+            $modellocolonne[$indicecolonna] = GrigliaInfoCampiUtils::getIndiceModello($chiave, $colonna, $singoloalias, $widthcampo);
         }
     }
 
     public static function setNomiColonne(&$nomicolonne, &$chiave, &$singoloalias, &$indicecolonna, &$etichetteutente) {
         if ((isset($etichetteutente[$chiave])) && (trim($etichetteutente[$chiave]) != '')) {
-            $nomicolonne[$indicecolonna] = self::getEtichettaNomeColonna($etichetteutente, $chiave);
+            $nomicolonne[$indicecolonna] = GrigliaInfoCampiUtils::getEtichettaNomeColonna($etichetteutente, $chiave);
         } else {
-            $nomicolonne[$indicecolonna] = self::getEtichettaDescrizioneColonna($singoloalias, $chiave);
+            $nomicolonne[$indicecolonna] = GrigliaInfoCampiUtils::getEtichettaDescrizioneColonna($singoloalias, $chiave);
         }
     }
 
     public static function setOrdineColonne(&$ordinecolonne, &$chiave, &$indice, &$indicecolonna, &$ordinecolonne) {
         if (isset($ordinecolonne)) {
-            self::getOrdineColonne($chiave, $indice, $ordinecolonne);
+            GrigliaInfoCampiUtils::getOrdineColonne($chiave, $indice, $ordinecolonne);
         } else {
             ++$indice;
             $indicecolonna = $indice;
@@ -189,9 +189,9 @@ class GrigliaColonneUtils {
 
         $indicecolonna = 0;
 
-        self::setOrdineColonne($ordinecolonne, $chiave, $indice, $indicecolonna, $ordinecolonne);
+        GrigliaInfoCampiUtils::setOrdineColonne($ordinecolonne, $chiave, $indice, $indicecolonna, $ordinecolonne);
 
-        self::setNomiColonne($nomicolonne, $chiave, $alias, $indicecolonna, $etichetteutente);
+        GrigliaInfoCampiUtils::setNomiColonne($nomicolonne, $chiave, $alias, $indicecolonna, $etichetteutente);
 
         if ((isset($larghezzeutente[$chiave])) && ($larghezzeutente[$chiave] != '') && ($larghezzeutente[$chiave] != 0)) {
             $widthcampo = $larghezzeutente[$chiave];
