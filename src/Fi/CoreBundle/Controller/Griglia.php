@@ -11,7 +11,6 @@ use Fi\CoreBundle\DependencyInjection\GrigliaDatiUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiPrecondizioniUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaExtraFunzioniUtils;
 
-
 class Griglia extends FiController {
 
     /**
@@ -49,10 +48,10 @@ class Griglia extends FiController {
 
         GrigliaColonneUtils::getColonne($nomicolonne, $modellocolonne, $indice, $paricevuti);
 
-// Controlla se alcune colonne devono essere dei link
+        /* Controlla se alcune colonne devono essere dei link */
         GrigliaExtraFunzioniUtils::getColonneLink($paricevuti, $modellocolonne);
 
-// Controlla se ci sono dei campi extra da inserire in griglia (i campi extra non sono utilizzabili come filtri nella filtertoolbar della griglia)
+        /* Controlla se ci sono dei campi extra da inserire in griglia (i campi extra non sono utilizzabili come filtri nella filtertoolbar della griglia) */
         GrigliaCampiExtraUtils::getCampiExtraTestataPerGriglia($paricevuti, $indice, $nomicolonne, $modellocolonne);
 
         GrigliaUtils::getOpzioniTabella($doctrineficore, $nometabella, $testata);
