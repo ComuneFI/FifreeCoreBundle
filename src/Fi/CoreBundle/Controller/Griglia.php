@@ -122,37 +122,6 @@ class Griglia extends FiController {
         return implode(', ', $valuepre);
     }
 
-    public static function getColonne($parametri = array()) {
-        $entityName = $parametri['entityName'];
-        /* @var $doctrine \Doctrine\ORM\EntityManager */
-        $doctrine = $parametri['doctrine'];
-
-        //$infocolonne = $doctrine->getClassMetadata($entityName)->getColumnNames();
-        $infocolonne = $doctrine->getMetadataFactory()->getMetadataFor($entityName);
-        //$infocolonne = get_object_vars($infocolonne);
-
-        foreach ($infocolonne->fieldMappings as $colonna) {
-            //getFieldMapping
-            //$doctrine->getConnection()->getSchemaManager()->
-            //$ret = $doctrine->getMetadataFactory()->getMetadataFor($entityName)->;
-            //if ($colonna == 'descrizione' ){
-            $colonne[$colonna['fieldName']] = $colonna;
-            //}
-
-            /* $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getTypeOfField($colonna);
-              $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getColumnName($colonna);
-              $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getFieldForColumn($colonna);
-              $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getTypeOfColumn($colonna);
-              $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getColumnNames();
-             */
-            if ($colonne[$colonna['fieldName']]['type'] == 'integer' || !(isset($colonne[$colonna['fieldName']]['length']))) {
-                $colonne[$colonna['fieldName']]['length'] = 11;
-            }
-        }
-
-        return $colonne;
-    }
-
     /**
      * Questa funzione è compatibile con jqGrid e risponden con un formato JSON
      * contenente i dati di testata per la griglia.
@@ -183,56 +152,28 @@ class Griglia extends FiController {
         $doctrine = GrigliaUtils::getDoctrineByEm($paricevuti);
         $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine);
 
-        $alias = GrigliaParametriUtils::getAliasTestataPerGriglia($paricevuti);
-
-        $colonne_link = isset($paricevuti['colonne_link']) ? $paricevuti['colonne_link'] : array();
-
-        $escludereutente = GrigliaRegoleUtils::campiesclusi($paricevuti);
-        $etichetteutente = GrigliaUtils::etichettecampi($paricevuti);
-        $larghezzeutente = GrigliaUtils::larghezzecampi($paricevuti);
-
-        $escludere = GrigliaParametriUtils::getCampiEsclusiTestataPerGriglia($paricevuti);
-
-        $campiextra = GrigliaParametriUtils::getParametriCampiExtraTestataPerGriglia($paricevuti);
-
-        $ordinecolonne = GrigliaParametriUtils::getOrdineColonneTestataPerGriglia($paricevuti);
-
-        /* @var $em \Doctrine\ORM\EntityManager */
-        //$em = $doctrine->getRepository($bundle . ":" . $nometabella)->findAll();
-        $entityName = $bundle . ':' . $nometabella;
-
-        $colonne = self::getColonne(array('entityName' => $entityName, 'doctrine' => $doctrine));
-
-
         $testata = array();
         $nomicolonne = array();
         $modellocolonne = array();
         $indice = 0;
 
-        GrigliaColonneUtils::getColonne($nomicolonne, $modellocolonne, $indice, $colonne, $ordinecolonne, $escludere, $escludereutente, $alias, $etichetteutente, $larghezzeutente);
+        GrigliaColonneUtils::getColonne($nomicolonne, $modellocolonne, $indice, $paricevuti);
 
-        if ($output != 'stampa') {
-            // Controlla se alcune colonne devono essere dei link
-            if (isset($colonne_link)) {
-                $modellocolonne = self::getColonneLink($colonne_link, $modellocolonne);
-            }
-        }
+        // Controlla se alcune colonne devono essere dei link
+        Griglia::getColonneLink($paricevuti, $modellocolonne);
 
         // Controlla se ci sono dei campi extra da inserire in griglia (i campi extra non sono utilizzabili come filtri nella filtertoolbar della griglia)
-        GrigliaUtils::getCampiExtraTestataPerGriglia($campiextra, $indice, $nomicolonne, $modellocolonne);
-
-        $testata['nomicolonne'] = self::getNomiColonne($nomicolonne);
-
-        $testata['modellocolonne'] = self::getModelloColonne($modellocolonne);
-
-        $testata['tabella'] = $nometabella;
-        $testata['output'] = $output;
+        GrigliaUtils::getCampiExtraTestataPerGriglia($paricevuti, $indice, $nomicolonne, $modellocolonne);
 
         GrigliaUtils::getOpzioniTabella($doctrineficore, $nometabella, $testata);
 
-        if (isset($paricevuti['container'])) {
-            $testata = self::getPermessiTabella($paricevuti['container'], $paricevuti['nometabella'], $testata);
-        }
+        Griglia::getPermessiTabella($paricevuti, $testata);
+
+        $testata['nomicolonne'] = Griglia::getNomiColonne($nomicolonne);
+        $testata['modellocolonne'] = Griglia::getModelloColonne($modellocolonne);
+
+        $testata['tabella'] = $nometabella;
+        $testata['output'] = $output;
 
         return $testata;
     }
@@ -255,7 +196,13 @@ class Griglia extends FiController {
         return $modellocolonnesorted;
     }
 
-    private static function getPermessiTabella($container, $nometabella, $testata) {
+    private static function getPermessiTabella($paricevuti, &$testata) {
+        if (!isset($paricevuti['container'])) {
+            return;
+        }
+
+        $container = $paricevuti['container'];
+        $nometabella = $paricevuti['nometabella'];
         $permessi = new GestionepermessiController();
         $permessi->setContainer($container);
 
@@ -263,7 +210,13 @@ class Griglia extends FiController {
         return array_merge($testata, $vettorepermessi);
     }
 
-    private static function getColonneLink($colonne_link, $modellocolonne) {
+    public static function getColonneLink($paricevuti, &$modellocolonne) {
+        $output = GrigliaUtils::getOuputType($paricevuti);
+        $colonne_link = isset($paricevuti['colonne_link']) ? $paricevuti['colonne_link'] : array();
+        if (($output == 'stampa') || !isset($colonne_link)) {
+            return;
+        }
+
         foreach ($colonne_link as $colonna_link) {
             foreach ($colonna_link as $nomecolonna => $parametricolonna) {
                 foreach ($modellocolonne as $key => $value) {
@@ -276,7 +229,6 @@ class Griglia extends FiController {
                 }
             }
         }
-        return $modellocolonne;
     }
 
     /**

@@ -4,7 +4,22 @@ namespace Fi\CoreBundle\DependencyInjection;
 
 class GrigliaColonneUtils {
 
-    public static function getColonne(&$nomicolonne, &$modellocolonne, &$indice, $colonne, $ordinecolonne, $escludere, $escludereutente, $alias, $etichetteutente, $larghezzeutente) {
+    public static function getColonne(&$nomicolonne, &$modellocolonne, &$indice, $paricevuti) {
+        $alias = GrigliaParametriUtils::getAliasTestataPerGriglia($paricevuti);
+        $escludere = GrigliaParametriUtils::getCampiEsclusiTestataPerGriglia($paricevuti);
+        $escludereutente = GrigliaRegoleUtils::campiesclusi($paricevuti);
+        $etichetteutente = GrigliaUtils::etichettecampi($paricevuti);
+        $larghezzeutente = GrigliaUtils::larghezzecampi($paricevuti);
+        $ordinecolonne = GrigliaParametriUtils::getOrdineColonneTestataPerGriglia($paricevuti);
+
+        $doctrine = GrigliaUtils::getDoctrineByEm($paricevuti);
+
+        $nometabella = $paricevuti['nometabella'];
+        $bundle = $paricevuti['nomebundle'];
+        $entityName = $bundle . ':' . $nometabella;
+
+        $colonne = GrigliaColonneUtils::getColonneDatabase(array('entityName' => $entityName, 'doctrine' => $doctrine));
+
         foreach ($colonne as $chiave => $colonna) {
             if ((!isset($escludere) || !(in_array($chiave, $escludere))) && (!isset($escludereutente) || !(in_array($chiave, $escludereutente)))) {
                 $moltialias = (isset($alias[$chiave]) ? $alias[$chiave] : null);
@@ -85,6 +100,37 @@ class GrigliaColonneUtils {
                 }
             }
         }
+    }
+
+    public static function getColonneDatabase($parametri = array()) {
+        $entityName = $parametri['entityName'];
+        /* @var $doctrine \Doctrine\ORM\EntityManager */
+        $doctrine = $parametri['doctrine'];
+
+        //$infocolonne = $doctrine->getClassMetadata($entityName)->getColumnNames();
+        $infocolonne = $doctrine->getMetadataFactory()->getMetadataFor($entityName);
+        //$infocolonne = get_object_vars($infocolonne);
+
+        foreach ($infocolonne->fieldMappings as $colonna) {
+            //getFieldMapping
+            //$doctrine->getConnection()->getSchemaManager()->
+            //$ret = $doctrine->getMetadataFactory()->getMetadataFor($entityName)->;
+            //if ($colonna == 'descrizione' ){
+            $colonne[$colonna['fieldName']] = $colonna;
+            //}
+
+            /* $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getTypeOfField($colonna);
+              $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getColumnName($colonna);
+              $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getFieldForColumn($colonna);
+              $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getTypeOfColumn($colonna);
+              $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getColumnNames();
+             */
+            if ($colonne[$colonna['fieldName']]['type'] == 'integer' || !(isset($colonne[$colonna['fieldName']]['length']))) {
+                $colonne[$colonna['fieldName']]['length'] = 11;
+            }
+        }
+
+        return $colonne;
     }
 
 }

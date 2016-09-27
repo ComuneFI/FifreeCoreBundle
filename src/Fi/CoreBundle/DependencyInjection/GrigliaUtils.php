@@ -241,7 +241,8 @@ class GrigliaUtils {
         return $ordinecolonne;
     }
 
-    public static function getCampiExtraTestataPerGriglia($campiextra, &$indice, &$nomicolonne, &$modellocolonne) {
+    public static function getCampiExtraTestataPerGriglia($paricevuti, &$indice, &$nomicolonne, &$modellocolonne) {
+        $campiextra = GrigliaParametriUtils::getParametriCampiExtraTestataPerGriglia($paricevuti);
         if (isset($campiextra)) {
             //Se è un array di una dimensione si trasforma in bidimensionale
             if (count($campiextra) == count($campiextra, \COUNT_RECURSIVE)) {
