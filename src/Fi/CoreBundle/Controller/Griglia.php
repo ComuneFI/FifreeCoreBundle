@@ -4,6 +4,7 @@ namespace Fi\CoreBundle\Controller;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
+use Fi\CoreBundle\DependencyInjection\GrigliaRegoleUtils;
 
 class Griglia extends FiController {
 
@@ -37,7 +38,6 @@ class Griglia extends FiController {
 
         return $escludi;
     }
-
 
     public static function setTabelleJoin(&$q, $parametri = array()) {
         $tabellej = $parametri['tabellej'];
@@ -118,7 +118,7 @@ class Griglia extends FiController {
             $regole[] = array('field' => "$nometabellaprecondizione.$nomecampoprecondizione", 'op' => $operatoreprecondizione, 'data' => $valorecampoprecondizione);
             $tipof = $operatorelogicoprecondizione;
 
-            GrigliaUtils::setRegole(
+            GrigliaRegoleUtils::setRegole(
                     $q, $primo, array(
                 'regole' => $regole,
                 'doctrine' => $doctrine,
@@ -567,7 +567,7 @@ class Griglia extends FiController {
 
         // scorro ogni singola regola
         if (isset($regole)) {
-            GrigliaUtils::setRegole(
+            GrigliaRegoleUtils::setRegole(
                     $q, $primo, array(
                 'regole' => $regole,
                 'doctrine' => $doctrine,
