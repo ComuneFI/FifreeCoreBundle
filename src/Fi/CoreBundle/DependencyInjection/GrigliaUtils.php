@@ -242,37 +242,39 @@ class GrigliaUtils {
     }
 
     public static function getCampiExtraTestataPerGriglia($campiextra, &$indice, &$nomicolonne, &$modellocolonne) {
-        //Se è un array di una dimensione si trasforma in bidimensionale
-        if (count($campiextra) == count($campiextra, \COUNT_RECURSIVE)) {
-            $campoextraarray = $campiextra;
-            unset($campiextra);
-            foreach ($campoextraarray as $campoextranormalize) {
-                if (is_object($campoextranormalize)) {
-                    $campoextranormalize = get_object_vars($campoextranormalize);
-                    $campiextra[] = $campoextranormalize;
+        if (isset($campiextra)) {
+            //Se è un array di una dimensione si trasforma in bidimensionale
+            if (count($campiextra) == count($campiextra, \COUNT_RECURSIVE)) {
+                $campoextraarray = $campiextra;
+                unset($campiextra);
+                foreach ($campoextraarray as $campoextranormalize) {
+                    if (is_object($campoextranormalize)) {
+                        $campoextranormalize = get_object_vars($campoextranormalize);
+                        $campiextra[] = $campoextranormalize;
+                    }
                 }
             }
-        }
 
-        foreach ($campiextra as $chiave => $colonna) {
-            ++$indice;
+            foreach ($campiextra as $chiave => $colonna) {
+                ++$indice;
 
-            if (is_object($colonna)) {
-                $colonna = get_object_vars($colonna);
+                if (is_object($colonna)) {
+                    $colonna = get_object_vars($colonna);
+                }
+                $nomicolonne[$indice] = isset($colonna['descrizione']) ? $colonna['descrizione'] : GrigliaUtils::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
+
+                $widthcolonna = isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * GrigliaUtils::moltiplicatorelarghezza > GrigliaUtils::larghezzamassima ? GrigliaUtils::larghezzamassima : $colonna['length'] * GrigliaUtils::moltiplicatorelarghezza);
+                $tipocolonna = isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'];
+                $idcolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
+                $nomecolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
+
+                $modellocolonne[$indice] = array(
+                    'name' => $nomecolonna,
+                    'id' => $idcolonna,
+                    'width' => $widthcolonna,
+                    'tipocampo' => $tipocolonna,
+                    'search' => false);
             }
-            $nomicolonne[$indice] = isset($colonna['descrizione']) ? $colonna['descrizione'] : GrigliaUtils::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
-
-            $widthcolonna = isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * GrigliaUtils::moltiplicatorelarghezza > GrigliaUtils::larghezzamassima ? GrigliaUtils::larghezzamassima : $colonna['length'] * GrigliaUtils::moltiplicatorelarghezza);
-            $tipocolonna = isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'];
-            $idcolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
-            $nomecolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
-
-            $modellocolonne[$indice] = array(
-                'name' => $nomecolonna,
-                'id' => $idcolonna,
-                'width' => $widthcolonna,
-                'tipocampo' => $tipocolonna,
-                'search' => false);
         }
     }
 
