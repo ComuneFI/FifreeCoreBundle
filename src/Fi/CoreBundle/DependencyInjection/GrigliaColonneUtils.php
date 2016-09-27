@@ -5,9 +5,6 @@ namespace Fi\CoreBundle\DependencyInjection;
 class GrigliaColonneUtils {
 
     public static function getColonne(&$nomicolonne, &$modellocolonne, &$indice, $paricevuti) {
-        $alias = GrigliaParametriUtils::getAliasTestataPerGriglia($paricevuti);
-        $escludere = GrigliaParametriUtils::getCampiEsclusiTestataPerGriglia($paricevuti);
-        $escludereutente = GrigliaRegoleUtils::campiesclusi($paricevuti);
 
         $doctrine = GrigliaUtils::getDoctrineByEm($paricevuti);
 
@@ -18,12 +15,20 @@ class GrigliaColonneUtils {
         $colonne = GrigliaColonneUtils::getColonneDatabase(array('entityName' => $entityName, 'doctrine' => $doctrine));
 
         foreach ($colonne as $chiave => $colonna) {
-            if ((!isset($escludere) || !(in_array($chiave, $escludere))) && (!isset($escludereutente) || !(in_array($chiave, $escludereutente)))) {
-                if (isset($alias[$chiave])) {
-                    GrigliaColonneUtils::getAliasCampi($nomicolonne, $modellocolonne, $indice, $chiave, $colonna, $paricevuti);
-                } else {
-                    GrigliaColonneUtils::getDettagliCampi($nomicolonne, $modellocolonne, $indice, $chiave, $colonna, $paricevuti);
-                }
+            self::elaboraColonna($chiave, $colonna, $nomicolonne, $modellocolonne, $indice, $paricevuti);
+        }
+    }
+
+    public static function elaboraColonna(&$chiave, &$colonna, &$nomicolonne, &$modellocolonne, &$indice, $paricevuti) {
+        $alias = GrigliaParametriUtils::getAliasTestataPerGriglia($paricevuti);
+        $escludere = GrigliaParametriUtils::getCampiEsclusiTestataPerGriglia($paricevuti);
+        $escludereutente = GrigliaRegoleUtils::campiesclusi($paricevuti);
+
+        if ((!isset($escludere) || !(in_array($chiave, $escludere))) && (!isset($escludereutente) || !(in_array($chiave, $escludereutente)))) {
+            if (isset($alias[$chiave])) {
+                GrigliaColonneUtils::getAliasCampi($nomicolonne, $modellocolonne, $indice, $chiave, $colonna, $paricevuti);
+            } else {
+                GrigliaColonneUtils::getDettagliCampi($nomicolonne, $modellocolonne, $alias, $indice, $chiave, $colonna, $paricevuti);
             }
         }
     }
@@ -248,7 +253,7 @@ class GrigliaColonneUtils {
         );
     }
 
-    public static function getDettagliCampi(&$nomicolonne, &$modellocolonne, &$indice, &$chiave, &$colonna, &$paricevuti) {
+    public static function getDettagliCampi(&$nomicolonne, &$modellocolonne, &$alias, &$indice, &$chiave, &$colonna, &$paricevuti) {
         $etichetteutente = GrigliaUtils::etichettecampi($paricevuti);
         $larghezzeutente = GrigliaUtils::larghezzecampi($paricevuti);
         $ordinecolonne = GrigliaParametriUtils::getOrdineColonneTestataPerGriglia($paricevuti);
@@ -257,11 +262,7 @@ class GrigliaColonneUtils {
 
         self::setOrdineColonne($ordinecolonne, $chiave, $indice, $indicecolonna, $ordinecolonne);
 
-        if ((isset($etichetteutente[$chiave])) && (trim($etichetteutente[$chiave]) != '')) {
-            $nomicolonne[$indicecolonna] = GrigliaUtils::to_camel_case(array('str' => trim($etichetteutente[$chiave]), 'primamaiuscola' => true));
-        } else {
-            $nomicolonne[$indicecolonna] = GrigliaUtils::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
-        }
+        self::setNomiColonne($nomicolonne, $chiave, $alias, $indicecolonna, $etichetteutente);
 
         if ((isset($larghezzeutente[$chiave])) && ($larghezzeutente[$chiave] != '') && ($larghezzeutente[$chiave] != 0)) {
             $widthcampo = $larghezzeutente[$chiave];
