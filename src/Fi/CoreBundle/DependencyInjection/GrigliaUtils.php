@@ -2,6 +2,8 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
+use Fi\CoreBundle\Controller\GestionepermessiController;
+
 class GrigliaUtils {
 
     public static $decodificaop;
@@ -106,6 +108,158 @@ class GrigliaUtils {
             }
         }
         return $campoescluso;
+    }
+
+    public static function getUserCustomTableFields($em, $nometabella, $operatore) {
+        $q = $em->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => $operatore['id'], 'nometabella' => $nometabella));
+
+        if (!$q) {
+            unset($q);
+            $q = $em->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
+        }
+        return $q;
+    }
+
+    public static function etichettecampi($parametri = array()) {
+        if (!isset($parametri['nometabella'])) {
+            return false;
+        }
+
+        $output = GrigliaUtils::getOuputType($parametri);
+
+        $nometabella = $parametri['nometabella'];
+
+        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
+        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
+
+        $gestionepermessi = new GestionepermessiController($parametri['container']);
+        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
+
+        $etichette = array();
+
+        $q = GrigliaUtils::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
+
+        if ($q) {
+            foreach ($q as $riga) {
+                if ($output == 'stampa') {
+                    $etichette[$riga->getNomecampo()] = $riga->getEtichettastampa();
+                } else {
+                    $etichette[$riga->getNomecampo()] = $riga->getEtichettaindex();
+                }
+            }
+        }
+
+        return $etichette;
+    }
+
+    public static function larghezzecampi($parametri = array()) {
+        if (!isset($parametri['nometabella'])) {
+            return false;
+        }
+
+        $output = GrigliaUtils::getOuputType($parametri);
+
+        $nometabella = $parametri['nometabella'];
+
+        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
+        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
+
+        $gestionepermessi = new GestionepermessiController($parametri['container']);
+        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
+
+        $etichette = array();
+
+        $q = GrigliaUtils::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
+
+        if ($q) {
+            foreach ($q as $riga) {
+                if ($output == 'stampa') {
+                    $etichette[$riga->getNomecampo()] = $riga->getLarghezzastampa();
+                } else {
+                    $etichette[$riga->getNomecampo()] = $riga->getLarghezzaindex();
+                }
+            }
+        }
+
+        return $etichette;
+    }
+
+    public static function ordinecolonne($parametri = array()) {
+        if (!isset($parametri['nometabella'])) {
+            return false;
+        }
+
+        $output = GrigliaUtils::getOuputType($parametri);
+
+        $nometabella = $parametri['nometabella'];
+
+        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
+        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
+
+        $gestionepermessi = new GestionepermessiController($parametri['container']);
+        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
+
+        $ordine = array();
+
+        $q = GrigliaUtils::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
+
+        if ($q) {
+            foreach ($q as $riga) {
+                if ($output == 'stampa') {
+                    if ($riga->getOrdinestampa()) {
+                        $ordine[$riga->getOrdinestampa()] = $riga->getNomecampo();
+                    }
+                } else {
+                    if ($riga->getOrdineindex()) {
+                        $ordine[$riga->getOrdineindex()] = $riga->getNomecampo();
+                    }
+                }
+            }
+            if (count($ordine) > 0) {
+                ksort($ordine);
+            }
+        }
+
+        $ordinecolonne = self::getOrdineColonne($ordine);
+
+        return $ordinecolonne;
+    }
+
+    public static function getAliasTestataPerGriglia($paricevuti) {
+        $alias = isset($paricevuti['dettaglij']) ? $paricevuti['dettaglij'] : array();
+
+        if (is_object($alias)) {
+            $alias = get_object_vars($alias);
+        }
+        return $alias;
+    }
+
+    public static function getOrdineColonneTestataPerGriglia($paricevuti) {
+        $ordinecolonne = isset($paricevuti['ordinecolonne']) ? $paricevuti['ordinecolonne'] : null;
+        if (!isset($ordinecolonne)) {
+            $ordinecolonne = GrigliaUtils::ordinecolonne($paricevuti);
+        }
+        return $ordinecolonne;
+    }
+
+    public static function getCampiEsclusiTestataPerGriglia($paricevuti) {
+        return isset($paricevuti['escludere']) ? $paricevuti['escludere'] : null;
+    }
+
+    public static function getCampiExtraTestataPerGriglia($paricevuti) {
+        return isset($paricevuti['campiextra']) ? $paricevuti['campiextra'] : null;
+    }
+
+    public static function getOrdineColonne($ordine) {
+        $ordinecolonne = null;
+
+        if (count($ordine) > 0) {
+            $ordinecolonne = array();
+            foreach ($ordine as $value) {
+                $ordinecolonne[] = $value;
+            }
+        }
+        return $ordinecolonne;
     }
 
 }

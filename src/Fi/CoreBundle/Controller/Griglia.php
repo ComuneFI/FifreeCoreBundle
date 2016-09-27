@@ -23,7 +23,7 @@ class Griglia extends FiController {
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
 
         $escludi = array();
-        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
+        $q = GrigliaUtils::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
         if (!$q) {
             return $escludi;
         }
@@ -36,134 +36,6 @@ class Griglia extends FiController {
         }
 
         return $escludi;
-    }
-
-    private static function getUserCustomTableFields($em, $nometabella, $operatore) {
-        $q = $em->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => $operatore['id'], 'nometabella' => $nometabella));
-
-        if (!$q) {
-            unset($q);
-            $q = $em->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
-        }
-        return $q;
-    }
-
-
-    public static function etichettecampi($parametri = array()) {
-        if (!isset($parametri['nometabella'])) {
-            return false;
-        }
-
-        $output = GrigliaUtils::getOuputType($parametri);
-
-        $nometabella = $parametri['nometabella'];
-
-        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
-        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
-
-        $gestionepermessi = new GestionepermessiController($parametri['container']);
-        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
-
-        $etichette = array();
-
-        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
-
-        if ($q) {
-            foreach ($q as $riga) {
-                if ($output == 'stampa') {
-                    $etichette[$riga->getNomecampo()] = $riga->getEtichettastampa();
-                } else {
-                    $etichette[$riga->getNomecampo()] = $riga->getEtichettaindex();
-                }
-            }
-        }
-
-        return $etichette;
-    }
-
-    public static function larghezzecampi($parametri = array()) {
-        if (!isset($parametri['nometabella'])) {
-            return false;
-        }
-
-        $output = GrigliaUtils::getOuputType($parametri);
-
-        $nometabella = $parametri['nometabella'];
-
-        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
-        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
-
-        $gestionepermessi = new GestionepermessiController($parametri['container']);
-        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
-
-        $etichette = array();
-
-        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
-
-        if ($q) {
-            foreach ($q as $riga) {
-                if ($output == 'stampa') {
-                    $etichette[$riga->getNomecampo()] = $riga->getLarghezzastampa();
-                } else {
-                    $etichette[$riga->getNomecampo()] = $riga->getLarghezzaindex();
-                }
-            }
-        }
-
-        return $etichette;
-    }
-
-    public static function ordinecolonne($parametri = array()) {
-        if (!isset($parametri['nometabella'])) {
-            return false;
-        }
-
-        $output = GrigliaUtils::getOuputType($parametri);
-
-        $nometabella = $parametri['nometabella'];
-
-        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
-        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
-
-        $gestionepermessi = new GestionepermessiController($parametri['container']);
-        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
-
-        $ordine = array();
-
-        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
-
-        if ($q) {
-            foreach ($q as $riga) {
-                if ($output == 'stampa') {
-                    if ($riga->getOrdinestampa()) {
-                        $ordine[$riga->getOrdinestampa()] = $riga->getNomecampo();
-                    }
-                } else {
-                    if ($riga->getOrdineindex()) {
-                        $ordine[$riga->getOrdineindex()] = $riga->getNomecampo();
-                    }
-                }
-            }
-            if (count($ordine) > 0) {
-                ksort($ordine);
-            }
-        }
-
-        $ordinecolonne = self::getOrdineColonne($ordine);
-
-        return $ordinecolonne;
-    }
-
-    private static function getOrdineColonne($ordine) {
-        $ordinecolonne = null;
-
-        if (count($ordine) > 0) {
-            $ordinecolonne = array();
-            foreach ($ordine as $value) {
-                $ordinecolonne[] = $value;
-            }
-        }
-        return $ordinecolonne;
     }
 
     private static function getTipoRegola($regola, $parametri) {
@@ -423,19 +295,19 @@ class Griglia extends FiController {
         $doctrine = GrigliaUtils::getDoctrineByEm($paricevuti);
         $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine);
 
-        $alias = self::getAliasTestataPerGriglia($paricevuti);
+        $alias = GrigliaUtils::getAliasTestataPerGriglia($paricevuti);
 
         $colonne_link = isset($paricevuti['colonne_link']) ? $paricevuti['colonne_link'] : array();
 
         $escludereutente = self::campiesclusi($paricevuti);
-        $etichetteutente = self::etichettecampi($paricevuti);
-        $larghezzeutente = self::larghezzecampi($paricevuti);
+        $etichetteutente = GrigliaUtils::etichettecampi($paricevuti);
+        $larghezzeutente = GrigliaUtils::larghezzecampi($paricevuti);
 
-        $escludere = self::getCampiEsclusiTestataPerGriglia($paricevuti);
+        $escludere = GrigliaUtils::getCampiEsclusiTestataPerGriglia($paricevuti);
 
-        $campiextra = self::getCampiExtraTestataPerGriglia($paricevuti);
+        $campiextra = GrigliaUtils::getCampiExtraTestataPerGriglia($paricevuti);
 
-        $ordinecolonne = self::getOrdineColonneTestataPerGriglia($paricevuti);
+        $ordinecolonne = GrigliaUtils::getOrdineColonneTestataPerGriglia($paricevuti);
 
         /* @var $em \Doctrine\ORM\EntityManager */
         //$em = $doctrine->getRepository($bundle . ":" . $nometabella)->findAll();
@@ -590,14 +462,6 @@ class Griglia extends FiController {
         return $testata;
     }
 
-    private static function getCampiEsclusiTestataPerGriglia($paricevuti) {
-        return isset($paricevuti['escludere']) ? $paricevuti['escludere'] : null;
-    }
-
-    private static function getCampiExtraTestataPerGriglia($paricevuti) {
-        return isset($paricevuti['campiextra']) ? $paricevuti['campiextra'] : null;
-    }
-
     private static function getNomiColonne($nomicolonne) {
         ksort($nomicolonne);
         $nomicolonnesorted = array();
@@ -655,23 +519,6 @@ class Griglia extends FiController {
             }
         }
         return $modellocolonne;
-    }
-
-    private static function getAliasTestataPerGriglia($paricevuti) {
-        $alias = isset($paricevuti['dettaglij']) ? $paricevuti['dettaglij'] : array();
-
-        if (is_object($alias)) {
-            $alias = get_object_vars($alias);
-        }
-        return $alias;
-    }
-
-    private static function getOrdineColonneTestataPerGriglia($paricevuti) {
-        $ordinecolonne = isset($paricevuti['ordinecolonne']) ? $paricevuti['ordinecolonne'] : null;
-        if (!isset($ordinecolonne)) {
-            $ordinecolonne = self::ordinecolonne($paricevuti);
-        }
-        return $ordinecolonne;
     }
 
     /**
@@ -734,7 +581,7 @@ class Griglia extends FiController {
         $campiextra = (isset($paricevuti['campiextra']) ? $paricevuti['campiextra'] : null);
         $ordinecolonne = (isset($paricevuti['ordinecolonne']) ? $paricevuti['ordinecolonne'] : null);
         if (!isset($ordinecolonne)) {
-            $ordinecolonne = self::ordinecolonne($paricevuti);
+            $ordinecolonne = GrigliaUtils::ordinecolonne($paricevuti);
         }
         // inserisco i filtri passati in un vettore
 
