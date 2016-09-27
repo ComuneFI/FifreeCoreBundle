@@ -7,9 +7,7 @@ use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaRegoleUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaParametriUtils;
 
-
 class Griglia extends FiController {
-
 
     public static function setTabelleJoin(&$q, $parametri = array()) {
         $tabellej = $parametri['tabellej'];
@@ -194,7 +192,7 @@ class Griglia extends FiController {
 
         $escludere = GrigliaParametriUtils::getCampiEsclusiTestataPerGriglia($paricevuti);
 
-        $campiextra = GrigliaParametriUtils::getCampiExtraTestataPerGriglia($paricevuti);
+        $campiextra = GrigliaParametriUtils::getParametriCampiExtraTestataPerGriglia($paricevuti);
 
         $ordinecolonne = GrigliaParametriUtils::getOrdineColonneTestataPerGriglia($paricevuti);
 
@@ -204,8 +202,6 @@ class Griglia extends FiController {
 
         $colonne = self::getColonne(array('entityName' => $entityName, 'doctrine' => $doctrine));
 
-        $larghezzamassima = 500;
-        $moltiplicatorelarghezza = 10;
 
         $testata = array();
         $nomicolonne = array();
@@ -241,15 +237,15 @@ class Griglia extends FiController {
                         }
 
                         if ((isset($etichetteutente[$chiave])) && (trim($etichetteutente[$chiave]) != '')) {
-                            $nomicolonne[$indicecolonna] = self::to_camel_case(array('str' => trim($etichetteutente[$chiave]), 'primamaiuscola' => true));
+                            $nomicolonne[$indicecolonna] = GrigliaUtils::to_camel_case(array('str' => trim($etichetteutente[$chiave]), 'primamaiuscola' => true));
                         } else {
-                            $nomicolonne[$indicecolonna] = isset($singoloalias['descrizione']) ? $singoloalias['descrizione'] : self::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
+                            $nomicolonne[$indicecolonna] = isset($singoloalias['descrizione']) ? $singoloalias['descrizione'] : GrigliaUtils::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
                         }
 
                         if ((isset($larghezzeutente[$chiave])) && ($larghezzeutente[$chiave] != '') && ($larghezzeutente[$chiave] != 0)) {
                             $widthcampo = $larghezzeutente[$chiave];
                         } else {
-                            $widthcampo = isset($singoloalias['lunghezza']) ? $singoloalias['lunghezza'] : ($colonna['length'] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna['length'] * $moltiplicatorelarghezza);
+                            $widthcampo = isset($singoloalias['lunghezza']) ? $singoloalias['lunghezza'] : ($colonna['length'] * GrigliaUtils::moltiplicatorelarghezza > GrigliaUtils::larghezzamassima ? GrigliaUtils::larghezzamassima : $colonna['length'] * GrigliaUtils::moltiplicatorelarghezza);
                         }
 
                         if (isset($singoloalias['tipo']) && ($singoloalias['tipo'] == 'select')) {
@@ -277,15 +273,15 @@ class Griglia extends FiController {
                         $indicecolonna = $indice;
                     }
                     if ((isset($etichetteutente[$chiave])) && (trim($etichetteutente[$chiave]) != '')) {
-                        $nomicolonne[$indicecolonna] = self::to_camel_case(array('str' => trim($etichetteutente[$chiave]), 'primamaiuscola' => true));
+                        $nomicolonne[$indicecolonna] = GrigliaUtils::to_camel_case(array('str' => trim($etichetteutente[$chiave]), 'primamaiuscola' => true));
                     } else {
-                        $nomicolonne[$indicecolonna] = self::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
+                        $nomicolonne[$indicecolonna] = GrigliaUtils::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
                     }
 
                     if ((isset($larghezzeutente[$chiave])) && ($larghezzeutente[$chiave] != '') && ($larghezzeutente[$chiave] != 0)) {
                         $widthcampo = $larghezzeutente[$chiave];
                     } else {
-                        $widthcampo = ($colonna['length'] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna['length'] * $moltiplicatorelarghezza);
+                        $widthcampo = ($colonna['length'] * GrigliaUtils::moltiplicatorelarghezza > GrigliaUtils::larghezzamassima ? GrigliaUtils::larghezzamassima : $colonna['length'] * GrigliaUtils::moltiplicatorelarghezza);
                     }
 
                     $modellocolonne[$indicecolonna] = array('name' => $chiave, 'id' => $chiave, 'width' => $widthcampo, 'tipocampo' => $colonna['type']);
@@ -302,37 +298,7 @@ class Griglia extends FiController {
 
         // Controlla se ci sono dei campi extra da inserire in griglia (i campi extra non sono utilizzabili come filtri nella filtertoolbar della griglia)
         if (isset($campiextra)) {
-            //Se è un array di una dimensione si trasforma in bidimensionale
-            if (count($campiextra) == count($campiextra, \COUNT_RECURSIVE)) {
-                $campoextraarray = $campiextra;
-                unset($campiextra);
-                foreach ($campoextraarray as $campoextranormalize) {
-                    if (is_object($campoextranormalize)) {
-                        $campoextranormalize = get_object_vars($campoextranormalize);
-                        $campiextra[] = $campoextranormalize;
-                    }
-                }
-            }
-            foreach ($campiextra as $chiave => $colonna) {
-                ++$indice;
-
-                if (is_object($colonna)) {
-                    $colonna = get_object_vars($colonna);
-                }
-                $nomicolonne[$indice] = isset($colonna['descrizione']) ? $colonna['descrizione'] : self::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
-
-                $widthcolonna = isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * $moltiplicatorelarghezza > $larghezzamassima ? $larghezzamassima : $colonna['length'] * $moltiplicatorelarghezza);
-                $tipocolonna = isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'];
-                $idcolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
-                $nomecolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
-
-                $modellocolonne[$indice] = array(
-                    'name' => $nomecolonna,
-                    'id' => $idcolonna,
-                    'width' => $widthcolonna,
-                    'tipocampo' => $tipocolonna,
-                    'search' => false);
-            }
+            GrigliaUtils::getCampiExtraTestataPerGriglia($campiextra, $indice, $nomicolonne, $modellocolonne);
         }
 
         $testata['nomicolonne'] = self::getNomiColonne($nomicolonne);
@@ -783,27 +749,6 @@ class Griglia extends FiController {
     }
 
     /**
-     * Translates a string with underscores into camel case (e.g. first_name -&gt; firstName).
-     *
-     * @param array  $parametri
-     * @param string $str            String in underscore format
-     * @param bool   $primamaiuscola If true, capitalise the first char in $str
-     *
-     * @return string $str translated into camel caps
-     */
-    public static function to_camel_case($parametri = array()) {
-        $str = $parametri['str'];
-        $capitalise_first_char = isset($parametri['primamaiuscola']) ? $parametri['primamaiuscola'] : false;
-
-        if ($capitalise_first_char) {
-            $str[0] = strtoupper($str[0]);
-        }
-        $func = create_function('$c', 'return strtoupper($c[1]);');
-
-        return preg_replace_callback('/_([a-z])/', $func, $str);
-    }
-
-    /**
      * Funzione alla quale si passano i filtri nel formato gestito da jqGrid e
      * che restituisce una stringa che contiene la descrizione in linguaggio
      * naturale.
@@ -836,7 +781,7 @@ class Griglia extends FiController {
             $campo = $filtro->field;
             $operatore = $filtro->op;
             $data = $filtro->data;
-            $filtrodescritto .= ($indice !== 0 ? ($tipofiltro == 'AND' ? ' e ' : ' o ') : '') . self::to_camel_case(array('str' => $campo, 'primamaiuscola' => true)) . GrigliaUtils::$decodificaop[$operatore] . "\"$data\"";
+            $filtrodescritto .= ($indice !== 0 ? ($tipofiltro == 'AND' ? ' e ' : ' o ') : '') . GrigliaUtils::to_camel_case(array('str' => $campo, 'primamaiuscola' => true)) . GrigliaUtils::$decodificaop[$operatore] . "\"$data\"";
         }
 
         $filtrodescritto .= '.';

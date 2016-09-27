@@ -25,7 +25,7 @@ class GrigliaParametriUtils {
         return isset($paricevuti['escludere']) ? $paricevuti['escludere'] : null;
     }
 
-    public static function getCampiExtraTestataPerGriglia($paricevuti) {
+    public static function getParametriCampiExtraTestataPerGriglia($paricevuti) {
         return isset($paricevuti['campiextra']) ? $paricevuti['campiextra'] : null;
     }
 

@@ -11,6 +11,9 @@ class GrigliaUtils {
     public static $precarattere;
     public static $postcarattere;
 
+    const larghezzamassima = 500;
+    const moltiplicatorelarghezza = 10;
+
     public static function init() {
         // i possibili operatori di ciascuna ricerca sono questi:
         //['eq','ne','lt','le','gt','ge','bw','bn','in','ni','ew','en','cn','nc', 'nu', 'nn']
@@ -226,8 +229,6 @@ class GrigliaUtils {
         return $ordinecolonne;
     }
 
-
-
     public static function getOrdineColonne($ordine) {
         $ordinecolonne = null;
 
@@ -240,6 +241,60 @@ class GrigliaUtils {
         return $ordinecolonne;
     }
 
+    public static function getCampiExtraTestataPerGriglia($campiextra, &$indice, &$nomicolonne, &$modellocolonne) {
+        //Se è un array di una dimensione si trasforma in bidimensionale
+        if (count($campiextra) == count($campiextra, \COUNT_RECURSIVE)) {
+            $campoextraarray = $campiextra;
+            unset($campiextra);
+            foreach ($campoextraarray as $campoextranormalize) {
+                if (is_object($campoextranormalize)) {
+                    $campoextranormalize = get_object_vars($campoextranormalize);
+                    $campiextra[] = $campoextranormalize;
+                }
+            }
+        }
 
+        foreach ($campiextra as $chiave => $colonna) {
+            ++$indice;
+
+            if (is_object($colonna)) {
+                $colonna = get_object_vars($colonna);
+            }
+            $nomicolonne[$indice] = isset($colonna['descrizione']) ? $colonna['descrizione'] : GrigliaUtils::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
+
+            $widthcolonna = isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * GrigliaUtils::moltiplicatorelarghezza > GrigliaUtils::larghezzamassima ? GrigliaUtils::larghezzamassima : $colonna['length'] * GrigliaUtils::moltiplicatorelarghezza);
+            $tipocolonna = isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'];
+            $idcolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
+            $nomecolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
+
+            $modellocolonne[$indice] = array(
+                'name' => $nomecolonna,
+                'id' => $idcolonna,
+                'width' => $widthcolonna,
+                'tipocampo' => $tipocolonna,
+                'search' => false);
+        }
+    }
+
+    /**
+     * Translates a string with underscores into camel case (e.g. first_name -&gt; firstName).
+     *
+     * @param array  $parametri
+     * @param string $str            String in underscore format
+     * @param bool   $primamaiuscola If true, capitalise the first char in $str
+     *
+     * @return string $str translated into camel caps
+     */
+    public static function to_camel_case($parametri = array()) {
+        $str = $parametri['str'];
+        $capitalise_first_char = isset($parametri['primamaiuscola']) ? $parametri['primamaiuscola'] : false;
+
+        if ($capitalise_first_char) {
+            $str[0] = strtoupper($str[0]);
+        }
+        $func = create_function('$c', 'return strtoupper($c[1]);');
+
+        return preg_replace_callback('/_([a-z])/', $func, $str);
+    }
 
 }
