@@ -703,7 +703,7 @@ class Griglia extends FiController {
     private static function getNomiColonne($nomicolonne) {
         ksort($nomicolonne);
         $nomicolonnesorted = array();
-        foreach ($nomicolonne as $key => $value) {
+        foreach ($nomicolonne as $value) {
             $nomicolonnesorted[] = $value;
         }
         return $nomicolonnesorted;
