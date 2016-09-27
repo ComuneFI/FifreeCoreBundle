@@ -149,6 +149,7 @@ class Griglia extends FiController {
         /* se ci sono delle precondizioni le imposta qui */
         $primo = true;
         if ($precondizioni) {
+            var_dump($precondizioni);exit;
             GrigliaDatiPrecondizioniUtils::setPrecondizioni($q, $primo, array('precondizioni' => $precondizioni));
         }
 
@@ -162,8 +163,7 @@ class Griglia extends FiController {
                 'bundle' => $bundle,)
             );
         }
-
-// scorro ogni singola regola
+        /* scorro ogni singola regola */
         if (isset($regole)) {
             GrigliaRegoleUtils::setRegole(
                     $q, $primo, array(

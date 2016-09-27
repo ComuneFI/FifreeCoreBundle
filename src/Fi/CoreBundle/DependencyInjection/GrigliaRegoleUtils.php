@@ -7,14 +7,14 @@ use Fi\CoreBundle\Controller\FiUtilita;
 
 class GrigliaRegoleUtils {
 
-    public static function getTipoRegola($regola, $parametri) {
+    public static function getTipoRegola(&$tipo, $regola, $parametri) {
         $doctrine = $parametri['doctrine'];
         $nometabella = $parametri['nometabella'];
         $entityName = $parametri['entityName'];
         $bundle = $parametri['bundle'];
 
         $elencocampi = $doctrine->getClassMetadata($entityName)->getFieldNames();
-        $tipo = null;
+
         if (strrpos($regola['field'], '.') == 0) {
             if (in_array($regola['field'], $elencocampi) == true) {
                 $type = $doctrine->getClassMetadata($entityName)->getFieldMapping($regola['field']);
@@ -34,7 +34,6 @@ class GrigliaRegoleUtils {
             $type = $doctrine->getClassMetadata($entityNametablejoined)->getFieldMapping($fieldjoined);
             $tipo = $type['type'];
         }
-        return $tipo;
     }
 
     public static function getRegolaPerData($regola) {
@@ -48,14 +47,18 @@ class GrigliaRegoleUtils {
     public static function setRegole(&$q, &$primo, $parametri = array()) {
         $regole = $parametri['regole'];
         $tipof = $parametri['tipof'];
-
+        $tabella = $parametri['nometabella'];
+        $tipo = null;
         foreach ($regole as $regola) {
             //Se il campo non ha il . significa che è necessario aggiungere il nometabella
-            $tipo = GrigliaRegoleUtils::getTipoRegola($regola, $parametri);
+            GrigliaRegoleUtils::getTipoRegola($tipo, $regola, $parametri);
 
             $regola = self::setSingolaRegola($tipo, $regola);
             if (!$regola) {
                 continue;
+            }
+            if (strpos($regola['field'], '.') <= 0) {
+                $regola['field'] = $tabella . '.' . $regola['field'];
             }
 
             if ($tipof == 'OR') {
@@ -67,26 +70,36 @@ class GrigliaRegoleUtils {
     }
 
     public static function setSingolaRegola($tipo, $regola) {
-        if (!$tipo) {
-            GrigliaUtils::setVettoriPerNumero();
-        } else {
-            if ($tipo == 'date' || $tipo == 'datetime') {
-                GrigliaUtils::setVettoriPerData();
-                $regola['data'] = FiUtilita::data2db($regola['data']);
-            } elseif ($tipo == 'string') {
-                GrigliaUtils::setVettoriPerStringa();
-                $regola['field'] = 'lower(' . $regola['field'] . ')';
-            }
-
-            if (($tipo == 'boolean') && ($regola['data'] === 'false' || $regola['data'] === false)) {
-                $regola['op'] = 'eq';
-                $regola['data'] = 0;
-            }
-            if (($tipo == 'boolean') && ($regola['data'] === 'true' || $regola['data'] === true)) {
-                $regola['op'] = 'eq';
-                $regola['data'] = 1;
-            }
+        $searchtype = false;
+        if ($tipo == 'date' || $tipo == 'datetime') {
+            GrigliaUtils::setVettoriPerData();
+            $regola['data'] = FiUtilita::data2db($regola['data']);
+            $searchtype = true;
+        } elseif ($tipo == 'string') {
+            GrigliaUtils::setVettoriPerStringa();
+            $regola['field'] = 'lower(' . $regola['field'] . ')';
+            $searchtype = true;
         }
+
+        if (($tipo == 'boolean') && ($regola['data'] === 'false' || $regola['data'] === false)) {
+            GrigliaUtils::setVettoriPerNumero();
+            $regola['op'] = 'eq';
+            $regola['data'] = 0;
+            $searchtype = true;
+        }
+        if (($tipo == 'boolean') && ($regola['data'] === 'true' || $regola['data'] === true)) {
+            GrigliaUtils::setVettoriPerNumero();
+            $regola['op'] = 'eq';
+            $regola['data'] = 1;
+            $searchtype = true;
+        }
+        if ($tipo == 'boolean' && $regola['data'] == 'null') {
+            return array();
+        }
+        if (!$searchtype) {
+            GrigliaUtils::setVettoriPerNumero();
+        }
+
         $regolareturn = GrigliaRegoleUtils::getRegolaPerData($regola);
         return $regolareturn;
     }
