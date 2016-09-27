@@ -120,7 +120,6 @@ class GrigliaControllerTest extends FifreeTest {
         $this->assertEquals($controller, $tabellagriglia);
         $this->assertEquals(9, count($nomicolonnegriglia));
 
-
         $testatagriglia['multisearch'] = 1;
         $testatagriglia['showconfig'] = 1;
         $testatagriglia['showadd'] = 1;
@@ -165,10 +164,6 @@ class GrigliaControllerTest extends FifreeTest {
                 $row = get_object_vars($row);
             }
             if (strpos($modellocolonne[$idx]["name"], ".") > 0) {
-                /* var_dump($colmacro);
-                  var_dump($row[$idx]);
-                  var_dump($ff->$colmacro());
-                  var_dump($modellocolonne); */
                 continue;
             }
             $row = $row["cell"];
@@ -182,11 +177,6 @@ class GrigliaControllerTest extends FifreeTest {
                     ->where('c.' . $modellocolonne[$idx]["name"] . ' = :value')
                     ->setParameter('value', $row[$idx]);
             $ffrow = $qu->getQuery()->getResult();
-            if (!$ffrow) {
-                var_dump($qu->getQuery()->getSql());
-                var_dump($modellocolonne[$idx]);
-                exit;
-            }
             $ff = $ffrow[0];
             $colmacro = 'get' . ucfirst($modellocolonne[$idx]["name"]);
             if ($modellocolonne[$idx]["tipocampo"] == "date") {
@@ -197,29 +187,6 @@ class GrigliaControllerTest extends FifreeTest {
                 $this->assertEquals($ff->$colmacro(), $row[$idx]);
             }
         }
-
-
-
-        /* $this->setClassName(get_class());
-          $client = $this->getClientAutorizzato();
-
-          $url = $client->getContainer()->get('router')->generate('Ffsecondaria');
-          $em = $this->getEntityManager();
-          $this->assertContains('DoctrineORMEntityManager', get_class($em));
-
-          $client->request('GET', $url);
-          $crawler = new Crawler($client->getResponse()->getContent());
-          $this->assertTrue($client->getResponse()->isSuccessful());
-          $body = $crawler->filter('div[id="Ffsecondaria"]');
-          $attributes = $body->extract(array('_text', 'class'));
-          $this->assertEquals($attributes[0][1], 'tabella');
-
-          $clientnoauth = $this->getClientNonAutorizzato();
-          $urlnoauth = '/Ffsecondaria/';
-          $clientnoauth->request('GET', $urlnoauth);
-
-          $this->assertEquals($this->getClassName(), get_class());
-          $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode()); */
     }
 
     /*
