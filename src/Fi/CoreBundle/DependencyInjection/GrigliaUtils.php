@@ -315,5 +315,36 @@ class GrigliaUtils {
             $testata[$opzione->getParametro()] = str_replace('%tabella%', $nometabella, $opzione->getValore());
         }
     }
+    
+    Public static function getNomiColonne($nomicolonne) {
+        ksort($nomicolonne);
+        $nomicolonnesorted = array();
+        foreach ($nomicolonne as $value) {
+            $nomicolonnesorted[] = $value;
+        }
+        return $nomicolonnesorted;
+    }
 
+    Public static function getModelloColonne($modellocolonne) {
+        ksort($modellocolonne);
+        $modellocolonnesorted = array();
+        foreach ($modellocolonne as $value) {
+            $modellocolonnesorted[] = $value;
+        }
+        return $modellocolonnesorted;
+    }
+
+    Public static function getPermessiTabella($paricevuti, &$testata) {
+        if (!isset($paricevuti['container'])) {
+            return;
+        }
+
+        $container = $paricevuti['container'];
+        $nometabella = $paricevuti['nometabella'];
+        $permessi = new GestionepermessiController();
+        $permessi->setContainer($container);
+
+        $vettorepermessi = $permessi->impostaPermessi(array('modulo' => $nometabella));
+        return array_merge($testata, $vettorepermessi);
+    }
 }
