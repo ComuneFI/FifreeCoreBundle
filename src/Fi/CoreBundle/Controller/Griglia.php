@@ -3,83 +3,21 @@
 namespace Fi\CoreBundle\Controller;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
 
 class Griglia extends FiController {
-
-    public static $decodificaop;
-    public static $precarattere;
-    public static $postcarattere;
-
-    public static function init() {
-        // i possibili operatori di ciascuna ricerca sono questi:
-        //['eq','ne','lt','le','gt','ge','bw','bn','in','ni','ew','en','cn','nc', 'nu', 'nn']
-        //significano questo
-        //['equal','not equal', 'less', 'less or equal','greater','greater or equal', 'begins with','does not begin with','is in','is not in','ends with','does not end with','contains','does not contain', 'is null', 'is not null']
-        // sulla base dell'operatore impostato per la singola ricerca si impostano tre vettori
-        // il promo contiene l'operatore da usare in query
-        self::$decodificaop = array('eq' => '=', 'ne' => '<>', 'lt' => '<', 'le' => '<=', 'gt' => '>', 'ge' => '>=', 'bw' => 'LIKE', 'bn' => 'NOT LIKE', 'in' => 'IN', 'ni' => 'NOT IN', 'ew' => 'LIKE', 'en' => 'NOT LIKE', 'cn' => 'LIKE', 'nc' => 'NOT LIKE', 'nu' => 'IS', 'nn' => 'IS NOT', 'nt' => '<>');
-        // questo contiene il carattere da usare prima del campo dati in query dipendentemente dal tipo di operatore
-        self::$precarattere = array('eq' => '', 'ne' => '', 'lt' => '', 'le' => '', 'gt' => '', 'ge' => '', 'bw' => 'lower(\'', 'bn' => 'lower(\'', 'in' => '(', 'ni' => '(', 'ew' => 'lower(\'%', 'en' => 'lower(\'%', 'cn' => 'lower(\'%', 'nc' => 'lower(\'%', 'nu' => 'NULL', 'nn' => 'NULL', 'nt' => 'TRUE');
-        // questo contiene il carattere da usare dopo il campo dati in query dipendentemente dal tipo di operatore
-        self::$postcarattere = array('eq' => '', 'ne' => '', 'lt' => '', 'le' => '', 'gt' => '', 'ge' => '', 'bw' => '%\')', 'bn' => '%\')', 'in' => ')', 'ni' => ')', 'ew' => '\')', 'en' => '\')', 'cn' => '%\')', 'nc' => '%\')', 'nu' => '', 'nn' => '', 'nt' => '');
-    }
-
-    public static function setVettoriPerData() {
-        self::$precarattere['eq'] = "'";
-        self::$precarattere['ne'] = "'";
-        self::$precarattere['lt'] = "'";
-        self::$precarattere['le'] = "'";
-        self::$precarattere['gt'] = "'";
-        self::$precarattere['ge'] = "'";
-        self::$postcarattere['eq'] = "'";
-        self::$postcarattere['ne'] = "'";
-        self::$postcarattere['lt'] = "'";
-        self::$postcarattere['le'] = "'";
-        self::$postcarattere['gt'] = "'";
-        self::$postcarattere['ge'] = "'";
-    }
-
-    public static function setVettoriPerStringa() {
-        self::$precarattere['eq'] = "lower('";
-        self::$precarattere['ne'] = "lower('";
-        self::$precarattere['lt'] = "lower('";
-        self::$precarattere['le'] = "lower('";
-        self::$precarattere['gt'] = "lower('";
-        self::$precarattere['ge'] = "lower('";
-        self::$postcarattere['eq'] = "')";
-        self::$postcarattere['ne'] = "')";
-        self::$postcarattere['lt'] = "')";
-        self::$postcarattere['le'] = "')";
-        self::$postcarattere['gt'] = "')";
-        self::$postcarattere['ge'] = "')";
-    }
-
-    public static function setVettoriPerNumero() {
-        self::$precarattere['eq'] = '';
-        self::$precarattere['ne'] = '';
-        self::$precarattere['lt'] = '';
-        self::$precarattere['le'] = '';
-        self::$precarattere['gt'] = '';
-        self::$precarattere['ge'] = '';
-        self::$postcarattere['eq'] = '';
-        self::$postcarattere['ne'] = '';
-        self::$postcarattere['lt'] = '';
-        self::$postcarattere['le'] = '';
-        self::$postcarattere['gt'] = '';
-        self::$postcarattere['ge'] = '';
-    }
 
     public static function campiesclusi($parametri = array()) {
         if (!isset($parametri['nometabella'])) {
             return false;
         }
 
-        $output = self::getOuputType($parametri);
+        $output = GrigliaUtils::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
-        $doctrine = self::getDoctrineByEm($parametri);
-        $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
+        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
+        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
@@ -91,7 +29,7 @@ class Griglia extends FiController {
         }
 
         foreach ($q as $riga) {
-            $campo = self::getCampiEsclusi($riga, $output);
+            $campo = GrigliaUtils::getCampiEsclusi($riga, $output);
             if ($campo) {
                 $escludi[] = $campo;
             }
@@ -110,58 +48,18 @@ class Griglia extends FiController {
         return $q;
     }
 
-    public static function getOuputType($parametri) {
-        if ((isset($parametri['output'])) && ($parametri['output'] == 'stampa')) {
-            $output = 'stampa';
-        } else {
-            $output = 'index';
-        }
-        return $output;
-    }
-
-    public static function getDoctrineByEm($parametri) {
-        if (isset($parametri['em'])) {
-            $doctrine = $parametri['container']->get('doctrine')->getManager($parametri['em']);
-        } else {
-            $doctrine = $parametri['container']->get('doctrine')->getManager();
-        }
-        return $doctrine;
-    }
-
-    public static function getDoctrineFiCoreByEm($parametri, $doctrine) {
-        if (isset($parametri['emficore'])) {
-            $doctrineficore = $parametri['container']->get('doctrine')->getManager($parametri['emficore']);
-        } else {
-            $doctrineficore = &$doctrine;
-        }
-        return $doctrineficore;
-    }
-
-    public static function getCampiEsclusi($riga, $output) {
-        $campoescluso = null;
-        if ($output == 'stampa') {
-            if ($riga->hasMostrastampa() == false) {
-                $campoescluso = $riga->getNomecampo();
-            }
-        } else {
-            if ($riga->hasMostraindex() == false) {
-                $campoescluso = $riga->getNomecampo();
-            }
-        }
-        return $campoescluso;
-    }
 
     public static function etichettecampi($parametri = array()) {
         if (!isset($parametri['nometabella'])) {
             return false;
         }
 
-        $output = self::getOuputType($parametri);
+        $output = GrigliaUtils::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
-        $doctrine = self::getDoctrineByEm($parametri);
-        $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
+        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
+        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
@@ -188,12 +86,12 @@ class Griglia extends FiController {
             return false;
         }
 
-        $output = self::getOuputType($parametri);
+        $output = GrigliaUtils::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
-        $doctrine = self::getDoctrineByEm($parametri);
-        $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
+        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
+        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
@@ -220,12 +118,12 @@ class Griglia extends FiController {
             return false;
         }
 
-        $output = self::getOuputType($parametri);
+        $output = GrigliaUtils::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
-        $doctrine = self::getDoctrineByEm($parametri);
-        $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
+        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
+        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
@@ -300,13 +198,13 @@ class Griglia extends FiController {
 
     public static function setSingolaRegola($tipo, $regola) {
         if (!$tipo) {
-            self::setVettoriPerNumero();
+            GrigliaUtils::setVettoriPerNumero();
         } else {
             if ($tipo == 'date' || $tipo == 'datetime') {
-                self::setVettoriPerData();
+                GrigliaUtils::setVettoriPerData();
                 $regola['data'] = FiUtilita::data2db($regola['data']);
             } elseif ($tipo == 'string') {
-                self::setVettoriPerStringa();
+                GrigliaUtils::setVettoriPerStringa();
                 $regola['field'] = 'lower(' . $regola['field'] . ')';
             }
 
@@ -345,9 +243,9 @@ class Griglia extends FiController {
             }
 
             if ($tipof == 'OR') {
-                $q->orWhere($regola['field'] . ' ' . self::$decodificaop[$regola['op']] . ' ' . self::$precarattere[$regola['op']] . $regola['data'] . self::$postcarattere[$regola['op']]);
+                $q->orWhere($regola['field'] . ' ' . GrigliaUtils::$decodificaop[$regola['op']] . ' ' . GrigliaUtils::$precarattere[$regola['op']] . $regola['data'] . GrigliaUtils::$postcarattere[$regola['op']]);
             } else {
-                $q->andWhere($regola['field'] . ' ' . self::$decodificaop[$regola['op']] . ' ' . self::$precarattere[$regola['op']] . $regola['data'] . self::$postcarattere[$regola['op']]);
+                $q->andWhere($regola['field'] . ' ' . GrigliaUtils::$decodificaop[$regola['op']] . ' ' . GrigliaUtils::$precarattere[$regola['op']] . $regola['data'] . GrigliaUtils::$postcarattere[$regola['op']]);
             }
         }
     }
@@ -448,17 +346,17 @@ class Griglia extends FiController {
     private static function elaboravalorecampo($type, $valuepre) {
         $tipo = $type['type'];
         if ($tipo && ($tipo == 'date' || $tipo == 'datetime')) {
-            self::setVettoriPerData();
+            GrigliaUtils::setVettoriPerData();
             foreach ($valuepre as $chiave => $valore) {
                 $valuepre[$chiave] = fiUtilita::data2db($valore);
             }
         } elseif ($tipo && $tipo == 'string') {
-            self::setVettoriPerStringa();
+            GrigliaUtils::setVettoriPerStringa();
             foreach ($valuepre as $chiave => $valore) {
                 $valuepre[$chiave] = strtolower($valore);
             }
         } else {
-            self::setVettoriPerNumero();
+            GrigliaUtils::setVettoriPerNumero();
         }
         // se si tratta di valori numerici tutto ok, altrimenti non funziona
         return implode(', ', $valuepre);
@@ -520,10 +418,10 @@ class Griglia extends FiController {
         $nometabella = $paricevuti['nometabella'];
         $bundle = $paricevuti['nomebundle'];
 
-        $output = self::getOuputType($paricevuti);
+        $output = GrigliaUtils::getOuputType($paricevuti);
 
-        $doctrine = self::getDoctrineByEm($paricevuti);
-        $doctrineficore = self::getDoctrineFiCoreByEm($paricevuti, $doctrine);
+        $doctrine = GrigliaUtils::getDoctrineByEm($paricevuti);
+        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine);
 
         $alias = self::getAliasTestataPerGriglia($paricevuti);
 
@@ -809,8 +707,8 @@ class Griglia extends FiController {
             $output = 'index';
         }
 
-        $doctrine = self::getDoctrineByEm($paricevuti);
-        /* $doctrineficore = self::getDoctrineFiCoreByEm($paricevuti, $doctrine); */
+        $doctrine = GrigliaUtils::getDoctrineByEm($paricevuti);
+        /* $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine); */
 
         $bundle = $paricevuti['nomebundle'];
         $nometabella = $paricevuti['nometabella'];
@@ -884,7 +782,7 @@ class Griglia extends FiController {
         // prende un vettore con tutte le ricerche
         $regole = $filtri['rules'];
 
-        self::init();
+        GrigliaUtils::init();
 
         //se ci sono delle precondizioni le imposta qui
         $primo = true;
@@ -1184,7 +1082,7 @@ class Griglia extends FiController {
 
         $filtri = isset($genericofiltri->rules) ? $genericofiltri->rules : '';
         $tipofiltro = isset($genericofiltri->groupOp) ? $genericofiltri->groupOp : '';
-        self::$decodificaop = array('eq' => ' è uguale a ', 'ne' => ' è diverso da ', 'lt' => ' è inferiore a ', 'le' => ' è inferiore o uguale a ', 'gt' => ' è maggiore di ', 'ge' => ' è maggiore o uguale di ', 'bw' => ' comincia con ', 'bn' => ' non comincia con ', 'in' => ' è uno fra ', 'ni' => ' non è uno fra ', 'ew' => ' finisce con ', 'en' => ' con finisce con ', 'cn' => ' contiene ', 'nc' => ' non contiene ', 'nu' => ' è vuoto', 'nn' => ' non è vuoto');
+        GrigliaUtils::$decodificaop = array('eq' => ' è uguale a ', 'ne' => ' è diverso da ', 'lt' => ' è inferiore a ', 'le' => ' è inferiore o uguale a ', 'gt' => ' è maggiore di ', 'ge' => ' è maggiore o uguale di ', 'bw' => ' comincia con ', 'bn' => ' non comincia con ', 'in' => ' è uno fra ', 'ni' => ' non è uno fra ', 'ew' => ' finisce con ', 'en' => ' con finisce con ', 'cn' => ' contiene ', 'nc' => ' non contiene ', 'nu' => ' è vuoto', 'nn' => ' non è vuoto');
 
         if (!isset($filtri) or ( !$filtri)) {
             return '';
@@ -1202,7 +1100,7 @@ class Griglia extends FiController {
             $campo = $filtro->field;
             $operatore = $filtro->op;
             $data = $filtro->data;
-            $filtrodescritto .= ($indice !== 0 ? ($tipofiltro == 'AND' ? ' e ' : ' o ') : '') . self::to_camel_case(array('str' => $campo, 'primamaiuscola' => true)) . self::$decodificaop[$operatore] . "\"$data\"";
+            $filtrodescritto .= ($indice !== 0 ? ($tipofiltro == 'AND' ? ' e ' : ' o ') : '') . self::to_camel_case(array('str' => $campo, 'primamaiuscola' => true)) . GrigliaUtils::$decodificaop[$operatore] . "\"$data\"";
         }
 
         $filtrodescritto .= '.';
