@@ -5,6 +5,8 @@ namespace Fi\CoreBundle\Controller;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaRegoleUtils;
+use Fi\CoreBundle\DependencyInjection\GrigliaParametriUtils;
+
 
 class Griglia extends FiController {
 
@@ -212,7 +214,7 @@ class Griglia extends FiController {
         $doctrine = GrigliaUtils::getDoctrineByEm($paricevuti);
         $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine);
 
-        $alias = GrigliaUtils::getAliasTestataPerGriglia($paricevuti);
+        $alias = GrigliaParametriUtils::getAliasTestataPerGriglia($paricevuti);
 
         $colonne_link = isset($paricevuti['colonne_link']) ? $paricevuti['colonne_link'] : array();
 
@@ -220,11 +222,11 @@ class Griglia extends FiController {
         $etichetteutente = GrigliaUtils::etichettecampi($paricevuti);
         $larghezzeutente = GrigliaUtils::larghezzecampi($paricevuti);
 
-        $escludere = GrigliaUtils::getCampiEsclusiTestataPerGriglia($paricevuti);
+        $escludere = GrigliaParametriUtils::getCampiEsclusiTestataPerGriglia($paricevuti);
 
-        $campiextra = GrigliaUtils::getCampiExtraTestataPerGriglia($paricevuti);
+        $campiextra = GrigliaParametriUtils::getCampiExtraTestataPerGriglia($paricevuti);
 
-        $ordinecolonne = GrigliaUtils::getOrdineColonneTestataPerGriglia($paricevuti);
+        $ordinecolonne = GrigliaParametriUtils::getOrdineColonneTestataPerGriglia($paricevuti);
 
         /* @var $em \Doctrine\ORM\EntityManager */
         //$em = $doctrine->getRepository($bundle . ":" . $nometabella)->findAll();
