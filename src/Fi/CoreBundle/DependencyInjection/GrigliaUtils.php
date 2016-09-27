@@ -11,8 +11,8 @@ class GrigliaUtils {
     public static $precarattere;
     public static $postcarattere;
 
-    const larghezzamassima = 500;
-    const moltiplicatorelarghezza = 10;
+    const Larghezzamassima = 500;
+    const Moltiplicatorelarghezza = 10;
 
     public static function init() {
         // i possibili operatori di ciascuna ricerca sono questi:
@@ -263,7 +263,7 @@ class GrigliaUtils {
                 }
                 $nomicolonne[$indice] = isset($colonna['descrizione']) ? $colonna['descrizione'] : GrigliaUtils::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
 
-                $widthcolonna = isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * GrigliaUtils::moltiplicatorelarghezza > GrigliaUtils::larghezzamassima ? GrigliaUtils::larghezzamassima : $colonna['length'] * GrigliaUtils::moltiplicatorelarghezza);
+                $widthcolonna = isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * GrigliaUtils::Moltiplicatorelarghezza > GrigliaUtils::Larghezzamassima ? GrigliaUtils::Larghezzamassima : $colonna['length'] * GrigliaUtils::Moltiplicatorelarghezza);
                 $tipocolonna = isset($colonna['tipo']) ? $colonna['tipo'] : $colonna['type'];
                 $idcolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
                 $nomecolonna = isset($colonna['nomecampo']) ? $colonna['nomecampo'] : $chiave;
