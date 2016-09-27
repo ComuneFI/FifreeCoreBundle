@@ -5,7 +5,7 @@ namespace Fi\CoreBundle\Controller;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaRegoleUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaParametriUtils;
+use Fi\CoreBundle\DependencyInjection\GrigliaCampiExtraUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaColonneUtils;
 
 class Griglia extends FiController {
@@ -161,7 +161,7 @@ class Griglia extends FiController {
         Griglia::getColonneLink($paricevuti, $modellocolonne);
 
         // Controlla se ci sono dei campi extra da inserire in griglia (i campi extra non sono utilizzabili come filtri nella filtertoolbar della griglia)
-        GrigliaColonneUtils::getCampiExtraTestataPerGriglia($paricevuti, $indice, $nomicolonne, $modellocolonne);
+        GrigliaCampiExtraUtils::getCampiExtraTestataPerGriglia($paricevuti, $indice, $nomicolonne, $modellocolonne);
 
         GrigliaUtils::getOpzioniTabella($doctrineficore, $nometabella, $testata);
 
