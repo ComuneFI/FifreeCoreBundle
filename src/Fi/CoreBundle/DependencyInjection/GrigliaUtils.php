@@ -297,4 +297,20 @@ class GrigliaUtils {
         return preg_replace_callback('/_([a-z])/', $func, $str);
     }
 
+    public static function getOpzioniTabella($doctrineficore, $nometabella, &$testata) {
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        $qb = $doctrineficore->createQueryBuilder();
+        $qb->select(array('a'));
+        $qb->from('FiCoreBundle:OpzioniTabella', 'a');
+        $qb->leftJoin('a.tabelle', 't');
+        $qb->where("t.nometabella = '*' or t.nometabella = :tabella");
+        $qb->andWhere("t.nomecampo is null or t.nomecampo = ''");
+        $qb->orderBy('t.nometabella');
+        $qb->setParameter('tabella', $nometabella);
+        $opzioni = $qb->getQuery()->getResult();
+        foreach ($opzioni as $opzione) {
+            $testata[$opzione->getParametro()] = str_replace('%tabella%', $nometabella, $opzione->getValore());
+        }
+    }
+
 }

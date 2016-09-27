@@ -308,7 +308,7 @@ class Griglia extends FiController {
         $testata['tabella'] = $nometabella;
         $testata['output'] = $output;
 
-        $testata = self::getOpzioniTabella($doctrineficore, $nometabella, $testata);
+        GrigliaUtils::getOpzioniTabella($doctrineficore, $nometabella, $testata);
 
         if (isset($paricevuti['container'])) {
             $testata = self::getPermessiTabella($paricevuti['container'], $paricevuti['nometabella'], $testata);
@@ -341,23 +341,6 @@ class Griglia extends FiController {
 
         $vettorepermessi = $permessi->impostaPermessi(array('modulo' => $nometabella));
         return array_merge($testata, $vettorepermessi);
-    }
-
-    private static function getOpzioniTabella($doctrineficore, $nometabella, $testata) {
-        /* @var $qb \Doctrine\ORM\QueryBuilder */
-        $qb = $doctrineficore->createQueryBuilder();
-        $qb->select(array('a'));
-        $qb->from('FiCoreBundle:OpzioniTabella', 'a');
-        $qb->leftJoin('a.tabelle', 't');
-        $qb->where("t.nometabella = '*' or t.nometabella = :tabella");
-        $qb->andWhere("t.nomecampo is null or t.nomecampo = ''");
-        $qb->orderBy('t.nometabella');
-        $qb->setParameter('tabella', $nometabella);
-        $opzioni = $qb->getQuery()->getResult();
-        foreach ($opzioni as $opzione) {
-            $testata[$opzione->getParametro()] = str_replace('%tabella%', $nometabella, $opzione->getValore());
-        }
-        return $testata;
     }
 
     private static function getColonneLink($colonne_link, $modellocolonne) {

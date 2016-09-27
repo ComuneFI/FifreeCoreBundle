@@ -162,9 +162,9 @@ class z1FfprincipaleControllerTest extends FifreeTest {
                 throw new \Exception("No html element found for the selector 'textLayer'");
             }
             sleep(1);
-            $this->assertContains("FiFree2",$element->getText());
-            $this->assertContains("Ffprincipale",$element->getText());
-            $this->assertContains("Descrizione primo record",$element->getText());
+            $this->assertContains("FiFree2", $element->getText());
+            $this->assertContains("Ffprincipale", $element->getText());
+            $this->assertContains("Descrizione primo record", $element->getText());
 
             sleep(1);
             $session->executeScript('window.close()');
@@ -175,22 +175,22 @@ class z1FfprincipaleControllerTest extends FifreeTest {
             $page = $session->getPage();
         }
         /* Print excel */
-        $element = $page->findAll('css', '.ui-icon-circle-arrow-s');
+        /* $element = $page->findAll('css', '.ui-icon-circle-arrow-s');
 
-        foreach ($element as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $windowNames = $session->getWindowNames();
-        if (count($windowNames) > 1) {
-            for ($x = 1; $x <= count($windowNames) - 1; $x++) {
-                $session->switchToWindow($windowNames[$x]);
-            }
-            $mainwindow = $windowNames[0];
-            $session->switchToWindow($mainwindow);
-            $page = $session->getPage();
-        }
+          foreach ($element as $e) {
+          if ($e->isVisible()) {
+          $e->click();
+          }
+          }
+          $windowNames = $session->getWindowNames();
+          if (count($windowNames) > 1) {
+          for ($x = 1; $x <= count($windowNames) - 1; $x++) {
+          $session->switchToWindow($windowNames[$x]);
+          }
+          $mainwindow = $windowNames[0];
+          $session->switchToWindow($mainwindow);
+          $page = $session->getPage();
+          } */
     }
 
 }

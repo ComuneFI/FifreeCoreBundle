@@ -43,7 +43,7 @@ class z2FfsecondariaControllerTest extends FifreeTest {
         $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 
-        /**
+    /**
      * @test
      */
     public function testExcelFfsecondaria() {
@@ -58,9 +58,7 @@ class z2FfsecondariaControllerTest extends FifreeTest {
                         'Content-Type', 'text/csv; charset=UTF-8'
                 ), 'the "Content-Type" header is "text/csv; charset=UTF-8"' // optional message shown on failure
         );
-        
     }
-
 
     /*
      * @test
@@ -181,9 +179,9 @@ class z2FfsecondariaControllerTest extends FifreeTest {
                 throw new \Exception("No html element found for the selector 'textLayer'");
             }
             sleep(1);
-            $this->assertContains("FiFree2",$element->getText());
-            $this->assertContains("Ffsecondaria",$element->getText());
-            $this->assertContains("Descrizione secondo record",$element->getText());
+            $this->assertContains("FiFree2", $element->getText());
+            $this->assertContains("Ffsecondaria", $element->getText());
+            $this->assertContains("Descrizione secondo record", $element->getText());
 
             sleep(1);
             $session->executeScript('window.close()');
@@ -194,22 +192,22 @@ class z2FfsecondariaControllerTest extends FifreeTest {
             $page = $session->getPage();
         }
         /* Print excel */
-        $element = $page->findAll('css', '.ui-icon-circle-arrow-s');
+        /* $element = $page->findAll('css', '.ui-icon-circle-arrow-s');
 
-        foreach ($element as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $windowNames = $session->getWindowNames();
-        if (count($windowNames) > 1) {
-            for ($x = 1; $x <= count($windowNames) - 1; $x++) {
-                $session->switchToWindow($windowNames[$x]);
-            }
-            $mainwindow = $windowNames[0];
-            $session->switchToWindow($mainwindow);
-            $page = $session->getPage();
-        }
+          foreach ($element as $e) {
+          if ($e->isVisible()) {
+          $e->click();
+          }
+          }
+          $windowNames = $session->getWindowNames();
+          if (count($windowNames) > 1) {
+          for ($x = 1; $x <= count($windowNames) - 1; $x++) {
+          $session->switchToWindow($windowNames[$x]);
+          }
+          $mainwindow = $windowNames[0];
+          $session->switchToWindow($mainwindow);
+          $page = $session->getPage();
+          } */
     }
 
 }
