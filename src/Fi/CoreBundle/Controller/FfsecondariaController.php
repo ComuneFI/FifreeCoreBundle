@@ -27,8 +27,8 @@ class FfsecondariaController extends FiController {
         $escludi = array("nota");
 
         $campiextra = array(
-            array('nomecampo' => 'lunghezzanota', 'lunghezza' => '400', 'descrizione' => 'Lunghezza Nota', 'tipo' => 'integer'),
-            array('nomecampo' => 'attivoToString', 'lunghezza' => '200', 'descrizione' => 'Attivo string', 'tipo' => 'text')
+            array('nomecampo' => 'lunghezzanota', 'lunghezza' => '80', 'descrizione' => 'Lunghezza Nota', 'tipo' => 'integer'),
+            array('nomecampo' => 'attivoToString', 'lunghezza' => '80', 'descrizione' => 'Attivo string', 'tipo' => 'text')
         );
 
         $paricevuti = array(
@@ -46,7 +46,7 @@ class FfsecondariaController extends FiController {
         $testatagriglia['showadd'] = 1;
         $testatagriglia['showedit'] = 1;
         $testatagriglia['showdel'] = 1;
-        
+
         $testatagriglia['showexcel'] = 1;
 
         //$testatagriglia["filterToolbar_stringResult"] = false;
