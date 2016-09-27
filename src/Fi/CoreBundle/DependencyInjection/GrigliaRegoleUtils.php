@@ -37,8 +37,10 @@ class GrigliaRegoleUtils {
     }
 
     public static function getRegolaPerData(&$regola) {
-        if ((substr($regola['data'], 0, 1) == "'") && (substr($regola['data'], strlen($regola['data']) - 1, 1) == "'")) {
-            $regola['data'] = substr($regola['data'], 1, strlen($regola['data']) - 2);
+        if (isset($regola) && count($regola) > 0) {
+            if ((substr($regola['data'], 0, 1) == "'") && (substr($regola['data'], strlen($regola['data']) - 1, 1) == "'")) {
+                $regola['data'] = substr($regola['data'], 1, strlen($regola['data']) - 2);
+            }
         }
     }
 
@@ -73,25 +75,29 @@ class GrigliaRegoleUtils {
             GrigliaUtils::setVettoriPerStringa();
             $regola['field'] = 'lower(' . $regola['field'] . ')';
         }
+        if ($tipo == 'boolean') {
+            self::setTipoBoolean($regola, $tipo);
+        }
 
-        if (($tipo == 'boolean') && ($regola['data'] === 'false' || $regola['data'] === false)) {
+        GrigliaRegoleUtils::getRegolaPerData($regola);
+        return $regola;
+    }
+
+    public static function setTipoBoolean(&$regola, $tipo) {
+
+        if ($regola['data'] === 'false' || $regola['data'] === false) {
             GrigliaUtils::setVettoriPerNumero();
             $regola['op'] = 'eq';
             $regola['data'] = 0;
-            $searchtype = true;
         }
-        if (($tipo == 'boolean') && ($regola['data'] === 'true' || $regola['data'] === true)) {
+        if ($regola['data'] === 'true' || $regola['data'] === true) {
             GrigliaUtils::setVettoriPerNumero();
             $regola['op'] = 'eq';
             $regola['data'] = 1;
-            $searchtype = true;
         }
         if ($tipo == 'boolean' && $regola['data'] == 'null') {
-            return array();
+            $regola = array();
         }
-        
-        GrigliaRegoleUtils::getRegolaPerData($regola);
-        return $regola;
     }
 
     public static function campiesclusi($parametri = array()) {
