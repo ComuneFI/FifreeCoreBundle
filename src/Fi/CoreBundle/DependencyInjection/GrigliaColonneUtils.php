@@ -57,7 +57,7 @@ class GrigliaColonneUtils {
                         if ((isset($larghezzeutente[$chiave])) && ($larghezzeutente[$chiave] != '') && ($larghezzeutente[$chiave] != 0)) {
                             $widthcampo = $larghezzeutente[$chiave];
                         } else {
-                            $widthcampo = isset($singoloalias['lunghezza']) ? $singoloalias['lunghezza'] : ($colonna['length'] * GrigliaUtils::Moltiplicatorelarghezza > GrigliaUtils::Larghezzamassima ? GrigliaUtils::Larghezzamassima : $colonna['length'] * GrigliaUtils::Moltiplicatorelarghezza);
+                            $widthcampo = isset($singoloalias['lunghezza']) ? $singoloalias['lunghezza'] : ($colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA > GrigliaUtils::LARGHEZZAMASSIMA ? GrigliaUtils::LARGHEZZAMASSIMA : $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA);
                         }
 
                         if (isset($singoloalias['tipo']) && ($singoloalias['tipo'] == 'select')) {
@@ -93,7 +93,7 @@ class GrigliaColonneUtils {
                     if ((isset($larghezzeutente[$chiave])) && ($larghezzeutente[$chiave] != '') && ($larghezzeutente[$chiave] != 0)) {
                         $widthcampo = $larghezzeutente[$chiave];
                     } else {
-                        $widthcampo = ($colonna['length'] * GrigliaUtils::Moltiplicatorelarghezza > GrigliaUtils::Larghezzamassima ? GrigliaUtils::Larghezzamassima : $colonna['length'] * GrigliaUtils::Moltiplicatorelarghezza);
+                        $widthcampo = ($colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA > GrigliaUtils::LARGHEZZAMASSIMA ? GrigliaUtils::LARGHEZZAMASSIMA : $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA);
                     }
 
                     $modellocolonne[$indicecolonna] = array('name' => $chiave, 'id' => $chiave, 'width' => $widthcampo, 'tipocampo' => $colonna['type']);
