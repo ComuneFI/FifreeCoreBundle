@@ -148,35 +148,50 @@ class GrigliaColonneUtils {
 
         $moltialias = (isset($alias[$chiave]) ? $alias[$chiave] : null);
 
+        $indicecolonna = 0;
+
         foreach ($moltialias as $singoloalias) {
-            if (isset($ordinecolonne)) {
-                self::getOrdineColonne($chiave, $indice, $ordinecolonne);
-            } else {
-                ++$indice;
-                $indicecolonna = $indice;
-            }
 
-            if (is_object($singoloalias)) {
-                $singoloalias = get_object_vars($singoloalias);
-            }
+            self::setOrdineColonne($ordinecolonne, $chiave, $indice, $indicecolonna, $ordinecolonne);
 
-            if ((isset($etichetteutente[$chiave])) && (trim($etichetteutente[$chiave]) != '')) {
-                $nomicolonne[$indicecolonna] = self::getEtichettaNomeColonna($etichetteutente, $chiave);
-            } else {
-                $nomicolonne[$indicecolonna] = self::getEtichettaDescrizioneColonna($singoloalias, $chiave);
-            }
+            self::getSingoloAliasNormalizzato($singoloalias);
 
-            if ((isset($larghezzeutente[$chiave])) && ($larghezzeutente[$chiave] != '') && ($larghezzeutente[$chiave] != 0)) {
-                $widthcampo = $larghezzeutente[$chiave];
-            } else {
-                $widthcampo = self::getWidthCampo($colonna, $singoloalias);
-            }
+            self::setNomiColonne($nomicolonne, $chiave, $singoloalias, $indicecolonna, $etichetteutente);
 
-            if (isset($singoloalias['tipo']) && ($singoloalias['tipo'] == 'select')) {
-                $modellocolonne[$indicecolonna] = self::getIndiceModelloSelect($chiave, $colonna, $singoloalias, $widthcampo);
-            } else {
-                $modellocolonne[$indicecolonna] = self::getIndiceModello($chiave, $colonna, $singoloalias, $widthcampo);
-            }
+            self::setModelliColonne($modellocolonne, $colonna, $chiave, $singoloalias, $indicecolonna, $larghezzeutente);
+        }
+    }
+
+    public static function setModelliColonne(&$modellocolonne, &$colonna, &$chiave, &$singoloalias, &$indicecolonna, $larghezzeutente) {
+        $widthcampo = self::getWidthCampo($colonna, $chiave, $singoloalias, $larghezzeutente);
+
+        if (isset($singoloalias['tipo']) && ($singoloalias['tipo'] == 'select')) {
+            $modellocolonne[$indicecolonna] = self::getIndiceModelloSelect($chiave, $colonna, $singoloalias, $widthcampo);
+        } else {
+            $modellocolonne[$indicecolonna] = self::getIndiceModello($chiave, $colonna, $singoloalias, $widthcampo);
+        }
+    }
+
+    public static function setNomiColonne(&$nomicolonne, &$chiave, &$singoloalias, &$indicecolonna, &$etichetteutente) {
+        if ((isset($etichetteutente[$chiave])) && (trim($etichetteutente[$chiave]) != '')) {
+            $nomicolonne[$indicecolonna] = self::getEtichettaNomeColonna($etichetteutente, $chiave);
+        } else {
+            $nomicolonne[$indicecolonna] = self::getEtichettaDescrizioneColonna($singoloalias, $chiave);
+        }
+    }
+
+    public static function setOrdineColonne(&$ordinecolonne, &$chiave, &$indice, &$indicecolonna, &$ordinecolonne) {
+        if (isset($ordinecolonne)) {
+            self::getOrdineColonne($chiave, $indice, $ordinecolonne);
+        } else {
+            ++$indice;
+            $indicecolonna = $indice;
+        }
+    }
+
+    public static function getSingoloAliasNormalizzato(&$singoloalias) {
+        if (is_object($singoloalias)) {
+            $singoloalias = get_object_vars($singoloalias);
         }
     }
 
@@ -203,8 +218,14 @@ class GrigliaColonneUtils {
         return GrigliaUtils::to_camel_case(array('str' => trim($etichetteutente[$chiave]), 'primamaiuscola' => true));
     }
 
-    public static function getWidthCampo(&$colonna, $singoloalias) {
-        return isset($singoloalias['lunghezza']) ? $singoloalias['lunghezza'] : ($colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA > GrigliaUtils::LARGHEZZAMASSIMA ? GrigliaUtils::LARGHEZZAMASSIMA : $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA);
+    public static function getWidthCampo(&$colonna, &$chiave, $singoloalias, $larghezzeutente) {
+        if ((isset($larghezzeutente[$chiave])) && ($larghezzeutente[$chiave] != '') && ($larghezzeutente[$chiave] != 0)) {
+            $widthcampo = $larghezzeutente[$chiave];
+        } else {
+            $widthcampo = isset($singoloalias['lunghezza']) ? $singoloalias['lunghezza'] : ($colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA > GrigliaUtils::LARGHEZZAMASSIMA ? GrigliaUtils::LARGHEZZAMASSIMA : $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA);
+        }
+
+        return $widthcampo;
     }
 
     public static function getIndiceModelloSelect(&$chiave, &$colonna, $singoloalias, $widthcampo) {
