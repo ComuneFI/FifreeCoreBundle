@@ -91,4 +91,35 @@ class GrigliaRegoleUtils {
         return $regolareturn;
     }
 
+    public static function campiesclusi($parametri = array()) {
+        if (!isset($parametri['nometabella'])) {
+            return false;
+        }
+
+        $output = GrigliaUtils::getOuputType($parametri);
+
+        $nometabella = $parametri['nometabella'];
+
+        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
+        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
+
+        $gestionepermessi = new GestionepermessiController($parametri['container']);
+        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
+
+        $escludi = array();
+        $q = GrigliaUtils::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
+        if (!$q) {
+            return $escludi;
+        }
+
+        foreach ($q as $riga) {
+            $campo = GrigliaUtils::getCampiEsclusi($riga, $output);
+            if ($campo) {
+                $escludi[] = $campo;
+            }
+        }
+
+        return $escludi;
+    }
+
 }

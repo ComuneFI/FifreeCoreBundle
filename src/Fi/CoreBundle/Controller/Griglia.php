@@ -10,36 +10,6 @@ use Fi\CoreBundle\DependencyInjection\GrigliaParametriUtils;
 
 class Griglia extends FiController {
 
-    public static function campiesclusi($parametri = array()) {
-        if (!isset($parametri['nometabella'])) {
-            return false;
-        }
-
-        $output = GrigliaUtils::getOuputType($parametri);
-
-        $nometabella = $parametri['nometabella'];
-
-        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
-        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
-
-        $gestionepermessi = new GestionepermessiController($parametri['container']);
-        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
-
-        $escludi = array();
-        $q = GrigliaUtils::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
-        if (!$q) {
-            return $escludi;
-        }
-
-        foreach ($q as $riga) {
-            $campo = GrigliaUtils::getCampiEsclusi($riga, $output);
-            if ($campo) {
-                $escludi[] = $campo;
-            }
-        }
-
-        return $escludi;
-    }
 
     public static function setTabelleJoin(&$q, $parametri = array()) {
         $tabellej = $parametri['tabellej'];
@@ -218,7 +188,7 @@ class Griglia extends FiController {
 
         $colonne_link = isset($paricevuti['colonne_link']) ? $paricevuti['colonne_link'] : array();
 
-        $escludereutente = self::campiesclusi($paricevuti);
+        $escludereutente = GrigliaRegoleUtils::campiesclusi($paricevuti);
         $etichetteutente = GrigliaUtils::etichettecampi($paricevuti);
         $larghezzeutente = GrigliaUtils::larghezzecampi($paricevuti);
 
@@ -485,7 +455,7 @@ class Griglia extends FiController {
 
         $decodifiche = (isset($paricevuti['decodifiche']) ? $paricevuti['decodifiche'] : null);
         $escludere = (isset($paricevuti['escludere']) ? $paricevuti['escludere'] : null);
-        $escludereutente = self::campiesclusi($paricevuti);
+        $escludereutente = GrigliaRegoleUtils::campiesclusi($paricevuti);
         $nospan = (isset($paricevuti['nospan']) ? $paricevuti['nospan'] : false);
         /* $precondizioniGET = $request->get('precondizioni');
           if (isset($precondizioniGET)) {
