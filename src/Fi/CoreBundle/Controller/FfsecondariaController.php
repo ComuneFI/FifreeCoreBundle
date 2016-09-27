@@ -18,8 +18,6 @@ class FfsecondariaController extends FiController {
 
         $nomebundle = $namespace . $bundle . 'Bundle';
 
-        $em = $this->getDoctrine()->getManager();
-
         $dettaglij = array(
             'descsec' => array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text')),
             'ffprincipale_id' => array(array('nomecampo' => 'ffprincipale.descrizione', 'lunghezza' => '400', 'descrizione' => 'Descrizione record principale', 'tipo' => 'text')),
