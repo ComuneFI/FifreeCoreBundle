@@ -105,9 +105,7 @@ class Griglia extends FiController {
         /* qui */
         $tabellej = GrigliaDatiUtils::getTabellejNormalizzate($parametri);
 
-        $decodifiche = GrigliaDatiUtils::getDatiDecodifiche($parametri);
         $escludere = GrigliaDatiUtils::getDatiEscludere($parametri);
-        $escludereutente = GrigliaDatiUtils::getDatiEscludere($parametri);
         $nospan = GrigliaDatiUtils::getDatiNospan($parametri);
 
         $precondizioni = GrigliaDatiUtils::getDatiPrecondizioni($parametri);
@@ -232,7 +230,7 @@ class Griglia extends FiController {
             /* Si scorrono tutti i campi del record */
             $vettoreriga = array();
             foreach ($singolo as $nomecampo => $singolocampo) {
-                GrigliaDatiMultiUtils::buildColonneDatiGriglia($vettoreriga, $tabellej, $singolo, $escludere, $nomecampo, $escludereutente, $ordinecolonne, $nomecampo, $indice, $indicecolonna, $singolocampo, $nometabella, $doctrine, $bundle, $decodifiche);
+                GrigliaDatiMultiUtils::buildColonneDatiGriglia($parametri, $vettoreriga, $singolo, $nomecampo, $nomecampo, $indice, $indicecolonna, $singolocampo);
             }
 
             GrigliaCampiExtraUtils::getCampiExtraDatiPerGriglia($campiextra, $vettoreriga, $doctrine, $entityName, $singolo);

@@ -36,13 +36,25 @@ class GrigliaDatiMultiUtils {
         }
     }
 
-    public static function buildColonneDatiGriglia(&$vettoreriga, &$tabellej, &$singolo, &$escludere, &$nomecampo, &$escludereutente, &$ordinecolonne, &$nomecampo, &$indice, &$indicecolonna, &$singolocampo, &$nometabella, $doctrine, $bundle, $decodifiche) {
+    public static function buildColonneDatiGriglia($parametri, &$vettoreriga, &$singolo, &$nomecampo, &$nomecampo, &$indice, &$indicecolonna, &$singolocampo) {
+        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
+        /* $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine); */
+
+        $bundle = $parametri['nomebundle'];
+        $nometabella = $parametri['nometabella'];
+        /* qui */
+        $tabellej = GrigliaDatiUtils::getTabellejNormalizzate($parametri);
+
+        $decodifiche = GrigliaDatiUtils::getDatiDecodifiche($parametri);
+        $escludere = GrigliaDatiUtils::getDatiEscludere($parametri);
+        $escludereutente = GrigliaDatiUtils::getDatiEscludere($parametri);
+        $ordinecolonne = GrigliaDatiUtils::getDatiOrdineColonne($parametri);
+
+
         /* Si controlla se il campo è da escludere o meno */
         if ((!isset($escludere) || !(in_array($nomecampo, $escludere))) && (!isset($escludereutente) || !(in_array($nomecampo, $escludereutente)))) {
             if (isset($tabellej[$nomecampo])) {
-                if (is_object($tabellej[$nomecampo])) {
-                    $tabellej[$nomecampo] = get_object_vars($tabellej[$nomecampo]);
-                }
+                self::TabellejNomecampoNormalizzato($tabellej, $nomecampo);
                 /* Per ogni campo si cattura il valore dall'array che torna doctrine */
                 foreach ($tabellej[$nomecampo]['campi'] as $campoelencato) {
                     /* Object */
@@ -69,6 +81,12 @@ class GrigliaDatiMultiUtils {
 
                 GrigliaDatiUtils::valorizzaVettore($vettoreriga, array('singolocampo' => $singolocampo, 'tabella' => $bundle . ':' . $nometabella, 'nomecampo' => $nomecampo, 'doctrine' => $doctrine, 'ordinecampo' => $indicecolonna, 'decodifiche' => $decodifiche));
             }
+        }
+    }
+
+    public static function TabellejNomecampoNormalizzato(&$tabellej, $nomecampo) {
+        if (is_object($tabellej[$nomecampo])) {
+            $tabellej[$nomecampo] = get_object_vars($tabellej[$nomecampo]);
         }
     }
 
