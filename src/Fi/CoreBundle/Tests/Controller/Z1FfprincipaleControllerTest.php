@@ -7,38 +7,29 @@ use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class z2FfsecondariaControllerTest extends FifreeTest
+class Z1FfprincipaleControllerTest extends FifreeTest
 {
-    private $container;
-
-    public function setUp()
-    {
-        self::bootKernel();
-
-        $this->container = self::$kernel->getContainer();
-    }
-
     /**
      * @test
      */
-    public function testIndexFfsecondaria()
+    public function testIndexFfprincipale()
     {
         parent::__construct();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
-        $url = $client->getContainer()->get('router')->generate('Ffsecondaria');
+        $url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $em = $this->getEntityManager();
         $this->assertContains('DoctrineORMEntityManager', get_class($em));
 
         $client->request('GET', $url);
         $crawler = new Crawler($client->getResponse()->getContent());
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $body = $crawler->filter('div[id="Ffsecondaria"]');
+        $body = $crawler->filter('div[id="Ffprincipale"]');
         $attributes = $body->extract(array('_text', 'class'));
         $this->assertEquals($attributes[0][1], 'tabella');
 
         $clientnoauth = $this->getClientNonAutorizzato();
-        $urlnoauth = '/Ffsecondaria/';
+        $urlnoauth = '/Ffprincipale/';
         $clientnoauth->request('GET', $urlnoauth);
 
         $this->assertEquals($this->getClassName(), get_class());
@@ -48,12 +39,13 @@ class z2FfsecondariaControllerTest extends FifreeTest
     /**
      * @test
      */
-    public function testExcelFfsecondaria()
+    public function testExcelFfprincipale()
     {
         parent::__construct();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
-        $url = $client->getContainer()->get('router')->generate('Tabelle_esportaexceltabella', array('nometabella' => 'Ffsecondaria'));
+        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
+        $url = $client->getContainer()->get('router')->generate('Tabelle_esportaexceltabella', array('nometabella' => 'Ffprincipale'));
 
         $client->request('GET', $url);
         $this->assertTrue(
@@ -67,13 +59,13 @@ class z2FfsecondariaControllerTest extends FifreeTest
      * @test
      */
 
-    public function testFfsecondaria()
+    public function testFfprincipale()
     {
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';
-        $urlruote = $this->container->get('router')->generate('Ffsecondaria');
-        $url = 'http://127.0.0.1:8000'.$urlruote;
+        //$url = $client->getContainer()->get('router')->generate('Categoria_container');
+        $url = 'http://127.0.0.1:8000/';
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -96,6 +88,68 @@ class z2FfsecondariaControllerTest extends FifreeTest
         $this->printoperations($session, $page);
 
         $session->stop();
+
+        /* $client = $this->getClientAutorizzato();
+          // @var $em \Doctrine\ORM\EntityManager
+          $em = $client->getContainer()->get('doctrine')->getManager();
+
+          $qu = $em->createQueryBuilder();
+          $qu->select(array('c'))
+          ->from('FiCoreBundle:Ffprincipale', 'c')
+          ->where('c.descrizione = :descrizione')
+          ->setParameter('descrizione', $descrizionetest);
+          $ff = $qu->getQuery()->getSingleResult();
+          $this->assertEquals($ff->getDescrizione(), $descrizionetest);
+
+          $em->remove($ff);
+          $em->flush();
+          $em->clear();
+          $this->assertTrue(is_null($ff->getId())); */
+    }
+
+    private function searchoperation($session, $page)
+    {
+        $elementsearch = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        /* Ricerca 1 */
+        sleep(1);
+        $search1 = 'primo';
+        sleep(1);
+        $page->fillField('jqg1', $search1);
+        $page->find('css', 'a#fbox_list1_search')->click();
+        sleep(1);
+
+        $numrowsgrid1 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(0, $numrowsgrid1);
+
+        /* Ricerca 1 */
+        $elementsearch2 = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch2 as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        sleep(1);
+        $search2 = 'primo';
+        sleep(1);
+        //$page->selectFieldOption('inizia con', "cn");
+        $var2 = '"cn"';
+        $javascript2 = "$('.selectopts option[value=".$var2."]').attr('selected', 'selected').change();;";
+
+        $session->executeScript($javascript2);
+        $page->fillField('jqg1', $search2);
+
+        $page->find('css', 'a#fbox_list1_search')->click();
+        sleep(1);
+
+        $numrowsgrid2 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(1, $numrowsgrid2);
     }
 
     private function crudoperation($session, $page)
@@ -108,19 +162,11 @@ class z2FfsecondariaControllerTest extends FifreeTest
             }
         }
         /* Inserimento */
+        sleep(1);
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         sleep(1);
-        $page->fillField('fi_corebundle_ffsecondariatype_descsec', $descrizionetest1);
-        $page->selectFieldOption('fi_corebundle_ffsecondariatype_ffprincipale', 1);
-        $page->selectFieldOption('fi_corebundle_ffsecondariatype_data_day', (int) date('d'));
-        $page->selectFieldOption('fi_corebundle_ffsecondariatype_data_month', (int) date('m'));
-        $page->selectFieldOption('fi_corebundle_ffsecondariatype_data_year', (int) date('Y'));
-        $page->fillField('fi_corebundle_ffsecondariatype_importo', 1000000.12);
-        $page->fillField('fi_corebundle_ffsecondariatype_intero', 1000000);
-        $page->fillField('fi_corebundle_ffsecondariatype_nota', 'Prova la nota');
-        $page->fillField('fi_corebundle_ffsecondariatype_attivo', 1);
-
-        $page->find('css', 'a#sDataFfsecondariaS')->click();
+        $page->fillField('fi_corebundle_ffprincipaletype_descrizione', $descrizionetest1);
+        $page->find('css', 'a#sDataFfprincipaleS')->click();
         sleep(1);
 
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");$("#list1").jqGrid("setSelection", rowid);}()');
@@ -134,8 +180,8 @@ class z2FfsecondariaControllerTest extends FifreeTest
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         sleep(1);
-        $page->fillField('fi_corebundle_ffsecondariatype_descsec', $descrizionetest2);
-        $page->find('css', 'a#sDataFfsecondariaS')->click();
+        $page->fillField('fi_corebundle_ffprincipaletype_descrizione', $descrizionetest2);
+        $page->find('css', 'a#sDataFfprincipaleS')->click();
         sleep(1);
         /* Cancellazione */
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");$("#list1").jqGrid("setSelection", rowid);}()');
@@ -150,101 +196,8 @@ class z2FfsecondariaControllerTest extends FifreeTest
         sleep(1);
     }
 
-    private function searchoperation($session, $page)
-    {
-        $elementsearch = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        /* Ricerca 1 */
-        sleep(1);
-        $search1 = '9° secondaria';
-        sleep(1);
-        $page->fillField('jqg1', $search1);
-        $page->find('css', 'a#fbox_list1_search')->click();
-        sleep(1);
-
-        $numrowsgrid1 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
-        $this->assertEquals(1, $numrowsgrid1);
-
-        /* Ricerca 1 */
-        $elementsearch2 = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch2 as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        sleep(1);
-        $search2 = '1°';
-        sleep(1);
-        //$page->selectFieldOption('inizia con', "cn");
-        $var2 = '"cn"';
-        $javascript2 = "$('.selectopts option[value=".$var2."]').attr('selected', 'selected').change();;";
-
-        $session->executeScript($javascript2);
-        $page->fillField('jqg1', $search2);
-
-        $page->find('css', 'a#fbox_list1_search')->click();
-        sleep(1);
-
-        $numrowsgrid2 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
-        $this->assertEquals(4, $numrowsgrid2);
-
-        /* doppia condizione */
-        $elementsearch3 = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch3 as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        sleep(1);
-        $search3 = 100;
-        sleep(1);
-        $addrulejs = "$('.ui-add').click();";
-
-        $session->executeScript($addrulejs);
-        sleep(1);
-
-        $var3 = '"intero"';
-
-        $javascript3 = "$('#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first option[value=".$var3."]').attr('selected', 'selected').change();";
-        sleep(1);
-        $session->executeScript($javascript3);
-        $page->fillField('jqg4', $search3);
-
-        $var4 = '"ge"';
-        $javascript4 = "$('.selectopts:first option[value=".$var4."]').attr('selected', 'selected').change();;";
-        $session->executeScript($javascript4);
-        sleep(1);
-        $search5 = '6°';
-        $page->fillField('jqg3', $search5);
-
-        $page->find('css', 'a#fbox_list1_search')->click();
-        sleep(1);
-
-        $numrowsgrid3 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
-        $this->assertEquals(1, $numrowsgrid3);
-
-        //reset filtri
-        $elementsearch4 = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch4 as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $page->find('css', 'a#fbox_list1_reset')->click();
-        sleep(1);
-    }
-
     private function printoperations($session, $page)
     {
-
         /* Print pdf */
         $element = $page->findAll('css', '.ui-icon-print');
 
@@ -265,8 +218,8 @@ class z2FfsecondariaControllerTest extends FifreeTest
             }
             sleep(1);
             $this->assertContains('FiFree2', $element->getText());
-            $this->assertContains('Ffsecondaria', $element->getText());
-            $this->assertContains('Descrizione secondo record', $element->getText());
+            $this->assertContains('Ffprincipale', $element->getText());
+            $this->assertContains('Descrizione primo record', $element->getText());
 
             sleep(1);
             $session->executeScript('window.close()');
@@ -276,26 +229,6 @@ class z2FfsecondariaControllerTest extends FifreeTest
             sleep(1);
             $page = $session->getPage();
         }
-    }
-}
-
-/* $client = $this->getClientAutorizzato();
-          // @var $em \Doctrine\ORM\EntityManager
-          $em = $client->getContainer()->get('doctrine')->getManager();
-
-          $qu = $em->createQueryBuilder();
-          $qu->select(array('c'))
-          ->from('FiCoreBundle:Ffsecondaria', 'c')
-          ->where('c.descrizione = :descrizione')
-          ->setParameter('descrizione', $descrizionetest);
-          $ff = $qu->getQuery()->getSingleResult();
-          $this->assertEquals($ff->getDescrizione(), $descrizionetest);
-
-          $em->remove($ff);
-          $em->flush();
-          $em->clear();
-          $this->assertTrue(is_null($ff->getId())); */
-
         /* Print excel */
         /* $element = $page->findAll('css', '.ui-icon-circle-arrow-s');
 
@@ -313,3 +246,5 @@ class z2FfsecondariaControllerTest extends FifreeTest
           $session->switchToWindow($mainwindow);
           $page = $session->getPage();
           } */
+    }
+}
