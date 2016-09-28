@@ -83,7 +83,7 @@ class GrigliaCampiExtraUtils {
                 $campiextra[0] = $campiextra;
             }
             foreach ($campiextra as $vettore) {
-                foreach ($vettore as $nomecampo => $singolocampo) {
+                foreach ($vettore as $singolocampo) {
                     $campo = 'get' . ucfirst($singolocampo);
                     /* @var $doctrine \Doctrine\ORM\EntityManager */
                     $objTabella = $doctrine->find($entityName, $singolo['id']);
