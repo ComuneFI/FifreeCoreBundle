@@ -2,7 +2,64 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 class GrigliaDatiMultiUtils {
+
+    public static function getTotalPages($quanti, &$limit) {
+        /* calcola in mumero di pagine totali necessarie */
+        return ceil($quanti / ($limit == 0 ? 1 : $limit));
+    }
+
+    public static function getLimit(&$limit) {
+        return ($limit ? $limit : 1);
+    }
+
+    public static function prepareQuery($parametri, &$q, &$sidx, &$sord, &$page, &$limit, &$quanti) {
+        $output = GrigliaUtils::getOuputType($parametri);
+        $nospan = GrigliaDatiUtils::getDatiNospan($parametri);
+        /* su quale campo fare l'ordinamento */
+        /* conta il numero di record di risposta
+          $query_tutti_records = $q->getQuery();
+          $quanti = count($query_tutti_records->getSingleScalarResult()); */
+
+        $paginator = new Paginator($q, true);
+        $quanti = count($paginator);
+
+        /* imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati */
+        $offset = ($limit * ($page - 1));
+
+        /* se si mandano i dati in stampa non tiene conto di limite e offset ovvero risponde con tutti i dati */
+        if ($output != 'stampa') {
+            /* se nospan non tiene conto di limite e offset ovvero risponde con tutti i dati */
+            if (!($nospan)) {
+                /* Imposta il limite ai record da estrarre */
+                $q = ($limit ? $q->setMaxResults($limit) : $q);
+                /* E imposta il primo record da visualizzare (per la paginazione) */
+                $q = ($offset ? $q->setFirstResult($offset) : $q);
+            }
+        } else {
+            if ($quanti > 1000) {
+                set_time_limit(960);
+                ini_set('memory_limit', '2048M');
+            }
+        }
+
+        if ($sidx) {
+            $q->orderBy($sidx, $sord);
+        }
+        /* Dall'oggetto querybuilder si ottiene la query da eseguire */
+        $query_paginata = $q->getQuery();
+
+        /* Object */
+        /* $q = $query_paginata->getResult(); */
+        /* Array */
+        /* Si ottiene un array con tutti i records */
+        $q = $query_paginata->getArrayResult();
+
+        /* Se il limire non è stato impostato si mette 1 (per calcolare la paginazione) */
+        $limit = GrigliaDatiMultiUtils::getLimit($limit);
+    }
 
     public static function buildRowGriglia(&$singolo, &$vettoreriga, &$vettorerisposta) {
 

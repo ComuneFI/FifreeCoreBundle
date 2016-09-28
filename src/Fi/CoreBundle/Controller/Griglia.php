@@ -2,7 +2,6 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaRegoleUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaCampiExtraUtils;
@@ -94,18 +93,12 @@ class Griglia extends FiController {
      */
     public static function datiPerGriglia($parametri = array()) {
         $request = $parametri['request'];
-
-        $output = GrigliaUtils::getOuputType($parametri);
-
         $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
         /* $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine); */
-
         $bundle = $parametri['nomebundle'];
         $nometabella = $parametri['nometabella'];
         /* qui */
         $tabellej = GrigliaDatiUtils::getTabellejNormalizzate($parametri);
-
-        $nospan = GrigliaDatiUtils::getDatiNospan($parametri);
 
         $precondizioni = GrigliaDatiUtils::getDatiPrecondizioni($parametri);
 
@@ -117,6 +110,8 @@ class Griglia extends FiController {
         $filtri = json_decode($request->get('filters'), true);
         /* inserisco i parametri che sono passati nella $request all'interno di
           apposite variabili in che pagina siamo */
+        /* direzione dell'ordinamento */
+        $sord = $request->get('sord'); // get the direction if(!$sidx) $sidx =1;
         $page = $request->get('page'); // get the requested page
         /* quante righe restituire (in caso di nospan = false) */
         $limit = $request->get('rows'); // get how many rows we want to have into the grid
@@ -172,48 +167,10 @@ class Griglia extends FiController {
                     )
             );
         }
-        /* conta il numero di record di risposta
-          $query_tutti_records = $q->getQuery();
-          $quanti = count($query_tutti_records->getSingleScalarResult()); */
+        $quanti = 0;
+        GrigliaDatiMultiUtils::prepareQuery($parametri, $q, $sidx, $sord, $page, $limit, $quanti);
 
-        $paginator = new Paginator($q, true);
-        $quanti = count($paginator);
-
-        /* imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati */
-        $offset = ($limit * ($page - 1));
-
-        /* se si mandano i dati in stampa non tiene conto di limite e offset ovvero risponde con tutti i dati */
-        if ($output != 'stampa') {
-            /* se nospan non tiene conto di limite e offset ovvero risponde con tutti i dati */
-            if (!($nospan)) {
-                /* Imposta il limite ai record da estrarre */
-                $q = ($limit ? $q->setMaxResults($limit) : $q);
-                /* E imposta il primo record da visualizzare (per la paginazione) */
-                $q = ($offset ? $q->setFirstResult($offset) : $q);
-            }
-        } else {
-            if ($quanti > 1000) {
-                set_time_limit(960);
-                ini_set('memory_limit', '2048M');
-            }
-        }
-
-        if ($sidx) {
-            $q->orderBy($sidx, $sord);
-        }
-        /* Dall'oggetto querybuilder si ottiene la query da eseguire */
-        $query_paginata = $q->getQuery();
-
-        /* Object */
-        /* $q = $query_paginata->getResult(); */
-        /* Array */
-        /* Si ottiene un array con tutti i records */
-        $q = $query_paginata->getArrayResult();
-        /* Se il limire non è stato impostato si mette 1 (per calcolare la paginazione) */
-        $limit = ($limit ? $limit : 1);
-        /* calcola in mumero di pagine totali necessarie */
-
-        $total_pages = ceil($quanti / ($limit == 0 ? 1 : $limit));
+        $total_pages = GrigliaDatiMultiUtils::getTotalPages($quanti, $limit);
 
         /* imposta in $vettorerisposta la risposta strutturata per essere compresa da jqgrid */
         $vettorerisposta = array();
