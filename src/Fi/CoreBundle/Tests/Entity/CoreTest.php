@@ -16,15 +16,15 @@ class CoreTest extends KernelTestCase
         self::bootKernel();
 
         $this->em = static::$kernel->getContainer()
-                ->get('doctrine')
-                ->getManager();
+            ->get('doctrine')
+            ->getManager();
     }
 
     public function testfindBySuperadmin()
     {
         $operatori = $this->em
-                ->getRepository('FiCoreBundle:Ruoli')
-                ->findBy(array('is_superadmin' => true));
+            ->getRepository('FiCoreBundle:Ruoli')
+            ->findBy(array('is_superadmin' => true));
 
         $this->assertCount(1, $operatori, 'Non trovato il ruolo super admin');
     }
@@ -32,18 +32,16 @@ class CoreTest extends KernelTestCase
     public function testfindruoli()
     {
         $operatori = $this->em
-                ->getRepository('FiCoreBundle:Ruoli')
-                ->findAll()
-        ;
+            ->getRepository('FiCoreBundle:Ruoli')
+            ->findAll();
         $this->assertGreaterThan(0, count($operatori), 'Non trovati ruoli');
     }
 
     public function testfindoperatori()
     {
         $operatori = $this->em
-                ->getRepository('FiCoreBundle:Operatori')
-                ->findAll()
-        ;
+            ->getRepository('FiCoreBundle:Operatori')
+            ->findAll();
         $this->assertGreaterThan(0, count($operatori), 'Non trovati operatori');
     }
 

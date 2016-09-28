@@ -7,11 +7,13 @@ use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class z2FfsecondariaControllerTest extends FifreeTest {
+class z2FfsecondariaControllerTest extends FifreeTest
+{
 
     private $container;
 
-    public function setUp() {
+    public function setUp() 
+    {
         self::bootKernel();
 
         $this->container = self::$kernel->getContainer();
@@ -20,7 +22,8 @@ class z2FfsecondariaControllerTest extends FifreeTest {
     /**
      * @test
      */
-    public function testIndexFfsecondaria() {
+    public function testIndexFfsecondaria() 
+    {
         parent::__construct();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
@@ -46,7 +49,8 @@ class z2FfsecondariaControllerTest extends FifreeTest {
     /**
      * @test
      */
-    public function testExcelFfsecondaria() {
+    public function testExcelFfsecondaria() 
+    {
         parent::__construct();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
@@ -54,9 +58,9 @@ class z2FfsecondariaControllerTest extends FifreeTest {
 
         $client->request('GET', $url);
         $this->assertTrue(
-                $client->getResponse()->headers->contains(
-                        'Content-Type', 'text/csv; charset=UTF-8'
-                ), 'the "Content-Type" header is "text/csv; charset=UTF-8"' // optional message shown on failure
+            $client->getResponse()->headers->contains(
+                'Content-Type', 'text/csv; charset=UTF-8'
+            ), 'the "Content-Type" header is "text/csv; charset=UTF-8"' // optional message shown on failure
         );
     }
 
@@ -64,7 +68,8 @@ class z2FfsecondariaControllerTest extends FifreeTest {
      * @test
      */
 
-    public function testFfsecondaria() {
+    public function testFfsecondaria() 
+    {
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';
@@ -94,7 +99,8 @@ class z2FfsecondariaControllerTest extends FifreeTest {
         $session->stop();
     }
 
-    private function crudoperation($session, $page) {
+    private function crudoperation($session, $page) 
+    {
         $elementadd = $page->findAll('css', '.ui-icon-plus');
 
         foreach ($elementadd as $e) {
@@ -145,7 +151,8 @@ class z2FfsecondariaControllerTest extends FifreeTest {
         sleep(1);
     }
 
-    private function searchoperation($session, $page) {
+    private function searchoperation($session, $page) 
+    {
         $elementsearch = $page->findAll('css', '.ui-icon-search');
 
         foreach ($elementsearch as $e) {
@@ -237,7 +244,8 @@ class z2FfsecondariaControllerTest extends FifreeTest {
         sleep(1);
     }
 
-    private function printoperations($session, $page) {
+    private function printoperations($session, $page) 
+    {
 
         /* Print pdf */
         $element = $page->findAll('css', '.ui-icon-print');

@@ -11,15 +11,16 @@ class FfprincipaleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('descrizione')
-        ;
+            ->add('descrizione');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
             'data_class' => 'Fi\CoreBundle\Entity\Ffprincipale',
-        ));
+            )
+        );
     }
 
     public function getName()

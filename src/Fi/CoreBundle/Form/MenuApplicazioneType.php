@@ -24,8 +24,7 @@ class MenuApplicazioneType extends AbstractType
             ->add('tag')
             ->add('notifiche')
             ->add('autorizzazionerichiesta')
-            ->add('percorsonotifiche')
-        ;
+            ->add('percorsonotifiche');
     }
 
     /**
@@ -33,9 +32,11 @@ class MenuApplicazioneType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
             'data_class' => 'Fi\CoreBundle\Entity\menuApplicazione',
-        ));
+            )
+        );
     }
 
     /**

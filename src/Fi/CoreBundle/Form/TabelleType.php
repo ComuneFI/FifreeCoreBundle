@@ -21,15 +21,16 @@ class TabelleType extends AbstractType
             ->add('ordinestampa')
             ->add('larghezzastampa')
             ->add('etichettastampa')
-            ->add('operatori')
-    ;
+            ->add('operatori');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-        'data_class' => 'Fi\CoreBundle\Entity\tabelle',
-    ));
+        $resolver->setDefaults(
+            array(
+            'data_class' => 'Fi\CoreBundle\Entity\tabelle',
+            )
+        );
     }
 
     public function getName()

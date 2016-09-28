@@ -14,15 +14,16 @@ class OpzioniTabellaType extends AbstractType
             ->add('tabelle')
             ->add('descrizione')
             ->add('parametro')
-            ->add('valore')
-        ;
+            ->add('valore');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
             'data_class' => 'Fi\CoreBundle\Entity\opzioniTabella',
-        ));
+            )
+        );
     }
 
     public function getName()

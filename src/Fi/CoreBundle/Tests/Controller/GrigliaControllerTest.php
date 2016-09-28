@@ -7,11 +7,13 @@ use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class GrigliaControllerTest extends FifreeTest {
+class GrigliaControllerTest extends FifreeTest
+{
 
     private $container;
 
-    public function setUp() {
+    public function setUp() 
+    {
         self::bootKernel();
 
         $this->container = self::$kernel->getContainer();
@@ -20,7 +22,8 @@ class GrigliaControllerTest extends FifreeTest {
     /**
      * @test
      */
-    public function testGriglia() {
+    public function testGriglia() 
+    {
         parent::__construct();
         $namespace = "Fi";
         $bundle = "Core";
@@ -173,9 +176,9 @@ class GrigliaControllerTest extends FifreeTest {
 
             $qu = $em->createQueryBuilder();
             $qu->select(array('c'))
-                    ->from('FiCoreBundle:Ffsecondaria', 'c')
-                    ->where('c.' . $modellocolonne[$idx]["name"] . ' = :value')
-                    ->setParameter('value', $row[$idx]);
+                ->from('FiCoreBundle:Ffsecondaria', 'c')
+                ->where('c.' . $modellocolonne[$idx]["name"] . ' = :value')
+                ->setParameter('value', $row[$idx]);
             $ffrow = $qu->getQuery()->getResult();
             $ff = $ffrow[0];
             $colmacro = 'get' . ucfirst($modellocolonne[$idx]["name"]);
@@ -193,7 +196,8 @@ class GrigliaControllerTest extends FifreeTest {
      * @test
      */
 
-    public function testGrigliaFfsecondaria() {
+    public function testGrigliaFfsecondaria() 
+    {
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';

@@ -2,7 +2,8 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-class PercentualiStringhe {
+class PercentualiStringhe
+{
 
     /**
      * @param array  $parametri
@@ -11,7 +12,8 @@ class PercentualiStringhe {
      *
      * @return array
      */
-    public function percentualiConfrontoStringheVettore($parametri = array()) {
+    public function percentualiConfrontoStringheVettore($parametri = array()) 
+    {
         //parametri obbligatori
         if (!isset($parametri['elemento']) || !isset($parametri['elenco'])) {
             return false;
@@ -46,7 +48,8 @@ class PercentualiStringhe {
      *
      * @return int
      */
-    public function percentualiConfrontoStringhe($parametri = array()) {
+    public function percentualiConfrontoStringhe($parametri = array()) 
+    {
         //parametri obbligatori
         if (!isset($parametri['stringaa']) || !isset($parametri['stringab'])) {
             return false;
@@ -74,15 +77,18 @@ class PercentualiStringhe {
         return $perc;
     }
 
-    private function getCarattereAPercentualeConfrontoStringhe($i, $stringaa, $strlensa) {
+    private function getCarattereAPercentualeConfrontoStringhe($i, $stringaa, $strlensa) 
+    {
         return ($strlensa >= $i ? substr($stringaa, $i, 1) : false);
     }
 
-    private function getOffsetPercentualeConfrontoStringhe($i, $tolleranzauno) {
+    private function getOffsetPercentualeConfrontoStringhe($i, $tolleranzauno) 
+    {
         return (($i - $tolleranzauno) >= 0) ? ($i - $tolleranzauno) : 0;
     }
 
-    private function partecento($i, $posizioneinb, $tolleranzauno, $partecento) {
+    private function partecento($i, $posizioneinb, $tolleranzauno, $partecento) 
+    {
 
         if (!($posizioneinb === false)) {
             if ($posizioneinb == $i) {

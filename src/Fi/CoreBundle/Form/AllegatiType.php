@@ -15,11 +15,10 @@ class AllegatiType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('nometabella', 'hidden')
-                ->add('indicetabella', 'hidden')
-                ->add('allegato')
-                ->add('allegatofile', 'file', array('data_class' => null))
-        ;
+            ->add('nometabella', 'hidden')
+            ->add('indicetabella', 'hidden')
+            ->add('allegato')
+            ->add('allegatofile', 'file', array('data_class' => null));
     }
 
     /**
@@ -27,9 +26,11 @@ class AllegatiType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
             'data_class' => 'Fi\CoreBundle\Entity\allegati',
-        ));
+            )
+        );
     }
 
     /**

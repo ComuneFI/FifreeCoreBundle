@@ -17,15 +17,16 @@ class FfsecondariaType extends AbstractType
             ->add('intero')
             ->add('importo')
             ->add('nota')
-            ->add('attivo')
-        ;
+            ->add('attivo');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
             'data_class' => 'Fi\CoreBundle\Entity\Ffsecondaria',
-        ));
+            )
+        );
     }
 
     public function getName()

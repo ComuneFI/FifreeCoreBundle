@@ -2,9 +2,11 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-class GrigliaDatiUtils {
+class GrigliaDatiUtils
+{
 
-    public static function getTabellejNormalizzate($parametri) {
+    public static function getTabellejNormalizzate($parametri) 
+    {
         $tabellej = (isset($parametri['tabellej']) ? $parametri['tabellej'] : null);
         if (is_object($tabellej)) {
             $tabellej = get_object_vars($tabellej);
@@ -12,7 +14,8 @@ class GrigliaDatiUtils {
         return $tabellej;
     }
 
-    public static function setTabelleJoin(&$q, $parametri = array()) {
+    public static function setTabelleJoin(&$q, $parametri = array()) 
+    {
         $tabellej = $parametri['tabellej'];
         $nometabella = $parametri['nometabella'];
 
@@ -27,31 +30,38 @@ class GrigliaDatiUtils {
         }
     }
 
-    public static function getDatiDecodifiche($parametri) {
+    public static function getDatiDecodifiche($parametri) 
+    {
         return (isset($parametri['decodifiche']) ? $parametri['decodifiche'] : null);
     }
 
-    public static function getDatiEscludere($parametri) {
+    public static function getDatiEscludere($parametri) 
+    {
         return (isset($parametri['escludere']) ? $parametri['escludere'] : null);
     }
 
-    public static function getDatiNospan($parametri) {
+    public static function getDatiNospan($parametri) 
+    {
         return (isset($parametri['nospan']) ? $parametri['nospan'] : false);
     }
 
-    public static function getDatiPrecondizioni($parametri) {
+    public static function getDatiPrecondizioni($parametri) 
+    {
         return (isset($parametri['precondizioni']) ? $parametri['precondizioni'] : false);
     }
 
-    public static function getDatiPrecondizioniAvanzate($parametri) {
+    public static function getDatiPrecondizioniAvanzate($parametri) 
+    {
         return (isset($parametri['precondizioniAvanzate']) ? $parametri['precondizioniAvanzate'] : false);
     }
 
-    public static function getDatiCampiExtra($parametri) {
+    public static function getDatiCampiExtra($parametri) 
+    {
         return (isset($parametri['campiextra']) ? $parametri['campiextra'] : null);
     }
 
-    public static function getDatiOrdineColonne($parametri) {
+    public static function getDatiOrdineColonne($parametri) 
+    {
         $ordinecolonne = (isset($parametri['ordinecolonne']) ? $parametri['ordinecolonne'] : null);
         if (!isset($ordinecolonne)) {
             $ordinecolonne = GrigliaUtils::ordinecolonne($parametri);
@@ -60,7 +70,8 @@ class GrigliaDatiUtils {
         return $ordinecolonne;
     }
 
-    public static function getDatiOrdinamento(&$sidx, $nometabella) {
+    public static function getDatiOrdinamento(&$sidx, $nometabella) 
+    {
         /* se non è passato nessun campo (ipotesi peregrina) usa id */
         if (!$sidx) {
             $sidx = $nometabella . '.id';
@@ -80,7 +91,8 @@ class GrigliaDatiUtils {
         }
     }
 
-    public static function valorizzaVettore(&$vettoreriga, $parametri) {
+    public static function valorizzaVettore(&$vettoreriga, $parametri) 
+    {
         $tabella = $parametri['tabella'];
         $nomecampo = $parametri['nomecampo'];
         $doctrine = $parametri['doctrine'];
@@ -120,7 +132,8 @@ class GrigliaDatiUtils {
         }
     }
 
-    public static function campoElencato($parametriCampoElencato) {
+    public static function campoElencato($parametriCampoElencato) 
+    {
         $tabellej = $parametriCampoElencato['tabellej'];
         $nomecampo = $parametriCampoElencato['nomecampo'];
         $campoelencato = $parametriCampoElencato['campoelencato'];

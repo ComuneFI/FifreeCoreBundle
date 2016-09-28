@@ -2,9 +2,11 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-class GrigliaParametriUtils {
+class GrigliaParametriUtils
+{
 
-    public static function getAliasTestataPerGriglia($paricevuti) {
+    public static function getAliasTestataPerGriglia($paricevuti) 
+    {
         $alias = isset($paricevuti['dettaglij']) ? $paricevuti['dettaglij'] : array();
 
         if (is_object($alias)) {
@@ -13,7 +15,8 @@ class GrigliaParametriUtils {
         return $alias;
     }
 
-    public static function getOrdineColonneTestataPerGriglia($paricevuti) {
+    public static function getOrdineColonneTestataPerGriglia($paricevuti) 
+    {
         $ordinecolonne = isset($paricevuti['ordinecolonne']) ? $paricevuti['ordinecolonne'] : null;
         if (!isset($ordinecolonne)) {
             $ordinecolonne = GrigliaUtils::ordinecolonne($paricevuti);
@@ -21,11 +24,13 @@ class GrigliaParametriUtils {
         return $ordinecolonne;
     }
 
-    public static function getCampiEsclusiTestataPerGriglia($paricevuti) {
+    public static function getCampiEsclusiTestataPerGriglia($paricevuti) 
+    {
         return isset($paricevuti['escludere']) ? $paricevuti['escludere'] : null;
     }
 
-    public static function getParametriCampiExtraTestataPerGriglia($paricevuti) {
+    public static function getParametriCampiExtraTestataPerGriglia($paricevuti) 
+    {
         return isset($paricevuti['campiextra']) ? $paricevuti['campiextra'] : null;
     }
 

@@ -5,7 +5,8 @@ namespace Fi\CoreBundle\Entity;
 /**
  * Ffsecondaria.
  */
-class Ffsecondaria {
+class Ffsecondaria
+{
 
     /**
      * @var int
@@ -52,7 +53,8 @@ class Ffsecondaria {
      *
      * @return int
      */
-    public function getId() {
+    public function getId() 
+    {
         return $this->id;
     }
 
@@ -63,7 +65,8 @@ class Ffsecondaria {
      *
      * @return ffsecondaria
      */
-    public function setDescsec($descsec) {
+    public function setDescsec($descsec) 
+    {
         $this->descsec = $descsec;
 
         return $this;
@@ -74,7 +77,8 @@ class Ffsecondaria {
      *
      * @return string
      */
-    public function getDescsec() {
+    public function getDescsec() 
+    {
         return $this->descsec;
     }
 
@@ -85,7 +89,8 @@ class Ffsecondaria {
      *
      * @return ffsecondaria
      */
-    public function setFfprincipaleId($ffprincipaleId) {
+    public function setFfprincipaleId($ffprincipaleId) 
+    {
         $this->ffprincipale_id = $ffprincipaleId;
 
         return $this;
@@ -96,7 +101,8 @@ class Ffsecondaria {
      *
      * @return int
      */
-    public function getFfprincipaleId() {
+    public function getFfprincipaleId() 
+    {
         return $this->ffprincipale_id;
     }
 
@@ -107,7 +113,8 @@ class Ffsecondaria {
      *
      * @return ffsecondaria
      */
-    public function setFfprincipale(\Fi\CoreBundle\Entity\Ffprincipale $ffprincipale) {
+    public function setFfprincipale(\Fi\CoreBundle\Entity\Ffprincipale $ffprincipale) 
+    {
         $this->ffprincipale = $ffprincipale;
 
         return $this;
@@ -118,7 +125,8 @@ class Ffsecondaria {
      *
      * @return \Fi\CoreBundle\Entity\Ffprincipale
      */
-    public function getFfprincipale() {
+    public function getFfprincipale() 
+    {
         return $this->ffprincipale;
     }
 
@@ -129,7 +137,8 @@ class Ffsecondaria {
      *
      * @return Ffsecondaria
      */
-    public function setData($data) {
+    public function setData($data) 
+    {
         $this->data = $data;
 
         return $this;
@@ -140,7 +149,8 @@ class Ffsecondaria {
      *
      * @return \DateTime
      */
-    public function getData() {
+    public function getData() 
+    {
         return $this->data;
     }
 
@@ -151,7 +161,8 @@ class Ffsecondaria {
      *
      * @return Ffsecondaria
      */
-    public function setImporto($importo) {
+    public function setImporto($importo) 
+    {
         $this->importo = $importo;
 
         return $this;
@@ -162,7 +173,8 @@ class Ffsecondaria {
      *
      * @return float
      */
-    public function getImporto() {
+    public function getImporto() 
+    {
         return $this->importo;
     }
 
@@ -173,7 +185,8 @@ class Ffsecondaria {
      *
      * @return Ffsecondaria
      */
-    public function setNota($nota) {
+    public function setNota($nota) 
+    {
         $this->nota = $nota;
 
         return $this;
@@ -184,7 +197,8 @@ class Ffsecondaria {
      *
      * @return string
      */
-    public function getNota() {
+    public function getNota() 
+    {
         return $this->nota;
     }
 
@@ -195,7 +209,8 @@ class Ffsecondaria {
      *
      * @return Ffsecondaria
      */
-    public function setAttivo($attivo) {
+    public function setAttivo($attivo) 
+    {
         $this->attivo = $attivo;
 
         return $this;
@@ -206,7 +221,8 @@ class Ffsecondaria {
      *
      * @return boolean
      */
-    public function isAttivo() {
+    public function isAttivo() 
+    {
         return $this->attivo;
     }
 
@@ -222,7 +238,8 @@ class Ffsecondaria {
      *
      * @return Ffsecondaria
      */
-    public function setIntero($intero) {
+    public function setIntero($intero) 
+    {
         $this->intero = $intero;
 
         return $this;
@@ -233,7 +250,8 @@ class Ffsecondaria {
      *
      * @return integer
      */
-    public function getIntero() {
+    public function getIntero() 
+    {
         return $this->intero;
     }
 
@@ -242,7 +260,8 @@ class Ffsecondaria {
      *
      * @return string
      */
-    public function getAttivoToString() {
+    public function getAttivoToString() 
+    {
         return ($this->attivo ? "SI" : "NO");
     }
 
@@ -251,11 +270,13 @@ class Ffsecondaria {
      *
      * @return integer
      */
-    public function getLunghezzanota() {
+    public function getLunghezzanota() 
+    {
         return strlen($this->nota);
     }
 
-    public function __toString() {
+    public function __toString() 
+    {
         return $this->getDescsec();
     }
 

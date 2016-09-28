@@ -5,7 +5,8 @@ namespace Fi\CoreBundle\DependencyInjection;
 use Fi\CoreBundle\Controller\GestionepermessiController;
 use Fi\CoreBundle\Controller\FiUtilita;
 
-class GrigliaFiltriUtils {
+class GrigliaFiltriUtils
+{
 
     /**
      * Funzione alla quale si passano i filtri nel formato gestito da jqGrid e
@@ -17,7 +18,8 @@ class GrigliaFiltriUtils {
      *
      * @return string
      */
-    public static function traduciFiltri($parametri = array()) {
+    public static function traduciFiltri($parametri = array()) 
+    {
         $genericofiltri = $parametri['filtri'];
 
         $filtri = isset($genericofiltri->rules) ? $genericofiltri->rules : '';
@@ -33,7 +35,8 @@ class GrigliaFiltriUtils {
         return $filtrodescritto;
     }
 
-    public static function getFiltrodescritto($filtri, $tipofiltro) {
+    public static function getFiltrodescritto($filtri, $tipofiltro) 
+    {
         $filtrodescritto = ('I dati mostrati rispondono a' . ($tipofiltro == 'AND' ? ' tutti i' : 'd almeno uno dei') . ' seguenti criteri: ');
 
         foreach ($filtri as $indice => $filtro) {

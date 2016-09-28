@@ -11,7 +11,8 @@ use Fi\CoreBundle\DependencyInjection\GrigliaDatiPrecondizioniUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaExtraFunzioniUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiMultiUtils;
 
-class Griglia extends FiController {
+class Griglia extends FiController
+{
 
     /**
      * Questa funzione è compatibile con jqGrid e risponden con un formato JSON
@@ -34,7 +35,8 @@ class Griglia extends FiController {
      *
      * @return array contentente i dati di testata per la griglia
      */
-    public static function testataPerGriglia($paricevuti = array()) {
+    public static function testataPerGriglia($paricevuti = array()) 
+    {
         $nometabella = $paricevuti['nometabella'];
         $output = GrigliaUtils::getOuputType($paricevuti);
 
@@ -91,7 +93,8 @@ class Griglia extends FiController {
      *
      * @return JSON con i dati richiesti
      */
-    public static function datiPerGriglia($parametri = array()) {
+    public static function datiPerGriglia($parametri = array()) 
+    {
         $request = $parametri['request'];
         $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
         /* $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine); */
@@ -124,7 +127,7 @@ class Griglia extends FiController {
         $entityName = $bundle . ':' . $nometabella;
         $q = $doctrine->createQueryBuilder();
         $q->select($nometabella)
-                ->from($entityName, $nometabella);
+            ->from($entityName, $nometabella);
 
         /* scorre le tabelle collegate e crea la leftjoin usando come alias il nome stesso della tabella */
         if (isset($tabellej)) {
@@ -147,7 +150,7 @@ class Griglia extends FiController {
         /* se ci sono delle precondizioni avanzate le imposta qui */
         if ($precondizioniAvanzate) {
             GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
-                    $q, $primo, array('precondizioniAvanzate' => $precondizioniAvanzate,
+                $q, $primo, array('precondizioniAvanzate' => $precondizioniAvanzate,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
                 'entityName' => $entityName,
@@ -157,7 +160,7 @@ class Griglia extends FiController {
         /* scorro ogni singola regola */
         if (isset($regole)) {
             GrigliaRegoleUtils::setRegole(
-                    $q, $primo, array(
+                $q, $primo, array(
                 'regole' => $regole,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,

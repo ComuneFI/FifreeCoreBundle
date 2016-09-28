@@ -6,15 +6,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Fi\CoreBundle\DependencyInjection\GrigliaFiltriUtils;
 use TCPDF;
 
-class StampatabellaController extends FiController {
+class StampatabellaController extends FiController
+{
 
-    public function __construct($container = null) {
+    public function __construct($container = null) 
+    {
         if ($container) {
             $this->setContainer($container);
         }
     }
 
-    public function stampa($parametri = array()) {
+    public function stampa($parametri = array()) 
+    {
         $testata = $parametri['testata'];
         $rispostaj = $parametri['griglia'];
         $request = $parametri['request'];
@@ -117,7 +120,8 @@ class StampatabellaController extends FiController {
         return 0;
     }
 
-    public function esportaexcel($parametri = array()) {
+    public function esportaexcel($parametri = array()) 
+    {
         set_time_limit(960);
         ini_set('memory_limit', '2048M');
 
@@ -171,7 +175,8 @@ class StampatabellaController extends FiController {
         return $filename;
     }
 
-    private function printHeaderXls($modellicolonne, $testata, $sheet) {
+    private function printHeaderXls($modellicolonne, $testata, $sheet) 
+    {
         $indicecolonnaheader = 0;
         foreach ($modellicolonne as $modellocolonna) {
             //Si imposta la larghezza delle colonne
@@ -203,26 +208,27 @@ class StampatabellaController extends FiController {
         $sheet->getRowDimension('1')->setRowHeight(20);
     }
 
-    private function printBodyXls($righe, $modellicolonne, $sheet) {
+    private function printBodyXls($righe, $modellicolonne, $sheet) 
+    {
         $row = 2;
         foreach ($righe as $riga) {
             $vettorecelle = $riga->cell;
             $col = 0;
             foreach ($vettorecelle as $vettorecella) {
                 switch ($modellicolonne[$col]['tipocampo']) {
-                    case 'date':
-                        $d = substr($vettorecella, 0, 2);
-                        $m = substr($vettorecella, 3, 2);
-                        $y = substr($vettorecella, 6, 4);
-                        $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
-                        $sheet->setCellValueByColumnAndRow($col, $row, $t_date);
-                        break;
-                    case 'boolean':
-                        $sheet->setCellValueByColumnAndRow($col, $row, ($vettorecella == 1) ? 'SI' : 'NO');
-                        break;
-                    default:
-                        $sheet->setCellValueByColumnAndRow($col, $row, $vettorecella);
-                        break;
+                case 'date':
+                    $d = substr($vettorecella, 0, 2);
+                    $m = substr($vettorecella, 3, 2);
+                    $y = substr($vettorecella, 6, 4);
+                    $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
+                    $sheet->setCellValueByColumnAndRow($col, $row, $t_date);
+                    break;
+                case 'boolean':
+                    $sheet->setCellValueByColumnAndRow($col, $row, ($vettorecella == 1) ? 'SI' : 'NO');
+                    break;
+                default:
+                    $sheet->setCellValueByColumnAndRow($col, $row, $vettorecella);
+                    break;
                 }
 
                 $col = $col + 1;
@@ -235,53 +241,54 @@ class StampatabellaController extends FiController {
         foreach ($modellicolonne as $modellocolonna) {
             $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonna);
             switch ($modellocolonna['tipocampo']) {
-                case 'text':
-                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
-                            ->getNumberFormat()
-                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
-                    break;
-                case 'string':
-                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
-                            ->getNumberFormat()
-                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
-                    break;
-                case 'integer':
-                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
-                            ->getNumberFormat()
-                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-                    break;
-                case 'float':
-                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
-                            ->getNumberFormat()
-                            ->setFormatCode('#,##0.00');
-                    break;
-                case 'number':
-                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
-                            ->getNumberFormat()
-                            ->setFormatCode('#,##0.00');
-                    break;
-                case 'datetime':
-                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
-                            ->getNumberFormat()
-                            ->setFormatCode('dd/mm/yyyy');
-                    break;
-                case 'date':
-                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
-                            ->getNumberFormat()
-                            ->setFormatCode('dd/mm/yyyy');
-                    break;
-                default:
-                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
-                            ->getNumberFormat()
-                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
-                    break;
+            case 'text':
+                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                    ->getNumberFormat()
+                    ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                break;
+            case 'string':
+                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                    ->getNumberFormat()
+                    ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                break;
+            case 'integer':
+                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                    ->getNumberFormat()
+                    ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+                break;
+            case 'float':
+                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                    ->getNumberFormat()
+                    ->setFormatCode('#,##0.00');
+                break;
+            case 'number':
+                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                    ->getNumberFormat()
+                    ->setFormatCode('#,##0.00');
+                break;
+            case 'datetime':
+                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                    ->getNumberFormat()
+                    ->setFormatCode('dd/mm/yyyy');
+                break;
+            case 'date':
+                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                    ->getNumberFormat()
+                    ->setFormatCode('dd/mm/yyyy');
+                break;
+            default:
+                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
+                    ->getNumberFormat()
+                    ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                break;
             }
 
             ++$indicecolonna;
         }
     }
 
-    private function stampaTestata($pdf, $nomicolonne, $modellicolonne, $larghezzaform, $h, $border, $align, $fill, $ln) {
+    private function stampaTestata($pdf, $nomicolonne, $modellicolonne, $larghezzaform, $h, $border, $align, $fill, $ln) 
+    {
         // Testata
         $pdf->SetFont('helvetica', 'B', 9);
         $arr_heights = array();

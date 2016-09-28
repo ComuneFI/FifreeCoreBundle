@@ -14,15 +14,16 @@ class PermessiType extends AbstractType
             ->add('modulo')
             ->add('crud')
             ->add('operatori')
-            ->add('ruoli')
-    ;
+            ->add('ruoli');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-        'data_class' => 'Fi\CoreBundle\Entity\permessi',
-    ));
+        $resolver->setDefaults(
+            array(
+            'data_class' => 'Fi\CoreBundle\Entity\permessi',
+            )
+        );
     }
 
     public function getName()

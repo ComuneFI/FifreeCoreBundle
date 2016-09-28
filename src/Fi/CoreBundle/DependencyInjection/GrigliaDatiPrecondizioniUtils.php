@@ -2,9 +2,11 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-class GrigliaDatiPrecondizioniUtils {
+class GrigliaDatiPrecondizioniUtils
+{
 
-    public static function setPrecondizioni(&$q, &$primo, $parametri = array()) {
+    public static function setPrecondizioni(&$q, &$primo, $parametri = array()) 
+    {
         $precondizioni = $parametri['precondizioni'];
 
         $i = 1;
@@ -21,7 +23,8 @@ class GrigliaDatiPrecondizioniUtils {
         }
     }
 
-    public static function setPrecondizioniAvanzate(&$q, &$primo, $parametri = array()) {
+    public static function setPrecondizioniAvanzate(&$q, &$primo, $parametri = array()) 
+    {
         $doctrine = $parametri['doctrine'];
         $nometabella = $parametri['nometabella'];
         $entityName = $parametri['entityName'];
@@ -37,29 +40,29 @@ class GrigliaDatiPrecondizioniUtils {
             $operatorelogicoprecondizione = '';
             foreach ($elem as $keypre => $valuepre) {
                 switch ($keypre) {
-                    case 'nometabella':
-                        $nometabellaprecondizione = $valuepre;
-                        break;
-                    case 'nomecampo':
-                        $nomecampoprecondizione = $valuepre;
-                        break;
-                    case 'operatore':
-                        $array_operatori = array('=' => 'eq', '<>' => 'ne', '<' => 'lt', '<=' => 'le', '>' => 'gt', '>=' => 'ge', 'LIKE' => 'bw', 'NOT LIKE' => 'bn', 'IN' => 'in', 'NOT IN' => 'ni', 'LIKE' => 'eq', 'NOT LIKE' => 'en', 'LIKE' => 'cn', 'NOT LIKE' => 'nc', 'IS' => 'nu', 'IS NOT' => 'nn'); //, '<>' => 'nt');
-                        $operatoreprecondizione = $array_operatori[strtoupper($valuepre)];
-                        break;
-                    case 'valorecampo':
-                        if (is_array($valuepre)) {
-                            $type = $doctrine->getClassMetadata($parametri['entityName'])->getFieldMapping($nomecampoprecondizione);
-                            $valorecampoprecondizione = self::elaboravalorecampo($type, $valuepre);
-                        } else {
-                            $valorecampoprecondizione = $valuepre;
-                        }
-                        break;
-                    case 'operatorelogico':
-                        $operatorelogicoprecondizione = strtoupper($valuepre);
-                        break;
-                    default:
-                        break;
+                case 'nometabella':
+                    $nometabellaprecondizione = $valuepre;
+                    break;
+                case 'nomecampo':
+                    $nomecampoprecondizione = $valuepre;
+                    break;
+                case 'operatore':
+                    $array_operatori = array('=' => 'eq', '<>' => 'ne', '<' => 'lt', '<=' => 'le', '>' => 'gt', '>=' => 'ge', 'LIKE' => 'bw', 'NOT LIKE' => 'bn', 'IN' => 'in', 'NOT IN' => 'ni', 'LIKE' => 'eq', 'NOT LIKE' => 'en', 'LIKE' => 'cn', 'NOT LIKE' => 'nc', 'IS' => 'nu', 'IS NOT' => 'nn'); //, '<>' => 'nt');
+                    $operatoreprecondizione = $array_operatori[strtoupper($valuepre)];
+                    break;
+                case 'valorecampo':
+                    if (is_array($valuepre)) {
+                        $type = $doctrine->getClassMetadata($parametri['entityName'])->getFieldMapping($nomecampoprecondizione);
+                        $valorecampoprecondizione = self::elaboravalorecampo($type, $valuepre);
+                    } else {
+                        $valorecampoprecondizione = $valuepre;
+                    }
+                    break;
+                case 'operatorelogico':
+                    $operatorelogicoprecondizione = strtoupper($valuepre);
+                    break;
+                default:
+                    break;
                 }
             }
 
@@ -67,7 +70,7 @@ class GrigliaDatiPrecondizioniUtils {
             $tipof = $operatorelogicoprecondizione;
 
             GrigliaRegoleUtils::setRegole(
-                    $q, $primo, array(
+                $q, $primo, array(
                 'regole' => $regole,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
@@ -80,7 +83,8 @@ class GrigliaDatiPrecondizioniUtils {
         }
     }
 
-    private static function elaboravalorecampo($type, $valuepre) {
+    private static function elaboravalorecampo($type, $valuepre) 
+    {
         $tipo = $type['type'];
         if ($tipo && ($tipo == 'date' || $tipo == 'datetime')) {
             GrigliaUtils::setVettoriPerData();

@@ -5,9 +5,11 @@ namespace Fi\CoreBundle\DependencyInjection;
 use Fi\CoreBundle\Controller\GestionepermessiController;
 use Fi\CoreBundle\Controller\FiUtilita;
 
-class GrigliaRegoleUtils {
+class GrigliaRegoleUtils
+{
 
-    public static function getTipoRegola(&$tipo, &$regola, $parametri) {
+    public static function getTipoRegola(&$tipo, &$regola, $parametri) 
+    {
         $doctrine = $parametri['doctrine'];
         $nometabella = $parametri['nometabella'];
         $entityName = $parametri['entityName'];
@@ -36,7 +38,8 @@ class GrigliaRegoleUtils {
         }
     }
 
-    public static function getRegolaPerData(&$regola) {
+    public static function getRegolaPerData(&$regola) 
+    {
         if (isset($regola) && count($regola) > 0) {
             if ((substr($regola['data'], 0, 1) == "'") && (substr($regola['data'], strlen($regola['data']) - 1, 1) == "'")) {
                 $regola['data'] = substr($regola['data'], 1, strlen($regola['data']) - 2);
@@ -44,7 +47,8 @@ class GrigliaRegoleUtils {
         }
     }
 
-    public static function setRegole(&$q, &$primo, $parametri = array()) {
+    public static function setRegole(&$q, &$primo, $parametri = array()) 
+    {
         $regole = $parametri['regole'];
         $tipof = $parametri['tipof'];
         $tipo = null;
@@ -64,7 +68,8 @@ class GrigliaRegoleUtils {
         }
     }
 
-    public static function setSingolaRegola($tipo, $regola) {
+    public static function setSingolaRegola($tipo, $regola) 
+    {
         if (!$tipo) {
             GrigliaUtils::setVettoriPerNumero();
         }
@@ -83,7 +88,8 @@ class GrigliaRegoleUtils {
         return $regola;
     }
 
-    public static function setTipoBoolean(&$regola, $tipo) {
+    public static function setTipoBoolean(&$regola, $tipo) 
+    {
 
         if ($regola['data'] === 'false' || $regola['data'] === false) {
             GrigliaUtils::setVettoriPerNumero();
@@ -100,7 +106,8 @@ class GrigliaRegoleUtils {
         }
     }
 
-    public static function campiesclusi($parametri = array()) {
+    public static function campiesclusi($parametri = array()) 
+    {
         if (!isset($parametri['nometabella'])) {
             return false;
         }

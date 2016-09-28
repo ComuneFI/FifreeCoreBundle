@@ -5,7 +5,8 @@ namespace Fi\CoreBundle\DependencyInjection;
 use Fi\CoreBundle\Controller\GestionepermessiController;
 use Fi\CoreBundle\Controller\FiUtilita;
 
-class GrigliaUtils {
+class GrigliaUtils
+{
 
     public static $decodificaop;
     public static $precarattere;
@@ -14,7 +15,8 @@ class GrigliaUtils {
     const LARGHEZZAMASSIMA = 500;
     const MOLTIPLICATORELARGHEZZA = 10;
 
-    public static function init() {
+    public static function init() 
+    {
         // i possibili operatori di ciascuna ricerca sono questi:
         //['eq','ne','lt','le','gt','ge','bw','bn','in','ni','ew','en','cn','nc', 'nu', 'nn']
         //significano questo
@@ -28,7 +30,8 @@ class GrigliaUtils {
         self::$postcarattere = array('eq' => '', 'ne' => '', 'lt' => '', 'le' => '', 'gt' => '', 'ge' => '', 'bw' => '%\')', 'bn' => '%\')', 'in' => ')', 'ni' => ')', 'ew' => '\')', 'en' => '\')', 'cn' => '%\')', 'nc' => '%\')', 'nu' => '', 'nn' => '', 'nt' => '');
     }
 
-    public static function setVettoriPerData() {
+    public static function setVettoriPerData() 
+    {
         self::$precarattere['eq'] = "'";
         self::$precarattere['ne'] = "'";
         self::$precarattere['lt'] = "'";
@@ -43,7 +46,8 @@ class GrigliaUtils {
         self::$postcarattere['ge'] = "'";
     }
 
-    public static function setVettoriPerStringa() {
+    public static function setVettoriPerStringa() 
+    {
         self::$precarattere['eq'] = "lower('";
         self::$precarattere['ne'] = "lower('";
         self::$precarattere['lt'] = "lower('";
@@ -58,7 +62,8 @@ class GrigliaUtils {
         self::$postcarattere['ge'] = "')";
     }
 
-    public static function setVettoriPerNumero() {
+    public static function setVettoriPerNumero() 
+    {
         self::$precarattere['eq'] = '';
         self::$precarattere['ne'] = '';
         self::$precarattere['lt'] = '';
@@ -73,7 +78,8 @@ class GrigliaUtils {
         self::$postcarattere['ge'] = '';
     }
 
-    public static function getOuputType($parametri) {
+    public static function getOuputType($parametri) 
+    {
         if ((isset($parametri['output'])) && ($parametri['output'] == 'stampa')) {
             $output = 'stampa';
         } else {
@@ -82,7 +88,8 @@ class GrigliaUtils {
         return $output;
     }
 
-    public static function getDoctrineByEm($parametri) {
+    public static function getDoctrineByEm($parametri) 
+    {
         if (isset($parametri['em'])) {
             $doctrine = $parametri['container']->get('doctrine')->getManager($parametri['em']);
         } else {
@@ -91,7 +98,8 @@ class GrigliaUtils {
         return $doctrine;
     }
 
-    public static function getDoctrineFiCoreByEm($parametri, $doctrine) {
+    public static function getDoctrineFiCoreByEm($parametri, $doctrine) 
+    {
         if (isset($parametri['emficore'])) {
             $doctrineficore = $parametri['container']->get('doctrine')->getManager($parametri['emficore']);
         } else {
@@ -100,7 +108,8 @@ class GrigliaUtils {
         return $doctrineficore;
     }
 
-    public static function getCampiEsclusi($riga, $output) {
+    public static function getCampiEsclusi($riga, $output) 
+    {
         $campoescluso = null;
         if ($output == 'stampa') {
             if ($riga->hasMostrastampa() == false) {
@@ -114,7 +123,8 @@ class GrigliaUtils {
         return $campoescluso;
     }
 
-    public static function getUserCustomTableFields($em, $nometabella, $operatore) {
+    public static function getUserCustomTableFields($em, $nometabella, $operatore) 
+    {
         $q = $em->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => $operatore['id'], 'nometabella' => $nometabella));
 
         if (!$q) {
@@ -124,7 +134,8 @@ class GrigliaUtils {
         return $q;
     }
 
-    public static function etichettecampi($parametri = array()) {
+    public static function etichettecampi($parametri = array()) 
+    {
         if (!isset($parametri['nometabella'])) {
             return false;
         }
@@ -156,7 +167,8 @@ class GrigliaUtils {
         return $etichette;
     }
 
-    public static function larghezzecampi($parametri = array()) {
+    public static function larghezzecampi($parametri = array()) 
+    {
         if (!isset($parametri['nometabella'])) {
             return false;
         }
@@ -190,7 +202,8 @@ class GrigliaUtils {
         return $etichette;
     }
 
-    public static function ordinecolonne($parametri = array()) {
+    public static function ordinecolonne($parametri = array()) 
+    {
         if (!isset($parametri['nometabella'])) {
             return false;
         }
@@ -240,7 +253,8 @@ class GrigliaUtils {
      *
      * @return string $str translated into camel caps
      */
-    public static function to_camel_case($parametri = array()) {
+    public static function to_camel_case($parametri = array()) 
+    {
         $str = $parametri['str'];
         $capitalise_first_char = isset($parametri['primamaiuscola']) ? $parametri['primamaiuscola'] : false;
 
@@ -252,7 +266,8 @@ class GrigliaUtils {
         return preg_replace_callback('/_([a-z])/', $func, $str);
     }
 
-    public static function getOpzioniTabella($doctrineficore, $nometabella, &$testata) {
+    public static function getOpzioniTabella($doctrineficore, $nometabella, &$testata) 
+    {
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $doctrineficore->createQueryBuilder();
         $qb->select(array('a'));
@@ -268,7 +283,8 @@ class GrigliaUtils {
         }
     }
 
-    Public static function getNomiColonne($nomicolonne) {
+    Public static function getNomiColonne($nomicolonne) 
+    {
         ksort($nomicolonne);
         $nomicolonnesorted = array();
         foreach ($nomicolonne as $value) {
@@ -277,7 +293,8 @@ class GrigliaUtils {
         return $nomicolonnesorted;
     }
 
-    Public static function getModelloColonne($modellocolonne) {
+    Public static function getModelloColonne($modellocolonne) 
+    {
         ksort($modellocolonne);
         $modellocolonnesorted = array();
         foreach ($modellocolonne as $value) {
@@ -286,7 +303,8 @@ class GrigliaUtils {
         return $modellocolonnesorted;
     }
 
-    Public static function getPermessiTabella($paricevuti, &$testata) {
+    Public static function getPermessiTabella($paricevuti, &$testata) 
+    {
         if (!isset($paricevuti['container'])) {
             return;
         }

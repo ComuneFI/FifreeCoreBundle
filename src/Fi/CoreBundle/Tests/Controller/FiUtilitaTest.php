@@ -10,20 +10,24 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  *
  * @author Emidio Picariello
  */
-class FiUtilitaTest extends KernelTestCase {
+class FiUtilitaTest extends KernelTestCase
+{
 
-    public function setUp() {
+    public function setUp() 
+    {
         self::bootKernel();
     }
 
-    public function testConfrontoStringe() {
+    public function testConfrontoStringe() 
+    {
         $fiUtilita = new FiUtilita();
         $parms = array("stringaa" => "manzolo", "stringab" => "manzolo", "tolleranza" => 0);
         $retperc = $fiUtilita->percentualiConfrontoStringhe($parms);
         $this->assertEquals($retperc, 100);
     }
 
-    public function testDate() {
+    public function testDate() 
+    {
         $fiUtilita = new FiUtilita();
 
         $retdata = $fiUtilita->data2db("31/12/2016");
@@ -34,7 +38,8 @@ class FiUtilitaTest extends KernelTestCase {
         $this->assertEquals($retdatasl, "20161231");
     }
 
-    public function testProSelect() {
+    public function testProSelect() 
+    {
         $fiUtilita = new FiUtilita();
         $parametri = array("nomecodice" => "codice", "nomedescrizione" => "descrizione", "elementi" => array(array("codice" => "01", "descrizione" => "Primo")));
         $retoptions = $fiUtilita->proSelect($parametri);

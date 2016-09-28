@@ -10,19 +10,23 @@ namespace Fi\CoreBundle\Controller;
  */
 use Fi\CoreBundle\DependencyInjection\PercentualiStringhe;
 
-class FiUtilita {
+class FiUtilita
+{
 
-    public function percentualiConfrontoStringheVettore($parametri = array()) {
+    public function percentualiConfrontoStringheVettore($parametri = array()) 
+    {
         $percentuali = new PercentualiStringhe();
         return $percentuali->percentualiConfrontoStringheVettore($parametri);
     }
 
-    public function percentualiConfrontoStringhe($parametri = array()) {
+    public function percentualiConfrontoStringhe($parametri = array()) 
+    {
         $percentuali = new PercentualiStringhe();
         return $percentuali->percentualiConfrontoStringhe($parametri);
     }
 
-    public function sommaMinuti($parametri = array()) {
+    public function sommaMinuti($parametri = array()) 
+    {
         //parametri obbligatori
         if (!isset($parametri['minuti'])) {
             return false;
@@ -48,7 +52,8 @@ class FiUtilita {
      *
      * @return Array("segnouno"=>"xx", "segnodue"=>"yy") dove segnodue non obbligatorio
      */
-    public function operatoreQuery($parametri = array()) {
+    public function operatoreQuery($parametri = array()) 
+    {
         $risposta = array();
 
         if (isset($parametri['tipo'])) {
@@ -58,19 +63,19 @@ class FiUtilita {
         }
 
         switch ($tipocampo) {
-            case 'date':
-            case 'integer':
-            case 'double':
-                $operatore = '>=';
-                $operatoredue = '<=';
-                break;
-            case 'string':
-            case 'text':
-                $operatore = 'LIKE';
-                break;
-            default:
-                $operatore = '=';
-                break;
+        case 'date':
+        case 'integer':
+        case 'double':
+            $operatore = '>=';
+            $operatoredue = '<=';
+            break;
+        case 'string':
+        case 'text':
+            $operatore = 'LIKE';
+            break;
+        default:
+            $operatore = '=';
+            break;
         }
 
         $risposta['segnouno'] = $operatore;
@@ -81,7 +86,8 @@ class FiUtilita {
         return $risposta;
     }
 
-    public static function data2db($giorno, $invertito = false, $senzalinea = false) {
+    public static function data2db($giorno, $invertito = false, $senzalinea = false) 
+    {
         if ($giorno == '') {
             return null;
         }
@@ -107,7 +113,8 @@ class FiUtilita {
         return $formattata;
     }
 
-    private static function getDataFormattata($aaaa, $mm, $gg, $senzalinea) {
+    private static function getDataFormattata($aaaa, $mm, $gg, $senzalinea) 
+    {
         $separatore = ($senzalinea ? '' : '-');
 
         $nuovadata = $aaaa . $separatore . $mm . $separatore . $gg;
@@ -115,7 +122,8 @@ class FiUtilita {
         return (strlen($gg) == 0 ? '' : $nuovadata);
     }
 
-    public static function db2data($giorno, $senzalinea = false) {
+    public static function db2data($giorno, $senzalinea = false) 
+    {
         if (substr($giorno, 2, 1) == '/') {
             return $giorno;
         }
@@ -136,7 +144,8 @@ class FiUtilita {
         return $formattata;
     }
 
-    private static function senzalinea($giorno) {
+    private static function senzalinea($giorno) 
+    {
         $aaaa = substr($giorno, 0, 4);
         $mm = substr($giorno, 4, 2);
         $gg = substr($giorno, 6, 2);
@@ -155,13 +164,14 @@ class FiUtilita {
      *
      * @return string
      */
-    public function proSelect($parametri = array()) {
+    public function proSelect($parametri = array()) 
+    {
         $stringaproselect = '';
         if (!isset($parametri['elementi'])) {
             return false;
         }
 
-//parametri obbligatori
+        //parametri obbligatori
         $elementi = $parametri['elementi'];
         $attributi = $this->getProSelectAttribute($parametri);
         $selezionato = $attributi["selezionato"];
@@ -178,7 +188,8 @@ class FiUtilita {
         return $stringaproselect;
     }
 
-    public function getProSelectAttribute($parametri) {
+    public function getProSelectAttribute($parametri) 
+    {
         $arrayritorno = array();
         $arrayritorno["selezionato"] = (isset($parametri['selezionato']) ? $parametri['selezionato'] : false);
         $arrayritorno["nomecodice"] = (isset($parametri['nomecodice']) ? $parametri['nomecodice'] : 'codice');
@@ -193,23 +204,24 @@ class FiUtilita {
      *
      * @return $vettorenuovo
      */
-    public function cancellaDaVettore($parametri = array()) {
+    public function cancellaDaVettore($parametri = array()) 
+    {
 
-//parametri obbligatori
+        //parametri obbligatori
         if (isset($parametri['vettore'])) {
             $vettore = $parametri['vettore'];
         } else {
             return false;
         }
 
-//parametri obbligatori
+        //parametri obbligatori
         if (isset($parametri['chiave'])) {
             $chiave = $parametri['chiave'];
         } else {
             return $vettore;
         }
 
-//parametri obbligatori
+        //parametri obbligatori
         if (isset($parametri['valore'])) {
             $valore = $parametri['valore'];
         } else {
@@ -227,7 +239,8 @@ class FiUtilita {
         return $vettorenuovo;
     }
 
-    public function array_searchRecursive($needle, $haystack) {
+    public function array_searchRecursive($needle, $haystack) 
+    {
         foreach ($haystack as $key => $val) {
             if (stripos(implode('', $val), $needle) > 0) {
                 return $key;

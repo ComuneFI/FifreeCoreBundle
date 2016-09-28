@@ -30,14 +30,16 @@ class OperatoriType extends AbstractType
             //->add('credentials_expired')
             //->add('credentials_expire_at')
             //->add('operatore')
-    ;
+        ;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-        'data_class' => 'Fi\CoreBundle\Entity\Operatori',
-    ));
+        $resolver->setDefaults(
+            array(
+            'data_class' => 'Fi\CoreBundle\Entity\Operatori',
+            )
+        );
     }
 
     public function getName()

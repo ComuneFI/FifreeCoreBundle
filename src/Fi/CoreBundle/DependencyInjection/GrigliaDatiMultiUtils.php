@@ -4,18 +4,22 @@ namespace Fi\CoreBundle\DependencyInjection;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-class GrigliaDatiMultiUtils {
+class GrigliaDatiMultiUtils
+{
 
-    public static function getTotalPages($quanti, &$limit) {
+    public static function getTotalPages($quanti, &$limit) 
+    {
         /* calcola in mumero di pagine totali necessarie */
         return ceil($quanti / ($limit == 0 ? 1 : $limit));
     }
 
-    public static function getLimit(&$limit) {
+    public static function getLimit(&$limit) 
+    {
         return ($limit ? $limit : 1);
     }
 
-    public static function prepareQuery($parametri, &$q, &$sidx, &$sord, &$page, &$limit, &$quanti) {
+    public static function prepareQuery($parametri, &$q, &$sidx, &$sord, &$page, &$limit, &$quanti) 
+    {
         $output = GrigliaUtils::getOuputType($parametri);
         $nospan = GrigliaDatiUtils::getDatiNospan($parametri);
         /* su quale campo fare l'ordinamento */
@@ -61,7 +65,8 @@ class GrigliaDatiMultiUtils {
         $limit = GrigliaDatiMultiUtils::getLimit($limit);
     }
 
-    public static function buildRowGriglia(&$singolo, &$vettoreriga, &$vettorerisposta) {
+    public static function buildRowGriglia(&$singolo, &$vettoreriga, &$vettorerisposta) 
+    {
 
         /* Si costruisce la risposta json per la jqgrid */
         ksort($vettoreriga);
@@ -73,7 +78,8 @@ class GrigliaDatiMultiUtils {
         unset($vettoreriga);
     }
 
-    public static function setOrdineColonneDatiGriglia(&$ordinecolonne, &$nomecampo, &$indice, &$indicecolonna) {
+    public static function setOrdineColonneDatiGriglia(&$ordinecolonne, &$nomecampo, &$indice, &$indicecolonna) 
+    {
         if (isset($ordinecolonne)) {
             $indicecolonna = array_search($nomecampo, $ordinecolonne);
             if ($indicecolonna === false) {
@@ -93,7 +99,8 @@ class GrigliaDatiMultiUtils {
         }
     }
 
-    public static function buildColonneDatiGriglia($parametri, &$vettoreriga, &$singolo, &$nomecampo, &$nomecampo, &$indice, &$indicecolonna, &$singolocampo) {
+    public static function buildColonneDatiGriglia($parametri, &$vettoreriga, &$singolo, &$nomecampo, &$nomecampo, &$indice, &$indicecolonna, &$singolocampo) 
+    {
         $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
         /* $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine); */
 
@@ -141,7 +148,8 @@ class GrigliaDatiMultiUtils {
         }
     }
 
-    public static function TabellejNomecampoNormalizzato(&$tabellej, $nomecampo) {
+    public static function TabellejNomecampoNormalizzato(&$tabellej, $nomecampo) 
+    {
         if (is_object($tabellej[$nomecampo])) {
             $tabellej[$nomecampo] = get_object_vars($tabellej[$nomecampo]);
         }

@@ -7,9 +7,11 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Ffsecondaria controller.
  */
-class FfsecondariaController extends FiController {
+class FfsecondariaController extends FiController
+{
 
-    public function indexAction(Request $request) {
+    public function indexAction(Request $request) 
+    {
         parent::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -61,14 +63,15 @@ class FfsecondariaController extends FiController {
         $testata = json_encode($testatagriglia);
 
         return $this->render(
-                        $nomebundle . ':' . $controller . ':index.html.twig', array(
+            $nomebundle . ':' . $controller . ':index.html.twig', array(
                     'nomecontroller' => $controller,
                     'testata' => $testata,
                         )
         );
     }
 
-    public function setParametriGriglia($prepar = array()) {
+    public function setParametriGriglia($prepar = array()) 
+    {
         self::setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();

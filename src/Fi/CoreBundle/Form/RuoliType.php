@@ -15,15 +15,16 @@ class RuoliType extends AbstractType
             ->add('paginainiziale')
             ->add('is_superadmin')
             ->add('is_admin')
-            ->add('is_user')
-        ;
+            ->add('is_user');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
             'data_class' => 'Fi\CoreBundle\Entity\ruoli',
-        ));
+            )
+        );
     }
 
     public function getName()

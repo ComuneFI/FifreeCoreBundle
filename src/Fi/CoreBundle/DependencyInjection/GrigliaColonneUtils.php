@@ -2,9 +2,11 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-class GrigliaColonneUtils {
+class GrigliaColonneUtils
+{
 
-    public static function getColonne(&$nomicolonne, &$modellocolonne, &$indice, $paricevuti) {
+    public static function getColonne(&$nomicolonne, &$modellocolonne, &$indice, $paricevuti) 
+    {
 
         $doctrine = GrigliaUtils::getDoctrineByEm($paricevuti);
 
@@ -19,7 +21,8 @@ class GrigliaColonneUtils {
         }
     }
 
-    public static function elaboraColonna(&$chiave, &$colonna, &$nomicolonne, &$modellocolonne, &$indice, $paricevuti) {
+    public static function elaboraColonna(&$chiave, &$colonna, &$nomicolonne, &$modellocolonne, &$indice, $paricevuti) 
+    {
         $alias = GrigliaParametriUtils::getAliasTestataPerGriglia($paricevuti);
         $escludere = GrigliaParametriUtils::getCampiEsclusiTestataPerGriglia($paricevuti);
         $escludereutente = GrigliaRegoleUtils::campiesclusi($paricevuti);
@@ -33,7 +36,8 @@ class GrigliaColonneUtils {
         }
     }
 
-    public static function getColonneDatabase($parametri = array()) {
+    public static function getColonneDatabase($parametri = array()) 
+    {
         $entityName = $parametri['entityName'];
         /* @var $doctrine \Doctrine\ORM\EntityManager */
         $doctrine = $parametri['doctrine'];
@@ -61,7 +65,8 @@ class GrigliaColonneUtils {
         return $colonne;
     }
 
-    public static function getColonneOrdinate($ordine) {
+    public static function getColonneOrdinate($ordine) 
+    {
         $ordinecolonne = null;
 
         if (count($ordine) > 0) {
@@ -73,7 +78,8 @@ class GrigliaColonneUtils {
         return $ordinecolonne;
     }
 
-    public static function getAliasCampi(&$nomicolonne, &$modellocolonne, &$indice, &$chiave, &$colonna, $paricevuti) {
+    public static function getAliasCampi(&$nomicolonne, &$modellocolonne, &$indice, &$chiave, &$colonna, $paricevuti) 
+    {
         $alias = GrigliaParametriUtils::getAliasTestataPerGriglia($paricevuti);
         $etichetteutente = GrigliaUtils::etichettecampi($paricevuti);
         $larghezzeutente = GrigliaUtils::larghezzecampi($paricevuti);
@@ -95,15 +101,18 @@ class GrigliaColonneUtils {
         }
     }
 
-    public static function getEtichettaDescrizioneColonna(&$singoloalias, $chiave) {
+    public static function getEtichettaDescrizioneColonna(&$singoloalias, $chiave) 
+    {
         return isset($singoloalias['descrizione']) ? $singoloalias['descrizione'] : GrigliaUtils::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
     }
 
-    public static function getEtichettaNomeColonna(&$etichetteutente, $chiave) {
+    public static function getEtichettaNomeColonna(&$etichetteutente, $chiave) 
+    {
         return GrigliaUtils::to_camel_case(array('str' => trim($etichetteutente[$chiave]), 'primamaiuscola' => true));
     }
 
-    public static function getWidthCampo(&$colonna, &$chiave, $singoloalias, $larghezzeutente) {
+    public static function getWidthCampo(&$colonna, &$chiave, $singoloalias, $larghezzeutente) 
+    {
         if ((isset($larghezzeutente[$chiave])) && ($larghezzeutente[$chiave] != '') && ($larghezzeutente[$chiave] != 0)) {
             $widthcampo = $larghezzeutente[$chiave];
         } else {
@@ -113,7 +122,8 @@ class GrigliaColonneUtils {
         return $widthcampo;
     }
 
-    public static function getIndiceModelloSelect(&$chiave, &$colonna, $singoloalias, $widthcampo) {
+    public static function getIndiceModelloSelect(&$chiave, &$colonna, $singoloalias, $widthcampo) 
+    {
         return array(
             'name' => isset($singoloalias['nomecampo']) ? $singoloalias['nomecampo'] : $chiave,
             'id' => isset($singoloalias['nomecampo']) ? $singoloalias['nomecampo'] : $chiave,
@@ -123,7 +133,8 @@ class GrigliaColonneUtils {
             'editoptions' => $singoloalias['valoricombo']);
     }
 
-    public static function getIndiceModello(&$chiave, &$colonna, $singoloalias, $widthcampo) {
+    public static function getIndiceModello(&$chiave, &$colonna, $singoloalias, $widthcampo) 
+    {
         return array(
             'name' => isset($singoloalias['nomecampo']) ? $singoloalias['nomecampo'] : $chiave,
             'id' => isset($singoloalias['nomecampo']) ? $singoloalias['nomecampo'] : $chiave,
@@ -133,7 +144,8 @@ class GrigliaColonneUtils {
         );
     }
 
-    public static function getDettagliCampi(&$nomicolonne, &$modellocolonne, &$alias, &$indice, &$chiave, &$colonna, &$paricevuti) {
+    public static function getDettagliCampi(&$nomicolonne, &$modellocolonne, &$alias, &$indice, &$chiave, &$colonna, &$paricevuti) 
+    {
         $etichetteutente = GrigliaUtils::etichettecampi($paricevuti);
         $larghezzeutente = GrigliaUtils::larghezzecampi($paricevuti);
         $ordinecolonne = GrigliaParametriUtils::getOrdineColonneTestataPerGriglia($paricevuti);
