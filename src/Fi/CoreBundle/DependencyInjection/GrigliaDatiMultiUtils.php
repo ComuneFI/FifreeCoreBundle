@@ -16,4 +16,24 @@ class GrigliaDatiMultiUtils {
         unset($vettoreriga);
     }
 
+    public static function setOrdineColonneDatiGriglia(&$ordinecolonne, &$nomecampo, &$indice, &$indicecolonna) {
+        if (isset($ordinecolonne)) {
+            $indicecolonna = array_search($nomecampo, $ordinecolonne);
+            if ($indicecolonna === false) {
+                if ($indice === 0) {
+                    $indice = count($ordinecolonne);
+                }
+                ++$indice;
+                $indicecolonna = $indice;
+            } else {
+                if ($indicecolonna > $indice) {
+                    $indice = $indicecolonna;
+                }
+            }
+        } else {
+            ++$indice;
+            $indicecolonna = $indice;
+        }
+    }
+
 }

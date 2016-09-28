@@ -244,23 +244,7 @@ class Griglia extends FiController {
                             /* $fields = $singolo->get($tabellej[$nomecampo]["tabella"]) ? $singolo->get($tabellej[$nomecampo]["tabella"])->get($campoelencato) : ""; */
                             /* array */
 
-                            if (isset($ordinecolonne)) {
-                                $indicecolonna = array_search($nomecampo, $ordinecolonne);
-                                if ($indicecolonna === false) {
-                                    if ($indice === 0) {
-                                        $indice = count($ordinecolonne);
-                                    }
-                                    ++$indice;
-                                    $indicecolonna = $indice;
-                                } else {
-                                    if ($indicecolonna > $indice) {
-                                        $indice = $indicecolonna;
-                                    }
-                                }
-                            } else {
-                                ++$indice;
-                                $indicecolonna = $indice;
-                            }
+                            GrigliaDatiMultiUtils::setOrdineColonneDatiGriglia($ordinecolonne, $nomecampo, $indice, $indicecolonna);
 
                             $parametriCampoElencato['tabellej'] = $tabellej;
                             $parametriCampoElencato['nomecampo'] = $nomecampo;
@@ -275,23 +259,8 @@ class Griglia extends FiController {
                             $vettoreriga = GrigliaDatiUtils::campoElencato($parametriCampoElencato);
                         }
                     } else {
-                        if (isset($ordinecolonne)) {
-                            $indicecolonna = array_search($nomecampo, $ordinecolonne);
-                            if ($indicecolonna === false) {
-                                if ($indice === 0) {
-                                    $indice = count($ordinecolonne);
-                                }
-                                ++$indice;
-                                $indicecolonna = $indice;
-                            } else {
-                                if ($indicecolonna > $indice) {
-                                    $indice = $indicecolonna;
-                                }
-                            }
-                        } else {
-                            ++$indice;
-                            $indicecolonna = $indice;
-                        }
+
+                        GrigliaDatiMultiUtils::setOrdineColonneDatiGriglia($ordinecolonne, $nomecampo, $indice, $indicecolonna);
 
                         GrigliaDatiUtils::valorizzaVettore($vettoreriga, array('singolocampo' => $singolocampo, 'tabella' => $bundle . ':' . $nometabella, 'nomecampo' => $nomecampo, 'doctrine' => $doctrine, 'ordinecampo' => $indicecolonna, 'decodifiche' => $decodifiche));
                     }
