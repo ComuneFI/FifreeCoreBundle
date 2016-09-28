@@ -78,46 +78,9 @@ class z1FfprincipaleControllerTest extends FifreeTest {
         $page->pressButton('_submit');
         //$page = $session->getPage();
 
-        $element = $page->findAll('css', '.ui-icon-plus');
+        $this->crudoperation($session, $page);
 
-        foreach ($element as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        /* Inserimento */
-        sleep(1);
-        $descrizionetest1 = 'Test inserimento descrizione automatico';
-        sleep(1);
-        $page->fillField('fi_corebundle_ffprincipaletype_descrizione', $descrizionetest1);
-        $page->find('css', 'a#sDataFfprincipaleS')->click();
-        sleep(1);
-
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");$("#list1").jqGrid("setSelection", rowid);}()');
-        $element = $page->findAll('css', '.ui-icon-pencil');
-
-        foreach ($element as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        /* Modifica */
-        $descrizionetest2 = 'Test inserimento descrizione automatico 2';
-        sleep(1);
-        $page->fillField('fi_corebundle_ffprincipaletype_descrizione', $descrizionetest2);
-        $page->find('css', 'a#sDataFfprincipaleS')->click();
-        sleep(1);
-        /* Cancellazione */
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");$("#list1").jqGrid("setSelection", rowid);}()');
-        $element = $page->findAll('css', '.ui-icon-trash');
-
-        foreach ($element as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $page->find('css', 'a#dData')->click();
-        sleep(1);
+        $this->searchoperation($session, $page);
 
         $this->printoperations($session, $page);
 
@@ -140,6 +103,93 @@ class z1FfprincipaleControllerTest extends FifreeTest {
           $em->flush();
           $em->clear();
           $this->assertTrue(is_null($ff->getId())); */
+    }
+
+    private function searchoperation($session, $page) {
+        $elementsearch = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        /* Ricerca 1 */
+        sleep(1);
+        $search1 = 'primo';
+        sleep(1);
+        $page->fillField('jqg1', $search1);
+        $page->find('css', 'a#fbox_list1_search')->click();
+        sleep(1);
+
+        $numrowsgrid1 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(0, $numrowsgrid1);
+
+        /* Ricerca 1 */
+        $elementsearch2 = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch2 as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        sleep(1);
+        $search2 = 'primo';
+        sleep(1);
+        //$page->selectFieldOption('inizia con', "cn");
+        $var2 = '"cn"';
+        $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
+        
+        $session->executeScript($javascript2);
+        $page->fillField('jqg1', $search2);
+
+        $page->find('css', 'a#fbox_list1_search')->click();
+        sleep(1);
+
+        $numrowsgrid2 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(1, $numrowsgrid2);
+    }
+
+    private function crudoperation($session, $page) {
+        $elementadd = $page->findAll('css', '.ui-icon-plus');
+
+        foreach ($elementadd as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        /* Inserimento */
+        sleep(1);
+        $descrizionetest1 = 'Test inserimento descrizione automatico';
+        sleep(1);
+        $page->fillField('fi_corebundle_ffprincipaletype_descrizione', $descrizionetest1);
+        $page->find('css', 'a#sDataFfprincipaleS')->click();
+        sleep(1);
+
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");$("#list1").jqGrid("setSelection", rowid);}()');
+        $elementmod = $page->findAll('css', '.ui-icon-pencil');
+
+        foreach ($elementmod as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        /* Modifica */
+        $descrizionetest2 = 'Test inserimento descrizione automatico 2';
+        sleep(1);
+        $page->fillField('fi_corebundle_ffprincipaletype_descrizione', $descrizionetest2);
+        $page->find('css', 'a#sDataFfprincipaleS')->click();
+        sleep(1);
+        /* Cancellazione */
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");$("#list1").jqGrid("setSelection", rowid);}()');
+        $elementdel = $page->findAll('css', '.ui-icon-trash');
+
+        foreach ($elementdel as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        $page->find('css', 'a#dData')->click();
+        sleep(1);
     }
 
     private function printoperations($session, $page) {

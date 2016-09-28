@@ -85,15 +85,24 @@ class z2FfsecondariaControllerTest extends FifreeTest {
         $page->pressButton('_submit');
         //$page = $session->getPage();
 
-        $element = $page->findAll('css', '.ui-icon-plus');
+        $this->crudoperation($session, $page);
 
-        foreach ($element as $e) {
+        $this->searchoperation($session, $page);
+
+        $this->printoperations($session, $page);
+
+        $session->stop();
+    }
+
+    private function crudoperation($session, $page) {
+        $elementadd = $page->findAll('css', '.ui-icon-plus');
+
+        foreach ($elementadd as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
         }
         /* Inserimento */
-        sleep(1);
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         sleep(1);
         $page->fillField('fi_corebundle_ffsecondariatype_descsec', $descrizionetest1);
@@ -110,9 +119,9 @@ class z2FfsecondariaControllerTest extends FifreeTest {
         sleep(1);
 
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");$("#list1").jqGrid("setSelection", rowid);}()');
-        $element = $page->findAll('css', '.ui-icon-pencil');
+        $elementmod = $page->findAll('css', '.ui-icon-pencil');
 
-        foreach ($element as $e) {
+        foreach ($elementmod as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
@@ -125,37 +134,107 @@ class z2FfsecondariaControllerTest extends FifreeTest {
         sleep(1);
         /* Cancellazione */
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");$("#list1").jqGrid("setSelection", rowid);}()');
-        $element = $page->findAll('css', '.ui-icon-trash');
+        $elementdel = $page->findAll('css', '.ui-icon-trash');
 
-        foreach ($element as $e) {
+        foreach ($elementdel as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
         }
         $page->find('css', 'a#dData')->click();
         sleep(1);
+    }
 
-        $this->printoperations($session, $page);
+    private function searchoperation($session, $page) {
+        $elementsearch = $page->findAll('css', '.ui-icon-search');
 
-        $session->stop();
+        foreach ($elementsearch as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        /* Ricerca 1 */
+        sleep(1);
+        $search1 = '9° secondaria';
+        sleep(1);
+        $page->fillField('jqg1', $search1);
+        $page->find('css', 'a#fbox_list1_search')->click();
+        sleep(1);
+
+        $numrowsgrid1 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(1, $numrowsgrid1);
+
+        /* Ricerca 1 */
+        $elementsearch2 = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch2 as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        sleep(1);
+        $search2 = '1°';
+        sleep(1);
+        //$page->selectFieldOption('inizia con', "cn");
+        $var2 = '"cn"';
+        $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
+
+        $session->executeScript($javascript2);
+        $page->fillField('jqg1', $search2);
+
+        $page->find('css', 'a#fbox_list1_search')->click();
+        sleep(1);
+
+        $numrowsgrid2 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(4, $numrowsgrid2);
+
+        /* doppia condizione */
+        $elementsearch3 = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch3 as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        sleep(1);
+        $search3 = 100;
+        sleep(1);
+        $addrulejs = "$('.ui-add').click();";
+
+        $session->executeScript($addrulejs);
+                sleep(1);
+
+        $var3 = '"intero"';
+
+        $javascript3 = "$('#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first option[value=" . $var3 . "]').attr('selected', 'selected').change();";
+        sleep(1);
+        $session->executeScript($javascript3);
+        $page->fillField('jqg4', $search3);
+       
+        $var4 = '"ge"';
+        $javascript4 = "$('.selectopts:first option[value=" . $var4 . "]').attr('selected', 'selected').change();;";
+        $session->executeScript($javascript4);
+        sleep(1);
+        $search5 = '6°';
+        $page->fillField('jqg3', $search5);
+        
+        $page->find('css', 'a#fbox_list1_search')->click();
+        sleep(1);
+
+        $numrowsgrid3 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(1, $numrowsgrid3);
 
 
-        /* $client = $this->getClientAutorizzato();
-          // @var $em \Doctrine\ORM\EntityManager
-          $em = $client->getContainer()->get('doctrine')->getManager();
+        //reset filtri
+        $elementsearch4 = $page->findAll('css', '.ui-icon-search');
 
-          $qu = $em->createQueryBuilder();
-          $qu->select(array('c'))
-          ->from('FiCoreBundle:Ffsecondaria', 'c')
-          ->where('c.descrizione = :descrizione')
-          ->setParameter('descrizione', $descrizionetest);
-          $ff = $qu->getQuery()->getSingleResult();
-          $this->assertEquals($ff->getDescrizione(), $descrizionetest);
-
-          $em->remove($ff);
-          $em->flush();
-          $em->clear();
-          $this->assertTrue(is_null($ff->getId())); */
+        foreach ($elementsearch4 as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        $page->find('css', 'a#fbox_list1_reset')->click();
+        sleep(1);
     }
 
     private function printoperations($session, $page) {
@@ -191,6 +270,34 @@ class z2FfsecondariaControllerTest extends FifreeTest {
             sleep(1);
             $page = $session->getPage();
         }
+    }
+
+}
+
+/* $client = $this->getClientAutorizzato();
+          // @var $em \Doctrine\ORM\EntityManager
+          $em = $client->getContainer()->get('doctrine')->getManager();
+
+          $qu = $em->createQueryBuilder();
+          $qu->select(array('c'))
+          ->from('FiCoreBundle:Ffsecondaria', 'c')
+          ->where('c.descrizione = :descrizione')
+          ->setParameter('descrizione', $descrizionetest);
+          $ff = $qu->getQuery()->getSingleResult();
+          $this->assertEquals($ff->getDescrizione(), $descrizionetest);
+
+          $em->remove($ff);
+          $em->flush();
+          $em->clear();
+          $this->assertTrue(is_null($ff->getId())); */
+
+
+
+
+
+
+
+
         /* Print excel */
         /* $element = $page->findAll('css', '.ui-icon-circle-arrow-s');
 
@@ -208,6 +315,3 @@ class z2FfsecondariaControllerTest extends FifreeTest {
           $session->switchToWindow($mainwindow);
           $page = $session->getPage();
           } */
-    }
-
-}
