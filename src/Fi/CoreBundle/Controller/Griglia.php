@@ -232,39 +232,7 @@ class Griglia extends FiController {
             /* Si scorrono tutti i campi del record */
             $vettoreriga = array();
             foreach ($singolo as $nomecampo => $singolocampo) {
-                /* Si controlla se il campo è da escludere o meno */
-                if ((!isset($escludere) || !(in_array($nomecampo, $escludere))) && (!isset($escludereutente) || !(in_array($nomecampo, $escludereutente)))) {
-                    if (isset($tabellej[$nomecampo])) {
-                        if (is_object($tabellej[$nomecampo])) {
-                            $tabellej[$nomecampo] = get_object_vars($tabellej[$nomecampo]);
-                        }
-                        /* Per ogni campo si cattura il valore dall'array che torna doctrine */
-                        foreach ($tabellej[$nomecampo]['campi'] as $campoelencato) {
-                            /* Object */
-                            /* $fields = $singolo->get($tabellej[$nomecampo]["tabella"]) ? $singolo->get($tabellej[$nomecampo]["tabella"])->get($campoelencato) : ""; */
-                            /* array */
-
-                            GrigliaDatiMultiUtils::setOrdineColonneDatiGriglia($ordinecolonne, $nomecampo, $indice, $indicecolonna);
-
-                            $parametriCampoElencato['tabellej'] = $tabellej;
-                            $parametriCampoElencato['nomecampo'] = $nomecampo;
-                            $parametriCampoElencato['campoelencato'] = $campoelencato;
-                            $parametriCampoElencato['vettoreriga'] = $vettoreriga;
-                            $parametriCampoElencato['singolo'] = $singolo;
-                            $parametriCampoElencato['doctrine'] = $doctrine;
-                            $parametriCampoElencato['bundle'] = $bundle;
-                            $parametriCampoElencato['ordinecampo'] = $indicecolonna;
-                            $parametriCampoElencato['decodifiche'] = $decodifiche;
-
-                            $vettoreriga = GrigliaDatiUtils::campoElencato($parametriCampoElencato);
-                        }
-                    } else {
-
-                        GrigliaDatiMultiUtils::setOrdineColonneDatiGriglia($ordinecolonne, $nomecampo, $indice, $indicecolonna);
-
-                        GrigliaDatiUtils::valorizzaVettore($vettoreriga, array('singolocampo' => $singolocampo, 'tabella' => $bundle . ':' . $nometabella, 'nomecampo' => $nomecampo, 'doctrine' => $doctrine, 'ordinecampo' => $indicecolonna, 'decodifiche' => $decodifiche));
-                    }
-                }
+                GrigliaDatiMultiUtils::buildColonneDatiGriglia($vettoreriga, $tabellej, $singolo, $escludere, $nomecampo, $escludereutente, $ordinecolonne, $nomecampo, $indice, $indicecolonna, $singolocampo, $nometabella, $doctrine, $bundle, $decodifiche);
             }
 
             GrigliaCampiExtraUtils::getCampiExtraDatiPerGriglia($campiextra, $vettoreriga, $doctrine, $entityName, $singolo);
