@@ -8,6 +8,7 @@ namespace Fi\CoreBundle\Controller;
  *
  * @author Emidio Picariello
  */
+
 use Fi\CoreBundle\DependencyInjection\PercentualiStringhe;
 
 class FiUtilita
