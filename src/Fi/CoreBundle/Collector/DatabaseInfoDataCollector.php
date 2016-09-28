@@ -9,14 +9,15 @@ use Symfony\Component\DependencyInjection\Container;
 
 class DatabaseInfoDataCollector extends DataCollector
 {
+
     protected $container;
 
-    public function __construct(Container $container)
+    public function __construct(Container $container) 
     {
         $this->container = $container;
     }
 
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, \Exception $exception = null) 
     {
         $this->data = array(
             'database_driver' => $this->container->get('database_connection')->getDriver()->getName(),
@@ -28,7 +29,7 @@ class DatabaseInfoDataCollector extends DataCollector
         );
     }
 
-    public function getDatabaseDriver()
+    public function getDatabaseDriver() 
     {
         switch ($this->data['database_driver']) {
         case 'pdo_mysql':
@@ -51,33 +52,34 @@ class DatabaseInfoDataCollector extends DataCollector
         return $driverName;
     }
 
-    public function getDatabaseHost()
+    public function getDatabaseHost() 
     {
         return $this->data['database_host'];
     }
 
-    public function getDatabasePort()
+    public function getDatabasePort() 
     {
         return $this->data['database_port'];
     }
 
-    public function getDatabaseName()
+    public function getDatabaseName() 
     {
         return $this->data['database_name'];
     }
 
-    public function getDatabaseUser()
+    public function getDatabaseUser() 
     {
         return $this->data['database_user'];
     }
 
-    public function getDatabasePassword()
+    public function getDatabasePassword() 
     {
         return $this->data['database_password'];
     }
 
-    public function getName()
+    public function getName() 
     {
         return 'databaseInfo';
     }
+
 }
