@@ -6,7 +6,8 @@ use Fi\CoreBundle\Controller\GestionepermessiController;
 use Fi\CoreBundle\Controller\FiUtilita;
 
 class GrigliaCampiExtraUtils {
-        public static function getCampiExtraNormalizzati(&$campiextra) {
+
+    public static function getCampiExtraNormalizzati(&$campiextra) {
         /* Se è un array di una dimensione si trasforma in bidimensionale */
         if (count($campiextra) == count($campiextra, \COUNT_RECURSIVE)) {
             $campoextraarray = $campiextra;
@@ -72,6 +73,23 @@ class GrigliaCampiExtraUtils {
     public static function getCampiExtraColonneNormalizzate(&$colonna) {
         if (is_object($colonna)) {
             $colonna = get_object_vars($colonna);
+        }
+    }
+
+    public static function getCampiExtraDatiPerGriglia(&$campiextra, &$vettoreriga, $doctrine, $entityName, $singolo) {
+        /* Gestione per passare campi che non sono nella tabella ma metodi del model (o richiamabili tramite magic method get) */
+        if (isset($campiextra)) {
+            if (count($campiextra) == count($campiextra, \COUNT_RECURSIVE)) {
+                $campiextra[0] = $campiextra;
+            }
+            foreach ($campiextra as $vettore) {
+                foreach ($vettore as $nomecampo => $singolocampo) {
+                    $campo = 'get' . ucfirst($singolocampo);
+                    /* @var $doctrine \Doctrine\ORM\EntityManager */
+                    $objTabella = $doctrine->find($entityName, $singolo['id']);
+                    $vettoreriga[] = $objTabella->$campo();
+                }
+            }
         }
     }
 

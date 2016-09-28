@@ -10,6 +10,7 @@ use Fi\CoreBundle\DependencyInjection\GrigliaColonneUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiPrecondizioniUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaExtraFunzioniUtils;
+use Fi\CoreBundle\DependencyInjection\GrigliaDatiMultiUtils;
 
 class Griglia extends FiController {
 
@@ -175,23 +176,23 @@ class Griglia extends FiController {
                     )
             );
         }
-// conta il numero di record di risposta
-// $query_tutti_records = $q->getQuery();
-// $quanti = count($query_tutti_records->getSingleScalarResult());
+        /* conta il numero di record di risposta
+          $query_tutti_records = $q->getQuery();
+          $quanti = count($query_tutti_records->getSingleScalarResult()); */
 
         $paginator = new Paginator($q, true);
         $quanti = count($paginator);
 
-// imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati
+        /* imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati */
         $offset = ($limit * ($page - 1));
 
-// se si mandano i dati in stampa non tiene conto di limite e offset ovvero risponde con tutti i dati
+        /* se si mandano i dati in stampa non tiene conto di limite e offset ovvero risponde con tutti i dati */
         if ($output != 'stampa') {
-// se nospan non tiene conto di limite e offset ovvero risponde con tutti i dati
+            /* se nospan non tiene conto di limite e offset ovvero risponde con tutti i dati */
             if (!($nospan)) {
-//Imposta il limite ai record da estrarre
+                /* Imposta il limite ai record da estrarre */
                 $q = ($limit ? $q->setMaxResults($limit) : $q);
-//E imposta il primo record da visualizzare (per la paginazione)
+                /* E imposta il primo record da visualizzare (per la paginazione) */
                 $q = ($offset ? $q->setFirstResult($offset) : $q);
             }
         } else {
@@ -204,21 +205,21 @@ class Griglia extends FiController {
         if ($sidx) {
             $q->orderBy($sidx, $sord);
         }
-//Dall'oggetto querybuilder si ottiene la query da eseguire
+        /* Dall'oggetto querybuilder si ottiene la query da eseguire */
         $query_paginata = $q->getQuery();
 
-///*Object*/
-//$q = $query_paginata->getResult();
-///*array*/
-//Si ottiene un array con tutti i records
+        /* Object */
+        /* $q = $query_paginata->getResult(); */
+        /* Array */
+        /* Si ottiene un array con tutti i records */
         $q = $query_paginata->getArrayResult();
-//Se il limire non è stato impostato si mette 1 (per calcolare la paginazione)
+        /* Se il limire non è stato impostato si mette 1 (per calcolare la paginazione) */
         $limit = ($limit ? $limit : 1);
-// calcola in mumero di pagine totali necessarie
+        /* calcola in mumero di pagine totali necessarie */
 
         $total_pages = ceil($quanti / ($limit == 0 ? 1 : $limit));
 
-// imposta in $vettorerisposta la risposta strutturata per essere compresa da jqgrid
+        /* imposta in $vettorerisposta la risposta strutturata per essere compresa da jqgrid */
         $vettorerisposta = array();
         $vettorerisposta['page'] = $page;
         $vettorerisposta['total'] = $total_pages;
@@ -226,22 +227,22 @@ class Griglia extends FiController {
         $vettorerisposta['filtri'] = $filtri;
         $indice = 0;
 
-//Si scorrono tutti i records della query
+        /* Si scorrono tutti i records della query */
         foreach ($q as $singolo) {
-//Si scorrono tutti i campi del record
+            /* Si scorrono tutti i campi del record */
             $vettoreriga = array();
             foreach ($singolo as $nomecampo => $singolocampo) {
-//Si controlla se il campo è da escludere o meno
+                /* Si controlla se il campo è da escludere o meno */
                 if ((!isset($escludere) || !(in_array($nomecampo, $escludere))) && (!isset($escludereutente) || !(in_array($nomecampo, $escludereutente)))) {
                     if (isset($tabellej[$nomecampo])) {
                         if (is_object($tabellej[$nomecampo])) {
                             $tabellej[$nomecampo] = get_object_vars($tabellej[$nomecampo]);
                         }
-//Per ogni campo si cattura il valore dall'array che torna doctrine
+                        /* Per ogni campo si cattura il valore dall'array che torna doctrine */
                         foreach ($tabellej[$nomecampo]['campi'] as $campoelencato) {
-///*Object*/
-//$fields = $singolo->get($tabellej[$nomecampo]["tabella"]) ? $singolo->get($tabellej[$nomecampo]["tabella"])->get($campoelencato) : "";
-///*array*/
+                            /* Object */
+                            /* $fields = $singolo->get($tabellej[$nomecampo]["tabella"]) ? $singolo->get($tabellej[$nomecampo]["tabella"])->get($campoelencato) : ""; */
+                            /* array */
 
                             if (isset($ordinecolonne)) {
                                 $indicecolonna = array_search($nomecampo, $ordinecolonne);
@@ -297,29 +298,9 @@ class Griglia extends FiController {
                 }
             }
 
-//Gestione per passare campi che non sono nella tabella ma metodi del model (o richiamabili tramite magic method get)
-            if (isset($campiextra)) {
-                if (count($campiextra) == count($campiextra, \COUNT_RECURSIVE)) {
-                    $campiextra[0] = $campiextra;
-                }
-                foreach ($campiextra as $vettore) {
-                    foreach ($vettore as $nomecampo => $singolocampo) {
-                        $campo = 'get' . ucfirst($singolocampo);
-                        /* @var $doctrine \Doctrine\ORM\EntityManager */
-                        $objTabella = $doctrine->find($entityName, $singolo['id']);
-                        $vettoreriga[] = $objTabella->$campo();
-                    }
-                }
-            }
+            GrigliaCampiExtraUtils::getCampiExtraDatiPerGriglia($campiextra, $vettoreriga, $doctrine, $entityName, $singolo);
 
-            /* Si costruisce la risposta json per la jqgrid */
-            ksort($vettoreriga);
-            $vettorerigasorted = array();
-            foreach ($vettoreriga as $value) {
-                $vettorerigasorted[] = $value;
-            }
-            $vettorerisposta['rows'][] = array('id' => $singolo['id'], 'cell' => $vettorerigasorted);
-            unset($vettoreriga);
+            GrigliaDatiMultiUtils::buildRowGriglia($singolo, $vettoreriga, $vettorerisposta);
         }
 
         return json_encode($vettorerisposta);
