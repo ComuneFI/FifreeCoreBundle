@@ -136,7 +136,7 @@ class FifreeTest extends WebTestCase
         $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
         $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
-        
+
         return $client;
     }
 

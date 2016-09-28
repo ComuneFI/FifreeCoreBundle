@@ -29,6 +29,7 @@ class fifree2checkpermissionCommand extends ContainerAwareCommand
 
         if (OsFunctions::isWindows()) {
             echo 'Non previsto in ambiente windows';
+
             return 1;
         }
 

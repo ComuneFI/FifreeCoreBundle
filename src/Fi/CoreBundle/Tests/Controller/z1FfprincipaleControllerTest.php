@@ -9,11 +9,10 @@ use Behat\Mink\Session;
 
 class z1FfprincipaleControllerTest extends FifreeTest
 {
-
     /**
      * @test
      */
-    public function testIndexFfprincipale() 
+    public function testIndexFfprincipale()
     {
         parent::__construct();
         $this->setClassName(get_class());
@@ -40,13 +39,13 @@ class z1FfprincipaleControllerTest extends FifreeTest
     /**
      * @test
      */
-    public function testExcelFfprincipale() 
+    public function testExcelFfprincipale()
     {
         parent::__construct();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
-        $url = $client->getContainer()->get('router')->generate('Tabelle_esportaexceltabella', array("nometabella" => 'Ffprincipale'));
+        $url = $client->getContainer()->get('router')->generate('Tabelle_esportaexceltabella', array('nometabella' => 'Ffprincipale'));
 
         $client->request('GET', $url);
         $this->assertTrue(
@@ -60,7 +59,7 @@ class z1FfprincipaleControllerTest extends FifreeTest
      * @test
      */
 
-    public function testFfprincipale() 
+    public function testFfprincipale()
     {
         parent::__construct();
         $this->setClassName(get_class());
@@ -90,7 +89,6 @@ class z1FfprincipaleControllerTest extends FifreeTest
 
         $session->stop();
 
-
         /* $client = $this->getClientAutorizzato();
           // @var $em \Doctrine\ORM\EntityManager
           $em = $client->getContainer()->get('doctrine')->getManager();
@@ -109,7 +107,7 @@ class z1FfprincipaleControllerTest extends FifreeTest
           $this->assertTrue(is_null($ff->getId())); */
     }
 
-    private function searchoperation($session, $page) 
+    private function searchoperation($session, $page)
     {
         $elementsearch = $page->findAll('css', '.ui-icon-search');
 
@@ -142,8 +140,8 @@ class z1FfprincipaleControllerTest extends FifreeTest
         sleep(1);
         //$page->selectFieldOption('inizia con', "cn");
         $var2 = '"cn"';
-        $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
-        
+        $javascript2 = "$('.selectopts option[value=".$var2."]').attr('selected', 'selected').change();;";
+
         $session->executeScript($javascript2);
         $page->fillField('jqg1', $search2);
 
@@ -154,7 +152,7 @@ class z1FfprincipaleControllerTest extends FifreeTest
         $this->assertEquals(1, $numrowsgrid2);
     }
 
-    private function crudoperation($session, $page) 
+    private function crudoperation($session, $page)
     {
         $elementadd = $page->findAll('css', '.ui-icon-plus');
 
@@ -198,7 +196,7 @@ class z1FfprincipaleControllerTest extends FifreeTest
         sleep(1);
     }
 
-    private function printoperations($session, $page) 
+    private function printoperations($session, $page)
     {
         /* Print pdf */
         $element = $page->findAll('css', '.ui-icon-print');
@@ -213,15 +211,15 @@ class z1FfprincipaleControllerTest extends FifreeTest
             $session->switchToWindow($windowNames[1]);
             sleep(1);
             $page = $session->getPage();
-            $element = $page->find('css', ".textLayer");
+            $element = $page->find('css', '.textLayer');
 
             if (empty($element)) {
                 throw new \Exception("No html element found for the selector 'textLayer'");
             }
             sleep(1);
-            $this->assertContains("FiFree2", $element->getText());
-            $this->assertContains("Ffprincipale", $element->getText());
-            $this->assertContains("Descrizione primo record", $element->getText());
+            $this->assertContains('FiFree2', $element->getText());
+            $this->assertContains('Ffprincipale', $element->getText());
+            $this->assertContains('Descrizione primo record', $element->getText());
 
             sleep(1);
             $session->executeScript('window.close()');
@@ -249,5 +247,4 @@ class z1FfprincipaleControllerTest extends FifreeTest
           $page = $session->getPage();
           } */
     }
-
 }

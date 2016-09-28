@@ -9,10 +9,9 @@ use Behat\Mink\Session;
 
 class z2FfsecondariaControllerTest extends FifreeTest
 {
-
     private $container;
 
-    public function setUp() 
+    public function setUp()
     {
         self::bootKernel();
 
@@ -22,7 +21,7 @@ class z2FfsecondariaControllerTest extends FifreeTest
     /**
      * @test
      */
-    public function testIndexFfsecondaria() 
+    public function testIndexFfsecondaria()
     {
         parent::__construct();
         $this->setClassName(get_class());
@@ -49,12 +48,12 @@ class z2FfsecondariaControllerTest extends FifreeTest
     /**
      * @test
      */
-    public function testExcelFfsecondaria() 
+    public function testExcelFfsecondaria()
     {
         parent::__construct();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
-        $url = $client->getContainer()->get('router')->generate('Tabelle_esportaexceltabella', array("nometabella" => 'Ffsecondaria'));
+        $url = $client->getContainer()->get('router')->generate('Tabelle_esportaexceltabella', array('nometabella' => 'Ffsecondaria'));
 
         $client->request('GET', $url);
         $this->assertTrue(
@@ -68,13 +67,13 @@ class z2FfsecondariaControllerTest extends FifreeTest
      * @test
      */
 
-    public function testFfsecondaria() 
+    public function testFfsecondaria()
     {
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';
         $urlruote = $this->container->get('router')->generate('Ffsecondaria');
-        $url = 'http://127.0.0.1:8000' . $urlruote;
+        $url = 'http://127.0.0.1:8000'.$urlruote;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -99,7 +98,7 @@ class z2FfsecondariaControllerTest extends FifreeTest
         $session->stop();
     }
 
-    private function crudoperation($session, $page) 
+    private function crudoperation($session, $page)
     {
         $elementadd = $page->findAll('css', '.ui-icon-plus');
 
@@ -113,12 +112,12 @@ class z2FfsecondariaControllerTest extends FifreeTest
         sleep(1);
         $page->fillField('fi_corebundle_ffsecondariatype_descsec', $descrizionetest1);
         $page->selectFieldOption('fi_corebundle_ffsecondariatype_ffprincipale', 1);
-        $page->selectFieldOption('fi_corebundle_ffsecondariatype_data_day', (int) date("d"));
-        $page->selectFieldOption('fi_corebundle_ffsecondariatype_data_month', (int) date("m"));
-        $page->selectFieldOption('fi_corebundle_ffsecondariatype_data_year', (int) date("Y"));
+        $page->selectFieldOption('fi_corebundle_ffsecondariatype_data_day', (int) date('d'));
+        $page->selectFieldOption('fi_corebundle_ffsecondariatype_data_month', (int) date('m'));
+        $page->selectFieldOption('fi_corebundle_ffsecondariatype_data_year', (int) date('Y'));
         $page->fillField('fi_corebundle_ffsecondariatype_importo', 1000000.12);
         $page->fillField('fi_corebundle_ffsecondariatype_intero', 1000000);
-        $page->fillField('fi_corebundle_ffsecondariatype_nota', "Prova la nota");
+        $page->fillField('fi_corebundle_ffsecondariatype_nota', 'Prova la nota');
         $page->fillField('fi_corebundle_ffsecondariatype_attivo', 1);
 
         $page->find('css', 'a#sDataFfsecondariaS')->click();
@@ -151,7 +150,7 @@ class z2FfsecondariaControllerTest extends FifreeTest
         sleep(1);
     }
 
-    private function searchoperation($session, $page) 
+    private function searchoperation($session, $page)
     {
         $elementsearch = $page->findAll('css', '.ui-icon-search');
 
@@ -184,7 +183,7 @@ class z2FfsecondariaControllerTest extends FifreeTest
         sleep(1);
         //$page->selectFieldOption('inizia con', "cn");
         $var2 = '"cn"';
-        $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
+        $javascript2 = "$('.selectopts option[value=".$var2."]').attr('selected', 'selected').change();;";
 
         $session->executeScript($javascript2);
         $page->fillField('jqg1', $search2);
@@ -209,28 +208,27 @@ class z2FfsecondariaControllerTest extends FifreeTest
         $addrulejs = "$('.ui-add').click();";
 
         $session->executeScript($addrulejs);
-                sleep(1);
+        sleep(1);
 
         $var3 = '"intero"';
 
-        $javascript3 = "$('#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first option[value=" . $var3 . "]').attr('selected', 'selected').change();";
+        $javascript3 = "$('#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first option[value=".$var3."]').attr('selected', 'selected').change();";
         sleep(1);
         $session->executeScript($javascript3);
         $page->fillField('jqg4', $search3);
-       
+
         $var4 = '"ge"';
-        $javascript4 = "$('.selectopts:first option[value=" . $var4 . "]').attr('selected', 'selected').change();;";
+        $javascript4 = "$('.selectopts:first option[value=".$var4."]').attr('selected', 'selected').change();;";
         $session->executeScript($javascript4);
         sleep(1);
         $search5 = '6°';
         $page->fillField('jqg3', $search5);
-        
+
         $page->find('css', 'a#fbox_list1_search')->click();
         sleep(1);
 
         $numrowsgrid3 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid3);
-
 
         //reset filtri
         $elementsearch4 = $page->findAll('css', '.ui-icon-search');
@@ -244,7 +242,7 @@ class z2FfsecondariaControllerTest extends FifreeTest
         sleep(1);
     }
 
-    private function printoperations($session, $page) 
+    private function printoperations($session, $page)
     {
 
         /* Print pdf */
@@ -260,15 +258,15 @@ class z2FfsecondariaControllerTest extends FifreeTest
             $session->switchToWindow($windowNames[1]);
             sleep(1);
             $page = $session->getPage();
-            $element = $page->find('css', ".textLayer");
+            $element = $page->find('css', '.textLayer');
 
             if (empty($element)) {
                 throw new \Exception("No html element found for the selector 'textLayer'");
             }
             sleep(1);
-            $this->assertContains("FiFree2", $element->getText());
-            $this->assertContains("Ffsecondaria", $element->getText());
-            $this->assertContains("Descrizione secondo record", $element->getText());
+            $this->assertContains('FiFree2', $element->getText());
+            $this->assertContains('Ffsecondaria', $element->getText());
+            $this->assertContains('Descrizione secondo record', $element->getText());
 
             sleep(1);
             $session->executeScript('window.close()');
@@ -279,7 +277,6 @@ class z2FfsecondariaControllerTest extends FifreeTest
             $page = $session->getPage();
         }
     }
-
 }
 
 /* $client = $this->getClientAutorizzato();
@@ -298,13 +295,6 @@ class z2FfsecondariaControllerTest extends FifreeTest
           $em->flush();
           $em->clear();
           $this->assertTrue(is_null($ff->getId())); */
-
-
-
-
-
-
-
 
         /* Print excel */
         /* $element = $page->findAll('css', '.ui-icon-circle-arrow-s');

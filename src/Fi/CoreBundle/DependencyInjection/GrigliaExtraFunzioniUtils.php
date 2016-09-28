@@ -2,13 +2,9 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-use Fi\CoreBundle\Controller\GestionepermessiController;
-use Fi\CoreBundle\Controller\FiUtilita;
-
 class GrigliaExtraFunzioniUtils
 {
-
-    public static function getColonneLink($paricevuti, &$modellocolonne) 
+    public static function getColonneLink($paricevuti, &$modellocolonne)
     {
         $output = GrigliaUtils::getOuputType($paricevuti);
         $colonne_link = isset($paricevuti['colonne_link']) ? $paricevuti['colonne_link'] : array();
@@ -29,5 +25,4 @@ class GrigliaExtraFunzioniUtils
             }
         }
     }
-
 }

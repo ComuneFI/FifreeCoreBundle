@@ -4,8 +4,7 @@ namespace Fi\CoreBundle\DependencyInjection;
 
 class GrigliaDatiPrecondizioniUtils
 {
-
-    public static function setPrecondizioni(&$q, &$primo, $parametri = array()) 
+    public static function setPrecondizioni(&$q, &$primo, $parametri = array())
     {
         $precondizioni = $parametri['precondizioni'];
 
@@ -23,7 +22,7 @@ class GrigliaDatiPrecondizioniUtils
         }
     }
 
-    public static function setPrecondizioniAvanzate(&$q, &$primo, $parametri = array()) 
+    public static function setPrecondizioniAvanzate(&$q, &$primo, $parametri = array())
     {
         $doctrine = $parametri['doctrine'];
         $nometabella = $parametri['nometabella'];
@@ -83,7 +82,7 @@ class GrigliaDatiPrecondizioniUtils
         }
     }
 
-    private static function elaboravalorecampo($type, $valuepre) 
+    private static function elaboravalorecampo($type, $valuepre)
     {
         $tipo = $type['type'];
         if ($tipo && ($tipo == 'date' || $tipo == 'datetime')) {
@@ -102,5 +101,4 @@ class GrigliaDatiPrecondizioniUtils
         /* se si tratta di valori numerici tutto ok, altrimenti non funziona */
         return implode(', ', $valuepre);
     }
-
 }

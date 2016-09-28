@@ -4,17 +4,17 @@ namespace Fi\CoreBundle\DependencyInjection;
 
 class GrigliaDatiUtils
 {
-
-    public static function getTabellejNormalizzate($parametri) 
+    public static function getTabellejNormalizzate($parametri)
     {
         $tabellej = (isset($parametri['tabellej']) ? $parametri['tabellej'] : null);
         if (is_object($tabellej)) {
             $tabellej = get_object_vars($tabellej);
         }
+
         return $tabellej;
     }
 
-    public static function setTabelleJoin(&$q, $parametri = array()) 
+    public static function setTabelleJoin(&$q, $parametri = array())
     {
         $tabellej = $parametri['tabellej'];
         $nometabella = $parametri['nometabella'];
@@ -26,41 +26,41 @@ class GrigliaDatiUtils
             /* Serve per far venire nella getArrayResult() anche i campi della tabella il leftjoin
               altrimenti mostra solo quelli della tabella con alias a */
             $q->addSelect(array($tabellaj['tabella']));
-            $q = $q->leftJoin((isset($tabellaj['padre']) ? $tabellaj['padre'] : $nometabella) . '.' . $tabellaj['tabella'], $tabellaj['tabella']);
+            $q = $q->leftJoin((isset($tabellaj['padre']) ? $tabellaj['padre'] : $nometabella).'.'.$tabellaj['tabella'], $tabellaj['tabella']);
         }
     }
 
-    public static function getDatiDecodifiche($parametri) 
+    public static function getDatiDecodifiche($parametri)
     {
-        return (isset($parametri['decodifiche']) ? $parametri['decodifiche'] : null);
+        return isset($parametri['decodifiche']) ? $parametri['decodifiche'] : null;
     }
 
-    public static function getDatiEscludere($parametri) 
+    public static function getDatiEscludere($parametri)
     {
-        return (isset($parametri['escludere']) ? $parametri['escludere'] : null);
+        return isset($parametri['escludere']) ? $parametri['escludere'] : null;
     }
 
-    public static function getDatiNospan($parametri) 
+    public static function getDatiNospan($parametri)
     {
-        return (isset($parametri['nospan']) ? $parametri['nospan'] : false);
+        return isset($parametri['nospan']) ? $parametri['nospan'] : false;
     }
 
-    public static function getDatiPrecondizioni($parametri) 
+    public static function getDatiPrecondizioni($parametri)
     {
-        return (isset($parametri['precondizioni']) ? $parametri['precondizioni'] : false);
+        return isset($parametri['precondizioni']) ? $parametri['precondizioni'] : false;
     }
 
-    public static function getDatiPrecondizioniAvanzate($parametri) 
+    public static function getDatiPrecondizioniAvanzate($parametri)
     {
-        return (isset($parametri['precondizioniAvanzate']) ? $parametri['precondizioniAvanzate'] : false);
+        return isset($parametri['precondizioniAvanzate']) ? $parametri['precondizioniAvanzate'] : false;
     }
 
-    public static function getDatiCampiExtra($parametri) 
+    public static function getDatiCampiExtra($parametri)
     {
-        return (isset($parametri['campiextra']) ? $parametri['campiextra'] : null);
+        return isset($parametri['campiextra']) ? $parametri['campiextra'] : null;
     }
 
-    public static function getDatiOrdineColonne($parametri) 
+    public static function getDatiOrdineColonne($parametri)
     {
         $ordinecolonne = (isset($parametri['ordinecolonne']) ? $parametri['ordinecolonne'] : null);
         if (!isset($ordinecolonne)) {
@@ -70,28 +70,28 @@ class GrigliaDatiUtils
         return $ordinecolonne;
     }
 
-    public static function getDatiOrdinamento(&$sidx, $nometabella) 
+    public static function getDatiOrdinamento(&$sidx, $nometabella)
     {
         /* se non è passato nessun campo (ipotesi peregrina) usa id */
         if (!$sidx) {
-            $sidx = $nometabella . '.id';
+            $sidx = $nometabella.'.id';
         } elseif (strrpos($sidx, '.') == 0) {
             if (strrpos($sidx, ',') == 0) {
-                $sidx = $nometabella . '.' . $sidx; // un solo campo
+                $sidx = $nometabella.'.'.$sidx; // un solo campo
             } else { // più campi, passati separati da virgole
                 $parti = explode(',', $sidx);
                 $sidx = '';
                 foreach ($parti as $parte) {
                     if (trim($sidx) != '') {
-                        $sidx = $sidx . ',';
+                        $sidx = $sidx.',';
                     }
-                    $sidx = $sidx . $nometabella . '.' . trim($parte);
+                    $sidx = $sidx.$nometabella.'.'.trim($parte);
                 }
             }
         }
     }
 
-    public static function valorizzaVettore(&$vettoreriga, $parametri) 
+    public static function valorizzaVettore(&$vettoreriga, $parametri)
     {
         $tabella = $parametri['tabella'];
         $nomecampo = $parametri['nomecampo'];
@@ -132,7 +132,7 @@ class GrigliaDatiUtils
         }
     }
 
-    public static function campoElencato($parametriCampoElencato) 
+    public static function campoElencato($parametriCampoElencato)
     {
         $tabellej = $parametriCampoElencato['tabellej'];
         $nomecampo = $parametriCampoElencato['nomecampo'];
@@ -169,10 +169,9 @@ class GrigliaDatiUtils
             } else {
                 $fields = $singolo[$tabellej[$nomecampo]['tabella']] ? $singolo[$tabellej[$nomecampo]['tabella']][$campoelencato] : '';
             }
-            self::valorizzaVettore($vettoreriga, array('singolocampo' => $fields, 'tabella' => $bundle . ':' . $tabellej[$nomecampo]['tabella'], 'nomecampo' => $campoelencato, 'doctrine' => $doctrine, 'ordinecampo' => $ordinecampo, 'decodifiche' => $decodifiche));
+            self::valorizzaVettore($vettoreriga, array('singolocampo' => $fields, 'tabella' => $bundle.':'.$tabellej[$nomecampo]['tabella'], 'nomecampo' => $campoelencato, 'doctrine' => $doctrine, 'ordinecampo' => $ordinecampo, 'decodifiche' => $decodifiche));
         }
 
         return $vettoreriga;
     }
-
 }

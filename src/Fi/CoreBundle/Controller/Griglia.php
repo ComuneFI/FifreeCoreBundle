@@ -13,7 +13,6 @@ use Fi\CoreBundle\DependencyInjection\GrigliaDatiMultiUtils;
 
 class Griglia extends FiController
 {
-
     /**
      * Questa funzione è compatibile con jqGrid e risponden con un formato JSON
      * contenente i dati di testata per la griglia.
@@ -35,7 +34,7 @@ class Griglia extends FiController
      *
      * @return array contentente i dati di testata per la griglia
      */
-    public static function testataPerGriglia($paricevuti = array()) 
+    public static function testataPerGriglia($paricevuti = array())
     {
         $nometabella = $paricevuti['nometabella'];
         $output = GrigliaUtils::getOuputType($paricevuti);
@@ -93,7 +92,7 @@ class Griglia extends FiController
      *
      * @return JSON con i dati richiesti
      */
-    public static function datiPerGriglia($parametri = array()) 
+    public static function datiPerGriglia($parametri = array())
     {
         $request = $parametri['request'];
         $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
@@ -124,7 +123,7 @@ class Griglia extends FiController
         $sord = $request->get('sord'); // get the direction if(!$sidx) $sidx =1;
         GrigliaDatiUtils::getDatiOrdinamento($sidx, $nometabella);
         /* inizia la query */
-        $entityName = $bundle . ':' . $nometabella;
+        $entityName = $bundle.':'.$nometabella;
         $q = $doctrine->createQueryBuilder();
         $q->select($nometabella)
             ->from($entityName, $nometabella);
@@ -154,7 +153,7 @@ class Griglia extends FiController
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
                 'entityName' => $entityName,
-                'bundle' => $bundle,)
+                'bundle' => $bundle, )
             );
         }
         /* scorro ogni singola regola */
@@ -199,5 +198,4 @@ class Griglia extends FiController
 
         return json_encode($vettorerisposta);
     }
-
 }

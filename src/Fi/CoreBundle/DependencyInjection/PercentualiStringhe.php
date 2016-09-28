@@ -4,7 +4,6 @@ namespace Fi\CoreBundle\DependencyInjection;
 
 class PercentualiStringhe
 {
-
     /**
      * @param array  $parametri
      * @param string $parametri["elemento"] l'elemento da confrontare
@@ -12,7 +11,7 @@ class PercentualiStringhe
      *
      * @return array
      */
-    public function percentualiConfrontoStringheVettore($parametri = array()) 
+    public function percentualiConfrontoStringheVettore($parametri = array())
     {
         //parametri obbligatori
         if (!isset($parametri['elemento']) || !isset($parametri['elenco'])) {
@@ -48,7 +47,7 @@ class PercentualiStringhe
      *
      * @return int
      */
-    public function percentualiConfrontoStringhe($parametri = array()) 
+    public function percentualiConfrontoStringhe($parametri = array())
     {
         //parametri obbligatori
         if (!isset($parametri['stringaa']) || !isset($parametri['stringab'])) {
@@ -77,26 +76,26 @@ class PercentualiStringhe
         return $perc;
     }
 
-    private function getCarattereAPercentualeConfrontoStringhe($i, $stringaa, $strlensa) 
+    private function getCarattereAPercentualeConfrontoStringhe($i, $stringaa, $strlensa)
     {
-        return ($strlensa >= $i ? substr($stringaa, $i, 1) : false);
+        return $strlensa >= $i ? substr($stringaa, $i, 1) : false;
     }
 
-    private function getOffsetPercentualeConfrontoStringhe($i, $tolleranzauno) 
+    private function getOffsetPercentualeConfrontoStringhe($i, $tolleranzauno)
     {
         return (($i - $tolleranzauno) >= 0) ? ($i - $tolleranzauno) : 0;
     }
 
-    private function partecento($i, $posizioneinb, $tolleranzauno, $partecento) 
+    private function partecento($i, $posizioneinb, $tolleranzauno, $partecento)
     {
-
         if (!($posizioneinb === false)) {
             if ($posizioneinb == $i) {
                 $partecento += 2;
-            } elseif (($i + $tolleranzauno >= $posizioneinb) and ( $i - $tolleranzauno <= $posizioneinb)) {
+            } elseif (($i + $tolleranzauno >= $posizioneinb) and ($i - $tolleranzauno <= $posizioneinb)) {
                 $partecento += 1;
             }
         }
+
         return $partecento;
     }
 
@@ -140,7 +139,7 @@ class PercentualiStringhe
       return $partecento * 100 / $totalecento;
       } */
 
-    /**
+    /*
      * @param array          $parametri
      * @param Array(x,x,x,x) $parametri["minuti"]
      *

@@ -7,7 +7,6 @@ namespace Fi\CoreBundle\Entity;
  */
 class Ruoli
 {
-
     /**
      * @var int
      */
@@ -36,7 +35,7 @@ class Ruoli
     /**
      * Constructor.
      */
-    public function __construct() 
+    public function __construct()
     {
         $this->operatoris = new \Doctrine\Common\Collections\ArrayCollection();
         $this->permessis = new \Doctrine\Common\Collections\ArrayCollection();
@@ -47,7 +46,7 @@ class Ruoli
      *
      * @return int
      */
-    public function getId() 
+    public function getId()
     {
         return $this->id;
     }
@@ -59,7 +58,7 @@ class Ruoli
      *
      * @return ruoli
      */
-    public function setRuolo($ruolo) 
+    public function setRuolo($ruolo)
     {
         $this->ruolo = $ruolo;
 
@@ -71,7 +70,7 @@ class Ruoli
      *
      * @return string
      */
-    public function getRuolo() 
+    public function getRuolo()
     {
         return $this->ruolo;
     }
@@ -83,7 +82,7 @@ class Ruoli
      *
      * @return ruoli
      */
-    public function setPaginainiziale($paginainiziale) 
+    public function setPaginainiziale($paginainiziale)
     {
         $this->paginainiziale = $paginainiziale;
 
@@ -95,7 +94,7 @@ class Ruoli
      *
      * @return string
      */
-    public function getPaginainiziale() 
+    public function getPaginainiziale()
     {
         return $this->paginainiziale;
     }
@@ -107,7 +106,7 @@ class Ruoli
      *
      * @return ruoli
      */
-    public function addOperatori(\Fi\CoreBundle\Entity\Operatori $operatoris) 
+    public function addOperatori(\Fi\CoreBundle\Entity\Operatori $operatoris)
     {
         $this->operatoris[] = $operatoris;
 
@@ -119,7 +118,7 @@ class Ruoli
      *
      * @param \Fi\CoreBundle\Entity\Operatori $operatoris
      */
-    public function removeOperatori(\Fi\CoreBundle\Entity\Operatori $operatoris) 
+    public function removeOperatori(\Fi\CoreBundle\Entity\Operatori $operatoris)
     {
         $this->operatoris->removeElement($operatoris);
     }
@@ -129,7 +128,7 @@ class Ruoli
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getOperatoris() 
+    public function getOperatoris()
     {
         return $this->operatoris;
     }
@@ -141,7 +140,7 @@ class Ruoli
      *
      * @return ruoli
      */
-    public function addPermessi(\Fi\CoreBundle\Entity\Permessi $permessis) 
+    public function addPermessi(\Fi\CoreBundle\Entity\Permessi $permessis)
     {
         $this->permessis[] = $permessis;
 
@@ -153,7 +152,7 @@ class Ruoli
      *
      * @param \Fi\CoreBundle\Entity\Permessi $permessis
      */
-    public function removePermessi(\Fi\CoreBundle\Entity\Permessi $permessis) 
+    public function removePermessi(\Fi\CoreBundle\Entity\Permessi $permessis)
     {
         $this->permessis->removeElement($permessis);
     }
@@ -163,12 +162,12 @@ class Ruoli
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPermessis() 
+    public function getPermessis()
     {
         return $this->permessis;
     }
 
-    public function __toString() 
+    public function __toString()
     {
         return $this->getRuolo();
     }
@@ -195,7 +194,7 @@ class Ruoli
      *
      * @return ruoli
      */
-    public function setIsSuperadmin($isSuperadmin) 
+    public function setIsSuperadmin($isSuperadmin)
     {
         $this->is_superadmin = $isSuperadmin;
 
@@ -207,7 +206,7 @@ class Ruoli
      *
      * @return bool
      */
-    public function isSuperadmin() 
+    public function isSuperadmin()
     {
         return $this->is_superadmin;
     }
@@ -219,7 +218,7 @@ class Ruoli
      *
      * @return ruoli
      */
-    public function setIsAdmin($isAdmin) 
+    public function setIsAdmin($isAdmin)
     {
         $this->is_admin = $isAdmin;
 
@@ -231,7 +230,7 @@ class Ruoli
      *
      * @return bool
      */
-    public function isAdmin() 
+    public function isAdmin()
     {
         return $this->is_admin;
     }
@@ -243,7 +242,7 @@ class Ruoli
      *
      * @return ruoli
      */
-    public function setIsUser($isUser) 
+    public function setIsUser($isUser)
     {
         $this->is_user = $isUser;
 
@@ -255,9 +254,8 @@ class Ruoli
      *
      * @return bool
      */
-    public function isUser() 
+    public function isUser()
     {
         return $this->is_user;
     }
-
 }

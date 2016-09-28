@@ -6,19 +6,18 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class GrigliaDatiMultiUtils
 {
-
-    public static function getTotalPages($quanti, &$limit) 
+    public static function getTotalPages($quanti, &$limit)
     {
         /* calcola in mumero di pagine totali necessarie */
         return ceil($quanti / ($limit == 0 ? 1 : $limit));
     }
 
-    public static function getLimit(&$limit) 
+    public static function getLimit(&$limit)
     {
-        return ($limit ? $limit : 1);
+        return $limit ? $limit : 1;
     }
 
-    public static function prepareQuery($parametri, &$q, &$sidx, &$sord, &$page, &$limit, &$quanti) 
+    public static function prepareQuery($parametri, &$q, &$sidx, &$sord, &$page, &$limit, &$quanti)
     {
         $output = GrigliaUtils::getOuputType($parametri);
         $nospan = GrigliaDatiUtils::getDatiNospan($parametri);
@@ -62,10 +61,10 @@ class GrigliaDatiMultiUtils
         $q = $query_paginata->getArrayResult();
 
         /* Se il limire non è stato impostato si mette 1 (per calcolare la paginazione) */
-        $limit = GrigliaDatiMultiUtils::getLimit($limit);
+        $limit = self::getLimit($limit);
     }
 
-    public static function buildRowGriglia(&$singolo, &$vettoreriga, &$vettorerisposta) 
+    public static function buildRowGriglia(&$singolo, &$vettoreriga, &$vettorerisposta)
     {
 
         /* Si costruisce la risposta json per la jqgrid */
@@ -78,7 +77,7 @@ class GrigliaDatiMultiUtils
         unset($vettoreriga);
     }
 
-    public static function setOrdineColonneDatiGriglia(&$ordinecolonne, &$nomecampo, &$indice, &$indicecolonna) 
+    public static function setOrdineColonneDatiGriglia(&$ordinecolonne, &$nomecampo, &$indice, &$indicecolonna)
     {
         if (isset($ordinecolonne)) {
             $indicecolonna = array_search($nomecampo, $ordinecolonne);
@@ -99,7 +98,7 @@ class GrigliaDatiMultiUtils
         }
     }
 
-    public static function buildColonneDatiGriglia($parametri, &$vettoreriga, &$singolo, &$nomecampo, &$nomecampo, &$indice, &$indicecolonna, &$singolocampo) 
+    public static function buildColonneDatiGriglia($parametri, &$vettoreriga, &$singolo, &$nomecampo, &$nomecampo, &$indice, &$indicecolonna, &$singolocampo)
     {
         $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
         /* $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine); */
@@ -114,7 +113,6 @@ class GrigliaDatiMultiUtils
         $escludereutente = GrigliaDatiUtils::getDatiEscludere($parametri);
         $ordinecolonne = GrigliaDatiUtils::getDatiOrdineColonne($parametri);
 
-
         /* Si controlla se il campo è da escludere o meno */
         if ((!isset($escludere) || !(in_array($nomecampo, $escludere))) && (!isset($escludereutente) || !(in_array($nomecampo, $escludereutente)))) {
             if (isset($tabellej[$nomecampo])) {
@@ -125,7 +123,7 @@ class GrigliaDatiMultiUtils
                     /* $fields = $singolo->get($tabellej[$nomecampo]["tabella"]) ? $singolo->get($tabellej[$nomecampo]["tabella"])->get($campoelencato) : ""; */
                     /* array */
 
-                    GrigliaDatiMultiUtils::setOrdineColonneDatiGriglia($ordinecolonne, $nomecampo, $indice, $indicecolonna);
+                    self::setOrdineColonneDatiGriglia($ordinecolonne, $nomecampo, $indice, $indicecolonna);
 
                     $parametriCampoElencato['tabellej'] = $tabellej;
                     $parametriCampoElencato['nomecampo'] = $nomecampo;
@@ -140,19 +138,17 @@ class GrigliaDatiMultiUtils
                     $vettoreriga = GrigliaDatiUtils::campoElencato($parametriCampoElencato);
                 }
             } else {
+                self::setOrdineColonneDatiGriglia($ordinecolonne, $nomecampo, $indice, $indicecolonna);
 
-                GrigliaDatiMultiUtils::setOrdineColonneDatiGriglia($ordinecolonne, $nomecampo, $indice, $indicecolonna);
-
-                GrigliaDatiUtils::valorizzaVettore($vettoreriga, array('singolocampo' => $singolocampo, 'tabella' => $bundle . ':' . $nometabella, 'nomecampo' => $nomecampo, 'doctrine' => $doctrine, 'ordinecampo' => $indicecolonna, 'decodifiche' => $decodifiche));
+                GrigliaDatiUtils::valorizzaVettore($vettoreriga, array('singolocampo' => $singolocampo, 'tabella' => $bundle.':'.$nometabella, 'nomecampo' => $nomecampo, 'doctrine' => $doctrine, 'ordinecampo' => $indicecolonna, 'decodifiche' => $decodifiche));
             }
         }
     }
 
-    public static function TabellejNomecampoNormalizzato(&$tabellej, $nomecampo) 
+    public static function TabellejNomecampoNormalizzato(&$tabellej, $nomecampo)
     {
         if (is_object($tabellej[$nomecampo])) {
             $tabellej[$nomecampo] = get_object_vars($tabellej[$nomecampo]);
         }
     }
-
 }

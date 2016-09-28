@@ -24,6 +24,7 @@ class fifree2droptablesCommand extends ContainerAwareCommand
 
         if (!$force) {
             echo "Specificare l'opzione --force per eseguire il comando";
+
             return 1;
         }
         /* @var $em \Doctrine\ORM\EntityManager */

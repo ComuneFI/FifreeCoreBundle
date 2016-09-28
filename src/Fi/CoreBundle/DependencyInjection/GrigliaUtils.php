@@ -3,11 +3,9 @@
 namespace Fi\CoreBundle\DependencyInjection;
 
 use Fi\CoreBundle\Controller\GestionepermessiController;
-use Fi\CoreBundle\Controller\FiUtilita;
 
 class GrigliaUtils
 {
-
     public static $decodificaop;
     public static $precarattere;
     public static $postcarattere;
@@ -15,7 +13,7 @@ class GrigliaUtils
     const LARGHEZZAMASSIMA = 500;
     const MOLTIPLICATORELARGHEZZA = 10;
 
-    public static function init() 
+    public static function init()
     {
         // i possibili operatori di ciascuna ricerca sono questi:
         //['eq','ne','lt','le','gt','ge','bw','bn','in','ni','ew','en','cn','nc', 'nu', 'nn']
@@ -30,7 +28,7 @@ class GrigliaUtils
         self::$postcarattere = array('eq' => '', 'ne' => '', 'lt' => '', 'le' => '', 'gt' => '', 'ge' => '', 'bw' => '%\')', 'bn' => '%\')', 'in' => ')', 'ni' => ')', 'ew' => '\')', 'en' => '\')', 'cn' => '%\')', 'nc' => '%\')', 'nu' => '', 'nn' => '', 'nt' => '');
     }
 
-    public static function setVettoriPerData() 
+    public static function setVettoriPerData()
     {
         self::$precarattere['eq'] = "'";
         self::$precarattere['ne'] = "'";
@@ -46,7 +44,7 @@ class GrigliaUtils
         self::$postcarattere['ge'] = "'";
     }
 
-    public static function setVettoriPerStringa() 
+    public static function setVettoriPerStringa()
     {
         self::$precarattere['eq'] = "lower('";
         self::$precarattere['ne'] = "lower('";
@@ -62,7 +60,7 @@ class GrigliaUtils
         self::$postcarattere['ge'] = "')";
     }
 
-    public static function setVettoriPerNumero() 
+    public static function setVettoriPerNumero()
     {
         self::$precarattere['eq'] = '';
         self::$precarattere['ne'] = '';
@@ -78,37 +76,40 @@ class GrigliaUtils
         self::$postcarattere['ge'] = '';
     }
 
-    public static function getOuputType($parametri) 
+    public static function getOuputType($parametri)
     {
         if ((isset($parametri['output'])) && ($parametri['output'] == 'stampa')) {
             $output = 'stampa';
         } else {
             $output = 'index';
         }
+
         return $output;
     }
 
-    public static function getDoctrineByEm($parametri) 
+    public static function getDoctrineByEm($parametri)
     {
         if (isset($parametri['em'])) {
             $doctrine = $parametri['container']->get('doctrine')->getManager($parametri['em']);
         } else {
             $doctrine = $parametri['container']->get('doctrine')->getManager();
         }
+
         return $doctrine;
     }
 
-    public static function getDoctrineFiCoreByEm($parametri, $doctrine) 
+    public static function getDoctrineFiCoreByEm($parametri, $doctrine)
     {
         if (isset($parametri['emficore'])) {
             $doctrineficore = $parametri['container']->get('doctrine')->getManager($parametri['emficore']);
         } else {
             $doctrineficore = &$doctrine;
         }
+
         return $doctrineficore;
     }
 
-    public static function getCampiEsclusi($riga, $output) 
+    public static function getCampiEsclusi($riga, $output)
     {
         $campoescluso = null;
         if ($output == 'stampa') {
@@ -120,10 +121,11 @@ class GrigliaUtils
                 $campoescluso = $riga->getNomecampo();
             }
         }
+
         return $campoescluso;
     }
 
-    public static function getUserCustomTableFields($em, $nometabella, $operatore) 
+    public static function getUserCustomTableFields($em, $nometabella, $operatore)
     {
         $q = $em->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => $operatore['id'], 'nometabella' => $nometabella));
 
@@ -131,28 +133,29 @@ class GrigliaUtils
             unset($q);
             $q = $em->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
         }
+
         return $q;
     }
 
-    public static function etichettecampi($parametri = array()) 
+    public static function etichettecampi($parametri = array())
     {
         if (!isset($parametri['nometabella'])) {
             return false;
         }
 
-        $output = GrigliaUtils::getOuputType($parametri);
+        $output = self::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
-        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
-        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
+        $doctrine = self::getDoctrineByEm($parametri);
+        $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
 
         $etichette = array();
 
-        $q = GrigliaUtils::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
+        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
 
         if ($q) {
             foreach ($q as $riga) {
@@ -167,25 +170,25 @@ class GrigliaUtils
         return $etichette;
     }
 
-    public static function larghezzecampi($parametri = array()) 
+    public static function larghezzecampi($parametri = array())
     {
         if (!isset($parametri['nometabella'])) {
             return false;
         }
 
-        $output = GrigliaUtils::getOuputType($parametri);
+        $output = self::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
-        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
-        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
+        $doctrine = self::getDoctrineByEm($parametri);
+        $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
 
         $etichette = array();
 
-        $q = GrigliaUtils::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
+        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
 
         if (!$q) {
             return $etichette;
@@ -202,25 +205,25 @@ class GrigliaUtils
         return $etichette;
     }
 
-    public static function ordinecolonne($parametri = array()) 
+    public static function ordinecolonne($parametri = array())
     {
         if (!isset($parametri['nometabella'])) {
             return false;
         }
 
-        $output = GrigliaUtils::getOuputType($parametri);
+        $output = self::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
-        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
-        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
+        $doctrine = self::getDoctrineByEm($parametri);
+        $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
 
         $ordine = array();
 
-        $q = GrigliaUtils::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
+        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
 
         if ($q) {
             foreach ($q as $riga) {
@@ -253,7 +256,7 @@ class GrigliaUtils
      *
      * @return string $str translated into camel caps
      */
-    public static function to_camel_case($parametri = array()) 
+    public static function to_camel_case($parametri = array())
     {
         $str = $parametri['str'];
         $capitalise_first_char = isset($parametri['primamaiuscola']) ? $parametri['primamaiuscola'] : false;
@@ -266,7 +269,7 @@ class GrigliaUtils
         return preg_replace_callback('/_([a-z])/', $func, $str);
     }
 
-    public static function getOpzioniTabella($doctrineficore, $nometabella, &$testata) 
+    public static function getOpzioniTabella($doctrineficore, $nometabella, &$testata)
     {
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $doctrineficore->createQueryBuilder();
@@ -283,27 +286,29 @@ class GrigliaUtils
         }
     }
 
-    Public static function getNomiColonne($nomicolonne) 
+    public static function getNomiColonne($nomicolonne)
     {
         ksort($nomicolonne);
         $nomicolonnesorted = array();
         foreach ($nomicolonne as $value) {
             $nomicolonnesorted[] = $value;
         }
+
         return $nomicolonnesorted;
     }
 
-    Public static function getModelloColonne($modellocolonne) 
+    public static function getModelloColonne($modellocolonne)
     {
         ksort($modellocolonne);
         $modellocolonnesorted = array();
         foreach ($modellocolonne as $value) {
             $modellocolonnesorted[] = $value;
         }
+
         return $modellocolonnesorted;
     }
 
-    Public static function getPermessiTabella($paricevuti, &$testata) 
+    public static function getPermessiTabella($paricevuti, &$testata)
     {
         if (!isset($paricevuti['container'])) {
             return;
@@ -315,7 +320,7 @@ class GrigliaUtils
         $permessi->setContainer($container);
 
         $vettorepermessi = $permessi->impostaPermessi(array('modulo' => $nometabella));
+
         return array_merge($testata, $vettorepermessi);
     }
-
 }
