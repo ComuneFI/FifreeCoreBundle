@@ -105,7 +105,6 @@ class Griglia extends FiController {
         /* qui */
         $tabellej = GrigliaDatiUtils::getTabellejNormalizzate($parametri);
 
-        $escludere = GrigliaDatiUtils::getDatiEscludere($parametri);
         $nospan = GrigliaDatiUtils::getDatiNospan($parametri);
 
         $precondizioni = GrigliaDatiUtils::getDatiPrecondizioni($parametri);
@@ -113,7 +112,6 @@ class Griglia extends FiController {
         $precondizioniAvanzate = GrigliaDatiUtils::getDatiPrecondizioniAvanzate($parametri);
         /* $parametri_link = (isset($paricevuti['parametri_link']) ? $paricevuti['parametri_link'] : null); //$paricevuti["parametri_link"]; */
         $campiextra = GrigliaDatiUtils::getDatiCampiExtra($parametri);
-        $ordinecolonne = GrigliaDatiUtils::getDatiOrdineColonne($parametri);
         /* inserisco i filtri passati in un vettore */
 
         $filtri = json_decode($request->get('filters'), true);
@@ -229,6 +227,7 @@ class Griglia extends FiController {
         foreach ($q as $singolo) {
             /* Si scorrono tutti i campi del record */
             $vettoreriga = array();
+            $indicecolonna = 0;
             foreach ($singolo as $nomecampo => $singolocampo) {
                 GrigliaDatiMultiUtils::buildColonneDatiGriglia($parametri, $vettoreriga, $singolo, $nomecampo, $nomecampo, $indice, $indicecolonna, $singolocampo);
             }
