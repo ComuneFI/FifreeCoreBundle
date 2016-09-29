@@ -65,19 +65,19 @@ class FiUtilita
         }
 
         switch ($tipocampo) {
-        case 'date':
-        case 'integer':
-        case 'double':
-            $operatore = '>=';
-            $operatoredue = '<=';
-            break;
-        case 'string':
-        case 'text':
-            $operatore = 'LIKE';
-            break;
-        default:
-            $operatore = '=';
-            break;
+            case 'date':
+            case 'integer':
+            case 'double':
+                $operatore = '>=';
+                $operatoredue = '<=';
+                break;
+            case 'string':
+            case 'text':
+                $operatore = 'LIKE';
+                break;
+            default:
+                $operatore = '=';
+                break;
         }
 
         $risposta['segnouno'] = $operatore;

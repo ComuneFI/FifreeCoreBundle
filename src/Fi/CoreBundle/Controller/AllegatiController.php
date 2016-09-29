@@ -43,15 +43,14 @@ class AllegatiController extends FiController
 
             return $this->redirect($this->generateUrl($controller.'_editiframe', array('id' => $id)));
         }
-
-        return $this->render(
-            $nomebundle.':'.$controller.':editiframe.html.twig', array(
-                    'entity' => $entity,
-                    'edit_form' => $editForm->createView(),
-                    'delete_form' => $deleteForm->createView(),
-                    'nomecontroller' => $controller,
-            )
+        $twigparms = array(
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+            'nomecontroller' => $controller,
         );
+
+        return $this->render($nomebundle.':'.$controller.':editiframe.html.twig', $twigparms);
     }
 
     /**
@@ -80,24 +79,25 @@ class AllegatiController extends FiController
         }
 
         $editForm = $this->createForm(
-            $formType, $entity, array('attr' => array(
+            $formType,
+            $entity,
+            array('attr' => array(
                 'id' => 'formdati'.$controller,
-            ),
-            'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
-            )
+                ),
+                'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
+                )
         );
         $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render(
-            $nomebundle.':'.$controller.':edit.html.twig', array(
-                    'entity' => $entity,
-                    'nomecontroller' => $controller,
-                    'edit_form' => $editForm->createView(),
-                    'delete_form' => $deleteForm->createView(),
-                    'allegati' => $allegati,
-                    'id' => $entity->getId(),
-            )
+        $twigparms = array(
+            'entity' => $entity,
+            'nomecontroller' => $controller,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+            'allegati' => $allegati,
+            'id' => $entity->getId(),
         );
+
+        return $this->render($nomebundle.':'.$controller.':edit.html.twig', $twigparms);
     }
 
     /**
@@ -124,26 +124,24 @@ class AllegatiController extends FiController
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find '.$controller.' entity.');
         }
-
-        $editForm = $this->createForm(
-            $formType, $entity, array('attr' => array(
+        $formparms = array(
+            'attr' => array(
                 'id' => 'formdati'.$controller,
+                'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
             ),
-            'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
-            )
         );
+        $editForm = $this->createForm($formType, $entity, $formparms);
         $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render(
-            $nomebundle.':'.$controller.':editiframe.html.twig', array(
-                    'entity' => $entity,
-                    'nomecontroller' => $controller,
-                    'edit_form' => $editForm->createView(),
-                    'delete_form' => $deleteForm->createView(),
-                    'allegati' => $allegati,
-                    'id' => $entity->getId(),
-            )
+        $twigparms = array(
+            'entity' => $entity,
+            'nomecontroller' => $controller,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+            'allegati' => $allegati,
+            'id' => $entity->getId(),
         );
+
+        return $this->render($nomebundle.':'.$controller.':editiframe.html.twig', $twigparms);
     }
 
     /**
@@ -175,11 +173,12 @@ class AllegatiController extends FiController
         }
 
         return $this->render(
-            $nomebundle.':'.$controller.':new.html.twig', array(
+            $nomebundle.':'.$controller.':new.html.twig',
+            array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
-            )
+                        )
         );
     }
 
@@ -200,21 +199,24 @@ class AllegatiController extends FiController
 
         $entity = new $classbundle();
         $form = $this->createForm(
-            $formType, $entity, array('attr' => array(
+            $formType,
+            $entity,
+            array('attr' => array(
                 'id' => 'formdati'.$controller,
-            ),
-            'action' => $this->generateUrl($controller.'_create'),
-            )
+                ),
+                'action' => $this->generateUrl($controller.'_create'),
+                )
         );
 
         return $this->render(
-            $nomebundle.':'.$controller.':new.html.twig', array(
+            $nomebundle.':'.$controller.':new.html.twig',
+            array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
                     'nometabella' => $request->get('nometabella'),
                     'indicetabella' => $request->get('indicetabella'),
-            )
+                        )
         );
     }
 
@@ -239,19 +241,22 @@ class AllegatiController extends FiController
         $entity->setIndicetabella($request->get('indicetabella'));
 
         $form = $this->createForm(
-            $formType, $entity, array('attr' => array(
+            $formType,
+            $entity,
+            array('attr' => array(
                 'id' => 'formdati'.$controller,
                 ),
                 'action' => $this->generateUrl($controller.'_create'),
-            )
+                )
         );
 
         return $this->render(
-            $nomebundle.':'.$controller.':newiframe.html.twig', array(
+            $nomebundle.':'.$controller.':newiframe.html.twig',
+            array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
-            )
+                        )
         );
     }
 
@@ -324,14 +329,15 @@ class AllegatiController extends FiController
         $testata = json_encode($testatagriglia);
 
         return $this->render(
-            $nomebundle.':'.$controller.':popup.html.twig', array(
+            $nomebundle.':'.$controller.':popup.html.twig',
+            array(
                     //'entities' => $entities,
                     'nomecontroller' => $controller,
                     'testata' => $testata,
                     'canread' => $canRead,
                     'nometabella' => $nometabella,
                     'id' => $id,
-            )
+                        )
         );
     }
 

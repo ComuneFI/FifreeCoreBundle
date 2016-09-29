@@ -149,7 +149,9 @@ class Griglia extends FiController
         /* se ci sono delle precondizioni avanzate le imposta qui */
         if ($precondizioniAvanzate) {
             GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
-                $q, $primo, array('precondizioniAvanzate' => $precondizioniAvanzate,
+                $q,
+                $primo,
+                array('precondizioniAvanzate' => $precondizioniAvanzate,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
                 'entityName' => $entityName,
@@ -159,7 +161,9 @@ class Griglia extends FiController
         /* scorro ogni singola regola */
         if (isset($regole)) {
             GrigliaRegoleUtils::setRegole(
-                $q, $primo, array(
+                $q,
+                $primo,
+                array(
                 'regole' => $regole,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,

@@ -27,13 +27,21 @@ class OpzioniTabellaController extends FiController
         $nomebundle = $namespace.$bundle.'Bundle';
 
         $em = $container->get('doctrine')->getManager();
-        $entities = $em->getRepository($nomebundle.':'.$controller)->findAll();
 
         $dettaglij = array(
-            'descrizione' => array(array('nomecampo' => 'descrizione', 'lunghezza' => '600', 'descrizione' => 'Descrizione', 'tipo' => 'text')),
-            'tabelle_id' => array(array('nomecampo' => 'tabelle.nometabella', 'lunghezza' => '400', 'descrizione' => 'Tabella', 'tipo' => 'text')),
-                /* ,
-                  array("nomecampo" => "ffprincipale.id", "lunghezza" => "40", "descrizione" => "IdP", "tipo" => "integer") */
+            'descrizione' => array(
+                array(
+                    'nomecampo' => 'descrizione',
+                    'lunghezza' => '600',
+                    'descrizione' => 'Descrizione',
+                    'tipo' => 'text', ), ),
+            'tabelle_id' => array(
+                array(
+                    'nomecampo' => 'tabelle.nometabella',
+                    'lunghezza' => '400',
+                    'descrizione' => 'Tabella',
+                    'tipo' => 'text', ),
+            ),
         );
 
         $escludi = array();
@@ -53,14 +61,12 @@ class OpzioniTabellaController extends FiController
         $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
 
         $testata = json_encode($testatagriglia);
-
-        return $this->render(
-            $nomebundle.':'.$controller.':index.html.twig', array(
-                    'entities' => $entities,
-                    'nomecontroller' => $controller,
-                    'testata' => $testata,
-            )
+        $twigparms = array(
+            'nomecontroller' => $controller,
+            'testata' => $testata,
         );
+
+        return $this->render($nomebundle.':'.$controller.':index.html.twig', $twigparms);
     }
 
     public function setParametriGriglia($prepar = array())
@@ -74,7 +80,12 @@ class OpzioniTabellaController extends FiController
         $escludi = array();
         $tabellej['tabelle_id'] = array('tabella' => 'tabelle', 'campi' => array('nometabella'));
 
-        $paricevuti = array('container' => $this->container, 'nomebundle' => $nomebundle, 'tabellej' => $tabellej, 'nometabella' => $controller, 'escludere' => $escludi);
+        $paricevuti = array(
+            'container' => $this->container,
+            'nomebundle' => $nomebundle,
+            'tabellej' => $tabellej,
+            'nometabella' => $controller,
+            'escludere' => $escludi, );
 
         if ($prepar) {
             $paricevuti = array_merge($paricevuti, $prepar);
