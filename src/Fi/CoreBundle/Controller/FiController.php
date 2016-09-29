@@ -383,8 +383,8 @@ class FiController extends Controller
             $qb = $em->createQueryBuilder();
             $ids = explode(',', $request->get('id'));
             $qb->delete($nomebundle.':'.$controller, 'u')
-                ->andWhere('u.id IN (:ids)')
-                ->setParameter('ids', $ids);
+                    ->andWhere('u.id IN (:ids)')
+                    ->setParameter('ids', $ids);
 
             $query = $qb->getQuery();
             $query->execute();
@@ -409,12 +409,12 @@ class FiController extends Controller
     {
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             return $this->createFormBuilder(array('id' => $id))
-                ->add('id', get_class(new \Symfony\Component\Form\Extension\Core\Type\HiddenType()))
-                ->getForm();
+                            ->add('id', get_class(new \Symfony\Component\Form\Extension\Core\Type\HiddenType()))
+                            ->getForm();
         } else {
             return $this->createFormBuilder(array('id' => $id))
-                ->add('id', 'hidden')
-                ->getForm();
+                            ->add('id', 'hidden')
+                            ->getForm();
         }
     }
 
@@ -432,7 +432,12 @@ class FiController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $paricevuti = array('nomebundle' => $nomebundle, 'nometabella' => $request->get('nometabella'), 'container' => $container, 'request' => $request);
+        $paricevuti = array(
+            'nomebundle' => $nomebundle,
+            'nometabella' => $request->get('nometabella'),
+            'container' => $container,
+            'request' => $request,
+        );
 
         $parametripertestatagriglia = $this->getParametersTestataPerGriglia($request, $container, $em, $paricevuti);
 
@@ -464,7 +469,12 @@ class FiController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $paricevuti = array('nomebundle' => $nomebundle, 'nometabella' => $request->get('nometabella'), 'container' => $container, 'request' => $request);
+        $paricevuti = array(
+            'nomebundle' => $nomebundle,
+            'nometabella' => $request->get('nometabella'),
+            'container' => $container,
+            'request' => $request,
+        );
 
         $parametripertestatagriglia = $this->getParametersTestataPerGriglia($request, $container, $em, $paricevuti);
         $testatagriglia = Griglia::testataPerGriglia($parametripertestatagriglia);
