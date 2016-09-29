@@ -28,8 +28,8 @@ class StampatabellaController extends FiController
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         //echo PDF_HEADER_LOGO;
-
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'FiFree2', isset($testata['titolo']) && ($testata['titolo'] != '') ? $testata['titolo'] : 'Elenco '.$request->get('nometabella'), array(0, 0, 0), array(0, 0, 0));
+        $pdftitle = isset($testata['titolo']) && ($testata['titolo'] != '') ? $testata['titolo'] : 'Elenco '.$request->get('nometabella');
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'FiFree2', $pdftitle, array(0, 0, 0), array(0, 0, 0));
         $pdf->setFooterData(array(0, 0, 0), array(0, 0, 0));
 
         $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -102,7 +102,8 @@ class StampatabellaController extends FiController
         $pdf->Cell(0, 10, GrigliaFiltriUtils::traduciFiltri(array('filtri' => $risposta->filtri)), 0, false, 'L', 0, '', 0, false, 'T', 'M');
 
         /*
-          I: send the file inline to the browser (default). The plug-in is used if available. The name given by name is used when one selects the “Save as” option on the link generating the PDF.
+          I: send the file inline to the browser (default). The plug-in is used if available.
+          The name given by name is used when one selects the “Save as” option on the link generating the PDF.
           D: send to the browser and force a file download with the name given by name.
           F: save to a local server file with the name given by name.
           S: return the document as a string (name is ignored).
@@ -111,10 +112,11 @@ class StampatabellaController extends FiController
           E: return the document as base64 mime multi-part email attachment (RFC 2045)
          */
 
-        /*In caso il pdf stampato nel browser resti fisso a caricare la pagina, impostare 'D' per forzare lo scarico del file, oppure
+        /* In caso il pdf stampato nel browser resti fisso a caricare la pagina,
+          impostare 'D' per forzare lo scarico del file, oppure
           mettere exit al posto di return 0; questo opzione però non è accettata da gli strumenti di controllo del codice che non si
           aspettano exit nel codice
-        */
+         */
         $pdf->Output($request->get('nometabella').'.pdf', 'I');
 
         return 0;
@@ -182,7 +184,9 @@ class StampatabellaController extends FiController
             //Si imposta la larghezza delle colonne
             $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonnaheader);
             $width = (int) $modellocolonna['width'] / 7;
-            $coltitle = strtoupper(isset($testata['nomicolonne'][$indicecolonnaheader]) ? $testata['nomicolonne'][$indicecolonnaheader] : $modellocolonna['name']);
+            $indicecolonnaheadertitle = $testata['nomicolonne'][$indicecolonnaheader];
+            $coltitlecalc = isset($indicecolonnaheadertitle) ? $indicecolonnaheadertitle : $modellocolonna['name'];
+            $coltitle = strtoupper($coltitlecalc);
             $sheet->setCellValueByColumnAndRow($indicecolonnaheader, 1, $coltitle);
             $sheet->getColumnDimension($letteracolonna)->setWidth($width);
 
@@ -216,19 +220,19 @@ class StampatabellaController extends FiController
             $col = 0;
             foreach ($vettorecelle as $vettorecella) {
                 switch ($modellicolonne[$col]['tipocampo']) {
-                case 'date':
-                    $d = substr($vettorecella, 0, 2);
-                    $m = substr($vettorecella, 3, 2);
-                    $y = substr($vettorecella, 6, 4);
-                    $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
-                    $sheet->setCellValueByColumnAndRow($col, $row, $t_date);
-                    break;
-                case 'boolean':
-                    $sheet->setCellValueByColumnAndRow($col, $row, ($vettorecella == 1) ? 'SI' : 'NO');
-                    break;
-                default:
-                    $sheet->setCellValueByColumnAndRow($col, $row, $vettorecella);
-                    break;
+                    case 'date':
+                        $d = substr($vettorecella, 0, 2);
+                        $m = substr($vettorecella, 3, 2);
+                        $y = substr($vettorecella, 6, 4);
+                        $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
+                        $sheet->setCellValueByColumnAndRow($col, $row, $t_date);
+                        break;
+                    case 'boolean':
+                        $sheet->setCellValueByColumnAndRow($col, $row, ($vettorecella == 1) ? 'SI' : 'NO');
+                        break;
+                    default:
+                        $sheet->setCellValueByColumnAndRow($col, $row, $vettorecella);
+                        break;
                 }
 
                 $col = $col + 1;
@@ -241,46 +245,46 @@ class StampatabellaController extends FiController
         foreach ($modellicolonne as $modellocolonna) {
             $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonna);
             switch ($modellocolonna['tipocampo']) {
-            case 'text':
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
-                break;
-            case 'string':
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
-                break;
-            case 'integer':
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-                break;
-            case 'float':
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode('#,##0.00');
-                break;
-            case 'number':
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode('#,##0.00');
-                break;
-            case 'datetime':
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode('dd/mm/yyyy');
-                break;
-            case 'date':
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode('dd/mm/yyyy');
-                break;
-            default:
-                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
-                    ->getNumberFormat()
-                    ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
-                break;
+                case 'text':
+                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                            ->getNumberFormat()
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                    break;
+                case 'string':
+                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                            ->getNumberFormat()
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                    break;
+                case 'integer':
+                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                            ->getNumberFormat()
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+                    break;
+                case 'float':
+                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                            ->getNumberFormat()
+                            ->setFormatCode('#,##0.00');
+                    break;
+                case 'number':
+                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                            ->getNumberFormat()
+                            ->setFormatCode('#,##0.00');
+                    break;
+                case 'datetime':
+                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                            ->getNumberFormat()
+                            ->setFormatCode('dd/mm/yyyy');
+                    break;
+                case 'date':
+                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                            ->getNumberFormat()
+                            ->setFormatCode('dd/mm/yyyy');
+                    break;
+                default:
+                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                            ->getNumberFormat()
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                    break;
             }
 
             ++$indicecolonna;
@@ -320,129 +324,4 @@ class StampatabellaController extends FiController
         $pdf->SetFont('helvetica', '', 9);
         $pdf->Ln();
     }
-
-    /*
-      public function stampa($parametri = array()) {
-      $testata = $parametri["testata"];
-      $rispostaj = $parametri["griglia"];
-      $request = $parametri["request"];
-      $nomicolonne = $testata["nomicolonne"];
-
-      $modellicolonne = $testata["modellocolonne"];
-      $larghezzaform = 900;
-
-      $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-      //echo PDF_HEADER_LOGO;
-
-      $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'FiFree2', isset($testata["titolo"]) && ($testata["titolo"] != "") ? $testata["titolo"] : "Elenco " . $request->get("nometabella"), array(0, 0, 0), array(0, 0, 0));
-      $pdf->setFooterData(array(0, 0, 0), array(0, 0, 0));
-
-      $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-      $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-
-      $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-      $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-      $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-      $pdf->AddPage("L");
-      $h = 6;
-      $border = 1;
-      $noborder = 0;
-      $ln = 0;
-      $align = "L";
-      $fill = 0;
-
-      $pdf->SetFont('helvetica', 'B', 9);
-      $pdf->SetFillColor(220, 220, 220);
-
-      //stampa la testata
-      $maxnocells = 0;
-      $cellcount = 0;
-      $startX = $pdf->GetX();
-      $startY = $pdf->GetY();
-      $startPage = $pdf->GetPage();
-      // print text in cells without borders
-      foreach ($nomicolonne as $posizione => $nomecolonna) {
-      if (isset($modellicolonne[$posizione])) {
-      $width = ((297 * $modellicolonne[$posizione]["width"]) / $larghezzaform);
-      } else {
-      $width = ((297 * 100) / $larghezzaform);
-      }
-      //$pdf->Cell($width / 2, $h, $nomecolonna, $border, $ln, $align, $fill);
-      //$pdf->MultiCell($width / 2, $h, $nomecolonna, $border, $align, $fill, $ln);
-      $cellcount = $pdf->MultiCell($width / 2, $h, $nomecolonna, $noborder, $align, $fill, $ln);
-      if ($cellcount > $maxnocells) {
-      $maxnocells = $cellcount;
-      }
-      }
-      if ($pdf->GetPage()!= $startPage) {
-      $pdf->SetPage($startPage);
-      }
-      $pdf->SetXY($startX,$startY);
-      //now do borders and fill
-      foreach ($nomicolonne as $posizione => $nomecolonna) {
-      if (isset($modellicolonne[$posizione])) {
-      $width = ((297 * $modellicolonne[$posizione]["width"]) / $larghezzaform);
-      } else {
-      $width = ((297 * 100) / $larghezzaform);
-      }
-      $pdf->MultiCell($width / 2, $maxnocells * $h, '', $border, $align, $fill, $ln);
-      }
-      $pdf->Ln();
-
-      $risposta = json_decode($rispostaj);
-      $righe = $risposta->rows;
-
-      $pdf->SetFont('helvetica', '', 9);
-      foreach ($righe as $riga) {
-      $fill = !$fill;
-      $vettorecelle = $riga->cell;
-
-      $maxnocells = 0;
-      $cellcount = 0;
-      $startX = $pdf->GetX();
-      $startY = $pdf->GetY();
-      $startPage = $pdf->GetPage();
-      // print text in cells without borders
-      foreach ($vettorecelle as $posizione => $valore) {
-      if (!is_object($valore)) {
-      if (isset($modellicolonne[$posizione])) {
-      $width = ((297 * $modellicolonne[$posizione]["width"]) / $larghezzaform);
-      } else {
-      $width = ((297 * 100) / $larghezzaform);
-      }
-      //$pdf->Cell($width / 2, $h, $valore, $border, $ln, $align, $fill);
-      //$pdf->MultiCell($width / 2, $h, $valore, $border, $align, $fill, $ln);
-      $cellcount = $pdf->MultiCell($width / 2, $h, $valore, $noborder, $align, $fill, $ln);
-      if ($cellcount > $maxnocells) {
-      $maxnocells = $cellcount;
-      }
-      }
-      }
-      if ($pdf->GetPage()!= $startPage) {
-      $pdf->SetPage($startPage);
-      }
-      $pdf->SetXY($startX,$startY);
-      //now do borders and fill
-      foreach ($vettorecelle as $posizione => $valore) {
-      if (!is_object($valore)) {
-      if (isset($modellicolonne[$posizione])) {
-      $width = ((297 * $modellicolonne[$posizione]["width"]) / $larghezzaform);
-      } else {
-      $width = ((297 * 100) / $larghezzaform);
-      }
-      $pdf->MultiCell($width / 2, $maxnocells * $h, '', $border, $align, $fill, $ln);
-      }
-      }
-      $pdf->Ln();
-      }
-
-      $pdf->Cell(0, 10, GrigliaFiltriUtils::traduciFiltri(array("filtri" => $risposta->filtri)), 0, false, 'L', 0, '', 0, false, 'T', 'M');
-
-      $pdf->Output($request->get("nometabella") . '.pdf', 'I');
-      exit;
-      }
-
-     */
 }
