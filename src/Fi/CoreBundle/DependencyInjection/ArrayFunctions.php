@@ -2,7 +2,7 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-class arrayFunctions
+class ArrayFunctions
 {
     /**
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
@@ -14,7 +14,7 @@ class arrayFunctions
      *
      * @return mixed False se non trovato l'elemento, altrimenti l'indice in cui si è trovato il valore
      */
-    public static function in_multiarray($elem, $array, $key)
+    public static function inMultiarray($elem, $array, $key)
     {
         foreach ($array as $indice => $value) {
             if (!is_array($value)) {
@@ -43,9 +43,9 @@ class arrayFunctions
      *
      * @return array Ritorna l'array ordinato
      *
-     * @example array_orderby($rubrica,"cognome",SORT_ASC);<br/>$rubrica = array();<br/>$rubrica[] = array("matricola" => 99999, "cognome" => "rossi", "nome" => "mario");<br/>$rubrica[] = array("matricola" => 99998, "cognome" => "bianchi", "nome" => "andrea");<br/>$rubrica[] = array("matricola" => 99997, "cognome" => "verdi", "nome" => "michele");<br/>rusulterà<br/>$rubrica[0]("matricola"=>99998,"cognome"=>"bianchi","nome"=>"andrea")<br/>$rubrica[1]("matricola"=>99999,"cognome"=>"rossi","nome"=>"mario")<br/>$rubrica[2]("matricola"=>99997,"cognome"=>"verdi","nome"=>"michele")<br/>
+     * @example arrayOrderby($rubrica,"cognome",SORT_ASC);<br/>$rubrica = array();<br/>$rubrica[] = array("matricola" => 99999, "cognome" => "rossi", "nome" => "mario");<br/>$rubrica[] = array("matricola" => 99998, "cognome" => "bianchi", "nome" => "andrea");<br/>$rubrica[] = array("matricola" => 99997, "cognome" => "verdi", "nome" => "michele");<br/>rusulterà<br/>$rubrica[0]("matricola"=>99998,"cognome"=>"bianchi","nome"=>"andrea")<br/>$rubrica[1]("matricola"=>99999,"cognome"=>"rossi","nome"=>"mario")<br/>$rubrica[2]("matricola"=>99997,"cognome"=>"verdi","nome"=>"michele")<br/>
      */
-    public static function array_orderby()
+    public static function arrayOrderby()
     {
         $args = func_get_args();
         $data = array_shift($args);

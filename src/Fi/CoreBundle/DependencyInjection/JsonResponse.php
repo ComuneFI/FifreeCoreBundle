@@ -2,7 +2,7 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-class jsonResponse
+class JsonResponse
 {
     private $errcode = -123456789;
     private $message = '';
