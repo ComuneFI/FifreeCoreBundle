@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class fifree2createdatabaseCommand extends ContainerAwareCommand
+class Fifree2createdatabaseCommand extends ContainerAwareCommand
 {
     protected function configure()
     {

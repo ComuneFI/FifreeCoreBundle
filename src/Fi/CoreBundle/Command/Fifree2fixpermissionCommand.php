@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class fifree2fixpermissionCommand extends ContainerAwareCommand
+class Fifree2fixpermissionCommand extends ContainerAwareCommand
 {
     protected function configure()
     {

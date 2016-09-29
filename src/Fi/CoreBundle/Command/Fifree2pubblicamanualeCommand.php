@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
-class fifree2pubblicamanualeCommand extends ContainerAwareCommand
+class Fifree2pubblicamanualeCommand extends ContainerAwareCommand
 {
     protected function configure()
     {

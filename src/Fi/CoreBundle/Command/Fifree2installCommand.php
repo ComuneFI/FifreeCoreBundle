@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class fifree2installCommand extends ContainerAwareCommand
+class Fifree2installCommand extends ContainerAwareCommand
 {
     protected function configure()
     {

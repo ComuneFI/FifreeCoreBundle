@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 
-class fifree2checkpermissionCommand extends ContainerAwareCommand
+class Fifree2checkpermissionCommand extends ContainerAwareCommand
 {
     protected function configure()
     {

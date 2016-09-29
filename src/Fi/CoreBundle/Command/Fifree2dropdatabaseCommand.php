@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class fifree2dropdatabaseCommand extends ContainerAwareCommand
+class Fifree2dropdatabaseCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
