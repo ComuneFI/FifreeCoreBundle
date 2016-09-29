@@ -16,9 +16,10 @@ class FifreeTest extends WebTestCase
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    private $em;
+    protected $em;
+    protected $container;
 
-    public function __construct()
+    protected function setUp()
     {
         $this->clientNonAutorizzato = static::createClient();
         $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient());
@@ -26,37 +27,52 @@ class FifreeTest extends WebTestCase
         $this->em = $this->clientAutorizzato->getContainer()->get('doctrine')->getManager();
     }
 
-    public function setClassName($testclassname)
+    /**
+     * @param array $options
+     *
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    protected function getContainer(array $options = [])
+    {
+        if (!$this->container) {
+            static::bootKernel($options);
+            $this->container = static::$kernel->getContainer();
+        }
+
+        return $this->container;
+    }
+
+    protected function setClassName($testclassname)
     {
         $this->testclassname = $testclassname;
     }
 
-    public function getClassName()
+    protected function getClassName()
     {
         return $this->testclassname;
     }
 
-    public function getEm()
+    protected function getEm()
     {
         return $this->em;
     }
 
-    public function getEntityManager()
+    protected function getEntityManager()
     {
         return $this->em;
     }
 
-    public function getClientNonAutorizzato()
+    protected function getClientNonAutorizzato()
     {
         return $this->clientNonAutorizzato;
     }
 
-    public function getClientAutorizzato()
+    protected function getClientAutorizzato()
     {
         return $this->clientAutorizzato;
     }
 
-    public function getControllerNameByClassName()
+    protected function getControllerNameByClassName()
     {
         $classnamearray = explode('\\', $this->testclassname);
         $classname = $classnamearray[count($classnamearray) - 1];
@@ -65,7 +81,7 @@ class FifreeTest extends WebTestCase
         return $controllerName;
     }
 
-    public function fifreeDbBaseTest($entity)
+    protected function fifreeDbBaseTest($entity)
     {
         if (!$this->clientAutorizzato->getContainer()->getParameter('testdb')) {
             return true;
@@ -93,7 +109,7 @@ class FifreeTest extends WebTestCase
         //$this->assertGreaterThan(0, $crawler->filter('corsi')->count());
     }
 
-    public function fifreeBaseTest()
+    protected function fifreeBaseTest()
     {
         //ini_set('memory_limit', '32M');
         if (!$this->clientAutorizzato->getContainer()->getParameter('testroutes')) {
@@ -117,7 +133,7 @@ class FifreeTest extends WebTestCase
         //$this->assertGreaterThan(0, $crawler->filter('corsi')->count());
     }
 
-    public static function createAuthorizedClient($client)
+    protected static function createAuthorizedClient($client)
     {
         $container = $client->getContainer();
 
@@ -145,8 +161,8 @@ class FifreeTest extends WebTestCase
      */
     protected function tearDown()
     {
-        parent::tearDown();
         $this->em->close();
+        parent::tearDown();
     }
 
     /*

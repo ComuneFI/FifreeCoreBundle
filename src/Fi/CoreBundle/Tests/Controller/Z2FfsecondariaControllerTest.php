@@ -9,15 +9,6 @@ use Behat\Mink\Session;
 
 class Z2FfsecondariaControllerTest extends FifreeTest
 {
-    private $container;
-
-    public function setUp()
-    {
-        self::bootKernel();
-
-        $this->container = self::$kernel->getContainer();
-    }
-
     /**
      * @test
      */
@@ -70,7 +61,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';
-        $urlruote = $this->container->get('router')->generate('Ffsecondaria');
+        $urlruote = $this->getContainer()->get('router')->generate('Ffsecondaria');
         $url = 'http://127.0.0.1:8000'.$urlruote;
 
         // Choose a Mink driver. More about it in later chapters.

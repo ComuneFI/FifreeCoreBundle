@@ -14,9 +14,9 @@ class PermessiTwigExtension extends \Twig_Extension
         $this->requeststack = $request_stack;
     }
 
-  /**
-   * Get current controller name.
-   */
+    /**
+     * Get current controller name.
+     */
     public function getControllerName()
     {
         $pattern = "#Controller\\\([a-zA-Z]*)Controller#";

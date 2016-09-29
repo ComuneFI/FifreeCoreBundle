@@ -8,25 +8,16 @@ use Behat\Mink\Session;
 
 class GrigliaControllerTest extends FifreeTest
 {
-    private $container;
-
-    public function setUp()
-    {
-        self::bootKernel();
-
-        $this->container = self::$kernel->getContainer();
-    }
-
     /**
      * @test
      */
-    public function testGriglia()
+    public function testGrigliaMain()
     {
-        parent::__construct();
+        parent::setUp();
         $namespace = 'Fi';
         $bundle = 'Core';
         $controller = 'Ffsecondaria';
-        $container = $this->container;
+        $container = $this->getContainer();
 
         /* TESTATA */
         $nomebundle = $namespace.$bundle.'Bundle';
@@ -201,10 +192,10 @@ class GrigliaControllerTest extends FifreeTest
 
     public function testGrigliaFfsecondaria()
     {
-        parent::__construct();
+        parent::setUp();
         $this->setClassName(get_class());
         $browser = 'firefox';
-        $urlruote = $this->container->get('router')->generate('Ffsecondaria');
+        $urlruote = $this->getContainer()->get('router')->generate('Ffsecondaria');
         $url = 'http://127.0.0.1:8000'.$urlruote;
 
         // Choose a Mink driver. More about it in later chapters.
