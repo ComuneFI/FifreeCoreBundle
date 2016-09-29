@@ -14,12 +14,12 @@ class Fifree2installCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('fifree2:install')
-            ->setDescription('Installazione ambiente fifree')
-            ->setHelp('Crea il database, un utente amministratore e i dati di default')
-            ->addArgument('admin', InputArgument::REQUIRED, 'Username per amministratore')
-            ->addArgument('adminpass', InputArgument::REQUIRED, 'Password per amministratore')
-            ->addArgument('adminemail', InputArgument::REQUIRED, 'Email per amministratore')
+                ->setName('fifree2:install')
+                ->setDescription('Installazione ambiente fifree')
+                ->setHelp('Crea il database, un utente amministratore e i dati di default')
+                ->addArgument('admin', InputArgument::REQUIRED, 'Username per amministratore')
+                ->addArgument('adminpass', InputArgument::REQUIRED, 'Password per amministratore')
+                ->addArgument('adminemail', InputArgument::REQUIRED, 'Email per amministratore')
         //->addOption('yell', null, InputOption::VALUE_NONE, 'Se impostato, urlerà in lettere maiuscole')
         ;
     }
@@ -57,7 +57,13 @@ class Fifree2installCommand extends ContainerAwareCommand
         $commandschema->run($inputsc, $output);
 
         $commandfos = $this->getApplication()->find('fos:user:create');
-        $argumentsfos = array('command' => 'fos:user:create', '--super-admin' => true, 'username' => $admin, 'email' => $adminemail, 'password' => $adminpass);
+        $argumentsfos = array(
+            'command' => 'fos:user:create',
+            '--super-admin' => true,
+            'username' => $admin,
+            'email' => $adminemail,
+            'password' => $adminpass,
+        );
         $inputfos = new ArrayInput($argumentsfos);
         $commandfos->run($inputfos, $output);
 

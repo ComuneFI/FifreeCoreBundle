@@ -12,10 +12,10 @@ class Fifree2mysqltruncatetablesCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('fifree2:mysqltruncatetables')
-            ->setDescription('Tronca tutte le tabelle mysql')
-            ->addOption('tablesfifree2', null, InputOption::VALUE_OPTIONAL, 'Si devono trattare anche le tabelle di fifree2', false)
-                //->setHelp('Modifica il motore mysql delle tabelle')
+                ->setName('fifree2:mysqltruncatetables')
+                ->setDescription('Tronca tutte le tabelle mysql')
+                ->addOption('tablesfifree2', null, InputOption::VALUE_OPTIONAL, 'Si devono trattare anche le tabelle di fifree2', false)
+        //->setHelp('Modifica il motore mysql delle tabelle')
         ;
     }
 
@@ -31,7 +31,10 @@ class Fifree2mysqltruncatetablesCommand extends ContainerAwareCommand
 
         $dbname = $this->getContainer()->get('database_connection')->getDatabase();
 
-        $sql = "SELECT Concat('TRUNCATE TABLE ',table_schema,'.',TABLE_NAME, ';') TRUNCTABLE, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where  table_schema in ('".$dbname."')";
+        $sql = "SELECT Concat('TRUNCATE TABLE ',table_schema,'.',TABLE_NAME, ';') "
+                .'TRUNCTABLE, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES '
+                ."where  table_schema in ('".$dbname."')";
+
         $conn = $em->getConnection();
         $rows = $conn->fetchAll($sql);
         foreach ($rows as $row) {
