@@ -3,6 +3,8 @@
 namespace Fi\CoreBundle\Subscriber;
 
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Id\SequenceGenerator;
 
 class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
 {
@@ -26,7 +28,8 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
             $classMetadata->setPrimaryTable(array('name' => $this->prefix.'.'.$classMetadata->getTableName()));
 
             foreach ($classMetadata->getAssociationMappings() as $fieldName => $mapping) {
-                if ($mapping['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY && isset($classMetadata->associationMappings[$fieldName]['joinTable']['name'])) {
+                $jointablename = $classMetadata->associationMappings[$fieldName]['joinTable']['name'];
+                if ($mapping['type'] == ClassMetadataInfo::MANY_TO_MANY && isset($jointablename)) {
                     $mappedTableName = $classMetadata->associationMappings[$fieldName]['joinTable']['name'];
                     $classMetadata->associationMappings[$fieldName]['joinTable']['name'] = $this->prefix.'.'.$mappedTableName;
                 }
@@ -38,11 +41,9 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
                 $classMetadata->setSequenceGeneratorDefinition($newDefinition);
                 $em = $args->getEntityManager();
                 if (isset($classMetadata->idGenerator)) {
-                    $sequenceGenerator = new \Doctrine\ORM\Id\SequenceGenerator(
-                        $em->getConfiguration()->getQuoteStrategy()->getSequenceName(
-                            $newDefinition, $classMetadata, $em->getConnection()->getDatabasePlatform()
-                        ), $newDefinition['allocationSize']
-                    );
+                    $sequncename = $em->getConfiguration()->getQuoteStrategy()
+                            ->getSequenceName($newDefinition, $classMetadata, $em->getConnection()->getDatabasePlatform());
+                    $sequenceGenerator = new SequenceGenerator($sequncename, $newDefinition['allocationSize']);
                     $classMetadata->setIdGenerator($sequenceGenerator);
                 }
             }
