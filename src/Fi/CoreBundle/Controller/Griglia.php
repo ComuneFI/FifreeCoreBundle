@@ -202,7 +202,6 @@ class Griglia extends FiController
                     $vettoreriga,
                     $singolo,
                     $nomecampo,
-                    $nomecampo,
                     $indice,
                     $indicecolonna,
                     $singolocampo

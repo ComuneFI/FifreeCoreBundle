@@ -98,7 +98,7 @@ class GrigliaDatiMultiUtils
         }
     }
 
-    public static function buildDatiGriglia($parametri, &$vettoreriga, &$singolo, &$nomecampo, &$nomecampo, &$indice, &$indicecolonna, &$singolocampo)
+    public static function buildDatiGriglia($parametri, &$vettoreriga, &$singolo, &$nomecampo, &$indice, &$indicecolonna, &$singolocampo)
     {
         $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
         /* $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine); */
