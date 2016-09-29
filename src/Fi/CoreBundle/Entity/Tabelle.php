@@ -427,7 +427,7 @@ class Tabelle
      */
     private $opzioniTabellas;
 
-    public function getOpzioni_Tabellas()
+    public function GetOpzioniTabellas()
     {
         return $this->opzioniTabellas;
     }
