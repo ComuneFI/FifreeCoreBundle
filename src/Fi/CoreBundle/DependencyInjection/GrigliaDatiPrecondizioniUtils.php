@@ -70,17 +70,15 @@ class GrigliaDatiPrecondizioniUtils
                 'op' => $operatoreprecondizione,
                 'data' => $valorecampoprecondizione, );
             $tipof = $operatorelogicoprecondizione;
-
-            GrigliaRegoleUtils::setRegole(
-                    $q, $primo, array(
+            $regolearray = array(
                 'regole' => $regole,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
                 'entityName' => $entityName,
                 'bundle' => $bundle,
                 'tipof' => $tipof,
-                    )
             );
+            GrigliaRegoleUtils::setRegole($q, $primo, $regolearray);
             $primo = false;
         }
     }

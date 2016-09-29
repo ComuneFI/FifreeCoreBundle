@@ -20,7 +20,23 @@ class GrigliaFiltriUtils
 
         $filtri = isset($genericofiltri->rules) ? $genericofiltri->rules : '';
         $tipofiltro = isset($genericofiltri->groupOp) ? $genericofiltri->groupOp : '';
-        GrigliaUtils::$decodificaop = array('eq' => ' è uguale a ', 'ne' => ' è diverso da ', 'lt' => ' è inferiore a ', 'le' => ' è inferiore o uguale a ', 'gt' => ' è maggiore di ', 'ge' => ' è maggiore o uguale di ', 'bw' => ' comincia con ', 'bn' => ' non comincia con ', 'in' => ' è uno fra ', 'ni' => ' non è uno fra ', 'ew' => ' finisce con ', 'en' => ' con finisce con ', 'cn' => ' contiene ', 'nc' => ' non contiene ', 'nu' => ' è vuoto', 'nn' => ' non è vuoto');
+        GrigliaUtils::$decodificaop = array(
+            'eq' => ' è uguale a ',
+            'ne' => ' è diverso da ',
+            'lt' => ' è inferiore a ',
+            'le' => ' è inferiore o uguale a ',
+            'gt' => ' è maggiore di ',
+            'ge' => ' è maggiore o uguale di ',
+            'bw' => ' comincia con ',
+            'bn' => ' non comincia con ',
+            'in' => ' è uno fra ',
+            'ni' => ' non è uno fra ',
+            'ew' => ' finisce con ',
+            'en' => ' con finisce con ',
+            'cn' => ' contiene ',
+            'nc' => ' non contiene ',
+            'nu' => ' è vuoto',
+            'nn' => ' non è vuoto', );
 
         if (!isset($filtri) or (!$filtri)) {
             return '';
@@ -39,7 +55,9 @@ class GrigliaFiltriUtils
             $campo = $filtro->field;
             $operatore = $filtro->op;
             $data = $filtro->data;
-            $filtrodescritto .= ($indice !== 0 ? ($tipofiltro == 'AND' ? ' e ' : ' o ') : '').GrigliaUtils::to_camel_case(array('str' => $campo, 'primamaiuscola' => true)).GrigliaUtils::$decodificaop[$operatore]."\"$data\"";
+            $filtrodescritto .= ($indice !== 0 ? ($tipofiltro == 'AND' ? ' e ' : ' o ') : '').
+                    GrigliaUtils::to_camel_case(array('str' => $campo, 'primamaiuscola' => true)).
+                    GrigliaUtils::$decodificaop[$operatore]."\"$data\"";
         }
 
         $filtrodescritto .= '.';
