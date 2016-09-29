@@ -40,7 +40,13 @@ class FiUtilitaTest extends KernelTestCase
     public function testProSelect()
     {
         $fiUtilita = new FiUtilita();
-        $parametri = array('nomecodice' => 'codice', 'nomedescrizione' => 'descrizione', 'elementi' => array(array('codice' => '01', 'descrizione' => 'Primo')));
+        $parametri = array(
+            'nomecodice' => 'codice',
+            'nomedescrizione' => 'descrizione',
+            'elementi' => array(
+                array('codice' => '01', 'descrizione' => 'Primo'),
+            ),
+        );
         $retoptions = $fiUtilita->proSelect($parametri);
         $this->assertEquals($retoptions, '<option value="01">Primo</option>');
     }

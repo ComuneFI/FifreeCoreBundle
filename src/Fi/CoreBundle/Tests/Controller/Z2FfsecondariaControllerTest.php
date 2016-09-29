@@ -120,8 +120,8 @@ class Z2FfsecondariaControllerTest extends FifreeTest
 
         $page->find('css', 'a#sDataFfsecondariaS')->click();
         sleep(1);
-
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");$("#list1").jqGrid("setSelection", rowid);}()');
+        $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRow.'}()');
         $elementmod = $page->findAll('css', '.ui-icon-pencil');
 
         foreach ($elementmod as $e) {
@@ -136,7 +136,8 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $page->find('css', 'a#sDataFfsecondariaS')->click();
         sleep(1);
         /* Cancellazione */
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");$("#list1").jqGrid("setSelection", rowid);}()');
+        $jsSetFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$jsSetFirstRow.'}()');
         $elementdel = $page->findAll('css', '.ui-icon-trash');
 
         foreach ($elementdel as $e) {
@@ -209,8 +210,8 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         sleep(1);
 
         $var3 = '"intero"';
-
-        $javascript3 = "$('#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first option[value=".$var3."]').attr('selected', 'selected').change();";
+        $selector3 = '#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first';
+        $javascript3 = "$('".$selector3.' option[value='.$var3."]').attr('selected', 'selected').change();";
         sleep(1);
         $session->executeScript($javascript3);
         $page->fillField('jqg4', $search3);

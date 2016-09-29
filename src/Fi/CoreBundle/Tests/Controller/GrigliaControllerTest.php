@@ -32,10 +32,11 @@ class GrigliaControllerTest extends FifreeTest
         $nomebundle = $namespace.$bundle.'Bundle';
         /* @var $em \Doctrine\ORM\EntityManager */
         /* $em = $this->container->get('doctrine')->getManager(); */
-
+        $descsec = array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text'));
+        $ffprincipaleId = array(array('nomecampo' => 'ffprincipale.descrizione', 'lunghezza' => '400', 'descrizione' => 'Descrizione record principale', 'tipo' => 'text'));
         $dettaglij = array(
-            'descsec' => array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text')),
-            'ffprincipale_id' => array(array('nomecampo' => 'ffprincipale.descrizione', 'lunghezza' => '400', 'descrizione' => 'Descrizione record principale', 'tipo' => 'text')),
+            'descsec' => $descsec,
+            'ffprincipale_id' => $ffprincipaleId,
         );
         $escludi = array('nota');
         $campiextra = array(
