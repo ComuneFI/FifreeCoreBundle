@@ -247,8 +247,8 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $windowNames = $session->getWindowNames();
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
-            sleep(1);
             $page = $session->getPage();
+            sleep(1);
             $element = $page->find('css', '.textLayer');
 
             if (empty($element)) {

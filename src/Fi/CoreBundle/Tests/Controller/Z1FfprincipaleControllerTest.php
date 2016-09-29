@@ -213,6 +213,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
             $session->switchToWindow($windowNames[1]);
             sleep(1);
             $page = $session->getPage();
+            sleep(1);
             $element = $page->find('css', '.textLayer');
 
             if (empty($element)) {
