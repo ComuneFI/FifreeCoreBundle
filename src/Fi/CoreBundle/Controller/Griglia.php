@@ -22,7 +22,11 @@ class Griglia extends FiController
      * @param string $paricevuti[nometabella]
      * @param array  $paricevuti[dettaglij]    array contenente tutte le tabelle per le quali richiedere
      *                                         la join a partire da $paricevuti[nometabella]
-     *                                         il vettore è composto da array("nomecampodadecodificare"=>array("descrizione"=>"nometabella.campodecodifica", "lunghezza"=>"40"))
+     *                                         il vettore è composto da
+     *                                         array("nomecampodadecodificare"=>array(
+     *                                         "descrizione"=>"nometabella.campodecodifica",
+     *                                         "lunghezza"=>"40")
+     *                                         )
      * @param array  $paricevuti[colonne_link] array contenente eventuali colonne che debbano essere
      *                                         rappresentate da un link. Non è da confondere con i
      *                                         parametri_link di datiPerGriglia, perché QUESTO array
@@ -52,7 +56,8 @@ class Griglia extends FiController
         /* Controlla se alcune colonne devono essere dei link */
         GrigliaExtraFunzioniUtils::getColonneLink($paricevuti, $modellocolonne);
 
-        /* Controlla se ci sono dei campi extra da inserire in griglia (i campi extra non sono utilizzabili come filtri nella filtertoolbar della griglia) */
+        /* Controlla se ci sono dei campi extra da inserire in griglia
+          (i campi extra non sono utilizzabili come filtri nella filtertoolbar della griglia) */
         GrigliaCampiExtraUtils::getCampiExtraTestataPerGriglia($paricevuti, $indice, $nomicolonne, $modellocolonne);
 
         GrigliaUtils::getOpzioniTabella($doctrineficore, $nometabella, $testata);
@@ -126,7 +131,7 @@ class Griglia extends FiController
         $entityName = $bundle.':'.$nometabella;
         $q = $doctrine->createQueryBuilder();
         $q->select($nometabella)
-            ->from($entityName, $nometabella);
+                ->from($entityName, $nometabella);
 
         /* scorre le tabelle collegate e crea la leftjoin usando come alias il nome stesso della tabella */
         if (isset($tabellej)) {
@@ -192,7 +197,16 @@ class Griglia extends FiController
             $vettoreriga = array();
             $indicecolonna = 0;
             foreach ($singolo as $nomecampo => $singolocampo) {
-                GrigliaDatiMultiUtils::buildColonneDatiGriglia($parametri, $vettoreriga, $singolo, $nomecampo, $nomecampo, $indice, $indicecolonna, $singolocampo);
+                GrigliaDatiMultiUtils::buildColonneDatiGriglia(
+                    $parametri,
+                    $vettoreriga,
+                    $singolo,
+                    $nomecampo,
+                    $nomecampo,
+                    $indice,
+                    $indicecolonna,
+                    $singolocampo
+                );
             }
 
             GrigliaCampiExtraUtils::getCampiExtraDatiPerGriglia($campiextra, $vettoreriga, $doctrine, $entityName, $singolo);
