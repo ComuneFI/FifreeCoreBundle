@@ -102,8 +102,7 @@ class TabelleController extends FiController
         $em = $this->getDoctrine()->getManager();
         $entities = $em->getRepository($nomebundle.':'.$controller)->findAll();
 
-        $dettaglij = array(/* "operatori_id" => array(array("nomecampo" => "operatori.username", "lunghezza" => "100", "descrizione" => "Username", "tipo" => "text"),
-              array("nomecampo" => "operatori.operatore", "lunghezza" => "100", "descrizione" => "Operatore", "tipo" => "text")), */
+        $dettaglij = array(
             'nomecampo' => array(
                 array('nomecampo' => 'nomecampo', 'lunghezza' => '150', 'descrizione' => 'Campo', 'tipo' => 'text', 'editable' => false), ),
             'mostraindex' => array(
@@ -140,7 +139,6 @@ class TabelleController extends FiController
             'container' => $container,
         );
 
-        //$paricevuti["escludere"] = array("mostrastampa", "nometabella", "ordineindex", "larghezzaindex", "etichettaindex", "etichettastampa", "ordinestampa", "larghezzastampa", "operatori_id");
         $paricevuti['escludere'] = array('nometabella', 'operatori_id');
 
         $testata = Griglia::testataPerGriglia($paricevuti);
@@ -283,7 +281,6 @@ class TabelleController extends FiController
             'nometabella' => $controller,
             'tabellej' => $tabellej, );
 
-        //$paricevuti["escludere"] = array("mostrastampa", "nometabella", "ordineindex", "larghezzaindex", "etichettaindex", "etichettastampa", "ordinestampa", "larghezzastampa", "operatori_id");
         $paricevuti['escludere'] = array('nometabella', 'operatori_id');
         $paricevuti['precondizioni'] = array('Tabelle.nometabella' => $chiamante, 'Tabelle.operatori_id' => $operatore['id']);
 
