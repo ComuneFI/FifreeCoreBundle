@@ -27,10 +27,18 @@ class OperatoriController extends FiController
         $entities = $em->getRepository($nomebundle.':'.$controller)->findAll();
 
         $dettaglij = array('ruoli_id' => array(
-                array('nomecampo' => 'ruoli.ruolo', 'lunghezza' => '200', 'descrizione' => 'Ruolo', 'tipo' => 'text'),
+                array('nomecampo' => 'ruoli.ruolo',
+                    'lunghezza' => '200',
+                    'descrizione' => 'Ruolo',
+                    'tipo' => 'text', ),
         ));
 
-        $paricevuti = array('doctrine' => $em, 'nomebundle' => $nomebundle, 'nometabella' => $controller, 'dettaglij' => $dettaglij, 'container' => $container);
+        $paricevuti = array(
+            'doctrine' => $em,
+            'nomebundle' => $nomebundle,
+            'nometabella' => $controller,
+            'dettaglij' => $dettaglij,
+            'container' => $container, );
 
         $testatagriglia = Griglia::testataPerGriglia($paricevuti);
 
@@ -38,14 +46,12 @@ class OperatoriController extends FiController
         $testatagriglia['showconfig'] = 1;
 
         $testata = json_encode($testatagriglia);
+        $twigparms = array(
+            'entities' => $entities,
+            'nomecontroller' => $controller,
+            'testata' => $testata, );
 
-        return $this->render(
-            $nomebundle.':'.$controller.':index.html.twig', array(
-                    'entities' => $entities,
-                    'nomecontroller' => $controller,
-                    'testata' => $testata,
-            )
-        );
+        return $this->render($nomebundle.':'.$controller.':index.html.twig', $twigparms);
     }
 
     public function setParametriGriglia($prepar = array())
@@ -59,7 +65,12 @@ class OperatoriController extends FiController
         $escludi = array();
         $tabellej['ruoli_id'] = array('tabella' => 'ruoli', 'campi' => array('ruolo'));
 
-        $paricevuti = array('container' => $this->container, 'nomebundle' => $nomebundle, 'tabellej' => $tabellej, 'nometabella' => $controller, 'escludere' => $escludi);
+        $paricevuti = array(
+            'container' => $this->container,
+            'nomebundle' => $nomebundle,
+            'tabellej' => $tabellej,
+            'nometabella' => $controller,
+            'escludere' => $escludi, );
 
         if ($prepar) {
             $paricevuti = array_merge($paricevuti, $prepar);
