@@ -8,9 +8,10 @@ use Behat\Mink\Session;
 
 class GrigliaControllerTest extends FifreeTest
 {
+
     private $container;
 
-    public function setUp()
+    public function setUp() 
     {
         self::bootKernel();
 
@@ -20,7 +21,7 @@ class GrigliaControllerTest extends FifreeTest
     /**
      * @test
      */
-    public function testGriglia()
+    public function testGriglia() 
     {
         parent::__construct();
         $namespace = 'Fi';
@@ -29,11 +30,16 @@ class GrigliaControllerTest extends FifreeTest
         $container = $this->container;
 
         /* TESTATA */
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
         /* @var $em \Doctrine\ORM\EntityManager */
         /* $em = $this->container->get('doctrine')->getManager(); */
         $descsec = array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text'));
-        $ffprincipaleId = array(array('nomecampo' => 'ffprincipale.descrizione', 'lunghezza' => '400', 'descrizione' => 'Descrizione record principale', 'tipo' => 'text'));
+        $ffprincipaleId = array(
+            array('nomecampo' => 'ffprincipale.descrizione',
+                'lunghezza' => '400',
+                'descrizione' => 'Descrizione record principale',
+                'tipo' => 'text')
+        );
         $dettaglij = array(
             'descsec' => $descsec,
             'ffprincipale_id' => $ffprincipaleId,
@@ -50,7 +56,7 @@ class GrigliaControllerTest extends FifreeTest
             'dettaglij' => $dettaglij,
             'campiextra' => $campiextra,
             'escludere' => $escludi,
-            'container' => $container, );
+            'container' => $container,);
 
         /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
         $userManager = $container->get('fos_user.user_manager');
@@ -62,7 +68,7 @@ class GrigliaControllerTest extends FifreeTest
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
 
         $testatagriglia = Griglia::testataPerGriglia($paricevuti);
@@ -175,11 +181,11 @@ class GrigliaControllerTest extends FifreeTest
             $qu = $em->createQueryBuilder();
             $qu->select(array('c'))
                 ->from('FiCoreBundle:Ffsecondaria', 'c')
-                ->where('c.'.$modellocolonne[$idx]['name'].' = :value')
+                ->where('c.' . $modellocolonne[$idx]['name'] . ' = :value')
                 ->setParameter('value', $row[$idx]);
             $ffrow = $qu->getQuery()->getResult();
             $ff = $ffrow[0];
-            $colmacro = 'get'.ucfirst($modellocolonne[$idx]['name']);
+            $colmacro = 'get' . ucfirst($modellocolonne[$idx]['name']);
             if ($modellocolonne[$idx]['tipocampo'] == 'date') {
                 $datadb = \DateTime::createFromFormat('Y-m-d', $ff->$colmacro()->format('Y-m-d'));
                 $datagriglia = \DateTime::createFromFormat('Y-m-d', $row[$idx]);
@@ -194,13 +200,13 @@ class GrigliaControllerTest extends FifreeTest
      * @test
      */
 
-    public function testGrigliaFfsecondaria()
+    public function testGrigliaFfsecondaria() 
     {
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';
         $urlruote = $this->container->get('router')->generate('Ffsecondaria');
-        $url = 'http://127.0.0.1:8000'.$urlruote;
+        $url = 'http://127.0.0.1:8000' . $urlruote;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -223,4 +229,5 @@ class GrigliaControllerTest extends FifreeTest
 
         $session->stop();
     }
+
 }
