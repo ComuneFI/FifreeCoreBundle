@@ -110,13 +110,14 @@ class GrigliaDatiUtils
         if (isset($decodifiche[$nomecampo])) {
             $vettoreriga[] = $decodifiche[$nomecampo][$singolocampo];
         } else {
-            if (isset($vettoreparcampi[$nomecampo]['type']) && ($vettoreparcampi[$nomecampo]['type'] == 'date' || $vettoreparcampi[$nomecampo]['type'] == 'datetime') && $singolocampo) {
+            $vettoretype = $vettoreparcampi[$nomecampo]['type'];
+            if (isset($vettoretype) && ($vettoretype == 'date' || $vettoretype == 'datetime') && $singolocampo) {
                 if (isset($ordinecampo)) {
                     $vettoreriga[$ordinecampo] = $singolocampo->format('d/m/Y');
                 } else {
                     $vettoreriga[] = $singolocampo->format('d/m/Y');
                 }
-            } elseif (isset($vettoreparcampi[$nomecampo]['type']) && ($vettoreparcampi[$nomecampo]['type'] == 'time') && $singolocampo) {
+            } elseif (isset($vettoretype) && ($vettoreparcampi[$nomecampo]['type'] == 'time') && $singolocampo) {
                 if (isset($ordinecampo)) {
                     $vettoreriga[$ordinecampo] = $singolocampo->format('H:i');
                 } else {
@@ -169,7 +170,15 @@ class GrigliaDatiUtils
             } else {
                 $fields = $singolo[$tabellej[$nomecampo]['tabella']] ? $singolo[$tabellej[$nomecampo]['tabella']][$campoelencato] : '';
             }
-            self::valorizzaVettore($vettoreriga, array('singolocampo' => $fields, 'tabella' => $bundle.':'.$tabellej[$nomecampo]['tabella'], 'nomecampo' => $campoelencato, 'doctrine' => $doctrine, 'ordinecampo' => $ordinecampo, 'decodifiche' => $decodifiche));
+            $vettoredavalorizzare = array(
+                'singolocampo' => $fields,
+                'tabella' => $bundle.':'.$tabellej[$nomecampo]['tabella'],
+                'nomecampo' => $campoelencato,
+                'doctrine' => $doctrine,
+                'ordinecampo' => $ordinecampo,
+                'decodifiche' => $decodifiche,
+            );
+            self::valorizzaVettore($vettoreriga, $vettoredavalorizzare);
         }
 
         return $vettoreriga;
