@@ -242,7 +242,7 @@ class FiUtilita
         return $vettorenuovo;
     }
 
-    public function array_searchRecursive($needle, $haystack)
+    public function arraySearchRecursive($needle, $haystack)
     {
         foreach ($haystack as $key => $val) {
             if (stripos(implode('', $val), $needle) > 0) {
