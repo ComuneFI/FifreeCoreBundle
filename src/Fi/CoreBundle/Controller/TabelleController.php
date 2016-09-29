@@ -237,7 +237,7 @@ class TabelleController extends FiController
                 if (isset($parametri['operatore'])) {
                     $arraycreaoperatore = array('id' => $parametri['operatore']);
                     $creaoperatore = $this->getDoctrine()->getRepository($nomebundle.':operatori')->findOneBy($arraycreaoperatore, array());
-                    $crea->setOperatori();
+                    $crea->setOperatori($creaoperatore);
 
                     unset($vettorericerca['operatori_id']);
                     $vettorericerca['operatori_id'] = null;
