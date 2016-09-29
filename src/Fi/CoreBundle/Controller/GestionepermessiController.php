@@ -44,8 +44,8 @@ class GestionepermessiController extends FiController
 
         $utente = $this->getUser()->getId();
         $q = $this->getDoctrine()
-            ->getRepository('FiCoreBundle:Operatori')
-            ->find($utente);
+                ->getRepository('FiCoreBundle:Operatori')
+                ->find($utente);
 
         $isSuperAdmin = false;
         if ($q) {
@@ -65,8 +65,8 @@ class GestionepermessiController extends FiController
         $this->setCrud();
         $utente = $this->getUser()->getId();
         $q = $this->getDoctrine()
-            ->getRepository('FiCoreBundle:Operatori')
-            ->find($utente);
+                ->getRepository('FiCoreBundle:Operatori')
+                ->find($utente);
 
         $isSuperAdmin = false;
         if ($q) {
@@ -86,8 +86,8 @@ class GestionepermessiController extends FiController
         $this->setCrud();
         $utente = $this->getUser()->getId();
         $q = $this->getDoctrine()
-            ->getRepository('FiCoreBundle:Operatori')
-            ->find($utente);
+                ->getRepository('FiCoreBundle:Operatori')
+                ->find($utente);
 
         $isSuperAdmin = false;
         if ($q) {
@@ -107,8 +107,8 @@ class GestionepermessiController extends FiController
         $this->setCrud();
         $utente = $this->getUser()->getId();
         $q = $this->getDoctrine()
-            ->getRepository('FiCoreBundle:Operatori')
-            ->find($utente);
+                ->getRepository('FiCoreBundle:Operatori')
+                ->find($utente);
 
         $isSuperAdmin = false;
         if ($q) {
@@ -125,8 +125,12 @@ class GestionepermessiController extends FiController
         if (isset($parametri['modulo'])) {
             $this->modulo = $parametri['modulo'];
         }
+        $permesso = $this->leggereAction($parametri) ||
+                $this->cancellareAction($parametri) ||
+                $this->creareAction($parametri) ||
+                $this->aggiornareAction($parametri);
 
-        if ($this->leggereAction($parametri) || $this->cancellareAction($parametri) || $this->creareAction($parametri) || $this->aggiornareAction($parametri)) {
+        if ($permesso) {
             return true;
         }
 
@@ -142,8 +146,8 @@ class GestionepermessiController extends FiController
         $utentecorrente = $this->utentecorrenteAction();
 
         $q = $this->getDoctrine()
-            ->getRepository('FiCoreBundle:Permessi')
-            ->findOneBy(array('operatori_id' => $utentecorrente['id'], 'modulo' => $this->modulo));
+                ->getRepository('FiCoreBundle:Permessi')
+                ->findOneBy(array('operatori_id' => $utentecorrente['id'], 'modulo' => $this->modulo));
 
         if ($q) {
             $this->crud = $q->getCrud();
@@ -152,8 +156,8 @@ class GestionepermessiController extends FiController
         }
 
         $q = $this->getDoctrine()
-            ->getRepository('FiCoreBundle:Permessi')
-            ->findOneBy(array('ruoli_id' => $utentecorrente['ruolo_id'], 'modulo' => $this->modulo, 'operatori_id' => null));
+                ->getRepository('FiCoreBundle:Permessi')
+                ->findOneBy(array('ruoli_id' => $utentecorrente['ruolo_id'], 'modulo' => $this->modulo, 'operatori_id' => null));
 
         if ($q) {
             //echo $utentecorrente["id"] . " ". $this->modulo . " " . $q->getSqlQuery() . "\n\n";
@@ -163,8 +167,8 @@ class GestionepermessiController extends FiController
         }
 
         $q = $this->getDoctrine()
-            ->getRepository('FiCoreBundle:Permessi')
-            ->findOneBy(array('ruoli_id' => null, 'modulo' => $this->modulo, 'operatori_id' => null));
+                ->getRepository('FiCoreBundle:Permessi')
+                ->findOneBy(array('ruoli_id' => null, 'modulo' => $this->modulo, 'operatori_id' => null));
 
         if ($q) {
             //echo $q->getSqlQuery() . "\n\n";
@@ -196,8 +200,8 @@ class GestionepermessiController extends FiController
 
         $utente = $this->getUser()->getId();
         $q = $this->getDoctrine()
-            ->getRepository('FiCoreBundle:Operatori')
-            ->find($utente);
+                ->getRepository('FiCoreBundle:Operatori')
+                ->find($utente);
 
         $utentecorrente = array();
 
