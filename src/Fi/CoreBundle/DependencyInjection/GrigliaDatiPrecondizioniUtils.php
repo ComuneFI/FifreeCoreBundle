@@ -65,13 +65,14 @@ class GrigliaDatiPrecondizioniUtils
                 }
             }
 
-            $regole[] = array('field' => "$nometabellaprecondizione.$nomecampoprecondizione", 'op' => $operatoreprecondizione, 'data' => $valorecampoprecondizione);
+            $regole[] = array(
+                'field' => "$nometabellaprecondizione.$nomecampoprecondizione",
+                'op' => $operatoreprecondizione,
+                'data' => $valorecampoprecondizione, );
             $tipof = $operatorelogicoprecondizione;
 
             GrigliaRegoleUtils::setRegole(
-                $q,
-                $primo,
-                array(
+                    $q, $primo, array(
                 'regole' => $regole,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
