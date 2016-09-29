@@ -26,8 +26,6 @@ class OpzioniTabellaController extends FiController
 
         $nomebundle = $namespace.$bundle.'Bundle';
 
-        $em = $container->get('doctrine')->getManager();
-
         $dettaglij = array(
             'descrizione' => array(
                 array(
