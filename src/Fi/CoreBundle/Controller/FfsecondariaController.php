@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class FfsecondariaController extends FiController
 {
+
     public function indexAction(Request $request)
     {
         parent::setup($request);
@@ -17,13 +18,20 @@ class FfsecondariaController extends FiController
         $controller = $this->getController();
         $container = $this->container;
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
 
         $dettaglij = array(
-            'descsec' => array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text')),
-            'ffprincipale_id' => array(array('nomecampo' => 'ffprincipale.descrizione', 'lunghezza' => '400', 'descrizione' => 'Descrizione record principale', 'tipo' => 'text')),
-                /* ,
-                  array("nomecampo" => "ffprincipale.id", "lunghezza" => "40", "descrizione" => "IdP", "tipo" => "integer") */
+            'descsec' => array(
+                array('nomecampo' => 'descsec',
+                    'lunghezza' => '400',
+                    'descrizione' => 'Descrizione tabella secondaria',
+                    'tipo' => 'text')),
+            'ffprincipale_id' => array(
+                array('nomecampo' => 'ffprincipale.descrizione',
+                    'lunghezza' => '400',
+                    'descrizione' => 'Descrizione record principale',
+                    'tipo' => 'text')
+            ),
         );
         $escludi = array('nota');
 
@@ -38,7 +46,7 @@ class FfsecondariaController extends FiController
             'dettaglij' => $dettaglij,
             'campiextra' => $campiextra,
             'escludere' => $escludi,
-            'container' => $container, );
+            'container' => $container,);
 
         $testatagriglia = Griglia::testataPerGriglia($paricevuti);
 
@@ -60,13 +68,11 @@ class FfsecondariaController extends FiController
         $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
 
         $testata = json_encode($testatagriglia);
-
-        return $this->render(
-            $nomebundle.':'.$controller.':index.html.twig', array(
-                    'nomecontroller' => $controller,
-                    'testata' => $testata,
-                        )
+        $twigparms = array(
+            'nomecontroller' => $controller,
+            'testata' => $testata,
         );
+        return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
     }
 
     public function setParametriGriglia($prepar = array())
@@ -76,7 +82,7 @@ class FfsecondariaController extends FiController
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array('nota', 'ffprincipale');
         $tabellej['ffprincipale_id'] = array('tabella' => 'ffprincipale', 'campi' => array('descrizione'));
 
@@ -87,18 +93,18 @@ class FfsecondariaController extends FiController
         $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
             'nomecampo' => 'intero',
             'operatore' => '>=',
-            'valorecampo' => 1, );
+            'valorecampo' => 1,);
         $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
             'nomecampo' => 'data',
             'operatore' => '<=',
             'valorecampo' => date('Y-m-d'),
-            'operatorelogico' => 'AND', );
+            'operatorelogico' => 'AND',);
 
         $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
             'nomecampo' => 'attivo',
             'operatore' => '=',
             'valorecampo' => true,
-            'operatorelogico' => 'AND', );
+            'operatorelogico' => 'AND',);
 
         $paricevuti = array('container' => $this->container,
             'nomebundle' => $nomebundle,
@@ -106,7 +112,7 @@ class FfsecondariaController extends FiController
             'nometabella' => $controller,
             'campiextra' => $campiextra,
             'escludere' => $escludi,
-            'precondizioniAvanzate' => $precondizioniAvanzate, );
+            'precondizioniAvanzate' => $precondizioniAvanzate,);
 
         if ($prepar) {
             $paricevuti = array_merge($paricevuti, $prepar);

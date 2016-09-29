@@ -61,14 +61,13 @@ class FfprincipaleController extends FiController
         }
 
         $testata = json_encode($testatagriglia);
-
-        return $this->render(
-            $nomebundle.':'.$controller.':index.html.twig', array(
-                    'entities' => $entities,
-                    'nomecontroller' => $controller,
-                    'testata' => $testata,
-                    'canread' => $canRead,
-            )
+        $twigparms = array(
+            'entities' => $entities,
+            'nomecontroller' => $controller,
+            'testata' => $testata,
+            'canread' => $canRead,
         );
+
+        return $this->render($nomebundle.':'.$controller.':index.html.twig', $twigparms);
     }
 }
