@@ -56,7 +56,7 @@ class GrigliaFiltriUtils
             $operatore = $filtro->op;
             $data = $filtro->data;
             $filtrodescritto .= ($indice !== 0 ? ($tipofiltro == 'AND' ? ' e ' : ' o ') : '').
-                    GrigliaUtils::to_camel_case(array('str' => $campo, 'primamaiuscola' => true)).
+                    GrigliaUtils::toCamelCase(array('str' => $campo, 'primamaiuscola' => true)).
                     GrigliaUtils::$decodificaop[$operatore]."\"$data\"";
         }
 
