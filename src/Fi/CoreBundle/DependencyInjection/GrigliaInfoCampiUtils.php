@@ -96,7 +96,7 @@ class GrigliaInfoCampiUtils
         }
     }
 
-    public static function setOrdineColonne(&$ordinecolonne, &$chiave, &$indice, &$indicecolonna, &$ordinecolonne)
+    public static function setOrdineColonne(&$ordinecolonne, &$chiave, &$indice, &$indicecolonna)
     {
         if (isset($ordinecolonne)) {
             self::getOrdineColonne($chiave, $indice, $ordinecolonne, $indicecolonna);

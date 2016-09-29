@@ -89,7 +89,7 @@ class GrigliaColonneUtils
         $indicecolonna = 0;
 
         foreach ($moltialias as $singoloalias) {
-            GrigliaInfoCampiUtils::setOrdineColonne($ordinecolonne, $chiave, $indice, $indicecolonna, $ordinecolonne);
+            GrigliaInfoCampiUtils::setOrdineColonne($ordinecolonne, $chiave, $indice, $indicecolonna);
 
             GrigliaInfoCampiUtils::getSingoloAliasNormalizzato($singoloalias);
 
@@ -159,7 +159,7 @@ class GrigliaColonneUtils
 
         $indicecolonna = 0;
 
-        GrigliaInfoCampiUtils::setOrdineColonne($ordinecolonne, $chiave, $indice, $indicecolonna, $ordinecolonne);
+        GrigliaInfoCampiUtils::setOrdineColonne($ordinecolonne, $chiave, $indice, $indicecolonna);
 
         GrigliaInfoCampiUtils::setNomiColonne($nomicolonne, $chiave, $alias, $indicecolonna, $etichetteutente);
 
