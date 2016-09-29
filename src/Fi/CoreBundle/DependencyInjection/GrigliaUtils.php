@@ -256,7 +256,7 @@ class GrigliaUtils
      *
      * @return string $str translated into camel caps
      */
-    public static function to_camel_case($parametri = array())
+    public static function toCamelCase($parametri = array())
     {
         $str = $parametri['str'];
         $capitalise_first_char = isset($parametri['primamaiuscola']) ? $parametri['primamaiuscola'] : false;

@@ -101,12 +101,12 @@ class GrigliaColonneUtils
 
     public static function getEtichettaDescrizioneColonna(&$singoloalias, $chiave)
     {
-        return isset($singoloalias['descrizione']) ? $singoloalias['descrizione'] : GrigliaUtils::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
+        return isset($singoloalias['descrizione']) ? $singoloalias['descrizione'] : GrigliaUtils::toCamelCase(array('str' => $chiave, 'primamaiuscola' => true));
     }
 
     public static function getEtichettaNomeColonna(&$etichetteutente, $chiave)
     {
-        return GrigliaUtils::to_camel_case(array('str' => trim($etichetteutente[$chiave]), 'primamaiuscola' => true));
+        return GrigliaUtils::toCamelCase(array('str' => trim($etichetteutente[$chiave]), 'primamaiuscola' => true));
     }
 
     public static function getWidthCampo(&$colonna, &$chiave, $singoloalias, $larghezzeutente)

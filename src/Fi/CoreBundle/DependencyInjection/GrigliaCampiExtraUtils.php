@@ -65,7 +65,7 @@ class GrigliaCampiExtraUtils
 
     public static function getCampiExtraNomiColonne(&$colonna, $chiave)
     {
-        return isset($colonna['descrizione']) ? $colonna['descrizione'] : GrigliaUtils::to_camel_case(array('str' => $chiave, 'primamaiuscola' => true));
+        return isset($colonna['descrizione']) ? $colonna['descrizione'] : GrigliaUtils::toCamelCase(array('str' => $chiave, 'primamaiuscola' => true));
     }
 
     public static function getCampiExtraWidthColonna($colonna)

@@ -8,12 +8,12 @@ class GrigliaInfoCampiUtils
     {
         $array = array('str' => $chiave, 'primamaiuscola' => true);
 
-        return isset($singoloalias['descrizione']) ? $singoloalias['descrizione'] : GrigliaUtils::to_camel_case($array);
+        return isset($singoloalias['descrizione']) ? $singoloalias['descrizione'] : GrigliaUtils::toCamelCase($array);
     }
 
     public static function getEtichettaNomeColonna(&$etichetteutente, $chiave)
     {
-        return GrigliaUtils::to_camel_case(array('str' => trim($etichetteutente[$chiave]), 'primamaiuscola' => true));
+        return GrigliaUtils::toCamelCase(array('str' => trim($etichetteutente[$chiave]), 'primamaiuscola' => true));
     }
 
     public static function getWidthCampo(&$colonna, &$chiave, $singoloalias, $larghezzeutente)
