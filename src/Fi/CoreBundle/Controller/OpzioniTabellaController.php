@@ -43,7 +43,13 @@ class OpzioniTabellaController extends FiController
         );
 
         $escludi = array();
-        $paricevuti = array('nomebundle' => $nomebundle, 'nometabella' => $controller, 'dettaglij' => $dettaglij, 'escludere' => $escludi, 'container' => $container);
+        $paricevuti = array(
+            'nomebundle' => $nomebundle,
+            'nometabella' => $controller,
+            'dettaglij' => $dettaglij,
+            'escludere' => $escludi,
+            'container' => $container,
+        );
 
         $testatagriglia = Griglia::testataPerGriglia($paricevuti);
 
