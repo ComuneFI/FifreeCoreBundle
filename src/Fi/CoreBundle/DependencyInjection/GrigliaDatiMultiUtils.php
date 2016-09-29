@@ -161,16 +161,31 @@ class GrigliaDatiMultiUtils
         }
     }
 
-    public static function getWidthColonna(&$singoloalias)
+    public static function getWidthColonna(&$singoloalias, $colonna)
     {
         $moltiplicatorelarghezza = GrigliaUtils::MOLTIPLICATORELARGHEZZA;
         $larghezzamassima = GrigliaUtils::LARGHEZZAMASSIMA;
-        $singoloaliaslunghezza = isset($singoloalias['lunghezza']) ? $singoloalias['lunghezza'] : null;
-        $larghezzacalc = isset($singoloalias['lunghezza']) ? $singoloalias['lunghezza'] : $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA;
-        $moltiplicatore = isset($singoloaliaslunghezza) ? $singoloaliaslunghezza : $colonna['length'] * $moltiplicatorelarghezza;
+        $singoloaliaslunghezza = self::getLunghezzaSingoloAlias($singoloalias);
+        $larghezzacalc = self::getLunghezzaSingoloAliasCalc($singoloalias, $colonna);
+        $moltiplicatore = self::getMoltiplicatoreColonna($singoloaliaslunghezza, $colonna, $moltiplicatorelarghezza);
         $larghezzaricalcolata = ($moltiplicatore > $larghezzamassima ? $larghezzamassima : $larghezzacalc);
         $widthcampo = isset($singoloaliaslunghezza) ? $singoloaliaslunghezza : $larghezzaricalcolata;
 
         return $widthcampo;
+    }
+
+    public static function getLunghezzaSingoloAlias(&$singoloalias)
+    {
+        return isset($singoloalias['lunghezza']) ? $singoloalias['lunghezza'] : null;
+    }
+
+    public static function getLunghezzaSingoloAliasCalc(&$singoloalias, $colonna)
+    {
+        return isset($singoloalias['lunghezza']) ? $singoloalias['lunghezza'] : $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA;
+    }
+
+    public static function getMoltiplicatoreColonna(&$singoloaliaslunghezza, $colonna, $moltiplicatorelarghezza)
+    {
+        return isset($singoloaliaslunghezza) ? $singoloaliaslunghezza : $colonna['length'] * $moltiplicatorelarghezza;
     }
 }

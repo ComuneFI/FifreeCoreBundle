@@ -21,7 +21,7 @@ class GrigliaInfoCampiUtils
         if ((isset($larghezzeutente[$chiave])) && ($larghezzeutente[$chiave] != '') && ($larghezzeutente[$chiave] != 0)) {
             $widthcampo = $larghezzeutente[$chiave];
         } else {
-            $widthcampo = GrigliaDatiMultiUtils::getWidthColonna($singoloalias);
+            $widthcampo = GrigliaDatiMultiUtils::getWidthColonna($singoloalias, $colonna);
             //$widthcampo = isset($singoloalias['lunghezza']) ? $singoloalias['lunghezza'] :
             //($colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA > GrigliaUtils::LARGHEZZAMASSIMA ?
             //GrigliaUtils::LARGHEZZAMASSIMA :
