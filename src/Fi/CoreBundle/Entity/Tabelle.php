@@ -68,9 +68,22 @@ class Tabelle
     private $operatori_id;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $opzioniTabellas;
+
+    /**
      * @var \Fi\CoreBundle\Entity\Operatori
      */
     private $operatori;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->opzioniTabellas = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -87,7 +100,7 @@ class Tabelle
      *
      * @param string $nometabella
      *
-     * @return tabelle
+     * @return Tabelle
      */
     public function setNometabella($nometabella)
     {
@@ -111,7 +124,7 @@ class Tabelle
      *
      * @param string $nomecampo
      *
-     * @return tabelle
+     * @return Tabelle
      */
     public function setNomecampo($nomecampo)
     {
@@ -135,7 +148,7 @@ class Tabelle
      *
      * @param bool $mostraindex
      *
-     * @return tabelle
+     * @return Tabelle
      */
     public function setMostraindex($mostraindex)
     {
@@ -159,7 +172,7 @@ class Tabelle
      *
      * @param int $ordineindex
      *
-     * @return tabelle
+     * @return Tabelle
      */
     public function setOrdineindex($ordineindex)
     {
@@ -183,7 +196,7 @@ class Tabelle
      *
      * @param int $larghezzaindex
      *
-     * @return tabelle
+     * @return Tabelle
      */
     public function setLarghezzaindex($larghezzaindex)
     {
@@ -207,7 +220,7 @@ class Tabelle
      *
      * @param string $etichettaindex
      *
-     * @return tabelle
+     * @return Tabelle
      */
     public function setEtichettaindex($etichettaindex)
     {
@@ -231,7 +244,7 @@ class Tabelle
      *
      * @param bool $mostrastampa
      *
-     * @return tabelle
+     * @return Tabelle
      */
     public function setMostrastampa($mostrastampa)
     {
@@ -255,7 +268,7 @@ class Tabelle
      *
      * @param int $ordinestampa
      *
-     * @return tabelle
+     * @return Tabelle
      */
     public function setOrdinestampa($ordinestampa)
     {
@@ -279,7 +292,7 @@ class Tabelle
      *
      * @param int $larghezzastampa
      *
-     * @return tabelle
+     * @return Tabelle
      */
     public function setLarghezzastampa($larghezzastampa)
     {
@@ -303,7 +316,7 @@ class Tabelle
      *
      * @param string $etichettastampa
      *
-     * @return tabelle
+     * @return Tabelle
      */
     public function setEtichettastampa($etichettastampa)
     {
@@ -323,11 +336,11 @@ class Tabelle
     }
 
     /**
-     * Set operatori_id.
+     * Set operatoriId.
      *
      * @param int $operatoriId
      *
-     * @return tabelle
+     * @return Tabelle
      */
     public function setOperatoriId($operatoriId)
     {
@@ -337,7 +350,7 @@ class Tabelle
     }
 
     /**
-     * Get operatori_id.
+     * Get operatoriId.
      *
      * @return int
      */
@@ -347,11 +360,45 @@ class Tabelle
     }
 
     /**
+     * Add opzioniTabella.
+     *
+     * @param \Fi\CoreBundle\Entity\OpzioniTabella $opzioniTabella
+     *
+     * @return Tabelle
+     */
+    public function addOpzioniTabella(\Fi\CoreBundle\Entity\OpzioniTabella $opzioniTabella)
+    {
+        $this->opzioniTabellas[] = $opzioniTabella;
+
+        return $this;
+    }
+
+    /**
+     * Remove opzioniTabella.
+     *
+     * @param \Fi\CoreBundle\Entity\OpzioniTabella $opzioniTabella
+     */
+    public function removeOpzioniTabella(\Fi\CoreBundle\Entity\OpzioniTabella $opzioniTabella)
+    {
+        $this->opzioniTabellas->removeElement($opzioniTabella);
+    }
+
+    /**
+     * Get opzioniTabellas.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOpzioniTabellas()
+    {
+        return $this->opzioniTabellas;
+    }
+
+    /**
      * Set operatori.
      *
      * @param \Fi\CoreBundle\Entity\Operatori $operatori
      *
-     * @return tabelle
+     * @return Tabelle
      */
     public function setOperatori(\Fi\CoreBundle\Entity\Operatori $operatori = null)
     {
@@ -368,67 +415,5 @@ class Tabelle
     public function getOperatori()
     {
         return $this->operatori;
-    }
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $opzioni_tabellas;
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->opzioni_tabellas = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    public function __toString()
-    {
-        return $this->nometabella.' ['.$this->nomecampo.']';
-    }
-
-    /**
-     * Add opzioni_tabellas.
-     *
-     * @param \Fi\CoreBundle\Entity\opzioniTabella $opzioniTabellas
-     *
-     * @return tabelle
-     */
-    public function addOpzioniTabella(\Fi\CoreBundle\Entity\opzioniTabella $opzioniTabellas)
-    {
-        $this->opzioni_tabellas[] = $opzioniTabellas;
-
-        return $this;
-    }
-
-    /**
-     * Remove opzioni_tabellas.
-     *
-     * @param \Fi\CoreBundle\Entity\opzioniTabella $opzioniTabellas
-     */
-    public function removeOpzioniTabella(\Fi\CoreBundle\Entity\opzioniTabella $opzioniTabellas)
-    {
-        $this->opzioni_tabellas->removeElement($opzioniTabellas);
-    }
-
-    /**
-     * Get opzioni_tabellas.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getOpzioniTabellas()
-    {
-        return $this->opzioni_tabellas;
-    }
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $opzioniTabellas;
-
-    public function GetOpzioniTabellas()
-    {
-        return $this->opzioniTabellas;
     }
 }
