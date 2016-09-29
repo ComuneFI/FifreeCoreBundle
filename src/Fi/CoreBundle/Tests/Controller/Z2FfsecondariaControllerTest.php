@@ -81,6 +81,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $session->visit($url);
         $page = $session->getPage();
 
+        sleep(1);
         /* Login */
         $page->fillField('username', 'admin');
         $page->fillField('password', 'admin');
