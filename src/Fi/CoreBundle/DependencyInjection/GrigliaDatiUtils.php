@@ -166,11 +166,13 @@ class GrigliaDatiUtils
             }
         } else {
             if (isset($tabellej[$nomecampo]['padre'])) {
-                $singolopadre = $singolo[$tabellej[$nomecampo]['padre']][$tabellej[$nomecampo]['tabella']];
-                $fields = $singolopadre ? $singolopadre : '';
+                $fields = $singolo[$tabellej[$nomecampo]['padre']][$tabellej[$nomecampo]['tabella']] ?
+                        $singolo[$tabellej[$nomecampo]['padre']][$tabellej[$nomecampo]['tabella']][$campoelencato] :
+                        '';
             } else {
-                $singolotabella = $singolo[$tabellej[$nomecampo]['tabella']];
-                $fields = $singolotabella ? $singolotabella : '';
+                $fields = $singolo[$tabellej[$nomecampo]['tabella']] ?
+                        $singolo[$tabellej[$nomecampo]['tabella']][$campoelencato] :
+                        '';
             }
             $vettoredavalorizzare = array(
                 'singolocampo' => $fields,
