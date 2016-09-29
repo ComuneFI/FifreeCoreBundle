@@ -49,9 +49,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
 
         $client->request('GET', $url);
         $this->assertTrue(
-            $client->getResponse()->headers->contains(
-                'Content-Type', 'text/csv; charset=UTF-8'
-            ), 'the "Content-Type" header is "text/csv; charset=UTF-8"' // optional message shown on failure
+            $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
         );
     }
 
