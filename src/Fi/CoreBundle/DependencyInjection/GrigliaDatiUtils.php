@@ -110,7 +110,7 @@ class GrigliaDatiUtils
         if (isset($decodifiche[$nomecampo])) {
             $vettoreriga[] = $decodifiche[$nomecampo][$singolocampo];
         } else {
-            $vettoretype = $vettoreparcampi[$nomecampo]['type'];
+            $vettoretype = isset($vettoreparcampi[$nomecampo]['type']) ? $vettoreparcampi[$nomecampo]['type'] : null;
             if (isset($vettoretype) && ($vettoretype == 'date' || $vettoretype == 'datetime') && $singolocampo) {
                 if (isset($ordinecampo)) {
                     $vettoreriga[$ordinecampo] = $singolocampo->format('d/m/Y');
