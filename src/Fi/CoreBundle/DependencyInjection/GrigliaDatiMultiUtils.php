@@ -160,4 +160,17 @@ class GrigliaDatiMultiUtils
             $tabellej[$nomecampo] = get_object_vars($tabellej[$nomecampo]);
         }
     }
+
+    public static function getWidthColonna(&$singoloalias)
+    {
+        $moltiplicatorelarghezza = GrigliaUtils::MOLTIPLICATORELARGHEZZA;
+        $larghezzamassima = GrigliaUtils::LARGHEZZAMASSIMA;
+        $singoloaliaslunghezza = isset($singoloalias['lunghezza']) ? $singoloalias['lunghezza'] : null;
+        $larghezzacalc = isset($singoloalias['lunghezza']) ? $singoloalias['lunghezza'] : $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA;
+        $moltiplicatore = isset($singoloaliaslunghezza) ? $singoloaliaslunghezza : $colonna['length'] * $moltiplicatorelarghezza;
+        $larghezzaricalcolata = ($moltiplicatore > $larghezzamassima ? $larghezzamassima : $larghezzacalc);
+        $widthcampo = isset($singoloaliaslunghezza) ? $singoloaliaslunghezza : $larghezzaricalcolata;
+
+        return $widthcampo;
+    }
 }

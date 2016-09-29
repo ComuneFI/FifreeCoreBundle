@@ -35,7 +35,7 @@ class FfsecondariaController extends FiController
         $escludi = array('nota');
 
         $campiextra = array(
-            array('nomecampo' => 'lunghezzanota', 'lunghezza' => '80', 'descrizione' => 'Lunghezza Nota', 'tipo' => 'integer'),
+            array('nomecampo' => 'lunghezzanota', 'descrizione' => 'Lunghezza Nota', 'tipo' => 'integer'),
             array('nomecampo' => 'attivoToString', 'lunghezza' => '80', 'descrizione' => 'Attivo string', 'tipo' => 'text'),
         );
 
