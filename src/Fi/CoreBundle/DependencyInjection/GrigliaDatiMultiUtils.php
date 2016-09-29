@@ -98,7 +98,7 @@ class GrigliaDatiMultiUtils
         }
     }
 
-    public static function buildColonneDatiGriglia($parametri, &$vettoreriga, &$singolo, &$nomecampo, &$nomecampo, &$indice, &$indicecolonna, &$singolocampo)
+    public static function buildDatiGriglia($parametri, &$vettoreriga, &$singolo, &$nomecampo, &$nomecampo, &$indice, &$indicecolonna, &$singolocampo)
     {
         $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
         /* $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine); */
@@ -120,7 +120,9 @@ class GrigliaDatiMultiUtils
                 /* Per ogni campo si cattura il valore dall'array che torna doctrine */
                 foreach ($tabellej[$nomecampo]['campi'] as $campoelencato) {
                     /* Object */
-                    /* $fields = $singolo->get($tabellej[$nomecampo]["tabella"]) ? $singolo->get($tabellej[$nomecampo]["tabella"])->get($campoelencato) : ""; */
+                    /* $fields = $singolo->get($tabellej[$nomecampo]["tabella"]) ?
+                      $singolo->get($tabellej[$nomecampo]["tabella"])->get($campoelencato)
+                      : ""; */
                     /* array */
 
                     self::setOrdineColonneDatiGriglia($ordinecolonne, $nomecampo, $indice, $indicecolonna);
@@ -139,8 +141,15 @@ class GrigliaDatiMultiUtils
                 }
             } else {
                 self::setOrdineColonneDatiGriglia($ordinecolonne, $nomecampo, $indice, $indicecolonna);
-
-                GrigliaDatiUtils::valorizzaVettore($vettoreriga, array('singolocampo' => $singolocampo, 'tabella' => $bundle.':'.$nometabella, 'nomecampo' => $nomecampo, 'doctrine' => $doctrine, 'ordinecampo' => $indicecolonna, 'decodifiche' => $decodifiche));
+                $parametriGrglia = array(
+                    'singolocampo' => $singolocampo,
+                    'tabella' => $bundle.':'.$nometabella,
+                    'nomecampo' => $nomecampo,
+                    'doctrine' => $doctrine,
+                    'ordinecampo' => $indicecolonna,
+                    'decodifiche' => $decodifiche,
+                );
+                GrigliaDatiUtils::valorizzaVettore($vettoreriga, $parametriGrglia);
             }
         }
     }

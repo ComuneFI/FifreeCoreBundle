@@ -65,12 +65,16 @@ class GrigliaCampiExtraUtils
 
     public static function getCampiExtraNomiColonne(&$colonna, $chiave)
     {
-        return isset($colonna['descrizione']) ? $colonna['descrizione'] : GrigliaUtils::toCamelCase(array('str' => $chiave, 'primamaiuscola' => true));
+        $parametri = array('str' => $chiave, 'primamaiuscola' => true);
+
+        return isset($colonna['descrizione']) ? $colonna['descrizione'] : GrigliaUtils::toCamelCase($parametri);
     }
 
     public static function getCampiExtraWidthColonna($colonna)
     {
-        return isset($colonna['lunghezza']) ? $colonna['lunghezza'] : ($colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA > GrigliaUtils::LARGHEZZAMASSIMA ? GrigliaUtils::LARGHEZZAMASSIMA : $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA);
+        $width = isset($colonna['lunghezza']) ? $colonna['lunghezza'] : GrigliaUtils::LARGHEZZAMASSIMA;
+
+        return $width;
     }
 
     public static function getCampiExtraColonneNormalizzate(&$colonna)

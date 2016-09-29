@@ -60,9 +60,19 @@ class GrigliaRegoleUtils
                 continue;
             }
             if ($tipof == 'OR') {
-                $q->orWhere($regola['field'].' '.GrigliaUtils::$decodificaop[$regola['op']].' '.GrigliaUtils::$precarattere[$regola['op']].$regola['data'].GrigliaUtils::$postcarattere[$regola['op']]);
+                $condizioneOR = $regola['field'].' '.
+                        GrigliaUtils::$decodificaop[$regola['op']].' '.
+                        GrigliaUtils::$precarattere[$regola['op']].
+                        $regola['data'].
+                        GrigliaUtils::$postcarattere[$regola['op']];
+                $q->orWhere($condizioneOR);
             } else {
-                $q->andWhere($regola['field'].' '.GrigliaUtils::$decodificaop[$regola['op']].' '.GrigliaUtils::$precarattere[$regola['op']].$regola['data'].GrigliaUtils::$postcarattere[$regola['op']]);
+                $condizioneAND = $regola['field'].' '.
+                        GrigliaUtils::$decodificaop[$regola['op']].' '.
+                        GrigliaUtils::$precarattere[$regola['op']].
+                        $regola['data'].
+                        GrigliaUtils::$postcarattere[$regola['op']];
+                $q->andWhere($condizioneAND);
             }
         }
     }

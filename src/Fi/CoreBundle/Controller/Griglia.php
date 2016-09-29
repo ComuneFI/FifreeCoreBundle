@@ -197,7 +197,7 @@ class Griglia extends FiController
             $vettoreriga = array();
             $indicecolonna = 0;
             foreach ($singolo as $nomecampo => $singolocampo) {
-                GrigliaDatiMultiUtils::buildColonneDatiGriglia(
+                GrigliaDatiMultiUtils::buildDatiGriglia(
                     $parametri,
                     $vettoreriga,
                     $singolo,

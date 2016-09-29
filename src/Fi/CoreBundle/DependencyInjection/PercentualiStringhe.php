@@ -125,7 +125,9 @@ class PercentualiStringhe
       for ($i = 0; $i < (strlen($stringab)); ++$i) {
       $caratterea = (strlen($stringaa) >= $i ? substr($stringaa, $i, 1) : false);
 
-      $posizioneinb = ($caratterea ? strpos(strtolower($stringab), strtolower($caratterea), (($i - $tolleranzauno) >= 0 ? ($i - $tolleranzauno) : 0)) : false);
+      $posizioneinb =
+     ($caratterea ? strpos(strtolower($stringab), strtolower($caratterea),
+     (($i - $tolleranzauno) >= 0 ? ($i - $tolleranzauno) : 0)) : false);
 
       if (!($posizioneinb === false)) {
       if ($posizioneinb == $i) {

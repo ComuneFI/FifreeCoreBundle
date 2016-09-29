@@ -101,7 +101,9 @@ class GrigliaColonneUtils
 
     public static function getEtichettaDescrizioneColonna(&$singoloalias, $chiave)
     {
-        return isset($singoloalias['descrizione']) ? $singoloalias['descrizione'] : GrigliaUtils::toCamelCase(array('str' => $chiave, 'primamaiuscola' => true));
+        $parametri = array('str' => $chiave, 'primamaiuscola' => true);
+
+        return isset($singoloalias['descrizione']) ? $singoloalias['descrizione'] : GrigliaUtils::toCamelCase($parametri);
     }
 
     public static function getEtichettaNomeColonna(&$etichetteutente, $chiave)
@@ -114,7 +116,14 @@ class GrigliaColonneUtils
         if ((isset($larghezzeutente[$chiave])) && ($larghezzeutente[$chiave] != '') && ($larghezzeutente[$chiave] != 0)) {
             $widthcampo = $larghezzeutente[$chiave];
         } else {
-            $widthcampo = isset($singoloalias['lunghezza']) ? $singoloalias['lunghezza'] : ($colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA > GrigliaUtils::LARGHEZZAMASSIMA ? GrigliaUtils::LARGHEZZAMASSIMA : $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA);
+            $moltiplicatorelarghezza = GrigliaUtils::MOLTIPLICATORELARGHEZZA;
+            $larghezzamassima = GrigliaUtils::LARGHEZZAMASSIMA;
+            $singoloaliaslunghezza = $singoloalias['lunghezza'];
+            $moltiplicatore = $colonna['length'] * $moltiplicatorelarghezza;
+            $larghezzacalc = $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA;
+            $larghezzaricalcolata = ($moltiplicatore > $larghezzamassima ? $larghezzamassima : $larghezzacalc);
+
+            $widthcampo = isset($singoloaliaslunghezza) ? $singoloaliaslunghezza : $larghezzaricalcolata;
         }
 
         return $widthcampo;
