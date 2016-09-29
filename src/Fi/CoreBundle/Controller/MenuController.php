@@ -76,7 +76,8 @@ class MenuController extends FiController
             $urlLogout = $this->generateUrl('fos_user_security_logout');
         }
 
-        $risposta[] = array('percorso' => $this->getUrlObject($username, '', ''), 'nome' => $username, 'target' => '', // "classe" => "ui-state-disabled",
+        $risposta[] = array('percorso' => $this->getUrlObject($username, '', ''), 'nome' => $username, 'target' => '',
+            // "classe" => "ui-state-disabled",
             'sottolivello' => array(
                 array('percorso' => $urlLogout, 'nome' => 'Logout', 'target' => ''),
             ),
@@ -153,7 +154,9 @@ class MenuController extends FiController
                 $sottomenu = $vettoresottomenu[0];
 
                 if (isset($sottomenu['sottolivello']) && count($sottomenu['sottolivello']) > 0) {
-                    $sottomenutabelle[] = array_merge($this->getUrlObject($subitem->getNome(), $subitem->getPercorso(), $subitem->getTarget()), array('sottolivello' => $sottomenu['sottolivello']));
+                    $sottolivellomenu = array('sottolivello' => $sottomenu['sottolivello']);
+                    $menuobj = $this->getUrlObject($subitem->getNome(), $subitem->getPercorso(), $subitem->getTarget());
+                    $sottomenutabelle[] = array_merge($menuobj, $sottolivellomenu);
                 } else {
                     $sottomenutabelle[] = $this->getUrlObject($subitem->getNome(), $subitem->getPercorso(), $subitem->getTarget());
                 }
