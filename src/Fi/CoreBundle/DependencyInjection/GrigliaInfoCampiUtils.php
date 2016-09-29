@@ -26,7 +26,8 @@ class GrigliaInfoCampiUtils
             $singoloaliaslunghezza = $singoloalias['lunghezza'];
             $moltiplicatore = $colonna['length'] * $moltiplicatorelarghezza;
             $larghezzacalc = $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA;
-            $widthcampo = isset($singoloaliaslunghezza) ? $singoloaliaslunghezza : ($moltiplicatore > $larghezzamassima ? $larghezzamassima : $larghezzacalc);
+            $larghezzaricalcolata = ($moltiplicatore > $larghezzamassima ? $larghezzamassima : $larghezzacalc);
+            $widthcampo = isset($singoloaliaslunghezza) ? $singoloaliaslunghezza : $larghezzaricalcolata;
         }
 
         return $widthcampo;
