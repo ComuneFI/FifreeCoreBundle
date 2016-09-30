@@ -41,6 +41,7 @@ class Griglia extends FiController
     public static function testataPerGriglia($paricevuti = array())
     {
         $nometabella = $paricevuti['nometabella'];
+        $nomebundle = $paricevuti['nomebundle'];
         $output = GrigliaUtils::getOuputType($paricevuti);
 
         $doctrine = GrigliaUtils::getDoctrineByEm($paricevuti);
@@ -68,6 +69,7 @@ class Griglia extends FiController
         $testata['modellocolonne'] = GrigliaUtils::getModelloColonne($modellocolonne);
 
         $testata['tabella'] = $nometabella;
+        $testata['nomebundle'] = $nomebundle;
         $testata['output'] = $output;
 
         return $testata;

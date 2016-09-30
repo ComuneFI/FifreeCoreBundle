@@ -88,11 +88,7 @@ class GrigliaCampiExtraUtils
     {
         /* Gestione per passare campi che non sono nella tabella ma metodi del model (o richiamabili tramite magic method get) */
         if (isset($campiextra)) {
-            if (count($campiextra) == count($campiextra, \COUNT_RECURSIVE)) {
-                $newcampiextra = $campiextra;
-                $campiextra = array();
-                $campiextra[0] = $newcampiextra;
-            }
+            GrigliaCampiExtraUtils::getCampiExtraNormalizzati($campiextra);
             foreach ($campiextra as $vettore) {
                 foreach ($vettore as $singolocampo) {
                     $campo = 'get'.ucfirst($singolocampo);
