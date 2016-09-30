@@ -15,10 +15,9 @@ class GrigliaCampiExtraUtils
                 if (is_object($campoextranormalize)) {
                     $campoextranormalize = get_object_vars($campoextranormalize);
                     $campiextra[] = $campoextranormalize;
+                } else {
+                    $campiextra[] = $campoextranormalize;
                 }
-            }
-            if (count($campiextra) == 0) {
-                $campiextra = $campoextraarray;
             }
         }
     }
