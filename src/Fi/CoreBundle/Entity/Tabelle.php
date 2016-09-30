@@ -416,4 +416,9 @@ class Tabelle
     {
         return $this->operatori;
     }
+
+    public function __toString()
+    {
+        return $this->nometabella.' ['.$this->nomecampo.']';
+    }
 }
