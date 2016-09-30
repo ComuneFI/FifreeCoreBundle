@@ -14,8 +14,10 @@ class GrigliaCampiExtraUtils
             foreach ($campoextraarray as $key => $campoextranormalize) {
                 if (is_object($campoextranormalize)) {
                     $campoextranormalize = get_object_vars($campoextranormalize);
+                    $campiextra[] = $campoextranormalize;
+                } else {
+                    $campiextra[] = array($key => $campoextranormalize);
                 }
-                $campiextra[] = array($key => $campoextranormalize);
             }
         }
     }
