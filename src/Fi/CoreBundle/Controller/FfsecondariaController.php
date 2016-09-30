@@ -58,8 +58,8 @@ class FfsecondariaController extends FiController
         $testatagriglia['showexcel'] = 1;
 
         //$testatagriglia["filterToolbar_stringResult"] = false;
-        //$testatagriglia["filterToolbar_searchOnEnter"] = true;
-        //$testatagriglia["filterToolbar_searchOperators"] = false;
+        $testatagriglia["filterToolbar_searchOnEnter"] = true;
+        $testatagriglia["filterToolbar_searchOperators"] = true;
         //$testatagriglia["filterToolbar_clearSearch"] = false;
 
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
