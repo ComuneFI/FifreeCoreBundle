@@ -11,11 +11,11 @@ class GrigliaCampiExtraUtils
         if (count($campiextra) == count($campiextra, \COUNT_RECURSIVE)) {
             $campoextraarray = $campiextra;
             $campiextra = array();
-            foreach ($campoextraarray as $campoextranormalize) {
+            foreach ($campoextraarray as $key => $campoextranormalize) {
                 if (is_object($campoextranormalize)) {
                     $campoextranormalize = get_object_vars($campoextranormalize);
                 }
-                $campiextra[] = $campoextranormalize;
+                $campiextra[] = array($key => $campoextranormalize);
             }
         }
     }
