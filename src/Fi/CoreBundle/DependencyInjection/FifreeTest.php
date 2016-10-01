@@ -161,7 +161,9 @@ class FifreeTest extends WebTestCase
      */
     protected function tearDown()
     {
-        $this->em->close();
+        if (isset($this->em)) {
+            $this->em->close();
+        }
         parent::tearDown();
     }
 
