@@ -28,7 +28,8 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Fi\\CoreBundle\\": "src/Fi/CoreBundle"
+            "Fi\\CoreBundle\\": "src/Fi/CoreBundle",
+            "Fi\\ProvaBundle\\": "src/Fi/ProvaBundle"
         }
     },
     "require": {

@@ -7,8 +7,8 @@ use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
 
-class FifreeTest extends WebTestCase
-{
+class FifreeTest extends WebTestCase {
+
     private $clientNonAutorizzato;
     private $clientAutorizzato;
     private $testclassname;
@@ -19,8 +19,7 @@ class FifreeTest extends WebTestCase
     protected $em;
     protected $container;
 
-    protected function setUp()
-    {
+    protected function setUp() {
         $this->clientNonAutorizzato = static::createClient();
         $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient());
 
@@ -32,8 +31,7 @@ class FifreeTest extends WebTestCase
      *
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    protected function getContainer(array $options = [])
-    {
+    protected function getContainer(array $options = []) {
         if (!$this->container) {
             static::bootKernel($options);
             $this->container = static::$kernel->getContainer();
@@ -42,38 +40,31 @@ class FifreeTest extends WebTestCase
         return $this->container;
     }
 
-    protected function setClassName($testclassname)
-    {
+    protected function setClassName($testclassname) {
         $this->testclassname = $testclassname;
     }
 
-    protected function getClassName()
-    {
+    protected function getClassName() {
         return $this->testclassname;
     }
 
-    protected function getEm()
-    {
+    protected function getEm() {
         return $this->em;
     }
 
-    protected function getEntityManager()
-    {
+    protected function getEntityManager() {
         return $this->em;
     }
 
-    protected function getClientNonAutorizzato()
-    {
+    protected function getClientNonAutorizzato() {
         return $this->clientNonAutorizzato;
     }
 
-    protected function getClientAutorizzato()
-    {
+    protected function getClientAutorizzato() {
         return $this->clientAutorizzato;
     }
 
-    protected function getControllerNameByClassName()
-    {
+    protected function getControllerNameByClassName() {
         $classnamearray = explode('\\', $this->testclassname);
         $classname = $classnamearray[count($classnamearray) - 1];
         $controllerName = preg_replace('/ControllerTest/', '', $classname);
@@ -81,8 +72,7 @@ class FifreeTest extends WebTestCase
         return $controllerName;
     }
 
-    protected function fifreeDbBaseTest($entity)
-    {
+    protected function fifreeDbBaseTest($entity) {
         if (!$this->clientAutorizzato->getContainer()->getParameter('testdb')) {
             return true;
         }
@@ -109,15 +99,14 @@ class FifreeTest extends WebTestCase
         //$this->assertGreaterThan(0, $crawler->filter('corsi')->count());
     }
 
-    protected function fifreeBaseTest()
-    {
+    protected function fifreeBaseTest() {
         //ini_set('memory_limit', '32M');
         if (!$this->clientAutorizzato->getContainer()->getParameter('testroutes')) {
             return true;
         }
 
         $controller = $this->getControllerNameByClassName();
-        $url = $this->clientAutorizzato->getContainer()->get('router')->generate($controller.'_container', array(), false);
+        $url = $this->clientAutorizzato->getContainer()->get('router')->generate($controller . '_container', array(), false);
         $this->clientAutorizzato->request('GET', $url);
 
         //$crawler = new Crawler($client->getResponse()->getContent());
@@ -133,8 +122,7 @@ class FifreeTest extends WebTestCase
         //$this->assertGreaterThan(0, $crawler->filter('corsi')->count());
     }
 
-    protected static function createAuthorizedClient($client)
-    {
+    protected static function createAuthorizedClient($client) {
         $container = $client->getContainer();
 
         $session = $container->get('session');
@@ -149,7 +137,7 @@ class FifreeTest extends WebTestCase
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
         $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
 
@@ -159,12 +147,16 @@ class FifreeTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
-    {
+    protected function tearDown() {
         if (isset($this->em)) {
             $this->em->close();
         }
         parent::tearDown();
+    }
+
+    protected function ajaxWait($session) {
+        $time = 5000; // time should be in milliseconds
+        $session->wait($time, '(0 === jQuery.active)');
     }
 
     /*

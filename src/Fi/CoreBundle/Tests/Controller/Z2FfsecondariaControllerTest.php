@@ -7,14 +7,13 @@ use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class Z2FfsecondariaControllerTest extends FifreeTest
-{
+class Z2FfsecondariaControllerTest extends FifreeTest {
+
     /**
      * @test
      */
-    public function testIndexFfsecondaria()
-    {
-        parent::__construct();
+    public function testIndexFfsecondaria() {
+        parent::setUp();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
         $url = $client->getContainer()->get('router')->generate('Ffsecondaria');
@@ -39,16 +38,15 @@ class Z2FfsecondariaControllerTest extends FifreeTest
     /**
      * @test
      */
-    public function testExcelFfsecondaria()
-    {
-        parent::__construct();
+    public function testExcelFfsecondaria() {
+        parent::setUp();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
         $url = $client->getContainer()->get('router')->generate('Tabelle_esportaexceltabella', array('nometabella' => 'Ffsecondaria'));
 
         $client->request('GET', $url);
         $this->assertTrue(
-            $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
+                $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
         );
     }
 
@@ -56,13 +54,12 @@ class Z2FfsecondariaControllerTest extends FifreeTest
      * @test
      */
 
-    public function testFfsecondaria()
-    {
-        parent::__construct();
+    public function testFfsecondaria() {
+        parent::setUp();
         $this->setClassName(get_class());
         $browser = 'firefox';
         $urlruote = $this->getContainer()->get('router')->generate('Ffsecondaria');
-        $url = 'http://127.0.0.1:8000'.$urlruote;
+        $url = 'http://127.0.0.1:8000/app_test.php' . $urlruote;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -79,6 +76,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $page->pressButton('_submit');
         //$page = $session->getPage();
 
+        sleep(1);
         $this->crudoperation($session, $page);
 
         $this->searchoperation($session, $page);
@@ -88,8 +86,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $session->stop();
     }
 
-    private function crudoperation($session, $page)
-    {
+    private function crudoperation($session, $page) {
         $elementadd = $page->findAll('css', '.ui-icon-plus');
 
         foreach ($elementadd as $e) {
@@ -97,6 +94,8 @@ class Z2FfsecondariaControllerTest extends FifreeTest
                 $e->click();
             }
         }
+
+        parent::ajaxWait($session);
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         sleep(1);
@@ -111,9 +110,9 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $page->fillField('fi_corebundle_ffsecondariatype_attivo', 1);
 
         $page->find('css', 'a#sDataFfsecondariaS')->click();
-        sleep(1);
+        parent::ajaxWait($session);
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRow.'}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
         $elementmod = $page->findAll('css', '.ui-icon-pencil');
 
         foreach ($elementmod as $e) {
@@ -121,15 +120,15 @@ class Z2FfsecondariaControllerTest extends FifreeTest
                 $e->click();
             }
         }
+        parent::ajaxWait($session);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
-        sleep(1);
         $page->fillField('fi_corebundle_ffsecondariatype_descsec', $descrizionetest2);
         $page->find('css', 'a#sDataFfsecondariaS')->click();
-        sleep(1);
+        parent::ajaxWait($session);
         /* Cancellazione */
         $jsSetFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$jsSetFirstRow.'}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
         $elementdel = $page->findAll('css', '.ui-icon-trash');
 
         foreach ($elementdel as $e) {
@@ -138,11 +137,10 @@ class Z2FfsecondariaControllerTest extends FifreeTest
             }
         }
         $page->find('css', 'a#dData')->click();
-        sleep(1);
+        parent::ajaxWait($session);
     }
 
-    private function searchoperation($session, $page)
-    {
+    private function searchoperation($session, $page) {
         $elementsearch = $page->findAll('css', '.ui-icon-search');
 
         foreach ($elementsearch as $e) {
@@ -151,12 +149,11 @@ class Z2FfsecondariaControllerTest extends FifreeTest
             }
         }
         /* Ricerca 1 */
-        sleep(1);
+        parent::ajaxWait($session);
         $search1 = '9° secondaria';
-        sleep(1);
         $page->fillField('jqg1', $search1);
         $page->find('css', 'a#fbox_list1_search')->click();
-        sleep(1);
+        parent::ajaxWait($session);
 
         $numrowsgrid1 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid1);
@@ -169,18 +166,17 @@ class Z2FfsecondariaControllerTest extends FifreeTest
                 $e->click();
             }
         }
-        sleep(1);
+        parent::ajaxWait($session);
         $search2 = '1°';
-        sleep(1);
         //$page->selectFieldOption('inizia con', "cn");
         $var2 = '"cn"';
-        $javascript2 = "$('.selectopts option[value=".$var2."]').attr('selected', 'selected').change();;";
+        $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
 
         $session->executeScript($javascript2);
         $page->fillField('jqg1', $search2);
 
         $page->find('css', 'a#fbox_list1_search')->click();
-        sleep(1);
+        parent::ajaxWait($session);
 
         $numrowsgrid2 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(4, $numrowsgrid2);
@@ -193,30 +189,30 @@ class Z2FfsecondariaControllerTest extends FifreeTest
                 $e->click();
             }
         }
-        sleep(1);
+        parent::ajaxWait($session);
         $search3 = 100;
-        sleep(1);
         $addrulejs = "$('.ui-add').click();";
+        parent::ajaxWait($session);
 
         $session->executeScript($addrulejs);
-        sleep(1);
+        parent::ajaxWait($session);
 
         $var3 = '"intero"';
         $selector3 = '#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first';
-        $javascript3 = "$('".$selector3.' option[value='.$var3."]').attr('selected', 'selected').change();";
-        sleep(1);
+        $javascript3 = "$('" . $selector3 . ' option[value=' . $var3 . "]').attr('selected', 'selected').change();";
+        parent::ajaxWait($session);
         $session->executeScript($javascript3);
+        parent::ajaxWait($session);
         $page->fillField('jqg4', $search3);
 
         $var4 = '"ge"';
-        $javascript4 = "$('.selectopts:first option[value=".$var4."]').attr('selected', 'selected').change();;";
+        $javascript4 = "$('.selectopts:first option[value=" . $var4 . "]').attr('selected', 'selected').change();;";
         $session->executeScript($javascript4);
-        sleep(1);
         $search5 = '6°';
         $page->fillField('jqg3', $search5);
 
         $page->find('css', 'a#fbox_list1_search')->click();
-        sleep(1);
+        parent::ajaxWait($session);
 
         $numrowsgrid3 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid3);
@@ -233,8 +229,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         sleep(1);
     }
 
-    private function printoperations($session, $page)
-    {
+    private function printoperations($session, $page) {
 
         /* Print pdf */
         $element = $page->findAll('css', '.ui-icon-print');
@@ -268,6 +263,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
             $page = $session->getPage();
         }
     }
+
 }
 
 /* $client = $this->getClientAutorizzato();

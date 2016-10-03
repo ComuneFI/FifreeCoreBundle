@@ -7,14 +7,13 @@ use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class Z1FfprincipaleControllerTest extends FifreeTest
-{
+class Z1FfprincipaleControllerTest extends FifreeTest {
+
     /**
      * @test
      */
-    public function testIndexFfprincipale()
-    {
-        parent::__construct();
+    public function testIndexFfprincipale() {
+        parent::setUp();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
         $url = $client->getContainer()->get('router')->generate('Ffprincipale');
@@ -22,7 +21,9 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         $this->assertContains('DoctrineORMEntityManager', get_class($em));
 
         $client->request('GET', $url);
+        sleep(1);
         $crawler = new Crawler($client->getResponse()->getContent());
+        sleep(1);
         $this->assertTrue($client->getResponse()->isSuccessful());
         $body = $crawler->filter('div[id="Ffprincipale"]');
         $attributes = $body->extract(array('_text', 'class'));
@@ -39,8 +40,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
     /**
      * @test
      */
-    public function testExcelFfprincipale()
-    {
+    public function testExcelFfprincipale() {
         parent::__construct();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
@@ -48,8 +48,9 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         $url = $client->getContainer()->get('router')->generate('Tabelle_esportaexceltabella', array('nometabella' => 'Ffprincipale'));
 
         $client->request('GET', $url);
+        sleep(1);
         $this->assertTrue(
-            $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
+                $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
         );
     }
 
@@ -57,13 +58,12 @@ class Z1FfprincipaleControllerTest extends FifreeTest
      * @test
      */
 
-    public function testFfprincipale()
-    {
+    public function testFfprincipale() {
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';
         //$url = $client->getContainer()->get('router')->generate('Categoria_container');
-        $url = 'http://127.0.0.1:8000/';
+        $url = 'http://127.0.0.1:8000/app_test.php/';
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -79,6 +79,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         $page->pressButton('_submit');
         //$page = $session->getPage();
 
+        sleep(1);
         $this->crudoperation($session, $page);
 
         $this->searchoperation($session, $page);
@@ -105,8 +106,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
           $this->assertTrue(is_null($ff->getId())); */
     }
 
-    private function searchoperation($session, $page)
-    {
+    private function searchoperation($session, $page) {
         $elementsearch = $page->findAll('css', '.ui-icon-search');
 
         foreach ($elementsearch as $e) {
@@ -138,7 +138,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         sleep(1);
         //$page->selectFieldOption('inizia con', "cn");
         $var2 = '"cn"';
-        $javascript2 = "$('.selectopts option[value=".$var2."]').attr('selected', 'selected').change();;";
+        $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
 
         $session->executeScript($javascript2);
         $page->fillField('jqg1', $search2);
@@ -150,8 +150,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         $this->assertEquals(1, $numrowsgrid2);
     }
 
-    private function crudoperation($session, $page)
-    {
+    private function crudoperation($session, $page) {
         $elementadd = $page->findAll('css', '.ui-icon-plus');
 
         foreach ($elementadd as $e) {
@@ -160,15 +159,14 @@ class Z1FfprincipaleControllerTest extends FifreeTest
             }
         }
         /* Inserimento */
-        sleep(1);
+        parent::ajaxWait($session);
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        sleep(1);
         $page->fillField('fi_corebundle_ffprincipaletype_descrizione', $descrizionetest1);
         $page->find('css', 'a#sDataFfprincipaleS')->click();
-        sleep(1);
+        parent::ajaxWait($session);
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRow.'}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
         $elementmod = $page->findAll('css', '.ui-icon-pencil');
 
@@ -177,15 +175,15 @@ class Z1FfprincipaleControllerTest extends FifreeTest
                 $e->click();
             }
         }
+        parent::ajaxWait($session);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
-        sleep(1);
         $page->fillField('fi_corebundle_ffprincipaletype_descrizione', $descrizionetest2);
         $page->find('css', 'a#sDataFfprincipaleS')->click();
-        sleep(1);
+        parent::ajaxWait($session);
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRowDel.'}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
 
@@ -194,12 +192,12 @@ class Z1FfprincipaleControllerTest extends FifreeTest
                 $e->click();
             }
         }
+        parent::ajaxWait($session);
         $page->find('css', 'a#dData')->click();
-        sleep(1);
+        parent::ajaxWait($session);
     }
 
-    private function printoperations($session, $page)
-    {
+    private function printoperations($session, $page) {
         /* Print pdf */
         $element = $page->findAll('css', '.ui-icon-print');
 
@@ -212,41 +210,21 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
             $page = $session->getPage();
-            sleep(2);
+            sleep(3);
             $element = $page->find('css', '.textLayer');
 
             if (empty($element)) {
                 throw new \Exception("No html element found for the selector 'textLayer'");
             }
-            sleep(1);
             $this->assertContains('FiFree2', $element->getText());
             $this->assertContains('Ffprincipale', $element->getText());
             $this->assertContains('Descrizione primo record', $element->getText());
 
-            sleep(1);
             $session->executeScript('window.close()');
             $mainwindow = $windowNames[0];
-            sleep(1);
             $session->switchToWindow($mainwindow);
-            sleep(1);
             $page = $session->getPage();
         }
-        /* Print excel */
-        /* $element = $page->findAll('css', '.ui-icon-circle-arrow-s');
-
-          foreach ($element as $e) {
-          if ($e->isVisible()) {
-          $e->click();
-          }
-          }
-          $windowNames = $session->getWindowNames();
-          if (count($windowNames) > 1) {
-          for ($x = 1; $x <= count($windowNames) - 1; $x++) {
-          $session->switchToWindow($windowNames[$x]);
-          }
-          $mainwindow = $windowNames[0];
-          $session->switchToWindow($mainwindow);
-          $page = $session->getPage();
-          } */
     }
+
 }

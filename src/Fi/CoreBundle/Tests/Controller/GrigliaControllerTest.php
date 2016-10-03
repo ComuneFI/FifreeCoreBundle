@@ -196,7 +196,7 @@ class GrigliaControllerTest extends FifreeTest
         $this->setClassName(get_class());
         $browser = 'firefox';
         $urlruote = $this->getContainer()->get('router')->generate('Ffsecondaria');
-        $url = 'http://127.0.0.1:8000'.$urlruote;
+        $url = 'http://127.0.0.1:8000/app_test.php'.$urlruote;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
