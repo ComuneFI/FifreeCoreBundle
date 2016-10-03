@@ -8,9 +8,10 @@ use Behat\Mink\Session;
 use Symfony\Component\Process\Process;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 
-class AdminpanelControllerTest extends FifreeTest {
-
-    public function test10AdminpanelHomepage() {
+class AdminpanelControllerTest extends FifreeTest
+{
+    public function test10AdminpanelHomepage()
+    {
         parent::setUp();
         cleanFilesystem();
         //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()
@@ -21,7 +22,7 @@ class AdminpanelControllerTest extends FifreeTest {
 
         $client->request('GET', $url);
         $this->assertTrue(
-                $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
+            $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
         );
     }
 
@@ -29,14 +30,15 @@ class AdminpanelControllerTest extends FifreeTest {
      * @test
      */
 
-    public function test20AdminpanelGenerateBundle() {
+    public function test20AdminpanelGenerateBundle()
+    {
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';
         $client = $this->getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $urlRouting = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage'/* , array('parms' => 'value') */);
-        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
+        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -72,14 +74,15 @@ class AdminpanelControllerTest extends FifreeTest {
         $session->stop();
     }
 
-    public function test30AdminpanelGenerateEntity() {
+    public function test30AdminpanelGenerateEntity()
+    {
         parent::setUp();
         $this->setClassName(get_class());
         $browser = 'firefox';
         $client = $this->getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $urlRouting = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
+        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -118,7 +121,8 @@ class AdminpanelControllerTest extends FifreeTest {
      * @test
      */
 
-    public function test100PannelloAmministrazioneMain() {
+    public function test100PannelloAmministrazioneMain()
+    {
         parent::setUp();
         $container = $this->getContainer();
         /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
@@ -131,38 +135,39 @@ class AdminpanelControllerTest extends FifreeTest {
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
     }
 
-    public function testZ9999999999PannelloAmministrazioneMain() {
+    public function testZ9999999999PannelloAmministrazioneMain()
+    {
         parent::setUp();
         cleanFilesystem();
     }
 
-    private function clearcache() {
-        $vendorDir = dirname(dirname(__FILE__)) . '/../../../../';
+    private function clearcache()
+    {
+        $vendorDir = dirname(dirname(__FILE__)).'/../../../../';
 
-        $command = 'rm -rf ' . $vendorDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'test';
+        $command = 'rm -rf '.$vendorDir.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'test';
         $process = new Process($command);
         $process->setTimeout(60 * 100);
         $process->run();
         if (!$process->isSuccessful()) {
-            echo 'Errore nel comando ' . $command . '<error>' . $process->getErrorOutput() . '</error> ';
+            echo 'Errore nel comando '.$command.'<error>'.$process->getErrorOutput().'</error> ';
         } else {
             echo $process->getOutput();
         }
 
-        $command = 'rm -rf ' . $vendorDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'dev';
+        $command = 'rm -rf '.$vendorDir.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'dev';
         $process = new Process($command);
         $process->setTimeout(60 * 100);
         $process->run();
         if (!$process->isSuccessful()) {
-            echo 'Errore nel comando ' . $command . '<error>' . $process->getErrorOutput() . '</error> ';
+            echo 'Errore nel comando '.$command.'<error>'.$process->getErrorOutput().'</error> ';
         } else {
             echo $process->getOutput();
         }
-
 
         if (OsFunctions::isWindows()) {
             $phpPath = OsFunctions::getPHPExecutableFromPath();
@@ -170,26 +175,25 @@ class AdminpanelControllerTest extends FifreeTest {
             $phpPath = '/usr/bin/php';
         }
 
-        $command = $phpPath . ' ' . $vendorDir . 'app' . DIRECTORY_SEPARATOR . 'console cache:clear --env=test';
+        $command = $phpPath.' '.$vendorDir.'app'.DIRECTORY_SEPARATOR.'console cache:clear --env=test';
         $process = new Process($command);
         $process->setTimeout(60 * 100);
         $process->run();
         if (!$process->isSuccessful()) {
-            echo 'Errore nel comando ' . $command . '<error>' . $process->getErrorOutput() . '</error> ';
+            echo 'Errore nel comando '.$command.'<error>'.$process->getErrorOutput().'</error> ';
         } else {
             echo $process->getOutput();
         }
 
-        $command = $phpPath . ' ' . $vendorDir . 'app' . DIRECTORY_SEPARATOR . 'console cache:clear --env=dev';
+        $command = $phpPath.' '.$vendorDir.'app'.DIRECTORY_SEPARATOR.'console cache:clear --env=dev';
         $process = new Process($command);
         $process->setTimeout(60 * 100);
         $process->run();
         if (!$process->isSuccessful()) {
-            echo 'Errore nel comando ' . $command . '<error>' . $process->getErrorOutput() . '</error> ';
+            echo 'Errore nel comando '.$command.'<error>'.$process->getErrorOutput().'</error> ';
         } else {
             echo $process->getOutput();
         }
-
 
         /* if (!$process->isSuccessful()) {
           echo 'Errore nel comando ' . $command . '<error>' . $process->getErrorOutput() . '</error> ';
@@ -201,15 +205,16 @@ class AdminpanelControllerTest extends FifreeTest {
     /**
      * {@inheritdoc}
      */
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
     }
-
 }

@@ -191,6 +191,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRowDel.'}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
+        parent::ajaxWait($session);
 
         foreach ($elementdel as $e) {
             if ($e->isVisible()) {
