@@ -15,3 +15,28 @@ composer require fi/fifreecorebundle
 ```
     new Fi\CoreBundle\FiCoreBundle(),
 ```
+
+- Test
+Scarico dipendenze
+```
+    composer install
+```
+Preparare il db
+```
+    rm app/dbtest.sqlite
+    php app/console fifree:install admin admin admin@admin.it --env=test
+```
+Assets install
+```
+php app/console assets:install --env=test
+```
+Start server
+```
+php app/console server:run --env=test 2>&1 &
+sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
+
+```
+Lanciare i test
+```
+    vendor/bin/phpunit
+```
