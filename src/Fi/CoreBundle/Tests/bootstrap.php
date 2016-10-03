@@ -2,6 +2,7 @@
 
 use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
+use Fi\OsBundle\DependencyInjection\OsFunctions;
 
 $file = __DIR__.'/../../../../vendor/autoload.php';
 if (!file_exists($file)) {
@@ -12,6 +13,13 @@ if (!file_exists($file)) {
 }
 
 function startTests()
+{
+    clearcache();
+
+    cleanFilesystem();
+}
+
+function clearcache()
 {
     $vendorDir = dirname(dirname(__FILE__)).'/../../../';
 
@@ -25,7 +33,31 @@ function startTests()
     $process->setTimeout(60 * 100);
     $process->run();
 
-    cleanFilesystem();
+    if (OsFunctions::isWindows()) {
+        $phpPath = OsFunctions::getPHPExecutableFromPath();
+    } else {
+        $phpPath = '/usr/bin/php';
+    }
+
+    $command = $phpPath.' '.$vendorDir.'app'.DIRECTORY_SEPARATOR.'console cache:clear --env=test';
+    $process = new Process($command);
+    $process->setTimeout(60 * 100);
+    $process->run();
+    if (!$process->isSuccessful()) {
+        echo 'Errore nel comando '.$command.'<error>'.$process->getErrorOutput().'</error> ';
+    } else {
+        echo $process->getOutput();
+    }
+
+    $command = $phpPath.' '.$vendorDir.'app'.DIRECTORY_SEPARATOR.'console cache:clear --env=dev';
+    $process = new Process($command);
+    $process->setTimeout(60 * 100);
+    $process->run();
+    if (!$process->isSuccessful()) {
+        echo 'Errore nel comando '.$command.'<error>'.$process->getErrorOutput().'</error> ';
+    } else {
+        echo $process->getOutput();
+    }
 }
 
 function cleanFilesystem()

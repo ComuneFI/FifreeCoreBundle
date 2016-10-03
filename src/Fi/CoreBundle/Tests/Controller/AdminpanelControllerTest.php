@@ -5,8 +5,6 @@ namespace Fi\PannelloAmministrazioneBundle\Tests\Controller;
 use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
-use Symfony\Component\Process\Process;
-use Fi\OsBundle\DependencyInjection\OsFunctions;
 
 class AdminpanelControllerTest extends FifreeTest
 {
@@ -81,10 +79,8 @@ class AdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptclose);
         parent::ajaxWait($session);
 
-        startTests();
-        sleep(2);
-
         $session->stop();
+        clearcache();
     }
 
     public function test30AdminpanelGenerateEntity()
