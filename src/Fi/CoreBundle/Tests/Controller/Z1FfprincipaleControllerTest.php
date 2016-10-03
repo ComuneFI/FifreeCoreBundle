@@ -9,11 +9,10 @@ use Behat\Mink\Session;
 
 class Z1FfprincipaleControllerTest extends FifreeTest
 {
-
     /**
      * @test
      */
-    public function testIndexFfprincipale() 
+    public function testIndexFfprincipale()
     {
         parent::setUp();
         $this->setClassName(get_class());
@@ -42,7 +41,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
     /**
      * @test
      */
-    public function testExcelFfprincipale() 
+    public function testExcelFfprincipale()
     {
         parent::__construct();
         $this->setClassName(get_class());
@@ -61,7 +60,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
      * @test
      */
 
-    public function testFfprincipale() 
+    public function testFfprincipale()
     {
         parent::__construct();
         $this->setClassName(get_class());
@@ -110,7 +109,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
           $this->assertTrue(is_null($ff->getId())); */
     }
 
-    private function searchoperation($session, $page) 
+    private function searchoperation($session, $page)
     {
         $elementsearch = $page->findAll('css', '.ui-icon-search');
 
@@ -143,7 +142,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         sleep(1);
         //$page->selectFieldOption('inizia con', "cn");
         $var2 = '"cn"';
-        $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
+        $javascript2 = "$('.selectopts option[value=".$var2."]').attr('selected', 'selected').change();;";
 
         $session->executeScript($javascript2);
         $page->fillField('jqg1', $search2);
@@ -155,7 +154,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         $this->assertEquals(1, $numrowsgrid2);
     }
 
-    private function crudoperation($session, $page) 
+    private function crudoperation($session, $page)
     {
         $elementadd = $page->findAll('css', '.ui-icon-plus');
 
@@ -172,7 +171,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         parent::ajaxWait($session);
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRow.'}()');
 
         $elementmod = $page->findAll('css', '.ui-icon-pencil');
 
@@ -189,7 +188,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         parent::ajaxWait($session);
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRowDel.'}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
 
@@ -203,7 +202,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         parent::ajaxWait($session);
     }
 
-    private function printoperations($session, $page) 
+    private function printoperations($session, $page)
     {
         /* Print pdf */
         $element = $page->findAll('css', '.ui-icon-print');
@@ -233,5 +232,4 @@ class Z1FfprincipaleControllerTest extends FifreeTest
             $page = $session->getPage();
         }
     }
-
 }

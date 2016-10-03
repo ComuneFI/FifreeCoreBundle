@@ -6,16 +6,11 @@ use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
-use Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
-use Fi\ProvaBundle\FiProvaBundle;
-use Composer\Autoload\ClassLoader;
 
 class AdminpanelControllerTest extends FifreeTest
 {
-
-    public function test10AdminpanelHomepage() 
+    public function test10AdminpanelHomepage()
     {
         parent::setUp();
         //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()
@@ -34,7 +29,7 @@ class AdminpanelControllerTest extends FifreeTest
      * @test
      */
 
-    public function test20AdminpanelGenerateBundle() 
+    public function test20AdminpanelGenerateBundle()
     {
         parent::__construct();
         $this->setClassName(get_class());
@@ -42,7 +37,7 @@ class AdminpanelControllerTest extends FifreeTest
         $client = $this->getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $urlRouting = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage'/* , array('parms' => 'value') */);
-        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
+        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -76,7 +71,7 @@ class AdminpanelControllerTest extends FifreeTest
         $session->stop();
     }
 
-    public function test30AdminpanelGenerateEntity() 
+    public function test30AdminpanelGenerateEntity()
     {
         parent::setUp();
         $this->setClassName(get_class());
@@ -84,7 +79,7 @@ class AdminpanelControllerTest extends FifreeTest
         $client = $this->getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $urlRouting = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
+        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -110,7 +105,7 @@ class AdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptrun);
         parent::ajaxWait($session);
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
-        $scriptclose = "function(){ $(\"#risultato\").dialog(\"close\");}()";
+        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
 
         //$this->generateentities();
@@ -122,7 +117,7 @@ class AdminpanelControllerTest extends FifreeTest
      * @test
      */
 
-    public function test100PannelloAmministrazioneMain() 
+    public function test100PannelloAmministrazioneMain()
     {
         parent::setUp();
         $container = $this->getContainer();
@@ -136,25 +131,26 @@ class AdminpanelControllerTest extends FifreeTest
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
     }
-    public function testZ9999999999PannelloAmministrazioneMain() 
+
+    public function testZ9999999999PannelloAmministrazioneMain()
     {
         parent::setUp();
         cleanFilesystem();
     }
 
-    private function clearcache() 
+    private function clearcache()
     {
-        $vendorDir = dirname(dirname(__FILE__)) . '/../../../../';
+        $vendorDir = dirname(dirname(__FILE__)).'/../../../../';
 
-        $command = 'rm -rf ' . $vendorDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'test';
+        $command = 'rm -rf '.$vendorDir.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'test';
         $process = new Process($command);
         $process->setTimeout(60 * 100);
         $process->run();
 
-        $command = 'rm -rf ' . $vendorDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'dev';
+        $command = 'rm -rf '.$vendorDir.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'dev';
         $process = new Process($command);
         $process->setTimeout(60 * 100);
         $process->run();
@@ -165,11 +161,11 @@ class AdminpanelControllerTest extends FifreeTest
             $phpPath = '/usr/bin/php';
         }
 
-        $command = $phpPath . ' ' . $vendorDir . 'app' . DIRECTORY_SEPARATOR . 'console cache:clear --env=test';
+        $command = $phpPath.' '.$vendorDir.'app'.DIRECTORY_SEPARATOR.'console cache:clear --env=test';
         $process = new Process($command);
         $process->setTimeout(60 * 100);
         $process->run();
-        $command = $phpPath . ' ' . $vendorDir . 'app' . DIRECTORY_SEPARATOR . 'console cache:clear --env=dev';
+        $command = $phpPath.' '.$vendorDir.'app'.DIRECTORY_SEPARATOR.'console cache:clear --env=dev';
         $process = new Process($command);
         $process->setTimeout(60 * 100);
         $process->run();
@@ -184,7 +180,7 @@ class AdminpanelControllerTest extends FifreeTest
     /**
      * {@inheritdoc}
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         parent::tearDown();
     }
@@ -192,9 +188,8 @@ class AdminpanelControllerTest extends FifreeTest
     /**
      * {@inheritdoc}
      */
-    protected function setUp() 
+    protected function setUp()
     {
         parent::setUp();
     }
-
 }

@@ -39,29 +39,29 @@ class GrigliaDatiPrecondizioniUtils
             $operatorelogicoprecondizione = '';
             foreach ($elem as $keypre => $valuepre) {
                 switch ($keypre) {
-                case 'nometabella':
-                    $nometabellaprecondizione = $valuepre;
-                    break;
-                case 'nomecampo':
-                    $nomecampoprecondizione = $valuepre;
-                    break;
-                case 'operatore':
-                    $array_operatori = array('=' => 'eq', '<>' => 'ne', '<' => 'lt', '<=' => 'le', '>' => 'gt', '>=' => 'ge', 'LIKE' => 'bw', 'NOT LIKE' => 'bn', 'IN' => 'in', 'NOT IN' => 'ni', 'LIKE' => 'eq', 'NOT LIKE' => 'en', 'LIKE' => 'cn', 'NOT LIKE' => 'nc', 'IS' => 'nu', 'IS NOT' => 'nn'); //, '<>' => 'nt');
-                    $operatoreprecondizione = $array_operatori[strtoupper($valuepre)];
-                    break;
-                case 'valorecampo':
-                    if (is_array($valuepre)) {
-                        $type = $doctrine->getClassMetadata($parametri['entityName'])->getFieldMapping($nomecampoprecondizione);
-                        $valorecampoprecondizione = self::elaboravalorecampo($type, $valuepre);
-                    } else {
-                        $valorecampoprecondizione = $valuepre;
-                    }
-                    break;
-                case 'operatorelogico':
-                    $operatorelogicoprecondizione = strtoupper($valuepre);
-                    break;
-                default:
-                    break;
+                    case 'nometabella':
+                        $nometabellaprecondizione = $valuepre;
+                        break;
+                    case 'nomecampo':
+                        $nomecampoprecondizione = $valuepre;
+                        break;
+                    case 'operatore':
+                        $array_operatori = array('=' => 'eq', '<>' => 'ne', '<' => 'lt', '<=' => 'le', '>' => 'gt', '>=' => 'ge', 'LIKE' => 'bw', 'NOT LIKE' => 'bn', 'IN' => 'in', 'NOT IN' => 'ni', 'LIKE' => 'eq', 'NOT LIKE' => 'en', 'LIKE' => 'cn', 'NOT LIKE' => 'nc', 'IS' => 'nu', 'IS NOT' => 'nn'); //, '<>' => 'nt');
+                        $operatoreprecondizione = $array_operatori[strtoupper($valuepre)];
+                        break;
+                    case 'valorecampo':
+                        if (is_array($valuepre)) {
+                            $type = $doctrine->getClassMetadata($parametri['entityName'])->getFieldMapping($nomecampoprecondizione);
+                            $valorecampoprecondizione = self::elaboravalorecampo($type, $valuepre);
+                        } else {
+                            $valorecampoprecondizione = $valuepre;
+                        }
+                        break;
+                    case 'operatorelogico':
+                        $operatorelogicoprecondizione = strtoupper($valuepre);
+                        break;
+                    default:
+                        break;
                 }
             }
 

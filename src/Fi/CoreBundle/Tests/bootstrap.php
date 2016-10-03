@@ -14,7 +14,7 @@ if (!file_exists($file)) {
 
 startTests();
 
-function startTests() 
+function startTests()
 {
     $vendorDir = dirname(dirname(__FILE__)) . '/../../../';
 
@@ -27,7 +27,7 @@ function startTests()
     cleanFilesystem();
 }
 
-function cleanFilesystem() 
+function cleanFilesystem()
 {
     $DELETE = "new Fi\ProvaBundle\FiProvaBundle(),";
     $vendorDir = dirname(dirname(__FILE__)) . '/../../../';
@@ -48,7 +48,7 @@ function cleanFilesystem()
     }
 }
 
-function deleteFirstLineFile($file) 
+function deleteFirstLineFile($file)
 {
     $handle = fopen($file, 'r');
     fgets($handle, 2048); //get first line.
@@ -63,7 +63,7 @@ function deleteFirstLineFile($file)
     rename($outfile, $file);
 }
 
-function deleteLineFromFile($file, $DELETE) 
+function deleteLineFromFile($file, $DELETE)
 {
     $data = file($file);
 
