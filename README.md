@@ -36,6 +36,8 @@ Start server
 ```
 php app/console server:run --env=test 2>&1 &
 sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
+rm -rf app/cache/dev
+rm -rf app/cache/test
 
 ```
 Lanciare i test
