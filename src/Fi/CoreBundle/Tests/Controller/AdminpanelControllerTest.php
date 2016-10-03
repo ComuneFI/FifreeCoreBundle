@@ -14,20 +14,19 @@ class AdminpanelControllerTest extends FifreeTest
     protected function setUp()
     {
         parent::setUp();
+        $this->setClassName(get_class());
     }
 
     public function test1starttest()
     {
-        parent::setUp();
         startTests();
     }
 
     public function test10AdminpanelHomepage()
     {
-        parent::setUp();
         //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()
         //$this->cleanFilesystem();
-        $client = $this->getClientAutorizzato();
+        $client = parent::getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $url = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage'/* , array('parms' => 'value') */);
 
@@ -43,10 +42,8 @@ class AdminpanelControllerTest extends FifreeTest
 
     public function test20AdminpanelGenerateBundle()
     {
-        parent::__construct();
-        $this->setClassName(get_class());
         $browser = 'firefox';
-        $client = $this->getClientAutorizzato();
+        $client = parent::getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $urlRouting = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage'/* , array('parms' => 'value') */);
         $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
@@ -85,10 +82,8 @@ class AdminpanelControllerTest extends FifreeTest
 
     public function test30AdminpanelGenerateEntity()
     {
-        parent::setUp();
-        $this->setClassName(get_class());
         $browser = 'firefox';
-        $client = $this->getClientAutorizzato();
+        $client = parent::getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $urlRouting = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
@@ -132,7 +127,6 @@ class AdminpanelControllerTest extends FifreeTest
 
     public function test100PannelloAmministrazioneMain()
     {
-        parent::setUp();
         $container = $this->getContainer();
         /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
         $userManager = $container->get('fos_user.user_manager');
@@ -150,7 +144,6 @@ class AdminpanelControllerTest extends FifreeTest
 
     public function testZ9999999999PannelloAmministrazioneMain()
     {
-        parent::setUp();
         startTests();
     }
 
