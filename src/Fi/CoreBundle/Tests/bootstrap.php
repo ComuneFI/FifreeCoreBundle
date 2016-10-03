@@ -1,25 +1,21 @@
 <?php
 
-use Composer\Autoload\ClassLoader;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 
-$file = __DIR__ . '/../../../../vendor/autoload.php';
+$file = __DIR__.'/../../../../vendor/autoload.php';
 if (!file_exists($file)) {
-    $file = __DIR__ . '/../../../../../../vendor/autoload.php';
+    $file = __DIR__.'/../../../../../../vendor/autoload.php';
     if (!file_exists($file)) {
         throw new RuntimeException('Install dependencies to run test suite.');
     }
 }
 
-startTests();
-
 function startTests()
 {
-    $vendorDir = dirname(dirname(__FILE__)) . '/../../../';
+    $vendorDir = dirname(dirname(__FILE__)).'/../../../';
 
-
-    $command = 'rm -rf ' . $vendorDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'test';
+    $command = 'rm -rf '.$vendorDir.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'test';
     $process = new Process($command);
     $process->setTimeout(60 * 100);
     $process->run();
@@ -30,17 +26,17 @@ function startTests()
 function cleanFilesystem()
 {
     $DELETE = "new Fi\ProvaBundle\FiProvaBundle(),";
-    $vendorDir = dirname(dirname(__FILE__)) . '/../../../';
-    $kernelfile = $vendorDir . '/app/AppKernel.php';
+    $vendorDir = dirname(dirname(__FILE__)).'/../../../';
+    $kernelfile = $vendorDir.'/app/AppKernel.php';
     deleteLineFromFile($kernelfile, $DELETE);
-    $routingfile = $vendorDir . '/app/config/routing.yml';
+    $routingfile = $vendorDir.'/app/config/routing.yml';
     $line = fgets(fopen($routingfile, 'r'));
     if (substr($line, 0, -1) == 'fi_prova:') {
         for ($index = 0; $index < 4; ++$index) {
             deleteFirstLineFile($routingfile);
         }
     }
-    $bundledir = $vendorDir . '/src/Fi/ProvaBundle';
+    $bundledir = $vendorDir.'/src/Fi/ProvaBundle';
 
     $fs = new Filesystem();
     if ($fs->exists($bundledir)) {

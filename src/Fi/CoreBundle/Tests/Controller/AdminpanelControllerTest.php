@@ -10,10 +10,24 @@ use Fi\OsBundle\DependencyInjection\OsFunctions;
 
 class AdminpanelControllerTest extends FifreeTest
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+    }
+
+    public function test1starttest()
+    {
+        parent::setUp();
+        startTests();
+    }
+
     public function test10AdminpanelHomepage()
     {
         parent::setUp();
-        cleanFilesystem();
+        startTests();
         //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()
         //$this->cleanFilesystem();
         $client = $this->getClientAutorizzato();
@@ -142,7 +156,7 @@ class AdminpanelControllerTest extends FifreeTest
     public function testZ9999999999PannelloAmministrazioneMain()
     {
         parent::setUp();
-        cleanFilesystem();
+        startTests();
     }
 
     private function clearcache()
@@ -208,13 +222,5 @@ class AdminpanelControllerTest extends FifreeTest
     protected function tearDown()
     {
         parent::tearDown();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        parent::setUp();
     }
 }
