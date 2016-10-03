@@ -7,12 +7,14 @@ use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class Z1FfprincipaleControllerTest extends FifreeTest {
+class Z1FfprincipaleControllerTest extends FifreeTest
+{
 
     /**
      * @test
      */
-    public function testIndexFfprincipale() {
+    public function testIndexFfprincipale() 
+    {
         parent::setUp();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
@@ -40,7 +42,8 @@ class Z1FfprincipaleControllerTest extends FifreeTest {
     /**
      * @test
      */
-    public function testExcelFfprincipale() {
+    public function testExcelFfprincipale() 
+    {
         parent::__construct();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
@@ -50,7 +53,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest {
         $client->request('GET', $url);
         sleep(1);
         $this->assertTrue(
-                $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
+            $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
         );
     }
 
@@ -58,7 +61,8 @@ class Z1FfprincipaleControllerTest extends FifreeTest {
      * @test
      */
 
-    public function testFfprincipale() {
+    public function testFfprincipale() 
+    {
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';
@@ -106,7 +110,8 @@ class Z1FfprincipaleControllerTest extends FifreeTest {
           $this->assertTrue(is_null($ff->getId())); */
     }
 
-    private function searchoperation($session, $page) {
+    private function searchoperation($session, $page) 
+    {
         $elementsearch = $page->findAll('css', '.ui-icon-search');
 
         foreach ($elementsearch as $e) {
@@ -150,7 +155,8 @@ class Z1FfprincipaleControllerTest extends FifreeTest {
         $this->assertEquals(1, $numrowsgrid2);
     }
 
-    private function crudoperation($session, $page) {
+    private function crudoperation($session, $page) 
+    {
         $elementadd = $page->findAll('css', '.ui-icon-plus');
 
         foreach ($elementadd as $e) {
@@ -197,7 +203,8 @@ class Z1FfprincipaleControllerTest extends FifreeTest {
         parent::ajaxWait($session);
     }
 
-    private function printoperations($session, $page) {
+    private function printoperations($session, $page) 
+    {
         /* Print pdf */
         $element = $page->findAll('css', '.ui-icon-print');
 
