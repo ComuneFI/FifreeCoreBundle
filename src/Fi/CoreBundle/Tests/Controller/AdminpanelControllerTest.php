@@ -8,9 +8,11 @@ use Behat\Mink\Session;
 use Symfony\Component\Process\Process;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 
-class AdminpanelControllerTest extends FifreeTest {
+class AdminpanelControllerTest extends FifreeTest
+{
 
-    public function test10AdminpanelHomepage() {
+    public function test10AdminpanelHomepage() 
+    {
         parent::setUp();
         cleanFilesystem();
         //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()
@@ -21,7 +23,7 @@ class AdminpanelControllerTest extends FifreeTest {
 
         $client->request('GET', $url);
         $this->assertTrue(
-                $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
+            $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
         );
     }
 
@@ -29,7 +31,8 @@ class AdminpanelControllerTest extends FifreeTest {
      * @test
      */
 
-    public function test20AdminpanelGenerateBundle() {
+    public function test20AdminpanelGenerateBundle() 
+    {
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';
@@ -72,7 +75,8 @@ class AdminpanelControllerTest extends FifreeTest {
         $session->stop();
     }
 
-    public function test30AdminpanelGenerateEntity() {
+    public function test30AdminpanelGenerateEntity() 
+    {
         parent::setUp();
         $this->setClassName(get_class());
         $browser = 'firefox';
@@ -118,7 +122,8 @@ class AdminpanelControllerTest extends FifreeTest {
      * @test
      */
 
-    public function test100PannelloAmministrazioneMain() {
+    public function test100PannelloAmministrazioneMain() 
+    {
         parent::setUp();
         $container = $this->getContainer();
         /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
@@ -135,12 +140,14 @@ class AdminpanelControllerTest extends FifreeTest {
         $container->get('session')->save();
     }
 
-    public function testZ9999999999PannelloAmministrazioneMain() {
+    public function testZ9999999999PannelloAmministrazioneMain() 
+    {
         parent::setUp();
         cleanFilesystem();
     }
 
-    private function clearcache() {
+    private function clearcache() 
+    {
         $vendorDir = dirname(dirname(__FILE__)) . '/../../../../';
 
         $command = 'rm -rf ' . $vendorDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'test';
@@ -178,14 +185,16 @@ class AdminpanelControllerTest extends FifreeTest {
     /**
      * {@inheritdoc}
      */
-    protected function tearDown() {
+    protected function tearDown() 
+    {
         parent::tearDown();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp() {
+    protected function setUp() 
+    {
         parent::setUp();
     }
 
