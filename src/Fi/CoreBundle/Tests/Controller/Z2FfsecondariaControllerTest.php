@@ -179,6 +179,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
 
         $session->executeScript($javascript2);
         $page->fillField('jqg1', $search2);
+        parent::ajaxWait($session);
 
         $page->find('css', 'a#fbox_list1_search')->click();
         parent::ajaxWait($session);
