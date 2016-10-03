@@ -25,6 +25,8 @@ Preparare il db
 ```
     rm app/dbtest.sqlite
     php app/console fifree:install admin admin admin@admin.it --env=test
+    rm -rf app/cache/dev
+    rm -rf app/cache/test
 ```
 Assets install
 ```
