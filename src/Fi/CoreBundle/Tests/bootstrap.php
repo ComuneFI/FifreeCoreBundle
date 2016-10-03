@@ -20,6 +20,11 @@ function startTests()
     $process->setTimeout(60 * 100);
     $process->run();
 
+    $command = 'rm -rf '.$vendorDir.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'dev';
+    $process = new Process($command);
+    $process->setTimeout(60 * 100);
+    $process->run();
+
     cleanFilesystem();
 }
 

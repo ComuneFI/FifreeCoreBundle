@@ -27,7 +27,6 @@ class AdminpanelControllerTest extends FifreeTest
     public function test10AdminpanelHomepage()
     {
         parent::setUp();
-        startTests();
         //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()
         //$this->cleanFilesystem();
         $client = $this->getClientAutorizzato();
@@ -82,7 +81,7 @@ class AdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptclose);
         parent::ajaxWait($session);
 
-        $this->clearcache();
+        startTests();
         sleep(2);
 
         $session->stop();
@@ -157,63 +156,6 @@ class AdminpanelControllerTest extends FifreeTest
     {
         parent::setUp();
         startTests();
-    }
-
-    private function clearcache()
-    {
-        $vendorDir = dirname(dirname(__FILE__)).'/../../../../';
-
-        $command = 'rm -rf '.$vendorDir.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'test';
-        $process = new Process($command);
-        $process->setTimeout(60 * 100);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            echo 'Errore nel comando '.$command.'<error>'.$process->getErrorOutput().'</error> ';
-        } else {
-            echo $process->getOutput();
-        }
-
-        $command = 'rm -rf '.$vendorDir.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'dev';
-        $process = new Process($command);
-        $process->setTimeout(60 * 100);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            echo 'Errore nel comando '.$command.'<error>'.$process->getErrorOutput().'</error> ';
-        } else {
-            echo $process->getOutput();
-        }
-
-        if (OsFunctions::isWindows()) {
-            $phpPath = OsFunctions::getPHPExecutableFromPath();
-        } else {
-            $phpPath = '/usr/bin/php';
-        }
-
-        $command = $phpPath.' '.$vendorDir.'app'.DIRECTORY_SEPARATOR.'console cache:clear --env=test';
-        $process = new Process($command);
-        $process->setTimeout(60 * 100);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            echo 'Errore nel comando '.$command.'<error>'.$process->getErrorOutput().'</error> ';
-        } else {
-            echo $process->getOutput();
-        }
-
-        $command = $phpPath.' '.$vendorDir.'app'.DIRECTORY_SEPARATOR.'console cache:clear --env=dev';
-        $process = new Process($command);
-        $process->setTimeout(60 * 100);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            echo 'Errore nel comando '.$command.'<error>'.$process->getErrorOutput().'</error> ';
-        } else {
-            echo $process->getOutput();
-        }
-
-        /* if (!$process->isSuccessful()) {
-          echo 'Errore nel comando ' . $command . '<error>' . $process->getErrorOutput() . '</error> ';
-          } else {
-          echo $process->getOutput();
-          } */
     }
 
     /**
