@@ -6,24 +6,21 @@ use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class AdminpanelControllerTest extends FifreeTest
-{
+class FifreecoreAdminpanelControllerTest extends FifreeTest {
+
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
-    {
+    protected function setUp() {
         parent::setUp();
         $this->setClassName(get_class());
     }
 
-    public function test1starttest()
-    {
+    public function test1starttest() {
         startTests();
     }
 
-    public function test10AdminpanelHomepage()
-    {
+    public function test10AdminpanelHomepage() {
         //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()
         //$this->cleanFilesystem();
         $client = parent::getClientAutorizzato();
@@ -32,7 +29,7 @@ class AdminpanelControllerTest extends FifreeTest
 
         $client->request('GET', $url);
         $this->assertTrue(
-            $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
+                $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
         );
     }
 
@@ -40,13 +37,12 @@ class AdminpanelControllerTest extends FifreeTest
      * @test
      */
 
-    public function test20AdminpanelGenerateBundle()
-    {
+    public function test20AdminpanelGenerateBundle() {
         $browser = 'firefox';
         $client = parent::getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $urlRouting = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage'/* , array('parms' => 'value') */);
-        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
+        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -80,13 +76,12 @@ class AdminpanelControllerTest extends FifreeTest
         clearcache();
     }
 
-    public function test30AdminpanelGenerateEntity()
-    {
+    public function test30AdminpanelGenerateEntity() {
         $browser = 'firefox';
         $client = parent::getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $urlRouting = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
+        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -125,8 +120,7 @@ class AdminpanelControllerTest extends FifreeTest
      * @test
      */
 
-    public function test100PannelloAmministrazioneMain()
-    {
+    public function test100PannelloAmministrazioneMain() {
         $container = $this->getContainer();
         /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
         $userManager = $container->get('fos_user.user_manager');
@@ -138,20 +132,19 @@ class AdminpanelControllerTest extends FifreeTest
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
     }
 
-    public function testZ9999999999PannelloAmministrazioneMain()
-    {
+    public function testZ9999999999PannelloAmministrazioneMain() {
         startTests();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
-    {
+    protected function tearDown() {
         parent::tearDown();
     }
+
 }
