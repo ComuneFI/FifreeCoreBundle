@@ -243,12 +243,14 @@ class Z2FfsecondariaControllerTest extends FifreeTest
 
         /* Print pdf */
         $element = $page->findAll('css', '.ui-icon-print');
+        sleep(1);
 
         foreach ($element as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
         }
+        sleep(1);
         $windowNames = $session->getWindowNames();
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
