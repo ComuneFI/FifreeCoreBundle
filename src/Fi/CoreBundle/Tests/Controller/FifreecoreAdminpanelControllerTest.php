@@ -197,11 +197,11 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
             }
         }
         /* Inserimento */
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         $page->fillField('fi_provabundle_prova_descrizione', $descrizionetest1);
         $page->find('css', 'a#sDataProvaS')->click();
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRow.'}()');
@@ -213,27 +213,27 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
                 $e->click();
             }
         }
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $page->fillField('fi_provabundle_prova_descrizione', $descrizionetest2);
         $page->find('css', 'a#sDataProvaS')->click();
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRowDel.'}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
 
         foreach ($elementdel as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
         }
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         $page->find('css', 'a#dData')->click();
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
 
         //$this->generateentities();
         //$this->clearcache();
