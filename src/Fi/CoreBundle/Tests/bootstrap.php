@@ -32,8 +32,12 @@ function clearcache() {
             echo $process->getOutput();
         }
     }
-
     sleep(3);
+
+    if (file_exists($testcache)) {
+        echo "esiste ancora la cartella " . $testcache;
+    }
+
 
     if (OsFunctions::isWindows()) {
         $phpPath = OsFunctions::getPHPExecutableFromPath();
