@@ -137,7 +137,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
                 $e->click();
             }
         }
-        sleep(1);
+        parent::ajaxWait($session, 20000);
         $search2 = 'primo';
         sleep(1);
         //$page->selectFieldOption('inizia con', "cn");
@@ -148,7 +148,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         $page->fillField('jqg1', $search2);
 
         $page->find('css', 'a#fbox_list1_search')->click();
-        sleep(1);
+        parent::ajaxWait($session, 20000);
 
         $numrowsgrid2 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid2);
