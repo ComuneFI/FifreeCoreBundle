@@ -164,11 +164,11 @@ class Z1FfprincipaleControllerTest extends FifreeTest
             }
         }
         /* Inserimento */
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         $page->fillField('fi_corebundle_ffprincipaletype_descrizione', $descrizionetest1);
         $page->find('css', 'a#sDataFfprincipaleS')->click();
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRow.'}()');
@@ -180,7 +180,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
                 $e->click();
             }
         }
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $page->fillField('fi_corebundle_ffprincipaletype_descrizione', $descrizionetest2);
@@ -191,16 +191,16 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRowDel.'}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
 
         foreach ($elementdel as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
         }
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         $page->find('css', 'a#dData')->click();
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
     }
 
     private function printoperations($session, $page)
@@ -213,7 +213,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
                 $e->click();
             }
         }
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         $windowNames = $session->getWindowNames();
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
