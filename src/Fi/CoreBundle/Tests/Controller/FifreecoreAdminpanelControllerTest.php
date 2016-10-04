@@ -126,6 +126,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$this->generateentities();
         //$this->clearcache();
         $session->stop();
+        removecache();
     }
 
     public function test40AdminpanelGenerateForm()
@@ -150,7 +151,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->fillField('password', 'admin');
         $page->pressButton('_submit');
 
-        sleep(1);
+        sleep(3);
         $page->fillField('bundlename', 'Fi/ProvaBundle');
         $page->fillField('entityform', 'Prova');
 
@@ -161,18 +162,22 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
+        sleep(2);
         //$this->generateentities();
         //$this->clearcache();
         $session->stop();
+        removecache();
+        sleep(2);
     }
 
     public function test50AdminpanelTest()
     {
-        //$fs = new Filesystem();
-        //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
         $browser = 'firefox';
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
-        $url = 'http://127.0.0.1:8000/app_test.php/Prova';
+        //$urlRouting = $this->getContainer()->get('router')->generate('Prova_container');
+        //$url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
+        $urlRouting = "/Prova";
+        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -238,6 +243,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$this->generateentities();
         //$this->clearcache();
         $session->stop();
+        removecache();
     }
 
     /*
