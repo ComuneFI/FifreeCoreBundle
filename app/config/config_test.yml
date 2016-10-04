@@ -18,7 +18,10 @@ swiftmailer:
 fi_core:
     testroutes: true
     testdb: true
-
+    
+twig:
+    cache:  false
+    
 doctrine:
     dbal:
         driver:   %database_driver%

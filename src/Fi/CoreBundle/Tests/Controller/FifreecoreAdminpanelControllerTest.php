@@ -77,7 +77,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         $session->stop();
         removecache();
-        clearcache();
     }
 
     public function test30AdminpanelGenerateEntity()

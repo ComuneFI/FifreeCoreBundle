@@ -3,9 +3,10 @@
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
-class AppKernel extends Kernel {
-
-    public function registerBundles() {
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
         $bundles = array(
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\SecurityBundle\SecurityBundle(),
@@ -21,6 +22,10 @@ class AppKernel extends Kernel {
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),
         );
 
+        $currentDir = dirname(dirname(__FILE__)).'/';
+        if (file_exists($currentDir.'src'.DIRECTORY_SEPARATOR.'Fi'.DIRECTORY_SEPARATOR.'ProvaBundle')) {
+            $bundles[] = new Fi\ProvaBundle\FiProvaBundle();
+        }
         if (in_array($this->getEnvironment(), array('dev', 'test', 'localhost'))) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
@@ -31,8 +36,8 @@ class AppKernel extends Kernel {
         return $bundles;
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader) {
-        $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
+    public function registerContainerConfiguration(LoaderInterface $loader)
+    {
+        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
     }
-
 }
