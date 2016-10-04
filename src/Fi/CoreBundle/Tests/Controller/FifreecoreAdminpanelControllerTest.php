@@ -181,7 +181,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->start();
         $session->visit($url);
         $page = $session->getPage();
-        sleep(1);
+        sleep(3);
         // Login
         $page->fillField('username', 'admin');
         $page->fillField('password', 'admin');
