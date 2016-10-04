@@ -5,10 +5,10 @@ namespace Fi\PannelloAmministrazioneBundle\Tests\Controller;
 use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
+use Symfony\Component\Filesystem\Filesystem;
 
 class FifreecoreAdminpanelControllerTest extends FifreeTest
 {
-
     /**
      * {@inheritdoc}
      */
@@ -45,7 +45,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
     {
         $browser = 'firefox';
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
+        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -82,10 +82,12 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
     public function test30AdminpanelGenerateEntity()
     {
+        //$fs = new Filesystem();
+        //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
         $browser = 'firefox';
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
+        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -137,7 +139,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
     }
 

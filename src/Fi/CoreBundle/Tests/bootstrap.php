@@ -47,7 +47,7 @@ function clearcache()
     }
     $console = $vendorDir.'app'.DIRECTORY_SEPARATOR.'console';
     if (file_exists($console)) {
-        $command = $phpPath.' '.$console.' cache:clear --env=test';
+        $command = $phpPath.' '.$console.' cache:warmup --env=test';
         $process = new Process($command);
         $process->setTimeout(60 * 100);
         $process->run();
