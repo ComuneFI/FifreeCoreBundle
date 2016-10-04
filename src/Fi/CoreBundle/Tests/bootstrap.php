@@ -12,13 +12,15 @@ if (!file_exists($file)) {
     }
 }
 
-function startTests() {
+function startTests()
+{
     clearcache();
 
     cleanFilesystem();
 }
 
-function clearcache() {
+function clearcache()
+{
     $vendorDir = dirname(dirname(__FILE__)) . '/../../../';
     $testcache = $vendorDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'test';
     if (file_exists($testcache)) {
@@ -59,13 +61,15 @@ function clearcache() {
     sleep(3);
 }
 
-function getErrorText($process, $command) {
+function getErrorText($process, $command)
+{
     $error = ($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput());
 
     return 'Errore nel comando ' . $command . ' ' . $error . ' ';
 }
 
-function cleanFilesystem() {
+function cleanFilesystem()
+{
     $DELETE = "new Fi\ProvaBundle\FiProvaBundle(),";
     $vendorDir = dirname(dirname(__FILE__)) . '/../../../';
     $kernelfile = $vendorDir . '/app/AppKernel.php';
@@ -85,7 +89,8 @@ function cleanFilesystem() {
     }
 }
 
-function deleteFirstLineFile($file) {
+function deleteFirstLineFile($file)
+{
     $handle = fopen($file, 'r');
     fgets($handle, 2048); //get first line.
     $outfile = 'temp';
@@ -99,7 +104,8 @@ function deleteFirstLineFile($file) {
     rename($outfile, $file);
 }
 
-function deleteLineFromFile($file, $DELETE) {
+function deleteLineFromFile($file, $DELETE)
+{
     $data = file($file);
 
     $out = array();
