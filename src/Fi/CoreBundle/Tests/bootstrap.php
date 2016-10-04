@@ -21,7 +21,7 @@ function startTests()
 
 function clearcache()
 {
-    $vendorDir = dirname(dirname(__FILE__)).'/../../../';
+    $vendorDir = dirname(dirname(__FILE__)).'/../../../../';
 
     $command = 'rm -rf '.$vendorDir.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'test';
     $process = new Process($command);
