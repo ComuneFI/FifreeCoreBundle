@@ -21,8 +21,9 @@ class FifreeTest extends WebTestCase
 
     protected function setUp()
     {
-        $this->clientNonAutorizzato = static::createClient();
-        $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient());
+        $clientparms = array('environment' => 'test');
+        $this->clientNonAutorizzato = static::createClient($clientparms);
+        $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient($clientparms));
 
         $this->em = $this->clientAutorizzato->getContainer()->get('doctrine')->getManager();
     }
