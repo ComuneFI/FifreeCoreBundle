@@ -119,12 +119,12 @@ class Z1FfprincipaleControllerTest extends FifreeTest
             }
         }
         /* Ricerca 1 */
-        sleep(1);
+        parent::ajaxWait($session, 20000);
         $search1 = 'primo';
         sleep(1);
         $page->fillField('jqg1', $search1);
         $page->find('css', 'a#fbox_list1_search')->click();
-        sleep(1);
+        parent::ajaxWait($session, 20000);
 
         $numrowsgrid1 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(0, $numrowsgrid1);
