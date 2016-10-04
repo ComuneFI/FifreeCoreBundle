@@ -213,6 +213,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
                 $e->click();
             }
         }
+        parent::ajaxWait($session);
         $windowNames = $session->getWindowNames();
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
