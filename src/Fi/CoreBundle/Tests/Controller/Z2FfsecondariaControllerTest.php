@@ -159,6 +159,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $page->fillField('jqg1', $search1);
         $page->find('css', 'a#fbox_list1_search')->click();
         parent::ajaxWait($session);
+        sleep(1);
 
         $numrowsgrid1 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid1);
