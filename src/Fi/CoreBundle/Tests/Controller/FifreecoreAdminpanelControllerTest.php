@@ -6,21 +6,25 @@ use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class FifreecoreAdminpanelControllerTest extends FifreeTest {
+class FifreecoreAdminpanelControllerTest extends FifreeTest
+{
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->setClassName(get_class());
     }
 
-    public function test1starttest() {
+    public function test1starttest()
+    {
         startTests();
     }
 
-    public function test10AdminpanelHomepage() {
+    public function test10AdminpanelHomepage()
+    {
         //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()
         //$this->cleanFilesystem();
         $client = parent::getClientAutorizzato();
@@ -29,7 +33,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest {
 
         $client->request('GET', $url);
         $this->assertTrue(
-                $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
+            $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
         );
     }
 
@@ -37,7 +41,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest {
      * @test
      */
 
-    public function test20AdminpanelGenerateBundle() {
+    public function test20AdminpanelGenerateBundle()
+    {
         $browser = 'firefox';
         $client = parent::getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
@@ -76,7 +81,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest {
         clearcache();
     }
 
-    public function test30AdminpanelGenerateEntity() {
+    public function test30AdminpanelGenerateEntity()
+    {
         $browser = 'firefox';
         $client = parent::getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
@@ -120,7 +126,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest {
      * @test
      */
 
-    public function test100PannelloAmministrazioneMain() {
+    public function test100PannelloAmministrazioneMain()
+    {
         $container = $this->getContainer();
         /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
         $userManager = $container->get('fos_user.user_manager');
@@ -136,15 +143,16 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest {
         $container->get('session')->save();
     }
 
-    public function testZ9999999999PannelloAmministrazioneMain() {
+    public function testZ9999999999PannelloAmministrazioneMain()
+    {
         startTests();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
-
 }
