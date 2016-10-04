@@ -28,7 +28,7 @@ function clearcache()
     $process->setTimeout(60 * 100);
     $process->run();
     if (!$process->isSuccessful()) {
-        echo 'Errore nel comando '.$command.' '.($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput()).' ';
+        echo getErrorText($process, $command);
     } else {
         echo $process->getOutput();
     }
@@ -38,7 +38,7 @@ function clearcache()
     $process->setTimeout(60 * 100);
     $process->run();
     if (!$process->isSuccessful()) {
-        echo 'Errore nel comando '.$command.' '.($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput()).' ';
+        echo getErrorText($process, $command);
     } else {
         echo $process->getOutput();
     }
@@ -54,7 +54,7 @@ function clearcache()
     $process->setTimeout(60 * 100);
     $process->run();
     if (!$process->isSuccessful()) {
-        echo 'Errore nel comando '.$command.' '.($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput()).' ';
+        echo getErrorText($process, $command);
     } else {
         echo $process->getOutput();
     }
@@ -64,10 +64,17 @@ function clearcache()
     $process->setTimeout(60 * 100);
     $process->run();
     if (!$process->isSuccessful()) {
-        echo 'Errore nel comando '.$command.' '.($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput()).' ';
+        echo getErrorText($process, $command);
     } else {
         echo $process->getOutput();
     }
+}
+
+function getErrorText($process, $command)
+{
+    $error = ($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput());
+
+    return 'Errore nel comando '.$command.' '.$error.' ';
 }
 
 function cleanFilesystem()
