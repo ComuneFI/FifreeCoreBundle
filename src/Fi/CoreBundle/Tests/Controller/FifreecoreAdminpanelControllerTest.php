@@ -84,9 +84,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
     public function test30AdminpanelGenerateEntity()
     {
         $browser = 'firefox';
-        $client = parent::getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
-        $urlRouting = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
+        $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
