@@ -102,7 +102,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session);
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        sleep(1);
+        sleep(3);
         $page->fillField('fi_corebundle_ffsecondariatype_descsec', $descrizionetest1);
         $page->selectFieldOption('fi_corebundle_ffsecondariatype_ffprincipale', 1);
         $page->selectFieldOption('fi_corebundle_ffsecondariatype_data_day', (int) date('d'));

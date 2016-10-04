@@ -172,6 +172,7 @@ class FifreeTest extends WebTestCase
     {
         $time = 5000; // time should be in milliseconds
         $session->wait($time, '(0 === jQuery.active)');
+        sleep(1);
     }
 
     /*
