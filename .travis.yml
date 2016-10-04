@@ -14,8 +14,8 @@ before_script:
   - php app/console fifree2:install admin admin admin@admin.it --env=test
   - php app/console server:start --env=test
   - sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
-  - rm -rf src/Tests/app/cache/test
-  - rm -rf src/Tests/app/cache/dev
+  - rm -rf app/cache/test
+  - rm -rf app/cache/dev
 
 script:
   - ant
