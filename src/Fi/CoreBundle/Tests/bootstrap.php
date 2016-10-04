@@ -4,9 +4,9 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 
-$file = __DIR__.'/../../../../vendor/autoload.php';
+$file = __DIR__ . '/../../../../vendor/autoload.php';
 if (!file_exists($file)) {
-    $file = __DIR__.'/../../../../../../vendor/autoload.php';
+    $file = __DIR__ . '/../../../../../../vendor/autoload.php';
     if (!file_exists($file)) {
         throw new RuntimeException('Install dependencies to run test suite.');
     }
@@ -21,26 +21,18 @@ function startTests()
 
 function clearcache()
 {
-    $vendorDir = dirname(dirname(__FILE__)).'/../../../../';
-
-    $command = 'rm -rf '.$vendorDir.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'test';
-    $process = new Process($command);
-    $process->setTimeout(60 * 100);
-    $process->run();
-    if (!$process->isSuccessful()) {
-        echo getErrorText($process, $command);
-    } else {
-        echo $process->getOutput();
-    }
-
-    $command = 'rm -rf '.$vendorDir.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'dev';
-    $process = new Process($command);
-    $process->setTimeout(60 * 100);
-    $process->run();
-    if (!$process->isSuccessful()) {
-        echo getErrorText($process, $command);
-    } else {
-        echo $process->getOutput();
+    $vendorDir = dirname(dirname(__FILE__)) . '/../../../';
+    $testcache = $vendorDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'test';
+    if (file_exists($testcache)) {
+        $command = 'rm -rf ' . $testcache;
+        $process = new Process($command);
+        $process->setTimeout(60 * 100);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            echo getErrorText($process, $command);
+        } else {
+            echo $process->getOutput();
+        }
     }
 
     if (OsFunctions::isWindows()) {
@@ -48,25 +40,17 @@ function clearcache()
     } else {
         $phpPath = '/usr/bin/php';
     }
-
-    $command = $phpPath.' '.$vendorDir.'app'.DIRECTORY_SEPARATOR.'console cache:clear --env=test';
-    $process = new Process($command);
-    $process->setTimeout(60 * 100);
-    $process->run();
-    if (!$process->isSuccessful()) {
-        echo getErrorText($process, $command);
-    } else {
-        echo $process->getOutput();
-    }
-
-    $command = $phpPath.' '.$vendorDir.'app'.DIRECTORY_SEPARATOR.'console cache:clear --env=dev';
-    $process = new Process($command);
-    $process->setTimeout(60 * 100);
-    $process->run();
-    if (!$process->isSuccessful()) {
-        echo getErrorText($process, $command);
-    } else {
-        echo $process->getOutput();
+    $console = $vendorDir . 'app' . DIRECTORY_SEPARATOR . 'console';
+    if (file_exists($console)) {
+        $command = $phpPath . ' ' . $console . ' cache:clear --env=test';
+        $process = new Process($command);
+        $process->setTimeout(60 * 100);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            echo getErrorText($process, $command);
+        } else {
+            echo $process->getOutput();
+        }
     }
 }
 
@@ -74,23 +58,23 @@ function getErrorText($process, $command)
 {
     $error = ($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput());
 
-    return 'Errore nel comando '.$command.' '.$error.' ';
+    return 'Errore nel comando ' . $command . ' ' . $error . ' ';
 }
 
 function cleanFilesystem()
 {
     $DELETE = "new Fi\ProvaBundle\FiProvaBundle(),";
-    $vendorDir = dirname(dirname(__FILE__)).'/../../../';
-    $kernelfile = $vendorDir.'/app/AppKernel.php';
+    $vendorDir = dirname(dirname(__FILE__)) . '/../../../';
+    $kernelfile = $vendorDir . '/app/AppKernel.php';
     deleteLineFromFile($kernelfile, $DELETE);
-    $routingfile = $vendorDir.'/app/config/routing.yml';
+    $routingfile = $vendorDir . '/app/config/routing.yml';
     $line = fgets(fopen($routingfile, 'r'));
     if (substr($line, 0, -1) == 'fi_prova:') {
         for ($index = 0; $index < 4; ++$index) {
             deleteFirstLineFile($routingfile);
         }
     }
-    $bundledir = $vendorDir.'/src/Fi/ProvaBundle';
+    $bundledir = $vendorDir . '/src/Fi/ProvaBundle';
 
     $fs = new Filesystem();
     if ($fs->exists($bundledir)) {
