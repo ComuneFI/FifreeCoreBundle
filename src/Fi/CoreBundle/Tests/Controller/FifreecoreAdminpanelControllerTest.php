@@ -116,6 +116,125 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
 
+        $page->pressButton('adminpanelaggiornadatabase');
+        $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptdb);
+        parent::ajaxWait($session, 20000);
+        sleep(2);
+        $session->executeScript($scriptclose);
+
+        //$this->generateentities();
+        //$this->clearcache();
+        $session->stop();
+    }
+
+    public function test40AdminpanelGenerateForm()
+    {
+        //$fs = new Filesystem();
+        //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
+        $browser = 'firefox';
+        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
+        $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
+        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
+
+        // Choose a Mink driver. More about it in later chapters.
+        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
+        $session = new Session($driver);
+        // start the session
+        $session->start();
+        $session->visit($url);
+        $page = $session->getPage();
+        sleep(1);
+        // Login
+        $page->fillField('username', 'admin');
+        $page->fillField('password', 'admin');
+        $page->pressButton('_submit');
+
+        sleep(1);
+        $page->fillField('bundlename', 'Fi/ProvaBundle');
+        $page->fillField('entityform', 'Prova');
+
+        $page->pressButton('adminpanelgenerateformcrud');
+        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptrun);
+        parent::ajaxWait($session, 20000);
+        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
+        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $session->executeScript($scriptclose);
+        //$this->generateentities();
+        //$this->clearcache();
+        $session->stop();
+    }
+
+    public function test50AdminpanelTest()
+    {
+        //$fs = new Filesystem();
+        //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
+        $browser = 'firefox';
+        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
+        $url = 'http://127.0.0.1:8000/app_test.php/Prova';
+
+        // Choose a Mink driver. More about it in later chapters.
+        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
+        $session = new Session($driver);
+        // start the session
+        $session->start();
+        $session->visit($url);
+        $page = $session->getPage();
+        sleep(1);
+        // Login
+        $page->fillField('username', 'admin');
+        $page->fillField('password', 'admin');
+        $page->pressButton('_submit');
+
+        sleep(1);
+
+        $elementadd = $page->findAll('css', '.ui-icon-plus');
+
+        foreach ($elementadd as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        /* Inserimento */
+        parent::ajaxWait($session);
+        $descrizionetest1 = 'Test inserimento descrizione automatico';
+        $page->fillField('fi_provabundle_prova_descrizione', $descrizionetest1);
+        $page->find('css', 'a#sDataProvaS')->click();
+        parent::ajaxWait($session);
+
+        $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRow.'}()');
+
+        $elementmod = $page->findAll('css', '.ui-icon-pencil');
+
+        foreach ($elementmod as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session);
+        /* Modifica */
+        $descrizionetest2 = 'Test inserimento descrizione automatico 2';
+        $page->fillField('fi_provabundle_prova_descrizione', $descrizionetest2);
+        $page->find('css', 'a#sDataProvaS')->click();
+        parent::ajaxWait($session);
+        /* Cancellazione */
+        $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRowDel.'}()');
+
+        $elementdel = $page->findAll('css', '.ui-icon-trash');
+        parent::ajaxWait($session);
+
+        foreach ($elementdel as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session);
+        $page->find('css', 'a#dData')->click();
+        parent::ajaxWait($session);
+
         //$this->generateentities();
         //$this->clearcache();
         $session->stop();

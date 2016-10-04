@@ -14,6 +14,8 @@ if (!file_exists($file)) {
 
 function startTests()
 {
+    removecache();
+    clearcache();
     cleanFilesystem();
 }
 

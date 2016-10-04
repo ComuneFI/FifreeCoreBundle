@@ -168,10 +168,9 @@ class FifreeTest extends WebTestCase
         parent::tearDown();
     }
 
-    protected function ajaxWait($session)
+    protected function ajaxWait($session, $timeout = 5000)
     {
-        $time = 5000; // time should be in milliseconds
-        $session->wait($time, '(0 === jQuery.active)');
+        $session->wait($timeout, '(0 === jQuery.active)');
         sleep(1);
     }
 
