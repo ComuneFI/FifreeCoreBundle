@@ -43,6 +43,11 @@ class FifreeTest extends WebTestCase
         return $this->container;
     }
 
+    protected function setContainer($container)
+    {
+        $this->container = $container;
+    }
+
     protected function setClassName($testclassname)
     {
         $this->testclassname = $testclassname;

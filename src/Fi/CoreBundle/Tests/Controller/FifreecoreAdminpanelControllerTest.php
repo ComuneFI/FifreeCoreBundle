@@ -166,17 +166,19 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$this->generateentities();
         //$this->clearcache();
         $session->stop();
-        clearcache();
+        removecache();
         sleep(2);
     }
 
     public function test50AdminpanelTest()
     {
+        $this->setContainer(null);
+        $this->setUp();
         $browser = 'firefox';
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         //$urlRouting = $this->getContainer()->get('router')->generate('Prova_container');
         //$url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
-        $urlRouting = "/Prova";
+        $urlRouting = '/Prova';
         $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
