@@ -37,7 +37,7 @@
         "symfony/symfony": "2.8.*",
         "fi/osbundle": "~2.0",
         "fi/pannelloamministrazionebundle": "~2.0",
-        "friendsofsymfony/user-bundle": "2.0.*@dev",
+        "friendsofsymfony/user-bundle": "dev-master#47e4de9d8b6fed521729fb38107d9413863fe4ce as 2.0",
         "vich/uploader-bundle": "~1.0",
         "tecnickcom/tcpdf": "^6.2",
         "phpoffice/phpexcel": "^1.8",
