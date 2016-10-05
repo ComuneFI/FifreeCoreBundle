@@ -174,19 +174,19 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
     public function test50AdminpanelTest()
     {
-        $em = $this->getEntityManager();
-        $prova = new \Fi\ProvaBundle\Entity\Prova();
-        $descrizione = 'Prova';
-        $prova->setDescrizione($descrizione);
-
-        $em->persist($prova);
-        $em->flush();
-        $this->assertEquals($descrizione, $prova->getDescrizione());
-        $this->assertGreaterThanOrEqual(1, $prova->getId());
-        $em->remove($prova);
-        $em->flush();
-        $em->clear();
-        $this->assertTrue(is_null($prova->getId()));
+//        $em = $this->getEntityManager();
+//        $prova = new \Fi\ProvaBundle\Entity\Prova();
+//        $descrizione = 'Prova';
+//        $prova->setDescrizione($descrizione);
+//
+//        $em->persist($prova);
+//        $em->flush();
+//        $this->assertEquals($descrizione, $prova->getDescrizione());
+//        $this->assertGreaterThanOrEqual(1, $prova->getId());
+//        $em->remove($prova);
+//        $em->flush();
+//        $em->clear();
+//        $this->assertTrue(is_null($prova->getId()));
 
 //        $browser = 'firefox';
 //        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
