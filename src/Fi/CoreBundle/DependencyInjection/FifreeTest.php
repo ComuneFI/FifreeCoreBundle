@@ -24,8 +24,8 @@ class FifreeTest extends WebTestCase
         $clientparms = array('environment' => 'test');
         $this->clientNonAutorizzato = static::createClient($clientparms);
         $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient($clientparms));
-
-        $this->em = $this->clientAutorizzato->getContainer()->get('doctrine')->getManager();
+        $this->container = $this->getContainer();
+        $this->em = $this->getContainer()->get('doctrine')->getManager();
     }
 
     /**
