@@ -70,10 +70,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->getDriver()->getWebDriverSession()->accept_alert();
         parent::ajaxWait($session, 20000);
         //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
-        sleep(2);
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
-        parent::ajaxWait($session, 20000);
 
         $session->stop();
         removecache();
@@ -81,6 +79,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
     public function test30AdminpanelGenerateEntity()
     {
+        $this->setContainer(null);
+        $this->setUp();
         //$fs = new Filesystem();
         //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
         $browser = 'firefox';
@@ -131,6 +131,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
     public function test40AdminpanelGenerateForm()
     {
+        $this->setContainer(null);
+        $this->setUp();
         //$fs = new Filesystem();
         //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
         $browser = 'firefox';
