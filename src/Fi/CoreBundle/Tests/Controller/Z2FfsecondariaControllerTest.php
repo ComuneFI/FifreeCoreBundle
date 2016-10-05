@@ -154,11 +154,11 @@ class Z2FfsecondariaControllerTest extends FifreeTest
             }
         }
         /* Ricerca 1 */
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         $search1 = '9° secondaria';
         $page->fillField('jqg1', $search1);
         $page->find('css', 'a#fbox_list1_search')->click();
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         sleep(1);
 
         $numrowsgrid1 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
@@ -172,7 +172,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
                 $e->click();
             }
         }
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         $search2 = '1°';
         //$page->selectFieldOption('inizia con', "cn");
         $var2 = '"cn"';
@@ -180,14 +180,14 @@ class Z2FfsecondariaControllerTest extends FifreeTest
 
         $session->executeScript($javascript2);
         $page->fillField('jqg1', $search2);
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
 
         $page->find('css', 'a#fbox_list1_search')->click();
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
 
         $numrowsgrid2 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(4, $numrowsgrid2);
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         sleep(1);
 
         /* doppia condizione */
@@ -198,20 +198,20 @@ class Z2FfsecondariaControllerTest extends FifreeTest
                 $e->click();
             }
         }
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         $search3 = 100;
         $addrulejs = "$('.ui-add').click();";
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
 
         $session->executeScript($addrulejs);
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
 
         $var3 = '"intero"';
         $selector3 = '#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first';
         $javascript3 = "$('".$selector3.' option[value='.$var3."]').attr('selected', 'selected').change();";
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         $session->executeScript($javascript3);
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         $page->fillField('jqg4', $search3);
 
         $var4 = '"ge"';
@@ -221,7 +221,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $page->fillField('jqg3', $search5);
 
         $page->find('css', 'a#fbox_list1_search')->click();
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
 
         $numrowsgrid3 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid3);
@@ -234,6 +234,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
                 $e->click();
             }
         }
+        parent::ajaxWait($session, 20000);
         $page->find('css', 'a#fbox_list1_reset')->click();
         sleep(1);
     }
