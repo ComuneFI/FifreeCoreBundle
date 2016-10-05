@@ -21,11 +21,7 @@ class FifreeTest extends WebTestCase
 
     protected function setUp()
     {
-        $clientparms = array('environment' => 'test');
-        $this->clientNonAutorizzato = static::createClient($clientparms);
-        $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient($clientparms));
-        $this->container = $this->getContainer();
-        $this->em = $this->getContainer()->get('doctrine')->getManager();
+        $this->restartKernel();
     }
 
     /**
@@ -36,11 +32,21 @@ class FifreeTest extends WebTestCase
     protected function getContainer(array $options = [])
     {
         if (!$this->container) {
-            static::bootKernel($options);
-            $this->container = static::$kernel->getContainer();
+            $this->restartKernel();
         }
 
         return $this->container;
+    }
+
+    protected function restartKernel()
+    {
+        $clientparms = array('environment' => 'test');
+        static::bootKernel($clientparms);
+        $this->clientNonAutorizzato = static::createClient($clientparms);
+        $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient($clientparms));
+        $this->container = static::$kernel->getContainer();
+        $this->container = $this->getContainer();
+        $this->em = $this->getContainer()->get('doctrine')->getManager();
     }
 
     protected function setContainer($container)

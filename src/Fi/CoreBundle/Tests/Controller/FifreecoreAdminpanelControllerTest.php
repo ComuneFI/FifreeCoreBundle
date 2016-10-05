@@ -27,7 +27,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
     {
         //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()
         //$this->cleanFilesystem();
-        $client = parent::getClientAutorizzato();
+        $this->restartKernel();
+        $client = $this->getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $url = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage'/* , array('parms' => 'value') */);
 
@@ -43,6 +44,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
     public function test20AdminpanelGenerateBundle()
     {
+        $this->restartKernel();
         $browser = 'firefox';
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
@@ -79,8 +81,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
     public function test30AdminpanelGenerateEntity()
     {
-        $this->setContainer(null);
-        $this->setUp();
+        $this->restartKernel();
         //$fs = new Filesystem();
         //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
         $browser = 'firefox';
@@ -131,8 +132,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
     public function test40AdminpanelGenerateForm()
     {
-        $this->setContainer(null);
-        $this->setUp();
+        $this->restartKernel();
         //$fs = new Filesystem();
         //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
         $browser = 'firefox';
@@ -174,8 +174,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
     public function test50AdminpanelTest()
     {
-        $this->setContainer(null);
-        $this->setUp();
+        $this->restartKernel();
         $browser = 'firefox';
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         //$urlRouting = $this->getContainer()->get('router')->generate('Prova_container');
