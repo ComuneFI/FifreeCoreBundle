@@ -129,28 +129,6 @@ class GrigliaColonneUtils
         return $widthcampo;
     }
 
-    public static function getIndiceModelloSelect(&$chiave, &$colonna, $singoloalias, $widthcampo)
-    {
-        return array(
-            'name' => isset($singoloalias['nomecampo']) ? $singoloalias['nomecampo'] : $chiave,
-            'id' => isset($singoloalias['nomecampo']) ? $singoloalias['nomecampo'] : $chiave,
-            'width' => $widthcampo,
-            'tipocampo' => isset($singoloalias['tipo']) ? $singoloalias['tipo'] : $colonna['type'],
-            'editable' => isset($singoloalias['editable']) ? $singoloalias['editable'] : null,
-            'editoptions' => $singoloalias['valoricombo'], );
-    }
-
-    public static function getIndiceModello(&$chiave, &$colonna, $singoloalias, $widthcampo)
-    {
-        return array(
-            'name' => isset($singoloalias['nomecampo']) ? $singoloalias['nomecampo'] : $chiave,
-            'id' => isset($singoloalias['nomecampo']) ? $singoloalias['nomecampo'] : $chiave,
-            'width' => $widthcampo,
-            'tipocampo' => isset($singoloalias['tipo']) ? $singoloalias['tipo'] : $colonna['type'],
-            'editable' => isset($singoloalias['editable']) ? $singoloalias['editable'] : null,
-        );
-    }
-
     public static function getDettagliCampi(&$nomicolonne, &$modellocolonne, &$alias, &$indice, &$chiave, &$colonna, &$paricevuti)
     {
         $etichetteutente = GrigliaUtils::etichettecampi($paricevuti);
