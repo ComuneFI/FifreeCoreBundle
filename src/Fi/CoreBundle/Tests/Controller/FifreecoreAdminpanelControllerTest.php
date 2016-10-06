@@ -70,7 +70,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
         $session->getDriver()->getWebDriverSession()->accept_alert();
-        parent::ajaxWait($session, 20000);
+        parent::ajaxWait($session, 30000);
         //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
@@ -111,7 +111,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->pressButton('adminpanelgenerateentity');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 20000);
+        parent::ajaxWait($session, 30000);
         sleep(2);
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
@@ -120,7 +120,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->pressButton('adminpanelaggiornadatabase');
         $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptdb);
-        parent::ajaxWait($session, 20000);
+        parent::ajaxWait($session, 30000);
         sleep(2);
         $session->executeScript($scriptclose);
 
