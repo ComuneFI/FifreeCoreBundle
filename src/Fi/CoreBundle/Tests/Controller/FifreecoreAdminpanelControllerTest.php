@@ -174,11 +174,10 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
     public function test50AdminpanelTest()
     {
-//        $em = $this->getEntityManager();
+        //        $em = $this->getEntityManager();
 //        $prova = new \Fi\ProvaBundle\Entity\Prova();
 //        $descrizione = 'Prova';
 //        $prova->setDescrizione($descrizione);
-//
 //        $em->persist($prova);
 //        $em->flush();
 //        $this->assertEquals($descrizione, $prova->getDescrizione());
