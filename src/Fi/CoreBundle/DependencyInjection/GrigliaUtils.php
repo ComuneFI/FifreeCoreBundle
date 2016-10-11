@@ -101,6 +101,11 @@ class GrigliaUtils
         self::$postcarattere['ge'] = "'";
     }
 
+    public static function setVettoriPerBoolean()
+    {
+        self::setVettoriPerData();
+    }
+
     public static function setVettoriPerStringa()
     {
         self::$precarattere['eq'] = "lower('";
