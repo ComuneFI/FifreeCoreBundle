@@ -101,12 +101,12 @@ class GrigliaRegoleUtils
     public static function setTipoBoolean(&$regola, $tipo)
     {
         if ($regola['data'] === 'false' || $regola['data'] === false) {
-            GrigliaUtils::setVettoriPerNumero();
+            GrigliaUtils::setVettoriPerBoolean();
             $regola['op'] = 'eq';
             $regola['data'] = 0;
         }
         if ($regola['data'] === 'true' || $regola['data'] === true) {
-            GrigliaUtils::setVettoriPerNumero();
+            GrigliaUtils::setVettoriPerBoolean();
             $regola['op'] = 'eq';
             $regola['data'] = 1;
         }
