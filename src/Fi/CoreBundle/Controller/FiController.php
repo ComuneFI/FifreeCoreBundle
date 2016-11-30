@@ -5,17 +5,17 @@ namespace Fi\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\Events;
 
-class FiController extends Controller
-{
+class FiController extends Controller {
+
     public static $namespace;
     public static $bundle;
     public static $controller;
     public static $action;
     public static $parametrigriglia;
 
-    protected function setup(Request $request)
-    {
+    protected function setup(Request $request) {
         $matches = array();
         self::$controller = new \ReflectionClass(get_class($this));
 
@@ -27,14 +27,13 @@ class FiController extends Controller
         self::$action = substr($request->attributes->get('_controller'), strrpos($request->attributes->get('_controller'), ':') + 1);
     }
 
-    public function setParametriGriglia($prepar = array())
-    {
+    public function setParametriGriglia($prepar = array()) {
         self::setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array();
 
         $paricevuti = array('container' => $this->container, 'nomebundle' => $nomebundle, 'nometabella' => $controller, 'escludere' => $escludi);
@@ -50,8 +49,7 @@ class FiController extends Controller
      * Lists all tables entities.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         self::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -60,14 +58,14 @@ class FiController extends Controller
 
         $gestionepermessi = new GestionepermessiController();
         $gestionepermessi->setContainer($this->container);
-        //        $utentecorrente = $gestionepermessi->utentecorrenteAction();
+//        $utentecorrente = $gestionepermessi->utentecorrenteAction();
         $canRead = ($gestionepermessi->leggereAction(array('modulo' => $controller)) ? 1 : 0);
         $idpassato = $request->get('id');
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
 
         $em = $container->get('doctrine')->getManager();
-        //        $entities = $em->getRepository($nomebundle . ':' . $controller)->findAll();
+//        $entities = $em->getRepository($nomebundle . ':' . $controller)->findAll();
 
         $paricevuti = array('nomebundle' => $nomebundle, 'nometabella' => $controller, 'container' => $container);
 
@@ -97,9 +95,8 @@ class FiController extends Controller
         $testata = json_encode($testatagriglia);
 
         return $this->render(
-            $nomebundle.':'.$controller.':index.html.twig',
-            array(
-                    //                    'entities' => $entities,
+                        $nomebundle . ':' . $controller . ':index.html.twig', array(
+//                    'entities' => $entities,
                     'nomecontroller' => $controller,
                     'testata' => $testata,
                     'canread' => $canRead,
@@ -108,8 +105,7 @@ class FiController extends Controller
         );
     }
 
-    public function grigliaAction(Request $request)
-    {
+    public function grigliaAction(Request $request) {
         $this->setParametriGriglia(array('request' => $request));
         $paricevuti = self::$parametrigriglia;
 
@@ -119,21 +115,20 @@ class FiController extends Controller
     /**
      * Creates a new table entity.
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
-        $classbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Entity\\'.$controller;
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $classbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Entity\\' . $controller;
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
 
         $entity = new $classbundle();
-        $formType = $formbundle.'Type';
+        $formType = $formbundle . 'Type';
 
-        // Questo codice per versioni che usano un symfony inferiore a 2.8
+// Questo codice per versioni che usano un symfony inferiore a 2.8
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             $form = $this->createForm($formType, $entity);
         } else {
@@ -151,13 +146,12 @@ class FiController extends Controller
             if ($continua == 0) {
                 return new Response('OK');
             } else {
-                return $this->redirect($this->generateUrl($controller.'_edit', array('id' => $entity->getId())));
+                return $this->redirect($this->generateUrl($controller . '_edit', array('id' => $entity->getId())));
             }
         }
 
         return $this->render(
-            $nomebundle.':'.$controller.':new.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':new.html.twig', array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
@@ -168,46 +162,40 @@ class FiController extends Controller
     /**
      * Displays a form to create a new table entity.
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request) {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
-        $classbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Entity\\'.$controller;
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
-        $formType = $formbundle.'Type';
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $classbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Entity\\' . $controller;
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
+        $formType = $formbundle . 'Type';
 
         $entity = new $classbundle();
 
-        // Questo codice per versioni che usano un symfony inferiore a 2.8
+// Questo codice per versioni che usano un symfony inferiore a 2.8
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             $form = $this->createForm(
-                $formType,
-                $entity,
-                array('attr' => array(
-                    'id' => 'formdati'.$controller,
-                    ),
-                    'action' => $this->generateUrl($controller.'_create'),
+                    $formType, $entity, array('attr' => array(
+                    'id' => 'formdati' . $controller,
+                ),
+                'action' => $this->generateUrl($controller . '_create'),
                     )
             );
         } else {
             $form = $this->createForm(
-                new $formType(),
-                $entity,
-                array('attr' => array(
-                    'id' => 'formdati'.$controller,
-                    ),
-                    'action' => $this->generateUrl($controller.'_create'),
+                    new $formType(), $entity, array('attr' => array(
+                    'id' => 'formdati' . $controller,
+                ),
+                'action' => $this->generateUrl($controller . '_create'),
                     )
             );
         }
 
         return $this->render(
-            $nomebundle.':'.$controller.':new.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':new.html.twig', array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
@@ -215,12 +203,26 @@ class FiController extends Controller
         );
     }
 
+    private function elencoModifiche($nomebundle, $controller, $id) {
+        $controllerStorico = "Storicomodifiche";
+        $em = $this->getDoctrine()->getManager();
+        $risultato = $em->getRepository($nomebundle . ':' . $controllerStorico)->findBy(
+                array(
+                    "nometabella" => $controller,
+                    "idtabella" => $id
+                )
+        );
+
+        //$risultato = $entity ? $entity->getArrayResult() : false;
+
+        return $risultato;
+    }
+
     /**
      * Displays a form to edit an existing table entity.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
-    public function editAction(Request $request, $id)
-    {
+    public function editAction(Request $request, $id) {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -228,37 +230,36 @@ class FiController extends Controller
 
         $allegati = ($request->get('allegati') == 1 ? 1 : 0);
 
-        $nomebundle = $namespace.$bundle.'Bundle';
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
-        $formType = $formbundle.'Type';
+
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
+        $formType = $formbundle . 'Type';
+
+        $elencomodifiche = $this->elencoModifiche($nomebundle, $controller, $id);
 
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository($nomebundle.':'.$controller)->find($id);
+        $entity = $em->getRepository($nomebundle . ':' . $controller)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find '.$controller.' entity.');
+            throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
 
-        // Questo codice per versioni che usano un symfony inferiore a 2.8
+// Questo codice per versioni che usano un symfony inferiore a 2.8
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             $editForm = $this->createForm(
-                $formType,
-                $entity,
-                array('attr' => array(
-                    'id' => 'formdati'.$controller,
-                    ),
-                    'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
+                    $formType, $entity, array('attr' => array(
+                    'id' => 'formdati' . $controller,
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                     )
             );
         } else {
             $editForm = $this->createForm(
-                new $formType(),
-                $entity,
-                array('attr' => array(
-                    'id' => 'formdati'.$controller,
-                    ),
-                    'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
+                    new $formType(), $entity, array('attr' => array(
+                    'id' => 'formdati' . $controller,
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                     )
             );
         }
@@ -266,43 +267,119 @@ class FiController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render(
-            $nomebundle.':'.$controller.':edit.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':edit.html.twig', array(
                     'entity' => $entity,
                     'nomecontroller' => $controller,
                     'edit_form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
+                    'elencomodifiche' => $elencomodifiche,
                     'allegati' => $allegati,
                         )
         );
     }
 
     /**
+     * check if something changes 
+     * 
+     * @array $originalData
+     * @array $newData
+     * 
+     * return @array
+     * 
+     */
+    private function isRecordChanged($nomebundle, $controller, $originalData, $newData) {
+
+        $changes = array();
+        foreach ($newData as $indiceDato => $singoloDato) {
+            if (($originalData[$indiceDato] !== $singoloDato) && $this->isHistoricized($nomebundle, $controller, $indiceDato)) {
+                $changes[$indiceDato] = $originalData[$indiceDato];
+            }
+        }
+        return $changes;
+    }
+
+    /**
+     * check if field is historicized 
+     * @string $nomebundle
+     * @string $controller tablename
+     * @string $indicedato fieldname
+     * 
+     * return @boolean
+     * 
+     */
+    private function isHistoricized($nomebundle, $controller, $indiceDato) {
+
+        $risposta = false;
+        $controllerTabelle = "Tabelle";
+
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository($nomebundle . ':' . $controllerTabelle)->findOneBy(
+                array(
+                    'nometabella' => $controller,
+                    'nomecampo' => $indiceDato
+                )
+        );
+
+        if ($entity && $entity->getRegistrastorico()) {
+            $risposta = true;
+        }
+
+        return $risposta;
+    }
+
+    /**
+     * save field modification in history table 
+     * 
+     * @string $nomebundle
+     * @string $controller 
+     * @array $changes
+     * 
+     * 
+     */
+    private function saveHistory($controller, $changes, $id) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $adesso = new \DateTime();
+        foreach ($changes as $fieldName => $change) {
+            $nuovamodifica = new \Fi\CoreBundle\Entity\Storicomodifiche();
+            $nuovamodifica->setNometabella($controller);
+            $nuovamodifica->setNomecampo($fieldName);
+            $nuovamodifica->setIdtabella($id);
+            $nuovamodifica->setGiorno($adesso);
+            $nuovamodifica->setValoreprecedente($change);
+            $nuovamodifica->setOperatori($this->getUser());
+            $em->persist($nuovamodifica);
+        }
+        $em->flush();
+        $em->clear();
+    }
+
+    /**
      * Edits an existing table entity.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         self::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
-        $formType = $formbundle.'Type';
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
+        $formType = $formbundle . 'Type';
 
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository($nomebundle.':'.$controller)->find($id);
+        $entity = $em->getRepository($nomebundle . ':' . $controller)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find '.$controller.' entity.');
+            throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
-        // Questo codice per versioni che usano un symfony inferiore a 2.8
+// Questo codice per versioni che usano un symfony inferiore a 2.8
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             $editForm = $this->createForm($formType, $entity);
         } else {
@@ -312,20 +389,29 @@ class FiController extends Controller
         $editForm->submit($request->request->get($editForm->getName()));
 
         if ($editForm->isValid()) {
+
+            $originalData = $em->getUnitOfWork()->getOriginalEntityData($entity);
+
             $em->persist($entity);
             $em->flush();
+
+            $newData = $em->getUnitOfWork()->getOriginalEntityData($entity);
+            $changes = $this->isRecordChanged($nomebundle, $controller, $originalData, $newData);
+
+            if ($changes) {
+                $this->saveHistory($controller, $changes, $id);
+            }
 
             $continua = $request->get('continua');
             if ($continua == 0) {
                 return new Response('OK');
             } else {
-                return $this->redirect($this->generateUrl($controller.'_edit', array('id' => $id)));
+                return $this->redirect($this->generateUrl($controller . '_edit', array('id' => $id)));
             }
         }
 
         return $this->render(
-            $nomebundle.':'.$controller.':edit.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':edit.html.twig', array(
                     'entity' => $entity,
                     'edit_form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
@@ -338,14 +424,13 @@ class FiController extends Controller
      * Edits an existing table entity.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
-    public function aggiornaAction(Request $request)
-    {
+    public function aggiornaAction(Request $request) {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
         /* $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller; */
         /* $formType = $formbundle.'Type'; */
 
@@ -353,36 +438,35 @@ class FiController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository($nomebundle.':'.$controller)->find($id);
+        $entity = $em->getRepository($nomebundle . ':' . $controller)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find '.$controller.' entity.');
+            throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
 
-        throw $this->createNotFoundException("Implementare a seconda dell'esigenza 'aggiornaAction' del controller ".$nomebundle.'/'.$controller);
+        throw $this->createNotFoundException("Implementare a seconda dell'esigenza 'aggiornaAction' del controller " . $nomebundle . '/' . $controller);
     }
 
     /**
      * Deletes a table entity.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
-    public function deleteAction(Request $request)
-    {
+    public function deleteAction(Request $request) {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
 
-        //if (!$request->isXmlHttpRequest()) {
-        //    $request->checkCSRFProtection();
-        //}
+//if (!$request->isXmlHttpRequest()) {
+//    $request->checkCSRFProtection();
+//}
         try {
             $em = $this->getDoctrine()->getManager();
             $qb = $em->createQueryBuilder();
             $ids = explode(',', $request->get('id'));
-            $qb->delete($nomebundle.':'.$controller, 'u')
+            $qb->delete($nomebundle . ':' . $controller, 'u')
                     ->andWhere('u.id IN (:ids)')
                     ->setParameter('ids', $ids);
 
@@ -405,8 +489,7 @@ class FiController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    protected function createDeleteForm($id)
-    {
+    protected function createDeleteForm($id) {
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             return $this->createFormBuilder(array('id' => $id))
                             ->add('id', get_class(new \Symfony\Component\Form\Extension\Core\Type\HiddenType()))
@@ -418,8 +501,7 @@ class FiController extends Controller
         }
     }
 
-    public function stampatabellaAction(Request $request)
-    {
+    public function stampatabellaAction(Request $request) {
         self::setup($request);
         $pdf = new StampatabellaController($this->container);
 
@@ -428,7 +510,7 @@ class FiController extends Controller
         /* $controller = $this->getController(); */
         $container = $this->container;
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
 
         $em = $this->getDoctrine()->getManager();
 
@@ -456,8 +538,7 @@ class FiController extends Controller
         return new Response('OK');
     }
 
-    public function esportaexcelAction(Request $request)
-    {
+    public function esportaexcelAction(Request $request) {
         self::setup($request);
         $xls = new StampatabellaController($this->container);
 
@@ -465,7 +546,7 @@ class FiController extends Controller
         $bundle = $this->getBundle();
         /* $controller = $this->getController(); */
         $container = $this->container;
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
 
         $em = $this->getDoctrine()->getManager();
 
@@ -492,15 +573,14 @@ class FiController extends Controller
         $response = new Response();
 
         $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', 'attachment;filename="'.basename($fileexcel).'"');
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . basename($fileexcel) . '"');
 
         $response->setContent(file_get_contents($fileexcel));
 
         return $response;
     }
 
-    private function getParametersTestataPerGriglia($request, $container, $em, $paricevuti)
-    {
+    private function getParametersTestataPerGriglia($request, $container, $em, $paricevuti) {
         if ($request->get('parametritesta')) {
             $jsonparms = json_decode($request->get('parametritesta'));
             $parametritesta = get_object_vars($jsonparms);
@@ -513,8 +593,7 @@ class FiController extends Controller
         return $request->get('parametritesta') ? $parametritesta : $paricevuti;
     }
 
-    private function getParametersDatiPerGriglia($request, $container, $em, $paricevuti)
-    {
+    private function getParametersDatiPerGriglia($request, $container, $em, $paricevuti) {
         if ($request->get('parametrigriglia')) {
             $jsonparms = json_decode($request->get('parametrigriglia'));
             $parametrigriglia = get_object_vars($jsonparms);
@@ -527,23 +606,20 @@ class FiController extends Controller
         return $request->get('parametrigriglia') ? $parametrigriglia : $paricevuti;
     }
 
-    public function getNamespace()
-    {
+    public function getNamespace() {
         return self::$namespace;
     }
 
-    public function getBundle()
-    {
+    public function getBundle() {
         return self::$bundle;
     }
 
-    public function getController()
-    {
+    public function getController() {
         return self::$controller;
     }
 
-    public function getAction()
-    {
+    public function getAction() {
         return self::$action;
     }
+
 }

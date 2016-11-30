@@ -278,4 +278,14 @@ class Ffsecondaria
     {
         return $this->getDescsec();
     }
+
+    /**
+     * Get attivo
+     *
+     * @return boolean
+     */
+    public function getAttivo()
+    {
+        return $this->attivo;
+    }
 }

@@ -258,4 +258,34 @@ class Ruoli
     {
         return $this->is_user;
     }
+
+    /**
+     * Get isSuperadmin
+     *
+     * @return boolean
+     */
+    public function getIsSuperadmin()
+    {
+        return $this->is_superadmin;
+    }
+
+    /**
+     * Get isAdmin
+     *
+     * @return boolean
+     */
+    public function getIsAdmin()
+    {
+        return $this->is_admin;
+    }
+
+    /**
+     * Get isUser
+     *
+     * @return boolean
+     */
+    public function getIsUser()
+    {
+        return $this->is_user;
+    }
 }

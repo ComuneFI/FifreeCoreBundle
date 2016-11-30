@@ -21,6 +21,7 @@ class TabelleType extends AbstractType
             ->add('ordinestampa')
             ->add('larghezzastampa')
             ->add('etichettastampa')
+            ->add('registrastorico')
             ->add('operatori');
     }
 

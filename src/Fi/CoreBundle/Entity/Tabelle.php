@@ -421,4 +421,53 @@ class Tabelle
     {
         return $this->nometabella.' ['.$this->nomecampo.']';
     }
+    /**
+     * @var boolean
+     */
+    private $registrastorico;
+
+
+    /**
+     * Get mostraindex
+     *
+     * @return boolean
+     */
+    public function getMostraindex()
+    {
+        return $this->mostraindex;
+    }
+
+    /**
+     * Get mostrastampa
+     *
+     * @return boolean
+     */
+    public function getMostrastampa()
+    {
+        return $this->mostrastampa;
+    }
+
+    /**
+     * Set registrastorico
+     *
+     * @param boolean $registrastorico
+     *
+     * @return Tabelle
+     */
+    public function setRegistrastorico($registrastorico)
+    {
+        $this->registrastorico = $registrastorico;
+
+        return $this;
+    }
+
+    /**
+     * Get registrastorico
+     *
+     * @return boolean
+     */
+    public function getRegistrastorico()
+    {
+        return $this->registrastorico;
+    }
 }

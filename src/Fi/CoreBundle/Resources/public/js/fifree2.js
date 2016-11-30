@@ -91,3 +91,9 @@ function data2db(giorno, senzalinea) {
   return anno + (senzalinea ? "" : "-") + mm + (senzalinea ? "" : "-") + gg;
 
 }
+
+function mostrastorico(nomecampo) {
+    
+    
+    
+}
