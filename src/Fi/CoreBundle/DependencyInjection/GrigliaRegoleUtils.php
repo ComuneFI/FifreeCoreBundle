@@ -88,14 +88,6 @@ class GrigliaRegoleUtils
         } elseif ($tipo == 'string') {
             GrigliaUtils::setVettoriPerStringa();
             $regola['field'] = 'lower('.$regola['field'].')';
-
-            //Gestione where in per le stringhe
-            if (strrpos($regola['data'], ',') > 0) {
-                $elements = explode(',', $regola['data']);
-                $regola['data'] = "''".implode("','", $elements)."''";
-            } elseif ($tipo == 'string') {
-                $regola['data'] = str_replace('\\', "'", addslashes($regola['data']));
-            }
         }
         if ($tipo == 'boolean') {
             self::setTipoBoolean($regola, $tipo);
