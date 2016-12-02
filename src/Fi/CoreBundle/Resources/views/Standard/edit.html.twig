@@ -82,9 +82,20 @@
             dateFormat: 'dd/mm/yy'
         });
 
-        $(".accessostorico").dblclick(function () {
-            mostrastorico(this.name);
+        $(".accessostorico").contextMenu('campoMenu', {
+            zIndex: 999,
+            bindings: {
+                'storicomodifiche': function (trigger) {
+
+                    var regExp = /\[(.*?)\]/g;
+                    var matches = regExp.exec($(trigger)[0].name);
+
+                    mostrastorico('{{ path('Storicomodifiche_modifiche') }}', '{{nomecontroller}}', matches[1], '{{ entity.id }}');
+                }
+            }
         });
+
+
 
     });
 </script>

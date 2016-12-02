@@ -16,7 +16,12 @@ class FfsecondariaType extends AbstractType {
                     )
                         )
                 )
-                ->add('ffprincipale')
+                ->add('ffprincipale', null, array(
+                    'attr' => array(
+                        'class' => 'accessostorico'
+                    )
+                        )
+                )
                 ->add('data')
                 ->add('intero')
                 ->add('importo')

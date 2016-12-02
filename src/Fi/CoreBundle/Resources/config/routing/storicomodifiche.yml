@@ -1,0 +1,47 @@
+Storicomodifiche_container:
+    path:  /
+    defaults: { _controller: "FiCoreBundle:Storicomodifiche:index" }
+
+Storicomodifiche_new:
+    path:  /new
+    defaults: { _controller: "FiCoreBundle:Storicomodifiche:new" }
+
+Storicomodifiche_create:
+    path:  /create
+    defaults: { _controller: "FiCoreBundle:Storicomodifiche:create" }
+    requirements: { methods: post }
+
+Storicomodifiche_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "FiCoreBundle:Storicomodifiche:edit" }
+
+Storicomodifiche_update:
+    path:  /{id}/update
+    defaults: { _controller: "FiCoreBundle:Storicomodifiche:update" }
+    requirements: { methods: post|put }
+
+Storicomodifiche_aggiorna:
+    path:  /aggiorna
+    defaults: { _controller: "FiCoreBundle:Storicomodifiche:aggiorna" }
+    requirements: { methods: post|put }
+
+Storicomodifiche_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "FiCoreBundle:Storicomodifiche:delete" }
+    requirements: { methods: post|delete }
+
+Storicomodifiche_deletemultiple:
+    path:  /delete
+    defaults: { _controller: "FiCoreBundle:Storicomodifiche:delete" }
+    requirements: { methods: post|delete }
+
+Storicomodifiche_griglia:
+    path:  /griglia
+    defaults: { _controller: "FiCoreBundle:Storicomodifiche:Griglia" }
+    requirements: { methods: get|post }
+    
+    
+Storicomodifiche_modifiche:
+    path:  /modifiche
+    defaults: { _controller: "FiCoreBundle:Storicomodifiche:modifiche" }
+    requirements: { methods: post|put }

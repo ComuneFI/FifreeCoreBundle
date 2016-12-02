@@ -347,7 +347,11 @@ class FiController extends Controller {
             $nuovamodifica->setNomecampo($fieldName);
             $nuovamodifica->setIdtabella($id);
             $nuovamodifica->setGiorno($adesso);
-            $nuovamodifica->setValoreprecedente($change);
+            $nuovamodifica->setValoreprecedente(
+                    is_object($change) ?
+                    ($change->__toString() . " (" . $change->getId()) . ")" :
+                    $change
+            );
             $nuovamodifica->setOperatori($this->getUser());
             $em->persist($nuovamodifica);
         }

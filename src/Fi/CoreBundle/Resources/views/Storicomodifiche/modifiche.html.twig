@@ -1,0 +1,21 @@
+<div id="modifiche">
+    <table>
+        <thead>
+            <tr class="tableheader">
+                <th>Data</th>
+                <th>Operatore</th>
+                <th>Valore modificato</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for modifica in modifiche %}
+                <tr class="riga">
+                    <td>{{ modifica.giorno|date("d/m/Y H.i") }}</td>
+                    <td>{{ modifica.operatori|e }}</td>
+                    <td>{{ modifica.valoreprecedente|e }}</td>
+                </tr>
+            {% endfor %} 
+        </tbody>
+    </table>
+</div>

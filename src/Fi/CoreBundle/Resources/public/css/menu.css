@@ -177,3 +177,6 @@
 #bar1 {
 }
 
+html body div#jqContextMenu {
+    z-index: 999 !important; 
+}
