@@ -11,7 +11,7 @@ namespace Fi\CoreBundle\Controller;
  *
  */
 
-class GestionepermessiController extends FiController
+class GestionepermessiController extends FiCoreController
 {
     protected $modulo;
     protected $crud;

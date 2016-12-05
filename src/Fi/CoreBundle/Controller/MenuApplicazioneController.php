@@ -7,6 +7,6 @@ use Fi\CoreBundle\Entity\menuApplicazione;
 /**
  * MenuApplicazione controller.
  */
-class MenuApplicazioneController extends FiController
-{
+class MenuApplicazioneController extends FiCoreController {
+    
 }

@@ -10,9 +10,10 @@ use Fi\CoreBundle\DependencyInjection\GrigliaDatiUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiPrecondizioniUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaExtraFunzioniUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiMultiUtils;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class Griglia extends FiController
-{
+class Griglia extends Controller {
+
     /**
      * Questa funzione è compatibile con jqGrid e risponden con un formato JSON
      * contenente i dati di testata per la griglia.
@@ -38,8 +39,7 @@ class Griglia extends FiController
      *
      * @return array contentente i dati di testata per la griglia
      */
-    public static function testataPerGriglia($paricevuti = array())
-    {
+    public static function testataPerGriglia($paricevuti = array()) {
         $nometabella = $paricevuti['nometabella'];
         $nomebundle = $paricevuti['nomebundle'];
         $output = GrigliaUtils::getOuputType($paricevuti);
@@ -99,8 +99,7 @@ class Griglia extends FiController
      *
      * @return JSON con i dati richiesti
      */
-    public static function datiPerGriglia($parametri = array())
-    {
+    public static function datiPerGriglia($parametri = array()) {
         $request = $parametri['request'];
         $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
         /* $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine); */
@@ -130,7 +129,7 @@ class Griglia extends FiController
         $sord = $request->get('sord'); // get the direction if(!$sidx) $sidx =1;
         GrigliaDatiUtils::getDatiOrdinamento($sidx, $nometabella);
         /* inizia la query */
-        $entityName = $bundle.':'.$nometabella;
+        $entityName = $bundle . ':' . $nometabella;
         $q = $doctrine->createQueryBuilder();
         $q->select($nometabella)
                 ->from($entityName, $nometabella);
@@ -156,21 +155,17 @@ class Griglia extends FiController
         /* se ci sono delle precondizioni avanzate le imposta qui */
         if ($precondizioniAvanzate) {
             GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
-                $q,
-                $primo,
-                array('precondizioniAvanzate' => $precondizioniAvanzate,
+                    $q, $primo, array('precondizioniAvanzate' => $precondizioniAvanzate,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
                 'entityName' => $entityName,
-                'bundle' => $bundle, )
+                'bundle' => $bundle,)
             );
         }
         /* scorro ogni singola regola */
         if (isset($regole)) {
             GrigliaRegoleUtils::setRegole(
-                $q,
-                $primo,
-                array(
+                    $q, $primo, array(
                 'regole' => $regole,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
@@ -200,13 +195,7 @@ class Griglia extends FiController
             $indicecolonna = 0;
             foreach ($singolo as $nomecampo => $singolocampo) {
                 GrigliaDatiMultiUtils::buildDatiGriglia(
-                    $parametri,
-                    $vettoreriga,
-                    $singolo,
-                    $nomecampo,
-                    $indice,
-                    $indicecolonna,
-                    $singolocampo
+                        $parametri, $vettoreriga, $singolo, $nomecampo, $indice, $indicecolonna, $singolocampo
                 );
             }
 
@@ -217,4 +206,5 @@ class Griglia extends FiController
 
         return json_encode($vettorerisposta);
     }
+
 }

@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Ffsecondaria controller.
  */
-class FfsecondariaController extends FiController {
+class FfsecondariaController extends FiCoreController {
 
     public function indexAction(Request $request) {
 

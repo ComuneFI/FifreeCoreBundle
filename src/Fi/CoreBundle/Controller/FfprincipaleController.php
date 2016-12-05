@@ -2,12 +2,13 @@
 
 namespace Fi\CoreBundle\Controller;
 
+
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Ffprincipale controller.
  */
-class FfprincipaleController extends FiController
+class FfprincipaleController extends FiCoreController
 {
     /**
      * Lists all tables entities.

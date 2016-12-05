@@ -1,5 +1,7 @@
 Fi\CoreBundle\Entity\Storicomodifiche:
     type: entity
+    repositoryClass: Fi\CoreBundle\Entity\StoricomodificheRepository
+    
     table: Storicomodifiche
     indexes:
         fk_Storicomodifiche_Operatori1_idx:

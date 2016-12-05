@@ -5,7 +5,7 @@ namespace Fi\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Fi\CoreBundle\Controller\StoricomodificheController;
+
 use Doctrine\ORM\Events;
 
 class FiController extends Controller {
@@ -280,50 +280,6 @@ class FiController extends Controller {
     }
 
     /**
-     * check if something changes 
-     * 
-     * @array $originalData
-     * @array $newData
-     * 
-     * return @array
-     * 
-     */
-    private function isRecordChanged($nomebundle, $controller, $originalData, $newData) {
-
-        $changes = array();
-        foreach ($newData as $indiceDato => $singoloDato) {
-            $this->isDataChanged($nomebundle, $controller, $originalData[$indiceDato], $singoloDato, $indiceDato, $changes);
-        }
-        return $changes;
-    }
-
-    /**
-     * check if single data is  changed
-     * 
-     * @array $originalData
-     * @array $newData
-     * 
-     * return @string
-     * 
-     */
-    private function isDataChanged($nomebundle, $controller, $datooriginale, $singoloDato, $indiceDato, &$changes) {
-        $controllerstorico = new StoricomodificheController();
-
-        if (($datooriginale !== $singoloDato) && $controllerstorico->isHistoricized($nomebundle, $controller, $indiceDato)) {
-            $changes[$indiceDato] = $datooriginale;
-        }
-    }
-
-    private function getValoreprecedenteImpostare($change) {
-        if (is_object($change)) {
-            $risposta = $change->__toString() . " (" . $change->getId() . ")";
-        } else {
-            $risposta = $change;
-        }
-        return $risposta;
-    }
-
-    /**
      * Edits an existing table entity.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
@@ -337,7 +293,7 @@ class FiController extends Controller {
         $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
         $formType = $formbundle . 'Type';
 
-        $controllerstorico = new StoricomodificheController();
+        $repoStorico = $oggettoentita = $this->container->get('Storicomodifiche_repository');
 
         $em = $this->getDoctrine()->getManager();
 
@@ -366,10 +322,10 @@ class FiController extends Controller {
             $em->flush();
 
             $newData = $em->getUnitOfWork()->getOriginalEntityData($entity);
-            $changes = $this->isRecordChanged($nomebundle, $controller, $originalData, $newData);
+            $changes = $repoStorico->isRecordChanged($nomebundle, $controller, $originalData, $newData);
 
             if ($changes) {
-                $controllerstorico->saveHistory($controller, $changes, $id);
+                $repoStorico->saveHistory($controller, $changes, $id, $this->getUser());
             }
 
             $continua = $request->get('continua');
@@ -576,19 +532,19 @@ class FiController extends Controller {
         return $request->get('parametrigriglia') ? $parametrigriglia : $paricevuti;
     }
 
-    private function getNamespace() {
+    protected function getNamespace() {
         return self::$namespace;
     }
 
-    private function getBundle() {
+    protected function getBundle() {
         return self::$bundle;
     }
 
-    private function getController() {
+    protected function getController() {
         return self::$controller;
     }
 
-    private function getAction() {
+    protected function getAction() {
         return self::$action;
     }
 

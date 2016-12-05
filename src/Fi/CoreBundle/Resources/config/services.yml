@@ -48,3 +48,11 @@ services:
         arguments: [%ficorebundle.db.table_schema%]
         tags:
             - { name: doctrine.event_subscriber }
+
+    Storicomodifiche_repository: 
+        class: Fi\CoreBundle\Entity\StoricomodificheRepository
+        factory_service: 'doctrine.orm.default_entity_manager'
+        factory_method:  'getRepository'
+        arguments:  
+            - 'Fi\CoreBundle\Entity\Storicomodifiche'
+        
