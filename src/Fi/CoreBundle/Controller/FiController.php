@@ -293,7 +293,7 @@ class FiController extends Controller {
         $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
         $formType = $formbundle . 'Type';
 
-        $repoStorico = $oggettoentita = $this->container->get('Storicomodifiche_repository');
+        $repoStorico = $this->container->get('Storicomodifiche_repository');
 
         $em = $this->getDoctrine()->getManager();
 
