@@ -17,17 +17,17 @@ class FiController extends Controller {
 
     protected function setup(Request $request) {
         $matches = array();
-        self::$controller = new \ReflectionClass(get_class($this));
+        $controllo = new \ReflectionClass(get_class($this));
 
-        preg_match('/(.*)\\\(.*)Bundle\\\Controller\\\(.*)Controller/', self::$controller->getName(), $matches);
+        preg_match('/(.*)\\\(.*)Bundle\\\Controller\\\(.*)Controller/', $controllo->getName(), $matches);
 
-        self::$namespace = isset($matches[1]) ? $matches[1] : '';
-        self::$bundle = isset($matches[2]) ? $matches[2] : '';
-        self::$controller = isset($matches[3]) ? $matches[3] : '';
+        self::$namespace = $matches[1];
+        self::$bundle = $matches[2];
+        self::$controller = $matches[3];
         self::$action = substr($request->attributes->get('_controller'), strrpos($request->attributes->get('_controller'), ':') + 1);
     }
 
-    public function setParametriGriglia($prepar = array()) {
+    protected function setParametriGriglia($prepar = array()) {
         self::setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -291,11 +291,24 @@ class FiController extends Controller {
 
         $changes = array();
         foreach ($newData as $indiceDato => $singoloDato) {
-            if (($originalData[$indiceDato] !== $singoloDato) && $this->isHistoricized($nomebundle, $controller, $indiceDato)) {
-                $changes[$indiceDato] = $originalData[$indiceDato];
-            }
+            $this->isDataChanged($nomebundle, $controller, $originalData[$indiceDato], $singoloDato, $indiceDato, $changes);
         }
         return $changes;
+    }
+
+    /**
+     * check if single data is  changed
+     * 
+     * @array $originalData
+     * @array $newData
+     * 
+     * return @string
+     * 
+     */
+    private function isDataChanged($nomebundle, $controller, $datooriginale, $singoloDato, $indiceDato, &$changes) {
+        if (($datooriginale !== $singoloDato) && $this->isHistoricized($nomebundle, $controller, $indiceDato)) {
+            $changes[$indiceDato] = $datooriginale;
+        }
     }
 
     /**
@@ -347,16 +360,21 @@ class FiController extends Controller {
             $nuovamodifica->setNomecampo($fieldName);
             $nuovamodifica->setIdtabella($id);
             $nuovamodifica->setGiorno($adesso);
-            $nuovamodifica->setValoreprecedente(
-                    is_object($change) ?
-                    ($change->__toString() . " (" . $change->getId()) . ")" :
-                    $change
-            );
+            $nuovamodifica->setValoreprecedente($this->getValoreprecedenteImpostare($change));
             $nuovamodifica->setOperatori($this->getUser());
             $em->persist($nuovamodifica);
         }
         $em->flush();
         $em->clear();
+    }
+
+    private function getValoreprecedenteImpostare($change) {
+        if (is_object($change)) {
+            $risposta = $change->__toString() . " (" . $change->getId() . ")";
+        } else {
+            $risposta = $change;
+        }
+        return $risposta;
     }
 
     /**

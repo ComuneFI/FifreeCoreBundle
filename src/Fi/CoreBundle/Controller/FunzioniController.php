@@ -14,4 +14,5 @@ class FunzioniController extends FiController
 
         return new Response(GrigliaFiltriUtils::traduciFiltri(array('filtri' => json_decode($tuttofiltri))));
     }
+
 }
