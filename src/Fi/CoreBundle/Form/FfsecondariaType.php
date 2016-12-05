@@ -6,22 +6,22 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class FfsecondariaType extends AbstractType {
+class FfsecondariaType extends AbstractType
+{
 
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder
                 ->add('descsec', null, array(
                     'attr' => array(
                         'class' => 'accessostorico'
                     )
-                        )
-                )
+                        ))
                 ->add('ffprincipale', null, array(
                     'attr' => array(
                         'class' => 'accessostorico'
                     )
-                        )
-                )
+                        ))
                 ->add('data')
                 ->add('intero')
                 ->add('importo')
@@ -29,16 +29,17 @@ class FfsecondariaType extends AbstractType {
                 ->add('attivo');
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
         $resolver->setDefaults(
-                array(
+            array(
                     'data_class' => 'Fi\CoreBundle\Entity\Ffsecondaria',
                 )
         );
     }
 
-    public function getName() {
+    public function getName()
+    {
         return 'fi_corebundle_ffsecondariatype';
     }
-
 }

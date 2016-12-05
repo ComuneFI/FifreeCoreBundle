@@ -5,11 +5,9 @@ namespace Fi\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 use Doctrine\ORM\Events;
 
-class FiController extends Controller
-{
+class FiController extends Controller {
 
     public static $namespace;
     public static $bundle;
@@ -17,8 +15,7 @@ class FiController extends Controller
     public static $action;
     public static $parametrigriglia;
 
-    protected function setup(Request $request)
-    {
+    protected function setup(Request $request) {
         $matches = array();
         $controllo = new \ReflectionClass(get_class($this));
 
@@ -30,8 +27,7 @@ class FiController extends Controller
         self::$action = substr($request->attributes->get('_controller'), strrpos($request->attributes->get('_controller'), ':') + 1);
     }
 
-    protected function setParametriGriglia($prepar = array())
-    {
+    protected function setParametriGriglia($prepar = array()) {
         self::setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -53,8 +49,7 @@ class FiController extends Controller
      * Lists all tables entities.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         self::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -100,9 +95,8 @@ class FiController extends Controller
         $testata = json_encode($testatagriglia);
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':index.html.twig',
-            array(
-            //                    'entities' => $entities,
+                        $nomebundle . ':' . $controller . ':index.html.twig', array(
+                    //                    'entities' => $entities,
                     'nomecontroller' => $controller,
                     'testata' => $testata,
                     'canread' => $canRead,
@@ -111,8 +105,7 @@ class FiController extends Controller
         );
     }
 
-    public function grigliaAction(Request $request)
-    {
+    public function grigliaAction(Request $request) {
         $this->setParametriGriglia(array('request' => $request));
         $paricevuti = self::$parametrigriglia;
 
@@ -122,8 +115,7 @@ class FiController extends Controller
     /**
      * Creates a new table entity.
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -159,8 +151,7 @@ class FiController extends Controller
         }
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':new.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':new.html.twig', array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
@@ -171,8 +162,7 @@ class FiController extends Controller
     /**
      * Displays a form to create a new table entity.
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request) {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -188,29 +178,24 @@ class FiController extends Controller
 // Questo codice per versioni che usano un symfony inferiore a 2.8
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             $form = $this->createForm(
-                $formType,
-                $entity,
-                array('attr' => array(
+                    $formType, $entity, array('attr' => array(
                     'id' => 'formdati' . $controller,
-                    ),
-                    'action' => $this->generateUrl($controller . '_create'),
+                ),
+                'action' => $this->generateUrl($controller . '_create'),
                     )
             );
         } else {
             $form = $this->createForm(
-                new $formType(),
-                $entity,
-                array('attr' => array(
+                    new $formType(), $entity, array('attr' => array(
                     'id' => 'formdati' . $controller,
-                    ),
-                    'action' => $this->generateUrl($controller . '_create'),
+                ),
+                'action' => $this->generateUrl($controller . '_create'),
                     )
             );
         }
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':new.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':new.html.twig', array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
@@ -218,12 +203,11 @@ class FiController extends Controller
         );
     }
 
-    private function elencoModifiche($nomebundle, $controller, $id)
-    {
+    private function elencoModifiche($nomebundle, $controller, $id) {
         $controllerStorico = "Storicomodifiche";
         $em = $this->getDoctrine()->getManager();
         $risultato = $em->getRepository($nomebundle . ':' . $controllerStorico)->findBy(
-            array(
+                array(
                     "nometabella" => $controller,
                     "idtabella" => $id
                 )
@@ -238,8 +222,7 @@ class FiController extends Controller
      * Displays a form to edit an existing table entity.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
-    public function editAction(Request $request, $id)
-    {
+    public function editAction(Request $request, $id) {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -265,22 +248,18 @@ class FiController extends Controller
 // Questo codice per versioni che usano un symfony inferiore a 2.8
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             $editForm = $this->createForm(
-                $formType,
-                $entity,
-                array('attr' => array(
+                    $formType, $entity, array('attr' => array(
                     'id' => 'formdati' . $controller,
-                    ),
-                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                     )
             );
         } else {
             $editForm = $this->createForm(
-                new $formType(),
-                $entity,
-                array('attr' => array(
+                    new $formType(), $entity, array('attr' => array(
                     'id' => 'formdati' . $controller,
-                    ),
-                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                     )
             );
         }
@@ -288,8 +267,7 @@ class FiController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':edit.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':edit.html.twig', array(
                     'entity' => $entity,
                     'nomecontroller' => $controller,
                     'edit_form' => $editForm->createView(),
@@ -304,8 +282,7 @@ class FiController extends Controller
      * Edits an existing table entity.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         self::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -358,8 +335,7 @@ class FiController extends Controller
         }
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':edit.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':edit.html.twig', array(
                     'entity' => $entity,
                     'edit_form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
@@ -372,8 +348,7 @@ class FiController extends Controller
      * Edits an existing table entity.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
-    public function aggiornaAction(Request $request)
-    {
+    public function aggiornaAction(Request $request) {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -393,15 +368,18 @@ class FiController extends Controller
             throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
 
-        throw $this->createNotFoundException("Implementare a seconda dell'esigenza 'aggiornaAction' del controller " . $nomebundle . '/' . $controller);
+        throw $this->createNotFoundException("Implementare a seconda dell'esigenza 'aggiornaAction' del controller "
+                . $nomebundle
+                . '/'
+                . $controller
+        );
     }
 
     /**
      * Deletes a table entity.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
-    public function deleteAction(Request $request)
-    {
+    public function deleteAction(Request $request) {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -439,8 +417,7 @@ class FiController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    protected function createDeleteForm($id)
-    {
+    protected function createDeleteForm($id) {
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             return $this->createFormBuilder(array('id' => $id))
                             ->add('id', get_class(new \Symfony\Component\Form\Extension\Core\Type\HiddenType()))
@@ -452,8 +429,7 @@ class FiController extends Controller
         }
     }
 
-    public function stampatabellaAction(Request $request)
-    {
+    public function stampatabellaAction(Request $request) {
         self::setup($request);
         $pdf = new StampatabellaController($this->container);
 
@@ -490,8 +466,7 @@ class FiController extends Controller
         return new Response('OK');
     }
 
-    public function esportaexcelAction(Request $request)
-    {
+    public function esportaexcelAction(Request $request) {
         self::setup($request);
         $xls = new StampatabellaController($this->container);
 
@@ -533,8 +508,7 @@ class FiController extends Controller
         return $response;
     }
 
-    private function getParametersTestataPerGriglia($request, $container, $em, $paricevuti)
-    {
+    private function getParametersTestataPerGriglia($request, $container, $em, $paricevuti) {
         if ($request->get('parametritesta')) {
             $jsonparms = json_decode($request->get('parametritesta'));
             $parametritesta = get_object_vars($jsonparms);
@@ -547,8 +521,7 @@ class FiController extends Controller
         return $request->get('parametritesta') ? $parametritesta : $paricevuti;
     }
 
-    private function getParametersDatiPerGriglia($request, $container, $em, $paricevuti)
-    {
+    private function getParametersDatiPerGriglia($request, $container, $em, $paricevuti) {
         if ($request->get('parametrigriglia')) {
             $jsonparms = json_decode($request->get('parametrigriglia'));
             $parametrigriglia = get_object_vars($jsonparms);
@@ -561,23 +534,20 @@ class FiController extends Controller
         return $request->get('parametrigriglia') ? $parametrigriglia : $paricevuti;
     }
 
-    protected function getNamespace()
-    {
+    protected function getNamespace() {
         return self::$namespace;
     }
 
-    protected function getBundle()
-    {
+    protected function getBundle() {
         return self::$bundle;
     }
 
-    protected function getController()
-    {
+    protected function getController() {
         return self::$controller;
     }
 
-    protected function getAction()
-    {
+    protected function getAction() {
         return self::$action;
     }
+
 }
