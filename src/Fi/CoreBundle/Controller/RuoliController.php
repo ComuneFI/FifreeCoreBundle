@@ -5,6 +5,7 @@ namespace Fi\CoreBundle\Controller;
 /**
  * Ruoli controller.
  */
-class RuoliController extends FiCoreController {
+class RuoliController extends FiCoreController
+{
     
 }

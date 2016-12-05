@@ -14,9 +14,11 @@ use Fi\CoreBundle\Form\StoricomodificheType;
  * Storicomodifiche controller.
  *
  */
-class StoricomodificheController extends FiCoreController {
+class StoricomodificheController extends FiCoreController
+{
 
-    public function modificheAction(Request $request) {
+    public function modificheAction(Request $request)
+    {
         $nometabella = $request->get("nometabella");
         $nomecampo = $request->get("nomecampo");
         $id = (int) $request->get("id");
@@ -31,7 +33,7 @@ class StoricomodificheController extends FiCoreController {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository($nomebundle . ':' . $controller)->findBy(
-                array(
+            array(
                     'nometabella' => $nometabella,
                     'nomecampo' => $nomecampo,
                     'idtabella' => $id,
@@ -40,5 +42,4 @@ class StoricomodificheController extends FiCoreController {
 
         return $this->render('FiCoreBundle:Storicomodifiche:modifiche.html.twig', array("modifiche" => $entity));
     }
-
 }

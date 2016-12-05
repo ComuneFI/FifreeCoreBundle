@@ -8,16 +8,19 @@ use Symfony\Component\HttpKernel\Kernel;
 /**
  * Menu controller.
  */
-class MenuController extends MenuApplicazioneController {
+class MenuController extends MenuApplicazioneController
+{
 
-    protected function initGestionePermessi() {
+    protected function initGestionePermessi()
+    {
         $gestionepermessi = new GestionePermessi();
         $gestionepermessi->setContainer($this->container);
 
         return $gestionepermessi;
     }
 
-    public function generamenuAction() {
+    public function generamenuAction()
+    {
         $gestionepermessi = $this->initGestionePermessi();
         $gestionepermessi->utentecorrenteAction();
         $router = $this->get('router')->match('/')['_route'];
@@ -84,7 +87,8 @@ class MenuController extends MenuApplicazioneController {
         return $this->render('FiCoreBundle:Menu:menu.html.twig', array('risposta' => $risposta));
     }
 
-    protected function getMenu($menu) {
+    protected function getMenu($menu)
+    {
         $gestionepermessi = $this->initGestionePermessi();
         $gestionepermessi->utentecorrenteAction();
 
@@ -131,7 +135,8 @@ class MenuController extends MenuApplicazioneController {
         return $risposta;
     }
 
-    protected function getSubMenu($submenu) {
+    protected function getSubMenu($submenu)
+    {
         $gestionepermessi = $this->initGestionePermessi();
         $gestionepermessi->utentecorrenteAction();
 
@@ -162,7 +167,8 @@ class MenuController extends MenuApplicazioneController {
         return $sottomenutabelle;
     }
 
-    protected function getUrlObject($nome, $percorso, $target) {
+    protected function getUrlObject($nome, $percorso, $target)
+    {
         if ($this->routeExists($percorso)) {
             return array('percorso' => $this->generateUrl($percorso), 'nome' => $nome, 'target' => $target);
         } else {
@@ -177,7 +183,8 @@ class MenuController extends MenuApplicazioneController {
         }
     }
 
-    protected function routeExists($name) {
+    protected function routeExists($name)
+    {
         // I assume that you have a link to the container in your twig extension class
         $router = $this->container->get('router');
 
@@ -188,7 +195,8 @@ class MenuController extends MenuApplicazioneController {
         }
     }
 
-    protected function urlExists($name) {
+    protected function urlExists($name)
+    {
         if ($this->checkUrl($name, false)) {
             return true;
         } else {
@@ -200,7 +208,8 @@ class MenuController extends MenuApplicazioneController {
         }
     }
 
-    protected function checkUrl($name, $proxy) {
+    protected function checkUrl($name, $proxy)
+    {
         $ch = curl_init($name);
 
         curl_setopt($ch, CURLOPT_URL, $name);
@@ -225,5 +234,4 @@ class MenuController extends MenuApplicazioneController {
 
         return $exist;
     }
-
 }

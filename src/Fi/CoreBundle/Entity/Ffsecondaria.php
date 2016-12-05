@@ -278,6 +278,4 @@ class Ffsecondaria
     {
         return $this->getDescsec();
     }
-
-
 }

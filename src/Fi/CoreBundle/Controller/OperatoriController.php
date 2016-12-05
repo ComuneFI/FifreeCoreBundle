@@ -8,12 +8,14 @@ use Fi\CoreBundle\Entity\Operatori;
 /**
  * Operatori controller.
  */
-class OperatoriController extends FiCoreController {
+class OperatoriController extends FiCoreController
+{
 
     /**
      * Lists all Ffprincipale entities.
      */
-    public function indexAction(Request $request) {
+    public function indexAction(Request $request)
+    {
         parent::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -53,7 +55,8 @@ class OperatoriController extends FiCoreController {
         return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
     }
 
-    public function setParametriGriglia($prepar = array()) {
+    public function setParametriGriglia($prepar = array())
+    {
         self::setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -76,5 +79,4 @@ class OperatoriController extends FiCoreController {
 
         self::$parametrigriglia = $paricevuti;
     }
-
 }

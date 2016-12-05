@@ -7,9 +7,11 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Ffsecondaria controller.
  */
-class FfsecondariaController extends FiCoreController {
+class FfsecondariaController extends FiCoreController
+{
 
-    public function indexAction(Request $request) {
+    public function indexAction(Request $request)
+    {
 
         parent::setup($request);
         $namespace = $this->getNamespace();
@@ -75,7 +77,8 @@ class FfsecondariaController extends FiCoreController {
         return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
     }
 
-    public function setParametriGriglia($prepar = array()) {
+    public function setParametriGriglia($prepar = array())
+    {
         self::setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -119,5 +122,4 @@ class FfsecondariaController extends FiCoreController {
 
         self::$parametrigriglia = $paricevuti;
     }
-
 }

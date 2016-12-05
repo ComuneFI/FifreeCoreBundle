@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Fi\CoreBundle\Controller\StoricomodificheController;
 use Doctrine\ORM\Events;
 
-class FiCoreController extends FiController {
+class FiCoreController extends FiController
+{
     
 }

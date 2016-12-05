@@ -258,6 +258,4 @@ class Ruoli
     {
         return $this->is_user;
     }
-
-
 }

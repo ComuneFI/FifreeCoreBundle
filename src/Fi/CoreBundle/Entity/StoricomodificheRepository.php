@@ -4,7 +4,8 @@ namespace Fi\CoreBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
-class StoricomodificheRepository extends EntityRepository {
+class StoricomodificheRepository extends EntityRepository
+{
 
     static $namespace;
     static $bundle;
@@ -13,7 +14,8 @@ class StoricomodificheRepository extends EntityRepository {
     static $parametrigriglia;
     protected $annocambiometodo;
 
-    public function setup() {
+    public function setup()
+    {
 // $matches = array();
 // preg_match('/(.*)\\\(.*)Bundle\\\Entity\\\(.*)Repository/', $this->_entityName, $matches);
 
@@ -29,15 +31,16 @@ class StoricomodificheRepository extends EntityRepository {
     }
 
     /**
-     * save field modification in history table 
-     * 
+     * save field modification in history table
+     *
      * @string $nomebundle
-     * @string $controller 
+     * @string $controller
      * @array $changes
-     * 
-     * 
+     *
+     *
      */
-    public function saveHistory($controller, $changes, $id, $user) {
+    public function saveHistory($controller, $changes, $id, $user)
+    {
         $this->setup();
 
         $em = $this->getEntityManager();
@@ -57,7 +60,8 @@ class StoricomodificheRepository extends EntityRepository {
         $em->clear();
     }
 
-    private function getValoreprecedenteImpostare($change) {
+    private function getValoreprecedenteImpostare($change)
+    {
         if (is_object($change)) {
             $risposta = $change->__toString() . " (" . $change->getId() . ")";
         } else {
@@ -67,22 +71,23 @@ class StoricomodificheRepository extends EntityRepository {
     }
 
     /**
-     * check if field is historicized 
+     * check if field is historicized
      * @string $nomebundle
      * @string $controller tablename
      * @string $indicedato fieldname
-     * 
+     *
      * return @boolean
-     * 
+     *
      */
-    private function isHistoricized($nomebundle, $controller, $indiceDato) {
+    private function isHistoricized($nomebundle, $controller, $indiceDato)
+    {
 
         $risposta = false;
         $controllerTabelle = "Tabelle";
 
         $em = $this->getEntityManager();
         $entity = $em->getRepository($nomebundle . ':' . $controllerTabelle)->findOneBy(
-                array(
+            array(
                     'nometabella' => $controller,
                     'nomecampo' => $indiceDato
                 )
@@ -97,14 +102,15 @@ class StoricomodificheRepository extends EntityRepository {
 
     /**
      * check if single data is  changed
-     * 
+     *
      * @array $originalData
      * @array $newData
-     * 
+     *
      * return @string
-     * 
+     *
      */
-    private function isDataChanged($nomebundle, $controller, $datooriginale, $singoloDato, $indiceDato, &$changes) {
+    private function isDataChanged($nomebundle, $controller, $datooriginale, $singoloDato, $indiceDato, &$changes)
+    {
 
         if (($datooriginale !== $singoloDato) && $this->isHistoricized($nomebundle, $controller, $indiceDato)) {
             $changes[$indiceDato] = $datooriginale;
@@ -112,15 +118,16 @@ class StoricomodificheRepository extends EntityRepository {
     }
 
     /**
-     * check if something changes 
-     * 
+     * check if something changes
+     *
      * @array $originalData
      * @array $newData
-     * 
+     *
      * return @array
-     * 
+     *
      */
-    public function isRecordChanged($nomebundle, $controller, $originalData, $newData) {
+    public function isRecordChanged($nomebundle, $controller, $originalData, $newData)
+    {
 
         $changes = array();
         foreach ($newData as $indiceDato => $singoloDato) {
@@ -128,5 +135,4 @@ class StoricomodificheRepository extends EntityRepository {
         }
         return $changes;
     }
-
 }

@@ -6,15 +6,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Fi\CoreBundle\DependencyInjection\GrigliaFiltriUtils;
 use TCPDF;
 
-class StampatabellaController extends FiCoreController {
+class StampatabellaController extends FiCoreController
+{
 
-    public function __construct($container = null) {
+    public function __construct($container = null)
+    {
         if ($container) {
             $this->setContainer($container);
         }
     }
 
-    public function stampa($parametri = array()) {
+    public function stampa($parametri = array())
+    {
         $testata = $parametri['testata'];
         $rispostaj = $parametri['griglia'];
         $request = $parametri['request'];
@@ -120,7 +123,8 @@ class StampatabellaController extends FiCoreController {
         return 0;
     }
 
-    public function esportaexcel($parametri = array()) {
+    public function esportaexcel($parametri = array())
+    {
         set_time_limit(960);
         ini_set('memory_limit', '2048M');
 
@@ -174,7 +178,8 @@ class StampatabellaController extends FiCoreController {
         return $filename;
     }
 
-    private function printHeaderXls($modellicolonne, $testata, $sheet) {
+    private function printHeaderXls($modellicolonne, $testata, $sheet)
+    {
         $indicecolonnaheader = 0;
         foreach ($modellicolonne as $modellocolonna) {
             //Si imposta la larghezza delle colonne
@@ -208,7 +213,8 @@ class StampatabellaController extends FiCoreController {
         $sheet->getRowDimension('1')->setRowHeight(20);
     }
 
-    private function printBodyXls($righe, $modellicolonne, $sheet) {
+    private function printBodyXls($righe, $modellicolonne, $sheet)
+    {
         $row = 2;
         foreach ($righe as $riga) {
             $vettorecelle = $riga->cell;
@@ -286,7 +292,8 @@ class StampatabellaController extends FiCoreController {
         }
     }
 
-    private function stampaTestata($pdf, $nomicolonne, $modellicolonne, $larghezzaform, $h, $border, $align, $fill, $ln) {
+    private function stampaTestata($pdf, $nomicolonne, $modellicolonne, $larghezzaform, $h, $border, $align, $fill, $ln)
+    {
         // Testata
         $pdf->SetFont('helvetica', 'B', 9);
         $arr_heights = array();
@@ -318,5 +325,4 @@ class StampatabellaController extends FiCoreController {
         $pdf->SetFont('helvetica', '', 9);
         $pdf->Ln();
     }
-
 }

@@ -7,12 +7,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Fi\CoreBundle\DependencyInjection\GrigliaFiltriUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class FunzioniController extends Controller {
+class FunzioniController extends Controller
+{
 
-    public function traduzionefiltroAction(Request $request) {
+    public function traduzionefiltroAction(Request $request)
+    {
         $tuttofiltri = $request->query->get('filters');
 
         return new Response(GrigliaFiltriUtils::traduciFiltri(array('filtri' => json_decode($tuttofiltri))));
     }
-
 }

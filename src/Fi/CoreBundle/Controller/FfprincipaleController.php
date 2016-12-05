@@ -2,7 +2,6 @@
 
 namespace Fi\CoreBundle\Controller;
 
-
 use Symfony\Component\HttpFoundation\Request;
 
 /**

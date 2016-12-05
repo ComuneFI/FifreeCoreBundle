@@ -311,5 +311,4 @@ class MenuApplicazione
     {
         return $this->percorsonotifiche;
     }
-
 }

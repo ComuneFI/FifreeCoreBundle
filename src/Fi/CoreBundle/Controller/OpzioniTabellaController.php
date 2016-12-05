@@ -10,13 +10,15 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * OpzioniTabella controller.
  */
-class OpzioniTabellaController extends FiCoreController {
+class OpzioniTabellaController extends FiCoreController
+{
 
     /**
      * Lists all opzioniTabella entities.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
-    public function indexAction(Request $request) {
+    public function indexAction(Request $request)
+    {
         parent::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -72,7 +74,8 @@ class OpzioniTabellaController extends FiCoreController {
         return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
     }
 
-    public function setParametriGriglia($prepar = array()) {
+    public function setParametriGriglia($prepar = array())
+    {
         self::setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -95,5 +98,4 @@ class OpzioniTabellaController extends FiCoreController {
 
         self::$parametrigriglia = $paricevuti;
     }
-
 }

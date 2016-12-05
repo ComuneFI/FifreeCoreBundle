@@ -8,13 +8,15 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Allegati controller.
  */
-class AllegatiController extends FiCoreController {
+class AllegatiController extends FiCoreController
+{
 
     /**
      * Edits an existing table entity.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
-    public function updateAction(Request $request, $id) {
+    public function updateAction(Request $request, $id)
+    {
         self::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -56,7 +58,8 @@ class AllegatiController extends FiCoreController {
      * Displays a form to edit an existing table entity.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
-    public function editAction(Request $request, $id) {
+    public function editAction(Request $request, $id)
+    {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -77,10 +80,12 @@ class AllegatiController extends FiCoreController {
         }
 
         $editForm = $this->createForm(
-                $formType, $entity, array('attr' => array(
+            $formType,
+            $entity,
+            array('attr' => array(
                 'id' => 'formdati' . $controller,
-            ),
-            'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                 )
         );
         $deleteForm = $this->createDeleteForm($id);
@@ -100,7 +105,8 @@ class AllegatiController extends FiCoreController {
      * Displays a form to edit an existing table entity.
      */
     /* @var $em \Doctrine\ORM\EntityManager */
-    public function editiframeAction(Request $request, $id) {
+    public function editiframeAction(Request $request, $id)
+    {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -142,7 +148,8 @@ class AllegatiController extends FiCoreController {
     /**
      * Creates a new table entity.
      */
-    public function createAction(Request $request) {
+    public function createAction(Request $request)
+    {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -167,7 +174,8 @@ class AllegatiController extends FiCoreController {
         }
 
         return $this->render(
-                        $nomebundle . ':' . $controller . ':new.html.twig', array(
+            $nomebundle . ':' . $controller . ':new.html.twig',
+            array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
@@ -178,7 +186,8 @@ class AllegatiController extends FiCoreController {
     /**
      * Displays a form to create a new table entity.
      */
-    public function newAction(Request $request) {
+    public function newAction(Request $request)
+    {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -191,15 +200,18 @@ class AllegatiController extends FiCoreController {
 
         $entity = new $classbundle();
         $form = $this->createForm(
-                $formType, $entity, array('attr' => array(
+            $formType,
+            $entity,
+            array('attr' => array(
                 'id' => 'formdati' . $controller,
-            ),
-            'action' => $this->generateUrl($controller . '_create'),
+                ),
+                'action' => $this->generateUrl($controller . '_create'),
                 )
         );
 
         return $this->render(
-                        $nomebundle . ':' . $controller . ':new.html.twig', array(
+            $nomebundle . ':' . $controller . ':new.html.twig',
+            array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
@@ -212,7 +224,8 @@ class AllegatiController extends FiCoreController {
     /**
      * Displays a form to create a new table entity.
      */
-    public function newiframeAction(Request $request) {
+    public function newiframeAction(Request $request)
+    {
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -229,15 +242,18 @@ class AllegatiController extends FiCoreController {
         $entity->setIndicetabella($request->get('indicetabella'));
 
         $form = $this->createForm(
-                $formType, $entity, array('attr' => array(
+            $formType,
+            $entity,
+            array('attr' => array(
                 'id' => 'formdati' . $controller,
-            ),
-            'action' => $this->generateUrl($controller . '_create'),
+                ),
+                'action' => $this->generateUrl($controller . '_create'),
                 )
         );
 
         return $this->render(
-                        $nomebundle . ':' . $controller . ':newiframe.html.twig', array(
+            $nomebundle . ':' . $controller . ':newiframe.html.twig',
+            array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
@@ -245,7 +261,8 @@ class AllegatiController extends FiCoreController {
         );
     }
 
-    public function popupAction(Request $request, $nometabella, $id) {
+    public function popupAction(Request $request, $nometabella, $id)
+    {
 
         //    $entities = $em->getRepository($nomebundle . ':' . $controller)->findBy(
         //            array('nometabella' => $nometabella, 'indicetabella' => $id), array('allegato' => 'ASC')
@@ -313,7 +330,8 @@ class AllegatiController extends FiCoreController {
         $testata = json_encode($testatagriglia);
 
         return $this->render(
-                        $nomebundle . ':' . $controller . ':popup.html.twig', array(
+            $nomebundle . ':' . $controller . ':popup.html.twig',
+            array(
                     //'entities' => $entities,
                     'nomecontroller' => $controller,
                     'testata' => $testata,
@@ -324,7 +342,8 @@ class AllegatiController extends FiCoreController {
         );
     }
 
-    public function grigliaAction(Request $request) {
+    public function grigliaAction(Request $request)
+    {
         $nometabella = $request->get('nometabella');
         $indicetabella = $request->get('indicetabella');
 
@@ -350,7 +369,8 @@ class AllegatiController extends FiCoreController {
         return new Response(Griglia::datiPerGriglia($paricevuti));
     }
 
-    public function setParametriGriglia($prepar = array()) {
+    public function setParametriGriglia($prepar = array())
+    {
         self::setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -370,5 +390,4 @@ class AllegatiController extends FiCoreController {
         }
         self::$parametrigriglia = $paricevuti;
     }
-
 }

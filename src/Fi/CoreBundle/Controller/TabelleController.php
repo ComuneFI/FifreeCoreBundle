@@ -10,9 +10,11 @@ use Fi\CoreBundle\Entity\tabelle;
 /**
  * Tabelle controller.
  */
-class TabelleController extends FiCoreController {
+class TabelleController extends FiCoreController
+{
 
-    public function aggiornaAction(Request $request) {
+    public function aggiornaAction(Request $request)
+    {
         if ($request->get('oper') == 'edit') {
             $gestionepermessi = new GestionepermessiController();
             $gestionepermessi->setContainer($this->container);
@@ -73,7 +75,8 @@ class TabelleController extends FiCoreController {
         return new Response('OK');
     }
 
-    private function getRequestValue($request, $attribute) {
+    private function getRequestValue($request, $attribute)
+    {
         if (($request->get($attribute) !== null) && ($request->get($attribute) !== '')) {
             return $request->get($attribute);
         } else {
@@ -81,7 +84,8 @@ class TabelleController extends FiCoreController {
         }
     }
 
-    public function configuraAction(Request $request, $nometabella) {
+    public function configuraAction(Request $request, $nometabella)
+    {
         parent::setup($request);
         $gestionepermessi = new GestionepermessiController();
         $gestionepermessi->setContainer($this->container);
@@ -170,7 +174,8 @@ class TabelleController extends FiCoreController {
         return $this->render($nomebundle . ':' . $controller . ':configura.html.twig', $twigparm);
     }
 
-    public function generaDB($parametri, Request $request) {
+    public function generaDB($parametri, Request $request)
+    {
         parent::setup($request);
         if (!isset($parametri['tabella'])) {
             return false;
@@ -209,7 +214,8 @@ class TabelleController extends FiCoreController {
         $this->scriviDB($colonne, $nometabella, $nomebundle, $parametri);
     }
 
-    private function scriviDB($colonne, $nometabella, $nomebundle, $parametri) {
+    private function scriviDB($colonne, $nometabella, $nomebundle, $parametri)
+    {
         foreach ($colonne as $colonna) {
             $vettorericerca = array(
                 'nometabella' => $nometabella,
@@ -252,7 +258,8 @@ class TabelleController extends FiCoreController {
         }
     }
 
-    public function grigliapopupAction(Request $request, $chiamante) {
+    public function grigliapopupAction(Request $request, $chiamante)
+    {
         parent::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -284,7 +291,8 @@ class TabelleController extends FiCoreController {
     /**
      * Creates a new Ffprincipale entity.
      */
-    public function grigliaAction(Request $request) {
+    public function grigliaAction(Request $request)
+    {
         parent::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -307,7 +315,8 @@ class TabelleController extends FiCoreController {
         return new Response(Griglia::datiPerGriglia($paricevuti));
     }
 
-    public function listacampitabellaAction(Request $request) {
+    public function listacampitabellaAction(Request $request)
+    {
         parent::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -354,7 +363,8 @@ class TabelleController extends FiCoreController {
         return new JsonResponse($risposta);
     }
 
-    private function listacampitabelladettagli($escludiid, $colonne, $nomebundle, $controller) {
+    private function listacampitabelladettagli($escludiid, $colonne, $nomebundle, $controller)
+    {
         $risposta = array();
         if ($escludiid == 1) {
             $gestionepermessi = new GestionepermessiController();
@@ -409,5 +419,4 @@ class TabelleController extends FiCoreController {
 
         return $risposta;
     }
-
 }
