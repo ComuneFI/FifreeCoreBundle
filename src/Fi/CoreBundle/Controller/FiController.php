@@ -320,7 +320,7 @@ class FiController extends Controller {
                 )
         );
 
-        if ($entity && $entity->getRegistrastorico()) {
+        if ($entity && $entity->isRegistrastorico()) {
             $risposta = true;
         }
 

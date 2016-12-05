@@ -428,26 +428,6 @@ class Tabelle
 
 
     /**
-     * Get mostraindex
-     *
-     * @return boolean
-     */
-    public function getMostraindex()
-    {
-        return $this->mostraindex;
-    }
-
-    /**
-     * Get mostrastampa
-     *
-     * @return boolean
-     */
-    public function getMostrastampa()
-    {
-        return $this->mostrastampa;
-    }
-
-    /**
      * Set registrastorico
      *
      * @param boolean $registrastorico
@@ -466,7 +446,7 @@ class Tabelle
      *
      * @return boolean
      */
-    public function getRegistrastorico()
+    public function isRegistrastorico()
     {
         return $this->registrastorico;
     }

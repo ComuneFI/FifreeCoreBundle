@@ -312,33 +312,4 @@ class MenuApplicazione
         return $this->percorsonotifiche;
     }
 
-    /**
-     * Get attivo
-     *
-     * @return boolean
-     */
-    public function getAttivo()
-    {
-        return $this->attivo;
-    }
-
-    /**
-     * Get notifiche
-     *
-     * @return boolean
-     */
-    public function getNotifiche()
-    {
-        return $this->notifiche;
-    }
-
-    /**
-     * Get autorizzazionerichiesta
-     *
-     * @return boolean
-     */
-    public function getAutorizzazionerichiesta()
-    {
-        return $this->autorizzazionerichiesta;
-    }
 }
