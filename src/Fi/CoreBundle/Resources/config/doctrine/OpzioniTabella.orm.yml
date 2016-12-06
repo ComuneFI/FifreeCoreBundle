@@ -1,5 +1,6 @@
 Fi\CoreBundle\Entity\OpzioniTabella:
     type: entity
+    repositoryClass: Fi\CoreBundle\Entity\OpzioniTabellaRepository
     table: Opzioni_tabella
     indexes:
         opzioni_tabella_tabelle_fk1_idx:

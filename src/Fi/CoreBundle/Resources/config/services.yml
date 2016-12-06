@@ -49,6 +49,13 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    OpzioniTabella_repository: 
+        class: Fi\CoreBundle\Entity\OpzioniTabellaRepository
+        factory_service: 'doctrine.orm.default_entity_manager'
+        factory_method:  'getRepository'
+        arguments:  
+            - 'Fi\CoreBundle\Entity\OpzioniTabella'   
+
     Storicomodifiche_repository: 
         class: Fi\CoreBundle\Entity\StoricomodificheRepository
         factory_service: 'doctrine.orm.default_entity_manager'
@@ -56,9 +63,4 @@ services:
         arguments:  
             - 'Fi\CoreBundle\Entity\Storicomodifiche'
 
-    Tabelle_repository: 
-        class: Fi\CoreBundle\Entity\TabelleRepository
-        factory_service: 'doctrine.orm.default_entity_manager'
-        factory_method:  'getRepository'
-        arguments:  
-            - 'Fi\CoreBundle\Entity\Tabelle'        
+     
