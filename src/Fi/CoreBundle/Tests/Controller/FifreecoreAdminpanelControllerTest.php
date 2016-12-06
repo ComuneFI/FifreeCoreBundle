@@ -7,24 +7,21 @@ use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Symfony\Component\Filesystem\Filesystem;
 
-class FifreecoreAdminpanelControllerTest extends FifreeTest
-{
+class FifreecoreAdminpanelControllerTest extends FifreeTest {
+
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
-    {
+    protected function setUp() {
         parent::setUp();
         $this->setClassName(get_class());
     }
 
-    public function test1starttest()
-    {
+    public function test1starttest() {
         startTests();
     }
 
-    public function test10AdminpanelHomepage()
-    {
+    public function test10AdminpanelHomepage() {
         //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()
         //$this->cleanFilesystem();
         $this->restartKernel();
@@ -34,7 +31,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         $client->request('GET', $url);
         $this->assertTrue(
-            $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
+                $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
         );
     }
 
@@ -42,8 +39,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
      * @test
      */
 
-    public function test20AdminpanelGenerateBundle()
-    {
+    public function test20AdminpanelGenerateBundle() {
         $this->restartKernel();
         $browser = 'firefox';
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
@@ -66,11 +62,13 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         $page->fillField('bundlename', 'Fi/ProvaBundle');
 
+        $javascript = "window.alert = function() {};";       
+        $session->executeScript($javascript);
         $page->pressButton('adminpanelgeneratebundle');
-        parent::ajaxWait($session, 60000);
+        parent::ajaxWait($session, 30000);
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 30000);
+        parent::ajaxWait($session, 60000);
         $session->getDriver()->getWebDriverSession()->accept_alert();
         parent::ajaxWait($session, 30000);
         //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
@@ -132,6 +130,14 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         removecache();
     }
 
+
+
+
+
+
+    
+
+    
     public function test40AdminpanelGenerateForm()
     {
         $this->restartKernel();
@@ -151,28 +157,36 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page = $session->getPage();
         sleep(1);
         // Login
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
+        $page->fillField('username', 'admin');  
+        $page->fillField('password', 'admin');  
         $page->pressButton('_submit');
 
         sleep(3);
-        $page->fillField('bundlename', 'Fi/ProvaBundle');
-        $page->fillField('entityform', 'Prova');
+        $page->fillField('bundlename', 'Fi/ProvaBundle');  
+        $page->fillField('entityform', 'Prova');  
 
         $page->pressButton('adminpanelgenerateformcrud');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 30000);
+        parent::ajaxWait($session  , 30000);
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
-        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $session->executeScript($scriptclose);
-        sleep(2);
-        //$this->generateentities();
-        //$this->clearcache();
-        $session->stop();
-        removecache();
-        sleep(2);
-    }
+    $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+    $session->executeScript($scriptclose);
+    sleep(2);
+    //$this->generateentities();
+    //$this->clearcache();
+    $session->stop();
+    removecache();
+    sleep(2);
+}
+
+
+
+
+
+
+
+
 
     public function test50AdminpanelTest()
     {
@@ -267,6 +281,10 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
      * @test
      */
 
+
+
+
+
     public function test100PannelloAmministrazioneMain()
     {
         $container = $this->getContainer();
@@ -297,3 +315,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         parent::tearDown();
     }
 }
+
+
+
+
