@@ -51,15 +51,13 @@ services:
 
     OpzioniTabella_repository: 
         class: Fi\CoreBundle\Entity\OpzioniTabellaRepository
-        factory_service: 'doctrine.orm.default_entity_manager'
-        factory_method:  'getRepository'
+        factory: [@doctrine.orm.entity_manager, getRepository]
         arguments:  
             - 'Fi\CoreBundle\Entity\OpzioniTabella'   
 
     Storicomodifiche_repository: 
         class: Fi\CoreBundle\Entity\StoricomodificheRepository
-        factory_service: 'doctrine.orm.default_entity_manager'
-        factory_method:  'getRepository'
+        factory: [@doctrine.orm.entity_manager, getRepository]
         arguments:  
             - 'Fi\CoreBundle\Entity\Storicomodifiche'
 
