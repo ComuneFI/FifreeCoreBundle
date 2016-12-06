@@ -9,9 +9,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class Fifree2installCommand extends ContainerAwareCommand {
+class Fifree2installCommand extends ContainerAwareCommand
+{
 
-    protected function configure() {
+    protected function configure()
+    {
         $this
                 ->setName('fifree2:install')
                 ->setDescription('Installazione ambiente fifree')
@@ -23,7 +25,8 @@ class Fifree2installCommand extends ContainerAwareCommand {
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $admin = $input->getArgument('admin');
         $adminpass = $input->getArgument('adminpass');
         $adminemail = $input->getArgument('adminemail');
@@ -68,7 +71,8 @@ class Fifree2installCommand extends ContainerAwareCommand {
         $this->loadDefaultValues($admin);
     }
 
-    private function loadDefaultValues($admin) {
+    private function loadDefaultValues($admin)
+    {
         $em = $this->getContainer()->get('doctrine')->getManager();
 
         $ruolos = new \Fi\CoreBundle\Entity\ruoli();
@@ -190,7 +194,8 @@ class Fifree2installCommand extends ContainerAwareCommand {
         $em->flush();
     }
 
-    private function insertDefaultMenu($em) {
+    private function insertDefaultMenu($em)
+    {
         $menutabelle = new \Fi\CoreBundle\Entity\menuApplicazione();
         $menutabelle->setNome('Tabelle');
         $menutabelle->setAttivo(true);
@@ -298,7 +303,8 @@ class Fifree2installCommand extends ContainerAwareCommand {
         $em->flush();
     }
 
-    private function insertDefaultFfTables($em) {
+    private function insertDefaultFfTables($em)
+    {
         $ffprincipalerow = new \Fi\CoreBundle\Entity\ffprincipale();
         $ffprincipalerow->setDescrizione('Descrizione primo record');
         $em->persist($ffprincipalerow);
@@ -411,5 +417,4 @@ class Fifree2installCommand extends ContainerAwareCommand {
         $ffsecondariarow10->setAttivo(false);
         $em->persist($ffsecondariarow10);
     }
-
 }
