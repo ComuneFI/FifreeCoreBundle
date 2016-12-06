@@ -62,13 +62,15 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->fillField('password', 'admin');
         $page->pressButton('_submit');
 
-        sleep(3);
+        sleep(1);
 
         $page->fillField('bundlename', 'Fi/ProvaBundle');
 
         $page->pressButton('adminpanelgeneratebundle');
+        parent::ajaxWait($session, 60000);
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
+        parent::ajaxWait($session, 30000);
         $session->getDriver()->getWebDriverSession()->accept_alert();
         parent::ajaxWait($session, 30000);
         //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
