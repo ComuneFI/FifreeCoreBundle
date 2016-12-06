@@ -4,19 +4,22 @@ namespace Fi\CoreBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
-class OpzioniTabellaRepository extends EntityRepository {
+class OpzioniTabellaRepository extends EntityRepository
+{
 
     private static $namespace;
     private static $bundle;
     private static $controller;
 
-    public function setup() {
+    public function setup()
+    {
         self::$namespace = "Fi";
         self::$bundle = "Core";
         self::$controller = "Tabelle";
     }
 
-    public function editTestataFormTabelle($testatagriglia, $controller, $container) {
+    public function editTestataFormTabelle($testatagriglia, $controller, $container)
+    {
         $em = $container->get('doctrine')->getManager();
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $em->createQueryBuilder();
@@ -35,5 +38,4 @@ class OpzioniTabellaRepository extends EntityRepository {
 
         return $testata;
     }
-
 }
