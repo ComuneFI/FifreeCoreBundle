@@ -7,13 +7,12 @@ use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class Z2FfsecondariaControllerTest extends FifreeTest
-{
+class Z2FfsecondariaControllerTest extends FifreeTest {
+
     /**
      * @test
      */
-    public function testIndexFfsecondaria()
-    {
+    public function testIndexFfsecondaria() {
         parent::setUp();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
@@ -39,8 +38,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
     /**
      * @test
      */
-    public function testExcelFfsecondaria()
-    {
+    public function testExcelFfsecondaria() {
         parent::setUp();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
@@ -48,7 +46,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
 
         $client->request('GET', $url);
         $this->assertTrue(
-            $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
+                $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
         );
     }
 
@@ -56,18 +54,17 @@ class Z2FfsecondariaControllerTest extends FifreeTest
      * @test
      */
 
-    public function testFfsecondaria()
-    {
+    public function testFfsecondaria() {
         parent::setUp();
         $this->setClassName(get_class());
         $browser = 'firefox';
         $urlruote = $this->getContainer()->get('router')->generate('Ffsecondaria');
-        $url = 'http://127.0.0.1:8000/app_test.php'.$urlruote;
+        $url = 'http://127.0.0.1:8000/app_test.php' . $urlruote;
 
-        // Choose a Mink driver. More about it in later chapters.
+// Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
         $session = new Session($driver);
-        // start the session
+// start the session
         $session->start();
         $session->visit($url);
         $page = $session->getPage();
@@ -77,7 +74,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $page->fillField('username', 'admin');
         $page->fillField('password', 'admin');
         $page->pressButton('_submit');
-        //$page = $session->getPage();
+//$page = $session->getPage();
 
         sleep(1);
         $this->crudoperation($session, $page);
@@ -89,8 +86,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $session->stop();
     }
 
-    private function crudoperation($session, $page)
-    {
+    private function crudoperation($session, $page) {
         $elementadd = $page->findAll('css', '.ui-icon-plus');
 
         foreach ($elementadd as $e) {
@@ -99,7 +95,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
             }
         }
 
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         sleep(3);
@@ -116,7 +112,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $page->find('css', 'a#sDataFfsecondariaS')->click();
         parent::ajaxWait($session);
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRow.'}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
         $elementmod = $page->findAll('css', '.ui-icon-pencil');
 
         foreach ($elementmod as $e) {
@@ -124,15 +120,16 @@ class Z2FfsecondariaControllerTest extends FifreeTest
                 $e->click();
             }
         }
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $page->fillField('fi_corebundle_ffsecondariatype_descsec', $descrizionetest2);
         $page->find('css', 'a#sDataFfsecondariaS')->click();
-        parent::ajaxWait($session);
+        parent::ajaxWait($session, 20000);
+        $this->searchmodifiche($descrizionetest1);
         /* Cancellazione */
         $jsSetFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$jsSetFirstRow.'}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
         $elementdel = $page->findAll('css', '.ui-icon-trash');
 
         foreach ($elementdel as $e) {
@@ -144,8 +141,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session);
     }
 
-    private function searchoperation($session, $page)
-    {
+    private function searchoperation($session, $page) {
         $elementsearch = $page->findAll('css', '.ui-icon-search');
 
         foreach ($elementsearch as $e) {
@@ -174,9 +170,9 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         }
         parent::ajaxWait($session, 20000);
         $search2 = '1°';
-        //$page->selectFieldOption('inizia con', "cn");
+//$page->selectFieldOption('inizia con', "cn");
         $var2 = '"cn"';
-        $javascript2 = "$('.selectopts option[value=".$var2."]').attr('selected', 'selected').change();;";
+        $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
 
         $session->executeScript($javascript2);
         $page->fillField('jqg1', $search2);
@@ -208,14 +204,14 @@ class Z2FfsecondariaControllerTest extends FifreeTest
 
         $var3 = '"intero"';
         $selector3 = '#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first';
-        $javascript3 = "$('".$selector3.' option[value='.$var3."]').attr('selected', 'selected').change();";
+        $javascript3 = "$('" . $selector3 . ' option[value=' . $var3 . "]').attr('selected', 'selected').change();";
         parent::ajaxWait($session, 20000);
         $session->executeScript($javascript3);
         parent::ajaxWait($session, 20000);
         $page->fillField('jqg4', $search3);
 
         $var4 = '"ge"';
-        $javascript4 = "$('.selectopts:first option[value=".$var4."]').attr('selected', 'selected').change();;";
+        $javascript4 = "$('.selectopts:first option[value=" . $var4 . "]').attr('selected', 'selected').change();;";
         $session->executeScript($javascript4);
         $search5 = '6°';
         $page->fillField('jqg3', $search5);
@@ -226,7 +222,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $numrowsgrid3 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid3);
 
-        //reset filtri
+//reset filtri
         $elementsearch4 = $page->findAll('css', '.ui-icon-search');
 
         foreach ($elementsearch4 as $e) {
@@ -239,8 +235,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         sleep(1);
     }
 
-    private function printoperations($session, $page)
-    {
+    private function printoperations($session, $page) {
 
         /* Print pdf */
         $element = $page->findAll('css', '.ui-icon-print');
@@ -275,39 +270,55 @@ class Z2FfsecondariaControllerTest extends FifreeTest
             $page = $session->getPage();
         }
     }
+
+    private function searchmodifiche($valoreprecedente) {
+        $client = $this->getClientAutorizzato();
+        // @var $em \Doctrine\ORM\EntityManager
+        $em = $client->getContainer()->get('doctrine')->getManager();
+
+        $qu = $em->createQueryBuilder();
+        $qu->select(array('c'))
+                ->from('FiCoreBundle:Storicomodifiche', 'c')
+                ->where("c.nometabella= 'Ffsecondaria'")
+                ->andWhere("c.nomecampo = 'descsec'");
+        $ff = $qu->getQuery()->getResult();
+        $this->assertEquals(count($ff), 1);
+        $this->assertEquals($ff[0]->getValoreprecedente(), $valoreprecedente);
+    }
+
 }
 
 /* $client = $this->getClientAutorizzato();
-          // @var $em \Doctrine\ORM\EntityManager
-          $em = $client->getContainer()->get('doctrine')->getManager();
+  // @var $em \Doctrine\ORM\EntityManager
+  $em = $client->getContainer()->get('doctrine')->getManager();
 
-          $qu = $em->createQueryBuilder();
-          $qu->select(array('c'))
-          ->from('FiCoreBundle:Ffsecondaria', 'c')
-          ->where('c.descrizione = :descrizione')
-          ->setParameter('descrizione', $descrizionetest);
-          $ff = $qu->getQuery()->getSingleResult();
-          $this->assertEquals($ff->getDescrizione(), $descrizionetest);
+  $qu = $em->createQueryBuilder();
+  $qu->select(array('c'))
+  ->from('FiCoreBundle:Ffsecondaria', 'c')
+  ->where('c.descrizione = :descrizione')
+  ->setParameter('descrizione', $descrizionetest);
+  $ff = $qu->getQuery()->getSingleResult();
+  $this->assertEquals($ff->getDescrizione(), $descrizionetest);
 
-          $em->remove($ff);
-          $em->flush();
-          $em->clear();
-          $this->assertTrue(is_null($ff->getId())); */
+  $em->remove($ff);
+  $em->flush();
+  $em->clear();
+  $this->assertTrue(is_null($ff->getId())); */
 
-        /* Print excel */
-        /* $element = $page->findAll('css', '.ui-icon-circle-arrow-s');
+/* Print excel */
+/* $element = $page->findAll('css', '.ui-icon-circle-arrow-s');
 
-          foreach ($element as $e) {
-          if ($e->isVisible()) {
-          $e->click();
-          }
-          }
-          $windowNames = $session->getWindowNames();
-          if (count($windowNames) > 1) {
-          for ($x = 1; $x <= count($windowNames) - 1; $x++) {
-          $session->switchToWindow($windowNames[$x]);
-          }
-          $mainwindow = $windowNames[0];
-          $session->switchToWindow($mainwindow);
-          $page = $session->getPage();
-          } */
+  foreach ($element as $e) {
+  if ($e->isVisible()) {
+  $e->click();
+  }
+  }
+  $windowNames = $session->getWindowNames();
+  if (count($windowNames) > 1) {
+  for ($x = 1; $x <= count($windowNames) - 1; $x++) {
+  $session->switchToWindow($windowNames[$x]);
+  }
+  $mainwindow = $windowNames[0];
+  $session->switchToWindow($mainwindow);
+  $page = $session->getPage();
+  } */
