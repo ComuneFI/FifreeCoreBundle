@@ -282,8 +282,8 @@ class AllegatiController extends FiCoreController
         $nomebundle = $namespace . $bundle . 'Bundle';
 
         $em = $container->get('doctrine')->getManager();
-        //$entities = $em->getRepository($nomebundle . ':' . $controller)->findAll();
 
+        $repotabelle = $this->container->get('Tabelle_repository');
         $paricevuti = array(
             'nomebundle' => $nomebundle,
             'nometabella' => $controller,
@@ -314,20 +314,7 @@ class AllegatiController extends FiCoreController
         $this->setParametriGriglia(array('request' => $request));
         $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
 
-        /* @var $qb \Doctrine\ORM\QueryBuilder */
-        $qb = $em->createQueryBuilder();
-        $qb->select(array('a'));
-        $qb->from('FiCoreBundle:OpzioniTabella', 'a');
-        $qb->leftJoin('a.tabelle', 't');
-        $qb->where('t.nometabella = :tabella');
-        $qb->andWhere("t.nomecampo is null or t.nomecampo = ''");
-        $qb->setParameter('tabella', $controller);
-        $opzioni = $qb->getQuery()->getResult();
-        foreach ($opzioni as $opzione) {
-            $testatagriglia[$opzione->getParametro()] = $opzione->getValore();
-        }
-
-        $testata = json_encode($testatagriglia);
+        $testata = $repotabelle->getTestataFormTabella($testatagriglia, $controller, $container);
 
         return $this->render(
             $nomebundle . ':' . $controller . ':popup.html.twig',
