@@ -207,7 +207,7 @@ class FiController extends Controller
     {
         $controllerStorico = "Storicomodifiche";
         $em = $this->getDoctrine()->getManager();
-        $risultato = $em->getRepository($nomebundle . ':' . $controllerStorico)->findBy(
+        $risultato = $em->getRepository('FiCoreBundle:' . $controllerStorico)->findBy(
             array(
                     "nometabella" => $controller,
                     "idtabella" => $id

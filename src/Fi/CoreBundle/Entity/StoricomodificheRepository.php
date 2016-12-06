@@ -74,7 +74,7 @@ class StoricomodificheRepository extends EntityRepository
         $controllerTabelle = "Tabelle";
 
         $em = $this->getEntityManager();
-        $entity = $em->getRepository($nomebundle . ':' . $controllerTabelle)->findOneBy(
+        $entity = $em->getRepository('FiCoreBundle:' . $controllerTabelle)->findOneBy(
             array(
                     'nometabella' => $controller,
                     'nomecampo' => $indiceDato
