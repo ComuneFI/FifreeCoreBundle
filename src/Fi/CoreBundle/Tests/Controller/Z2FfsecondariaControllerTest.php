@@ -92,6 +92,8 @@ class Z2FfsecondariaControllerTest extends FifreeTest
 
     private function crudoperation($session, $page)
     {
+        parent::ajaxWait($session, 20000);
+        
         $elementadd = $page->findAll('css', '.ui-icon-plus');
 
         foreach ($elementadd as $e) {
@@ -148,6 +150,8 @@ class Z2FfsecondariaControllerTest extends FifreeTest
 
     private function searchoperation($session, $page)
     {
+        parent::ajaxWait($session, 20000);
+        
         $elementsearch = $page->findAll('css', '.ui-icon-search');
 
         foreach ($elementsearch as $e) {
@@ -244,6 +248,8 @@ class Z2FfsecondariaControllerTest extends FifreeTest
     private function printoperations($session, $page)
     {
 
+        parent::ajaxWait($session, 20000);
+        
         /* Print pdf */
         $element = $page->findAll('css', '.ui-icon-print');
 

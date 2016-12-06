@@ -62,7 +62,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->fillField('password', 'admin');
         $page->pressButton('_submit');
 
-        sleep(1);
+        sleep(3);
 
         $page->fillField('bundlename', 'Fi/ProvaBundle');
 
@@ -102,7 +102,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->fillField('password', 'admin');
         $page->pressButton('_submit');
 
-        sleep(1);
+        sleep(3);
         $page->fillField('bundlename', 'Fi/ProvaBundle');
 
         $page->selectFieldOption('entitybundle', 'Fi/ProvaBundle');
