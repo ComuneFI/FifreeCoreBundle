@@ -281,8 +281,6 @@ class AllegatiController extends FiCoreController
 
         $nomebundle = $namespace . $bundle . 'Bundle';
 
-        $em = $container->get('doctrine')->getManager();
-
         $repotabelle = $this->container->get('Tabelle_repository');
         $paricevuti = array(
             'nomebundle' => $nomebundle,
