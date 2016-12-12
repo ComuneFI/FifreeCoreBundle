@@ -94,16 +94,24 @@ function data2db(giorno, senzalinea) {
 
 function mostrastorico(percorso, nometabella, nomecampo, id) {
 
-    
-    $("#dialog").dialog({
-        title: 'Storico modifiche',
-        buttons: {
-            "Ok": function () {
-                $(this).dialog("close");
-            }
+    var div = "#storico";
+    var testatadiv = "#testatastorico";
+
+    creadiv({
+        "caratteristiche": {
+            "id": div.substr(1),
+            "class": "ui-widget ui-widget-content ui-jqdialog ui-corner-all ui-draggable ui-resizable"
         },
-        modal: true
+        draggable: 1,
+        divtesta: testatadiv,
+        top: 1,
+        left: 1,
+        altezza: 300,
+        larghezza: 500
     });
+
+
+
 
 
     jQuery.ajax({
@@ -112,13 +120,22 @@ function mostrastorico(percorso, nometabella, nomecampo, id) {
         async: false,
         data: {nometabella: nometabella, nomecampo: nomecampo, id: id},
         error: function (jqXHR, textStatus, errorThrown) {
-            $("#testodialog").html('error! textStatus = ' + textStatus + ' - errorThrown = ' + errorThrown + ' - XHR = ' + jqXHR);
-            $("#dialog").show();
+            $(div).html('error! textStatus = ' + textStatus + ' - errorThrown = ' + errorThrown + ' - XHR = ' + jqXHR);
+            $(div).show();
         },
         success: function (response) {
+            $(div).dialog({
+                title: 'Storico modifiche',
+                buttons: {
+                    "Ok": function () {
+                        $(this).dialog("close");
+                    }
+                },
+                modal: true
+            });
             //Prende la risposta ed alimenta la select
-            $("#testodialog").html(response);
-            $("#dialog").show();
+            $(div).html(response);
+            $(div).show();
         }
     });
 
