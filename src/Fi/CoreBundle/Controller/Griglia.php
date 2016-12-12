@@ -195,6 +195,20 @@ class Griglia extends Controller
         $vettorerisposta['filtri'] = $filtri;
         $indice = 0;
 
+
+
+        $escludere = GrigliaDatiUtils::getDatiEscludere($parametri);
+        $escludereutente = GrigliaDatiUtils::getDatiEscludere($parametri);
+        $ordinecolonne = GrigliaDatiUtils::getDatiOrdineColonne($parametri);
+        $decodifiche = GrigliaDatiUtils::getDatiDecodifiche($parametri);
+
+        $parametri["escludere"] = $escludere;
+        $parametri["escludereutente"] = $escludereutente;
+        $parametri["ordinecolonne"] = $ordinecolonne;
+        $parametri["decodifiche"] = $decodifiche;
+        $parametri["tabellej"] = $tabellej;
+
+
         /* Si scorrono tutti i records della query */
         foreach ($q as $singolo) {
             /* Si scorrono tutti i campi del record */
