@@ -185,5 +185,4 @@ class GrigliaDatiUtils
 
         return $vettoreriga;
     }
-
 }

@@ -159,7 +159,9 @@ class Griglia extends Controller
         /* se ci sono delle precondizioni avanzate le imposta qui */
         if ($precondizioniAvanzate) {
             GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
-                    $q, $primo, array('precondizioniAvanzate' => $precondizioniAvanzate,
+                $q,
+                $primo,
+                array('precondizioniAvanzate' => $precondizioniAvanzate,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
                 'entityName' => $entityName,
@@ -169,7 +171,9 @@ class Griglia extends Controller
         /* scorro ogni singola regola */
         if (isset($regole)) {
             GrigliaRegoleUtils::setRegole(
-                    $q, $primo, array(
+                $q,
+                $primo,
+                array(
                 'regole' => $regole,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
@@ -213,7 +217,13 @@ class Griglia extends Controller
             $indicecolonna = 0;
             foreach ($singolo as $nomecampo => $singolocampo) {
                 GrigliaDatiMultiUtils::buildDatiGriglia(
-                        $parametri, $vettoreriga, $singolo, $nomecampo, $indice, $indicecolonna, $singolocampo
+                    $parametri,
+                    $vettoreriga,
+                    $singolo,
+                    $nomecampo,
+                    $indice,
+                    $indicecolonna,
+                    $singolocampo
                 );
             }
 
@@ -224,5 +234,4 @@ class Griglia extends Controller
 
         return json_encode($vettorerisposta);
     }
-
 }

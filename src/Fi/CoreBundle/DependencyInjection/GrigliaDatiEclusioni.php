@@ -53,5 +53,4 @@ class GrigliaDatiEclusioni
     {
         return isset($parametri['escludere']) ? $parametri['escludere'] : null;
     }
-
 }

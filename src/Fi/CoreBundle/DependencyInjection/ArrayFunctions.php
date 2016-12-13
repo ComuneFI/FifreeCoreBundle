@@ -36,12 +36,12 @@ class ArrayFunctions
 
     /**
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
-     * e restituisce l'indice 
+     * e restituisce l'indice
      *
      * @param $elem Oggetto da cercare
      * @param $array Array nel quale cercare
      * @param $key Nome della chiave nella quale cercare $elem
-     * @return Mixed False se non trovato l'elemento, altrimenti il vettore con tutti gli indici 
+     * @return Mixed False se non trovato l'elemento, altrimenti il vettore con tutti gli indici
      */
     static function inMultiarrayTutti($elem, $array, $key, $debug)
     {
@@ -81,7 +81,7 @@ class ArrayFunctions
 
     /**
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
-     * e restituisce l'indice 
+     * e restituisce l'indice
      *
      * @param $array Array nel quale cercare
      * @param $search Chiave-valore da cercare
@@ -93,7 +93,6 @@ class ArrayFunctions
         $vettorerisultati = array();
 
         if ($debug) {
-
             echo "<br>\n vettore search <br>\n";
             var_dump($search);
             echo "<br>\n fine vettore search  <br>\n";
@@ -133,7 +132,7 @@ class ArrayFunctions
 
         if ($vettorerisultati === false) {
             $risposta = false;
-        } else if ($tutti === false) {
+        } elseif ($tutti === false) {
             $risposta = reset($vettorerisultati);
         } else {
             $risposta = $vettorerisultati;
@@ -160,8 +159,9 @@ class ArrayFunctions
         foreach ($args as $n => $field) {
             if (is_string($field)) {
                 $tmp = array();
-                foreach ($data as $key => $row)
+                foreach ($data as $key => $row) {
                     $tmp[$key] = $row[$field];
+                }
                 $args[$n] = $tmp;
             }
         }
@@ -180,5 +180,4 @@ class ArrayFunctions
 
         return false;
     }
-
 }
