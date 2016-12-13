@@ -2,8 +2,11 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
+use Fi\CoreBundle\Controller\GestionepermessiController;
+
 class GrigliaDatiUtils
 {
+
     public static function getTabellejNormalizzate($parametri)
     {
         $tabellej = (isset($parametri['tabellej']) ? $parametri['tabellej'] : null);
@@ -26,7 +29,7 @@ class GrigliaDatiUtils
             /* Serve per far venire nella getArrayResult() anche i campi della tabella il leftjoin
               altrimenti mostra solo quelli della tabella con alias a */
             $q->addSelect(array($tabellaj['tabella']));
-            $q = $q->leftJoin((isset($tabellaj['padre']) ? $tabellaj['padre'] : $nometabella).'.'.$tabellaj['tabella'], $tabellaj['tabella']);
+            $q = $q->leftJoin((isset($tabellaj['padre']) ? $tabellaj['padre'] : $nometabella) . '.' . $tabellaj['tabella'], $tabellaj['tabella']);
         }
     }
 
@@ -38,6 +41,47 @@ class GrigliaDatiUtils
     public static function getDatiEscludere($parametri)
     {
         return isset($parametri['escludere']) ? $parametri['escludere'] : null;
+    }
+
+    public static function getDatiEscludereDaTabella($parametri)
+    {
+        if (!isset($parametri["nometabella"])) {
+            return false;
+        }
+
+        if ((isset($parametri["output"])) && ($parametri["output"] == "stampa")) {
+            $output = "stampa";
+        } else {
+            $output = "index";
+        }
+
+        $nometabella = $parametri["nometabella"];
+
+        $doctrine = $parametri['container']->get('doctrine');
+
+        //$bundle = $parametri["nomebundle"];
+        //Fisso il CoreBundle perchè si passa sempre da questo bundle per le esclusioni
+        $bundle = "FiCoreBundle";
+
+        $gestionepermessi = new GestionepermessiController($parametri["container"]);
+        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
+
+        $escludi = array();
+
+        $q = $doctrine->getRepository($bundle . ":tabelle")->findBy(array("operatori_id" => $operatorecorrente["id"], "nometabella" => $nometabella));
+
+        if (!$q) {
+            unset($q);
+            $q = $doctrine->getRepository($bundle . ":tabelle")->findBy(array("operatori_id" => null, "nometabella" => $nometabella));
+        }
+
+        if ($q) {
+            foreach ($q as $riga) {
+                $escludi[] = GrigliaUtils::getCampiEsclusi($riga, $output);
+            }
+        }
+
+        return $escludi;
     }
 
     public static function getDatiNospan($parametri)
@@ -74,18 +118,18 @@ class GrigliaDatiUtils
     {
         /* se non è passato nessun campo (ipotesi peregrina) usa id */
         if (!$sidx) {
-            $sidx = $nometabella.'.id';
+            $sidx = $nometabella . '.id';
         } elseif (strrpos($sidx, '.') == 0) {
             if (strrpos($sidx, ',') == 0) {
-                $sidx = $nometabella.'.'.$sidx; // un solo campo
+                $sidx = $nometabella . '.' . $sidx; // un solo campo
             } else { // più campi, passati separati da virgole
                 $parti = explode(',', $sidx);
                 $sidx = '';
                 foreach ($parti as $parte) {
                     if (trim($sidx) != '') {
-                        $sidx = $sidx.',';
+                        $sidx = $sidx . ',';
                     }
-                    $sidx = $sidx.$nometabella.'.'.trim($parte);
+                    $sidx = $sidx . $nometabella . '.' . trim($parte);
                 }
             }
         }
@@ -176,7 +220,7 @@ class GrigliaDatiUtils
             }
             $vettoredavalorizzare = array(
                 'singolocampo' => $fields,
-                'tabella' => $bundle.':'.$tabellej[$nomecampo]['tabella'],
+                'tabella' => $bundle . ':' . $tabellej[$nomecampo]['tabella'],
                 'nomecampo' => $campoelencato,
                 'doctrine' => $doctrine,
                 'ordinecampo' => $ordinecampo,
@@ -187,4 +231,5 @@ class GrigliaDatiUtils
 
         return $vettoreriga;
     }
+
 }
