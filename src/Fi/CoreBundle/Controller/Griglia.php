@@ -10,6 +10,7 @@ use Fi\CoreBundle\DependencyInjection\GrigliaDatiUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiPrecondizioniUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaExtraFunzioniUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiMultiUtils;
+use Fi\CoreBundle\DependencyInjection\GrigliaDatiEclusioni;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class Griglia extends Controller
@@ -193,8 +194,8 @@ class Griglia extends Controller
 
 
 
-        $escludere = GrigliaDatiUtils::getDatiEscludere($parametri);
-        $escludereutente = GrigliaDatiUtils::getDatiEscludereDaTabella($parametri);
+        $escludere = GrigliaDatiEclusioni::getDatiEscludere($parametri);
+        $escludereutente = GrigliaDatiEclusioni::getDatiEscludereDaTabella($parametri);
         $ordinecolonne = GrigliaDatiUtils::getDatiOrdineColonne($parametri);
         $decodifiche = GrigliaDatiUtils::getDatiDecodifiche($parametri);
 
