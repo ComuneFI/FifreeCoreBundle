@@ -43,7 +43,7 @@ class ArrayFunctions
      * @param $key Nome della chiave nella quale cercare $elem
      * @return Mixed False se non trovato l'elemento, altrimenti il vettore con tutti gli indici
      */
-    static function inMultiarrayTutti($elem, $array, $key, $debug)
+    public static function inMultiarrayTutti($elem, $array, $key, $debug)
     {
 
         if ($debug) {
@@ -87,7 +87,7 @@ class ArrayFunctions
      * @param $search Chiave-valore da cercare
      * @return Mixed False se non trovato l'elemento, altrimenti l'indice in cui si Ã¨ trovato il valore
      */
-    static function multiInMultiarray($array, $search, $debug = false, $tutti = false)
+    public static function multiInMultiarray($array, $search, $debug = false, $tutti = false)
     {
         $primo = true;
         $vettorerisultati = array();
