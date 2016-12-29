@@ -203,7 +203,7 @@ class FiController extends Controller
         );
     }
 
-    private function elencoModifiche($nomebundle, $controller, $id)
+    protected function elencoModifiche($nomebundle, $controller, $id)
     {
         $controllerStorico = "Storicomodifiche";
         $em = $this->getDoctrine()->getManager();
