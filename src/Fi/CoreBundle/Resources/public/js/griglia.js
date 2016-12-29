@@ -1102,17 +1102,6 @@ function apriDettaglio(parametri) {
 
     var prossimozIndex = maxzIndex() + 10;
 
-    creadiv({
-        "caratteristiche": {
-            "id": div.substr(1),
-            "class": "ui-widget ui-widget-content ui-jqdialog ui-corner-all ui-draggable ui-resizable"
-        },
-        draggable: 1,
-        divtesta: divtesta.substr(1),
-        zindex: prossimozIndex
-    });
-
-
     var rowid;
     if (tipo === "new") {
         rowid = 0;
@@ -1126,7 +1115,15 @@ function apriDettaglio(parametri) {
 
     if ((rowid) || (tipo === "new")) {
         if (open_new_window === 0) {
-            creadiv({"caratteristiche": {"id": div.substr(1), "class": "ui-widget ui-widget-content ui-jqdialog ui-corner-all"}});
+            creadiv(
+                    {
+                        "caratteristiche": {
+                            "id": div.substr(1),
+                            "class": "ui-widget ui-widget-content ui-jqdialog ui-corner-all"
+                        },
+                        "zindex": prossimozIndex
+                    }
+            );
             if (altezza !== 0) {
                 jQuery(div).height(altezza);
             }
