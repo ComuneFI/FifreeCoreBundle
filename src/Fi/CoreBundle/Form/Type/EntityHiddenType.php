@@ -3,28 +3,32 @@
 namespace Fi\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Fi\PatrimBundle\Form\DataTransformer\EntityToIdTransformer;
+use Fi\CoreBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class EntityHiddenType extends AbstractType {
+class EntityHiddenType extends AbstractType
+{
 
     /**
      * @var ObjectManager
      */
     protected $objectManager;
 
-    public function __construct(ObjectManager $objectManager) {
+    public function __construct(ObjectManager $objectManager)
+    {
         $this->objectManager = $objectManager;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $transformer = new EntityToIdTransformer($this->objectManager, $options['class']);
         $builder->addModelTransformer($transformer);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
         $resolver
                 ->setRequired(array('class'))
                 ->setDefaults(array(
@@ -34,11 +38,13 @@ class EntityHiddenType extends AbstractType {
         ;
     }
 
-    public function getParent() {
+    public function getParent()
+    {
         return 'hidden';
     }
 
-    public function getName() {
+    public function getName()
+    {
         return 'entity_hidden';
     }
 
