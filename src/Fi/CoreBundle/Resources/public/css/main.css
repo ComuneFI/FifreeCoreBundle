@@ -67,15 +67,15 @@ html, body {
 }
 
 #dialog {
-  z-index: 99999 !important;  
+/*   z-index: 99999 !important;  */
 }
 
 .ui-dialog {
-  z-index: 99999 !important;  
+/*  z-index: 99999 !important;  */
 }
 
 #dettaglio, #gestioneallegati {
-  z-index: 999 !important;
+/*  z-index: 999 !important;*/
 }
 
 .bordo_sottile {
@@ -85,14 +85,14 @@ html, body {
 }
 
 #dettaglioconf {
-  z-index: 999 !important;
+/*  z-index: 999 !important;*/
   background-color: transparent !important; 
   border-color: transparent !important; 
 }
 
 #delmodlist1
 {
-  z-index: 99999 !important;
+/*  z-index: 99999 !important;*/
 } 
 
 .acapo {
@@ -135,7 +135,7 @@ html, body {
 
 /*per far vedere che il programma e' in caricamento*/
 .waiting_div {
-    z-index:    1000;
+/*    z-index:    1000;*/
     height:     32px;
     width:      100%;
     bottom:     0;
@@ -154,7 +154,7 @@ html, body {
     bottom:0px;
     left:0px;
     right:0px;
-    z-index:100;
+/*    z-index:100;*/
     cursor:pointer;
     /*Trasperenza cross browser*/
     opacity: .7; filter: alpha(opacity=70);

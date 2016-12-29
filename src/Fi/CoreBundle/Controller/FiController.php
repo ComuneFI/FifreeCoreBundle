@@ -76,6 +76,7 @@ class FiController extends Controller
 
         $testatagriglia['multisearch'] = 1;
         $testatagriglia['showconfig'] = 1;
+        $testatagriglia['overlayopen'] = 1;
 
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
 
@@ -85,13 +86,12 @@ class FiController extends Controller
         $testata = $repotabelle->editTestataFormTabelle($testatagriglia, $controller, $container);
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':index.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':index.html.twig', array(
                     //                    'entities' => $entities,
                     'nomecontroller' => $controller,
                     'testata' => $testata,
                     'canread' => $canRead,
-                    'idpassato' => $idpassato,
+                    'idpassato' => $idpassato
                         )
         );
     }
@@ -144,8 +144,7 @@ class FiController extends Controller
         }
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':new.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':new.html.twig', array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
@@ -173,29 +172,24 @@ class FiController extends Controller
 // Questo codice per versioni che usano un symfony inferiore a 2.8
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             $form = $this->createForm(
-                $formType,
-                $entity,
-                array('attr' => array(
+                    $formType, $entity, array('attr' => array(
                     'id' => 'formdati' . $controller,
-                    ),
-                    'action' => $this->generateUrl($controller . '_create'),
+                ),
+                'action' => $this->generateUrl($controller . '_create'),
                     )
             );
         } else {
             $form = $this->createForm(
-                new $formType(),
-                $entity,
-                array('attr' => array(
+                    new $formType(), $entity, array('attr' => array(
                     'id' => 'formdati' . $controller,
-                    ),
-                    'action' => $this->generateUrl($controller . '_create'),
+                ),
+                'action' => $this->generateUrl($controller . '_create'),
                     )
             );
         }
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':new.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':new.html.twig', array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
@@ -208,7 +202,7 @@ class FiController extends Controller
         $controllerStorico = "Storicomodifiche";
         $em = $this->getDoctrine()->getManager();
         $risultato = $em->getRepository('FiCoreBundle:' . $controllerStorico)->findBy(
-            array(
+                array(
                     "nometabella" => $controller,
                     "idtabella" => $id
                 )
@@ -250,22 +244,18 @@ class FiController extends Controller
 // Questo codice per versioni che usano un symfony inferiore a 2.8
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             $editForm = $this->createForm(
-                $formType,
-                $entity,
-                array('attr' => array(
+                    $formType, $entity, array('attr' => array(
                     'id' => 'formdati' . $controller,
-                    ),
-                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                     )
             );
         } else {
             $editForm = $this->createForm(
-                new $formType(),
-                $entity,
-                array('attr' => array(
+                    new $formType(), $entity, array('attr' => array(
                     'id' => 'formdati' . $controller,
-                    ),
-                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                     )
             );
         }
@@ -273,8 +263,7 @@ class FiController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':edit.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':edit.html.twig', array(
                     'entity' => $entity,
                     'nomecontroller' => $controller,
                     'edit_form' => $editForm->createView(),
@@ -343,8 +332,7 @@ class FiController extends Controller
         }
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':edit.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':edit.html.twig', array(
                     'entity' => $entity,
                     'edit_form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
@@ -568,4 +556,5 @@ class FiController extends Controller
     {
         return self::$action;
     }
+
 }

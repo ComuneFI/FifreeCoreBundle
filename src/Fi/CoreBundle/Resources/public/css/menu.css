@@ -61,7 +61,7 @@
   top: 30px;
   margin-left: 0px;
   width: 400px;
-  z-index: 99999;
+/*  z-index: 99999;*/
   display: none; /* Enable this after jquery implementation */
 }
 /* Popup Arrow */
@@ -76,7 +76,7 @@
   border-color: transparent transparent white;
   margin-top: -20px;
   margin-left: 188px;
-  z-index: 99999;
+/*  z-index: 99999;*/
 }
 
 
@@ -84,7 +84,7 @@
 {
   padding: 33px 0px 0px 0px !important;
   min-height:300px;
-  z-index: 99999;
+/*  z-index: 99999;*/
 }
 
 .notificationFooter
@@ -96,7 +96,7 @@
   padding: 8px;
   font-size: 10px;
   border-top: 1px solid #dddddd;
-  z-index: 99999;
+/*  z-index: 99999;*/
 
 }
 
@@ -131,7 +131,7 @@
   font-family: Arial,sans-serif;
   margin-top: 15px;
   font-size: 11px;
-  z-index: 999999;
+/*  z-index: 999999;*/
   display: none; 
 }
 
@@ -178,5 +178,5 @@
 }
 
 html body div#jqContextMenu {
-    z-index: 999 !important; 
+/*    z-index: 999 !important; */
 }
