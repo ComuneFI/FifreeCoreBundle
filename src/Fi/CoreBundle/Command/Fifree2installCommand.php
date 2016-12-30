@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 
 class Fifree2installCommand extends ContainerAwareCommand
 {
+
     protected function configure()
     {
         $this
@@ -159,6 +160,23 @@ class Fifree2installCommand extends ContainerAwareCommand
         $tabelle = new \Fi\CoreBundle\Entity\tabelle();
         $tabelle->setNometabella('*');
         $em->persist($tabelle);
+
+        $tabelleUno = new \Fi\CoreBundle\Entity\tabelle();
+        $tabelleUno->setNometabella('Ffsecondaria');
+        $tabelleUno->setNomecampo('ffprincipale');
+        $tabelleUno->setMostraindex(true);
+        $tabelleUno->setMostrastampa(true);
+        $tabelleUno->setRegistrastorico(true);
+        $em->persist($tabelleUno);
+
+        $tabelleDue = new \Fi\CoreBundle\Entity\tabelle();
+        $tabelleDue->setNometabella('Ffsecondaria');
+        $tabelleDue->setNomecampo('descsec');
+        $tabelleDue->setMostraindex(true);
+        $tabelleDue->setMostrastampa(true);
+        $tabelleDue->setRegistrastorico(true);
+        $em->persist($tabelleDue);
+
 
         $opzionitabelle = new \Fi\CoreBundle\Entity\opzioniTabella();
         $opzionitabelle->setTabelle($tabelle);

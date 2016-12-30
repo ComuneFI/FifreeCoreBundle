@@ -48,3 +48,22 @@ services:
         arguments: [%ficorebundle.db.table_schema%]
         tags:
             - { name: doctrine.event_subscriber }
+
+    OpzioniTabella_repository: 
+        class: Fi\CoreBundle\Entity\OpzioniTabellaRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:  
+            - 'Fi\CoreBundle\Entity\OpzioniTabella'   
+
+    Storicomodifiche_repository: 
+        class: Fi\CoreBundle\Entity\StoricomodificheRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:  
+            - 'Fi\CoreBundle\Entity\Storicomodifiche'
+
+    fi_core.type.entity_hidden:
+        class: Fi\CoreBundle\Form\Type\EntityHiddenType
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+        - { name: form.type, alias: entity_hidden }
+     

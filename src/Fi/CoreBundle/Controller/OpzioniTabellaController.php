@@ -10,8 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * OpzioniTabella controller.
  */
-class OpzioniTabellaController extends FiController
+class OpzioniTabellaController extends FiCoreController
 {
+
     /**
      * Lists all opzioniTabella entities.
      */
@@ -24,7 +25,7 @@ class OpzioniTabellaController extends FiController
         $controller = $this->getController();
         $container = $this->container;
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
 
         $dettaglij = array(
             'descrizione' => array(
@@ -32,13 +33,13 @@ class OpzioniTabellaController extends FiController
                     'nomecampo' => 'descrizione',
                     'lunghezza' => '600',
                     'descrizione' => 'Descrizione',
-                    'tipo' => 'text', ), ),
+                    'tipo' => 'text',),),
             'tabelle_id' => array(
                 array(
                     'nomecampo' => 'tabelle.nometabella',
                     'lunghezza' => '400',
                     'descrizione' => 'Tabella',
-                    'tipo' => 'text', ),
+                    'tipo' => 'text',),
             ),
         );
 
@@ -70,7 +71,7 @@ class OpzioniTabellaController extends FiController
             'testata' => $testata,
         );
 
-        return $this->render($nomebundle.':'.$controller.':index.html.twig', $twigparms);
+        return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
     }
 
     public function setParametriGriglia($prepar = array())
@@ -80,7 +81,7 @@ class OpzioniTabellaController extends FiController
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array();
         $tabellej['tabelle_id'] = array('tabella' => 'tabelle', 'campi' => array('nometabella'));
 
@@ -89,7 +90,7 @@ class OpzioniTabellaController extends FiController
             'nomebundle' => $nomebundle,
             'tabellej' => $tabellej,
             'nometabella' => $controller,
-            'escludere' => $escludi, );
+            'escludere' => $escludi,);
 
         if ($prepar) {
             $paricevuti = array_merge($paricevuti, $prepar);

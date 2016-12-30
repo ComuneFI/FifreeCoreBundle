@@ -9,6 +9,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class FifreecoreAdminpanelControllerTest extends FifreeTest
 {
+
     /**
      * {@inheritdoc}
      */
@@ -47,7 +48,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $this->restartKernel();
         $browser = 'firefox';
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
+        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -66,10 +67,14 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         $page->fillField('bundlename', 'Fi/ProvaBundle');
 
+        $javascript = "window.alert = function() {};";
+        $session->executeScript($javascript);
         $page->pressButton('adminpanelgeneratebundle');
+        parent::ajaxWait($session, 30000);
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        $session->getDriver()->getWebDriverSession()->accept_alert();
+        parent::ajaxWait($session, 60000);
+        //$session->getDriver()->getWebDriverSession()->accept_alert();
         parent::ajaxWait($session, 30000);
         //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
@@ -87,7 +92,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $browser = 'firefox';
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
+        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -102,7 +107,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->fillField('password', 'admin');
         $page->pressButton('_submit');
 
-        sleep(1);
+        sleep(3);
         $page->fillField('bundlename', 'Fi/ProvaBundle');
 
         $page->selectFieldOption('entitybundle', 'Fi/ProvaBundle');
@@ -138,7 +143,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $browser = 'firefox';
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
+        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -186,14 +191,12 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 //        $em->flush();
 //        $em->clear();
 //        $this->assertTrue(is_null($prova->getId()));
-
 //        $browser = 'firefox';
 //        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
 //        //$urlRouting = $this->getContainer()->get('router')->generate('Prova_container');
 //        //$url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
 //        $urlRouting = '/Prova';
 //        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
-
 //        // Choose a Mink driver. More about it in later chapters.
 //        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
 //        $session = new Session($driver);
@@ -206,11 +209,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 //        $page->fillField('username', 'admin');
 //        $page->fillField('password', 'admin');
 //        $page->pressButton('_submit');
-
 //        sleep(1);
-
 //        $elementadd = $page->findAll('css', '.ui-icon-plus');
-
 //        foreach ($elementadd as $e) {
 //            if ($e->isVisible()) {
 //                $e->click();
@@ -222,12 +222,9 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 //        $page->fillField('fi_provabundle_prova_descrizione', $descrizionetest1);
 //        $page->find('css', 'a#sDataProvaS')->click();
 //        parent::ajaxWait($session, 20000);
-
 //        $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
 //        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRow.'}()');
-
 //        $elementmod = $page->findAll('css', '.ui-icon-pencil');
-
 //        foreach ($elementmod as $e) {
 //            if ($e->isVisible()) {
 //                $e->click();
@@ -242,10 +239,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 //        /* Cancellazione */
 //        $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
 //        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRowDel.'}()');
-
 //        $elementdel = $page->findAll('css', '.ui-icon-trash');
 //        parent::ajaxWait($session, 20000);
-
 //        foreach ($elementdel as $e) {
 //            if ($e->isVisible()) {
 //                $e->click();
@@ -254,7 +249,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 //        parent::ajaxWait($session, 20000);
 //        $page->find('css', 'a#dData')->click();
 //        parent::ajaxWait($session, 20000);
-
 //        //$this->generateentities();
 //        //$this->clearcache();
 //        $session->stop();
@@ -278,7 +272,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
     }
 

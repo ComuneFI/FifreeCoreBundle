@@ -47,6 +47,9 @@ Fi\CoreBundle\Entity\Tabelle:
         operatori_id:
             type: integer
             nullable: true
+        registrastorico:
+            type: boolean
+            nullable: true
     oneToMany:
         opzioniTabellas:
             targetEntity: OpzioniTabella

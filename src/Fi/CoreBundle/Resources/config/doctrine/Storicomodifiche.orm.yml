@@ -1,0 +1,37 @@
+Fi\CoreBundle\Entity\Storicomodifiche:
+    type: entity
+    repositoryClass: Fi\CoreBundle\Entity\StoricomodificheRepository
+    
+    table: Storicomodifiche
+    indexes:
+        fk_Storicomodifiche_Operatori1_idx:
+            columns: [ operatori_id ]
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        nometabella:
+            type: string
+            length: 45
+        nomecampo:
+            type: string
+            length: 45
+        idtabella:
+            type: integer
+        giorno:
+            type: datetime
+            nullable: true
+        valoreprecedente:
+            type: text
+            nullable: true
+        operatori_id:
+            type: integer
+    manyToOne:
+        operatori:
+            targetEntity: Operatori
+            inversedBy: storicomodifiches
+            joinColumn:
+                name: operatori_id
+                referencedColumnName: id

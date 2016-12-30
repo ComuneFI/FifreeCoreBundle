@@ -7,8 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Ffprincipale controller.
  */
-class FfprincipaleController extends FiController
+class FfprincipaleController extends FiCoreController
 {
+
     /**
      * Lists all tables entities.
      */
@@ -26,10 +27,10 @@ class FfprincipaleController extends FiController
         $gestionepermessi->utentecorrenteAction();
         $canRead = ($gestionepermessi->leggereAction(array('modulo' => $controller)) ? 1 : 0);
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
 
         $em = $container->get('doctrine')->getManager();
-        $entities = $em->getRepository($nomebundle.':'.$controller)->findAll();
+        $entities = $em->getRepository($nomebundle . ':' . $controller)->findAll();
 
         $paricevuti = array('nomebundle' => $nomebundle, 'nometabella' => $controller, 'container' => $container);
 
@@ -38,6 +39,7 @@ class FfprincipaleController extends FiController
         $testatagriglia['multisearch'] = 1;
         $testatagriglia['showconfig'] = 1;
         $testatagriglia['showexcel'] = 1;
+        $testatagriglia['overlayopen'] = 1;
 
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
 
@@ -68,6 +70,6 @@ class FfprincipaleController extends FiController
             'canread' => $canRead,
         );
 
-        return $this->render($nomebundle.':'.$controller.':index.html.twig', $twigparms);
+        return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
     }
 }

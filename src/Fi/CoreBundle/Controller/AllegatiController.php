@@ -8,8 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Allegati controller.
  */
-class AllegatiController extends FiController
+class AllegatiController extends FiCoreController
 {
+
     /**
      * Edits an existing table entity.
      */
@@ -21,16 +22,16 @@ class AllegatiController extends FiController
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
-        $formType = $formbundle.'Type';
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
+        $formType = $formbundle . 'Type';
 
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository($nomebundle.':'.$controller)->find($id);
+        $entity = $em->getRepository($nomebundle . ':' . $controller)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find '.$controller.' entity.');
+            throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -41,7 +42,7 @@ class AllegatiController extends FiController
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl($controller.'_editiframe', array('id' => $id)));
+            return $this->redirect($this->generateUrl($controller . '_editiframe', array('id' => $id)));
         }
         $twigparms = array(
             'entity' => $entity,
@@ -50,7 +51,7 @@ class AllegatiController extends FiController
             'nomecontroller' => $controller,
         );
 
-        return $this->render($nomebundle.':'.$controller.':editiframe.html.twig', $twigparms);
+        return $this->render($nomebundle . ':' . $controller . ':editiframe.html.twig', $twigparms);
     }
 
     /**
@@ -66,25 +67,25 @@ class AllegatiController extends FiController
 
         $allegati = ($request->get('allegati') == 1 ? 1 : 0);
 
-        $nomebundle = $namespace.$bundle.'Bundle';
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
-        $formType = $formbundle.'Type';
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
+        $formType = $formbundle . 'Type';
 
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository($nomebundle.':'.$controller)->find($id);
+        $entity = $em->getRepository($nomebundle . ':' . $controller)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find '.$controller.' entity.');
+            throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
 
         $editForm = $this->createForm(
             $formType,
             $entity,
             array('attr' => array(
-                'id' => 'formdati'.$controller,
+                'id' => 'formdati' . $controller,
                 ),
-                'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                 )
         );
         $deleteForm = $this->createDeleteForm($id);
@@ -97,7 +98,7 @@ class AllegatiController extends FiController
             'id' => $entity->getId(),
         );
 
-        return $this->render($nomebundle.':'.$controller.':edit.html.twig', $twigparms);
+        return $this->render($nomebundle . ':' . $controller . ':edit.html.twig', $twigparms);
     }
 
     /**
@@ -113,21 +114,21 @@ class AllegatiController extends FiController
 
         $allegati = ($request->get('allegati') == 1 ? 1 : 0);
 
-        $nomebundle = $namespace.$bundle.'Bundle';
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
-        $formType = $formbundle.'Type';
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
+        $formType = $formbundle . 'Type';
 
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository($nomebundle.':'.$controller)->find($id);
+        $entity = $em->getRepository($nomebundle . ':' . $controller)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find '.$controller.' entity.');
+            throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
         $formparms = array(
             'attr' => array(
-                'id' => 'formdati'.$controller,
-                'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
+                'id' => 'formdati' . $controller,
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
             ),
         );
         $editForm = $this->createForm($formType, $entity, $formparms);
@@ -141,7 +142,7 @@ class AllegatiController extends FiController
             'id' => $entity->getId(),
         );
 
-        return $this->render($nomebundle.':'.$controller.':editiframe.html.twig', $twigparms);
+        return $this->render($nomebundle . ':' . $controller . ':editiframe.html.twig', $twigparms);
     }
 
     /**
@@ -154,12 +155,12 @@ class AllegatiController extends FiController
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
-        $classbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Entity\\'.$controller;
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $classbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Entity\\' . $controller;
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
 
         $entity = new $classbundle();
-        $formType = $formbundle.'Type';
+        $formType = $formbundle . 'Type';
         $form = $this->createForm($formType, $entity);
         $form->handleRequest($request);
         //var_dump($request);exit;
@@ -169,11 +170,11 @@ class AllegatiController extends FiController
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl($controller.'_editiframe', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl($controller . '_editiframe', array('id' => $entity->getId())));
         }
 
         return $this->render(
-            $nomebundle.':'.$controller.':new.html.twig',
+            $nomebundle . ':' . $controller . ':new.html.twig',
             array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
@@ -192,24 +193,24 @@ class AllegatiController extends FiController
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
-        $classbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Entity\\'.$controller;
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
-        $formType = $formbundle.'Type';
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $classbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Entity\\' . $controller;
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
+        $formType = $formbundle . 'Type';
 
         $entity = new $classbundle();
         $form = $this->createForm(
             $formType,
             $entity,
             array('attr' => array(
-                'id' => 'formdati'.$controller,
+                'id' => 'formdati' . $controller,
                 ),
-                'action' => $this->generateUrl($controller.'_create'),
+                'action' => $this->generateUrl($controller . '_create'),
                 )
         );
 
         return $this->render(
-            $nomebundle.':'.$controller.':new.html.twig',
+            $nomebundle . ':' . $controller . ':new.html.twig',
             array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
@@ -230,10 +231,10 @@ class AllegatiController extends FiController
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
-        $classbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Entity\\'.$controller;
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
-        $formType = $formbundle.'Type';
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $classbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Entity\\' . $controller;
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
+        $formType = $formbundle . 'Type';
 
         $entity = new $classbundle();
 
@@ -244,14 +245,14 @@ class AllegatiController extends FiController
             $formType,
             $entity,
             array('attr' => array(
-                'id' => 'formdati'.$controller,
+                'id' => 'formdati' . $controller,
                 ),
-                'action' => $this->generateUrl($controller.'_create'),
+                'action' => $this->generateUrl($controller . '_create'),
                 )
         );
 
         return $this->render(
-            $nomebundle.':'.$controller.':newiframe.html.twig',
+            $nomebundle . ':' . $controller . ':newiframe.html.twig',
             array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
@@ -278,11 +279,9 @@ class AllegatiController extends FiController
         $gestionepermessi->utentecorrenteAction();
         $canRead = ($gestionepermessi->leggereAction(array('modulo' => $controller)) ? 1 : 0);
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
 
-        $em = $container->get('doctrine')->getManager();
-        //$entities = $em->getRepository($nomebundle . ':' . $controller)->findAll();
-
+        $repotabelle = $this->container->get('Tabelle_repository');
         $paricevuti = array(
             'nomebundle' => $nomebundle,
             'nometabella' => $controller,
@@ -313,23 +312,10 @@ class AllegatiController extends FiController
         $this->setParametriGriglia(array('request' => $request));
         $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
 
-        /* @var $qb \Doctrine\ORM\QueryBuilder */
-        $qb = $em->createQueryBuilder();
-        $qb->select(array('a'));
-        $qb->from('FiCoreBundle:OpzioniTabella', 'a');
-        $qb->leftJoin('a.tabelle', 't');
-        $qb->where('t.nometabella = :tabella');
-        $qb->andWhere("t.nomecampo is null or t.nomecampo = ''");
-        $qb->setParameter('tabella', $controller);
-        $opzioni = $qb->getQuery()->getResult();
-        foreach ($opzioni as $opzione) {
-            $testatagriglia[$opzione->getParametro()] = $opzione->getValore();
-        }
-
-        $testata = json_encode($testatagriglia);
+        $testata = $repotabelle->getTestataFormTabella($testatagriglia, $controller, $container);
 
         return $this->render(
-            $nomebundle.':'.$controller.':popup.html.twig',
+            $nomebundle . ':' . $controller . ':popup.html.twig',
             array(
                     //'entities' => $entities,
                     'nomecontroller' => $controller,
@@ -359,7 +345,7 @@ class AllegatiController extends FiController
                     'nomecampo' => 'indicetabella',
                     'operatore' => '=',
                     'valorecampo' => $indicetabella,
-                ), ),
+                ),),
         );
         //$prepar = array("request" => $request, "precondizioni" => array("indicetabella" => $indicetabella));
         $this->setParametriGriglia($prepar);
@@ -375,14 +361,14 @@ class AllegatiController extends FiController
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array('nometabella', 'indicetabella');
 
         $paricevuti = array(
             'container' => $this->container,
             'nomebundle' => $nomebundle,
             'nometabella' => $controller,
-            'escludere' => $escludi, );
+            'escludere' => $escludi,);
 
         if ($prepar) {
             $paricevuti = array_merge($paricevuti, $prepar);

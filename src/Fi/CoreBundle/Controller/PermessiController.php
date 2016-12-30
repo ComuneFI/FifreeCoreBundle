@@ -8,8 +8,9 @@ use Fi\CoreBundle\Entity\Permessi;
 /**
  * Permessi controller.
  */
-class PermessiController extends FiController
+class PermessiController extends FiCoreController
 {
+
     /**
      * Lists all Ffprincipale entities.
      */
@@ -21,27 +22,27 @@ class PermessiController extends FiController
         $controller = $this->getController();
         $container = $this->container;
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
 
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository($nomebundle.':'.$controller)->findAll();
+        $entities = $em->getRepository($nomebundle . ':' . $controller)->findAll();
 
         $dettaglij = array(
             'operatori_id' => array(
                 array('nomecampo' => 'operatori.username',
                     'lunghezza' => '200',
                     'descrizione' => 'Username',
-                    'tipo' => 'text', ),
+                    'tipo' => 'text',),
                 array('nomecampo' => 'operatori.operatore',
                     'lunghezza' => '200',
                     'descrizione' => 'Operatore',
-                    'tipo' => 'text', ),
+                    'tipo' => 'text',),
             ),
             'ruoli_id' => array(
                 array('nomecampo' => 'ruoli.ruolo',
                     'lunghezza' => '200',
                     'descrizione' => 'Ruolo',
-                    'tipo' => 'text', ),
+                    'tipo' => 'text',),
             ),
         );
 
@@ -50,7 +51,7 @@ class PermessiController extends FiController
             'nomebundle' => $nomebundle,
             'nometabella' => $controller,
             'dettaglij' => $dettaglij,
-            'container' => $container, );
+            'container' => $container,);
 
         $testatagriglia = Griglia::testataPerGriglia($paricevuti);
 
@@ -61,7 +62,7 @@ class PermessiController extends FiController
             'testata' => $testata,
         );
 
-        return $this->render($nomebundle.':'.$controller.':index.html.twig', $twigparms);
+        return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
     }
 
     public function setParametriGriglia($prepar = array())
@@ -71,7 +72,7 @@ class PermessiController extends FiController
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array();
         $tabellej['operatori_id'] = array('tabella' => 'operatori', 'campi' => array('username', 'operatore'));
         $tabellej['ruoli_id'] = array('tabella' => 'ruoli', 'campi' => array('ruolo'));

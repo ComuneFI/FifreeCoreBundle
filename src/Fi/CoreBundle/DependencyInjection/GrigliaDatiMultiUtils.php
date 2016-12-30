@@ -105,13 +105,12 @@ class GrigliaDatiMultiUtils
 
         $bundle = $parametri['nomebundle'];
         $nometabella = $parametri['nometabella'];
-        /* qui */
-        $tabellej = GrigliaDatiUtils::getTabellejNormalizzate($parametri);
-
-        $decodifiche = GrigliaDatiUtils::getDatiDecodifiche($parametri);
-        $escludere = GrigliaDatiUtils::getDatiEscludere($parametri);
-        $escludereutente = GrigliaDatiUtils::getDatiEscludere($parametri);
-        $ordinecolonne = GrigliaDatiUtils::getDatiOrdineColonne($parametri);
+        
+        $tabellej = $parametri["tabellej"];
+        $decodifiche = $parametri["decodifiche"];
+        $escludere = $parametri["escludere"];
+        $escludereutente = $parametri["escludereutente"];
+        $ordinecolonne = $parametri["ordinecolonne"];
 
         /* Si controlla se il campo è da escludere o meno */
         if ((!isset($escludere) || !(in_array($nomecampo, $escludere))) && (!isset($escludereutente) || !(in_array($nomecampo, $escludereutente)))) {

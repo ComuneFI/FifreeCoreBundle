@@ -8,8 +8,9 @@ use Symfony\Component\HttpKernel\Kernel;
 /**
  * Menu controller.
  */
-class MenuController extends FiController
+class MenuController extends MenuApplicazioneController
 {
+
     protected function initGestionePermessi()
     {
         $gestionepermessi = new GestionePermessi();
@@ -42,10 +43,10 @@ class MenuController extends FiController
         $menu = $qb->getQuery()->getResult();
 
         $risposta = array_merge($risposta, $this->getMenu($menu));
-        $webdir = $this->get('kernel')->getRootDir().'/../web';
+        $webdir = $this->get('kernel')->getRootDir() . '/../web';
         $pathmanuale = '/uploads/manuale.pdf';
 
-        if (file_exists($webdir.$pathmanuale)) {
+        if (file_exists($webdir . $pathmanuale)) {
             $risposta[] = array('percorso' => $this->getUrlObject('Manuale', $pathmanuale, '_blank'), 'nome' => 'Manuale', 'target' => '_blank');
         }
         /*

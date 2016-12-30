@@ -24,6 +24,12 @@ Fi\CoreBundle\Entity\Operatori:
             joinColumn:
                 name: id
                 referencedColumnName: operatori_id
+        storicomodifiches:
+            targetEntity: Storicomodifiche
+            mappedBy: operatori
+            joinColumn:
+                name: id
+                referencedColumnName: operatori_id
         tabelles:
             targetEntity: Tabelle
             mappedBy: operatori

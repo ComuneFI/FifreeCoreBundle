@@ -5,9 +5,11 @@ namespace Fi\CoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Fi\CoreBundle\DependencyInjection\GrigliaFiltriUtils;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class FunzioniController extends FiController
+class FunzioniController extends Controller
 {
+
     public function traduzionefiltroAction(Request $request)
     {
         $tuttofiltri = $request->query->get('filters');

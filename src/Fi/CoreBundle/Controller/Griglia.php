@@ -10,9 +10,12 @@ use Fi\CoreBundle\DependencyInjection\GrigliaDatiUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiPrecondizioniUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaExtraFunzioniUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiMultiUtils;
+use Fi\CoreBundle\DependencyInjection\GrigliaDatiEclusioni;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class Griglia extends FiController
+class Griglia extends Controller
 {
+
     /**
      * Questa funzione è compatibile con jqGrid e risponden con un formato JSON
      * contenente i dati di testata per la griglia.
@@ -130,7 +133,7 @@ class Griglia extends FiController
         $sord = $request->get('sord'); // get the direction if(!$sidx) $sidx =1;
         GrigliaDatiUtils::getDatiOrdinamento($sidx, $nometabella);
         /* inizia la query */
-        $entityName = $bundle.':'.$nometabella;
+        $entityName = $bundle . ':' . $nometabella;
         $q = $doctrine->createQueryBuilder();
         $q->select($nometabella)
                 ->from($entityName, $nometabella);
@@ -162,7 +165,7 @@ class Griglia extends FiController
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
                 'entityName' => $entityName,
-                'bundle' => $bundle, )
+                'bundle' => $bundle,)
             );
         }
         /* scorro ogni singola regola */
@@ -192,6 +195,20 @@ class Griglia extends FiController
         $vettorerisposta['records'] = $quanti;
         $vettorerisposta['filtri'] = $filtri;
         $indice = 0;
+
+
+
+        $escludere = GrigliaDatiEclusioni::getDatiEscludere($parametri);
+        $escludereutente = GrigliaDatiEclusioni::getDatiEscludereDaTabella($parametri);
+        $ordinecolonne = GrigliaDatiUtils::getDatiOrdineColonne($parametri);
+        $decodifiche = GrigliaDatiUtils::getDatiDecodifiche($parametri);
+
+        $parametri["escludere"] = $escludere;
+        $parametri["escludereutente"] = $escludereutente;
+        $parametri["ordinecolonne"] = $ordinecolonne;
+        $parametri["decodifiche"] = $decodifiche;
+        $parametri["tabellej"] = $tabellej;
+
 
         /* Si scorrono tutti i records della query */
         foreach ($q as $singolo) {

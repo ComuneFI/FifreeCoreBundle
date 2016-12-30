@@ -25,6 +25,8 @@ after_success:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then php vendor/satooshi/php-coveralls/bin/coveralls -v; fi
   - vendor/bin/security-checker -n security:check
   - rm app/dbtest.sqlite
+  - php app/console server:stop --env=test
+  - pkill java
 
 notifications:
   email:

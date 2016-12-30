@@ -36,6 +36,11 @@ class Operatori extends BaseUser
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
+    private $storicomodifiches;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
     private $tabelles;
 
     /**
@@ -126,6 +131,16 @@ class Operatori extends BaseUser
     }
 
     /**
+     * Get permessis.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPermessis()
+    {
+        return $this->permessis;
+    }
+
+    /**
      * Remove permessis.
      *
      * @param \Fi\CoreBundle\Entity\permessi $permessis
@@ -136,13 +151,38 @@ class Operatori extends BaseUser
     }
 
     /**
-     * Get permessis.
+     * Get storicomodifiches.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPermessis()
+    public function getStoricomodicihes()
     {
-        return $this->permessis;
+        return $this->storicomodifiches;
+    }
+
+    
+        /**
+     * Add storicomodifiches.
+     *
+     * @param \Fi\CoreBundle\Entity\storicomodifiche $storicomodifiches
+     *
+     * @return operatori
+     */
+    public function addStoricomodifiche(\Fi\CoreBundle\Entity\Storicomodifiche $storicomodifiches)
+    {
+        $this->storicomodifiches[] = $storicomodifiches;
+
+        return $this;
+    }
+
+    /**
+     * Remove permessis.
+     *
+     * @param \Fi\CoreBundle\Entity\storicomodifiche $storicomodifiches
+     */
+    public function removeStoricomodicihe(\Fi\CoreBundle\Entity\Storicomodifiche $storicomodifiches)
+    {
+        $this->storicomodifiches->removeElement($storicomodifiches);
     }
 
     /**
@@ -211,5 +251,39 @@ class Operatori extends BaseUser
             //return '';
             return $this->getUsername();
         }
+    }
+
+    /**
+     * Add storicomodifich
+     *
+     * @param \Fi\CoreBundle\Entity\Storicomodifiche $storicomodifich
+     *
+     * @return Operatori
+     */
+    public function addStoricomodifich(\Fi\CoreBundle\Entity\Storicomodifiche $storicomodifich)
+    {
+        $this->storicomodifiches[] = $storicomodifich;
+
+        return $this;
+    }
+
+    /**
+     * Remove storicomodifich
+     *
+     * @param \Fi\CoreBundle\Entity\Storicomodifiche $storicomodifich
+     */
+    public function removeStoricomodifich(\Fi\CoreBundle\Entity\Storicomodifiche $storicomodifich)
+    {
+        $this->storicomodifiches->removeElement($storicomodifich);
+    }
+
+    /**
+     * Get storicomodifiches
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStoricomodifiches()
+    {
+        return $this->storicomodifiches;
     }
 }

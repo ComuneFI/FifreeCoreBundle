@@ -2,9 +2,6 @@
 
 {% block content -%}
 
-    <div id="dettaglio" class="ui-widget ui-widget-content ui-jqdialog ui-corner-all"></div>
-    <div id="dettaglioconf" class="ui-widget ui-widget-content ui-jqdialog ui-corner-all"></div>
-
     <div id="{{ nomecontroller }}" class="tabella">
         <table id="list1">
         </table> 
@@ -14,7 +11,7 @@
 
     <script type="text/javascript">
 
-        $(document).keypress(function(event) {
+        $(document).keypress(function (event) {
             switch (event.key)
             {
                 case "Add":
@@ -71,30 +68,30 @@
             }
         });
 
-        $(document).ready(function() {
+        $(document).ready(function () {
         {% if ((canread is defined and canread == 0)) %}
-            alert("Non si hanno i permessi per visualizzare questo contenuto");
+                alert("Non si hanno i permessi per visualizzare questo contenuto");
         {% else %}
-            caricaGriglia({{ testata|raw }});
-            $(".ui-jqgrid-bdiv").focus();
+                caricaGriglia({{ testata|raw }});
+                $(".ui-jqgrid-bdiv").focus();
             {% if (idpassato is defined and idpassato is not null) %}
-                var datitestata = {{ testata|raw }};
+                    var datitestata = {{ testata|raw }};
                 {% if (idpassato > 0) %}
-                    apriDettaglio({
-                      'tabella': '{{ nomecontroller }}',
-                      'tipo': 'edit',
-                      'id': {{ idpassato }} ,
-                      'altezza': datitestata['altezzaform'],
-                      'larghezza': datitestata['larghezzaform']
-                    });
+                        apriDettaglio({
+                            'tabella': '{{ nomecontroller }}',
+                            'tipo': 'edit',
+                                    'id': {{ idpassato }} ,
+                                    'altezza': datitestata['altezzaform'],
+                                    'larghezza': datitestata['larghezzaform']
+                        });
                 {% else %}
-                    apriDettaglio({
-                      'tabella': '{{ nomecontroller }}',
-                      'tipo': 'new',
-                      'id': 0,
-                      'altezza': datitestata['altezzaform'],
-                      'larghezza': datitestata['larghezzaform']
-                    });
+                        apriDettaglio({
+                            'tabella': '{{ nomecontroller }}',
+                            'tipo': 'new',
+                            'id': 0,
+                            'altezza': datitestata['altezzaform'],
+                            'larghezza': datitestata['larghezzaform']
+                        });
                 {% endif %}
             {% endif %}            
         {% endif %}

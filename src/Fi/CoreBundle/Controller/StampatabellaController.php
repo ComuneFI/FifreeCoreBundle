@@ -6,8 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Fi\CoreBundle\DependencyInjection\GrigliaFiltriUtils;
 use TCPDF;
 
-class StampatabellaController extends FiController
+class StampatabellaController extends FiCoreController
 {
+
     public function __construct($container = null)
     {
         if ($container) {
@@ -28,7 +29,7 @@ class StampatabellaController extends FiController
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         //echo PDF_HEADER_LOGO;
-        $pdftitle = isset($testata['titolo']) && ($testata['titolo'] != '') ? $testata['titolo'] : 'Elenco '.$request->get('nometabella');
+        $pdftitle = isset($testata['titolo']) && ($testata['titolo'] != '') ? $testata['titolo'] : 'Elenco ' . $request->get('nometabella');
         $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'FiFree2', $pdftitle, array(0, 0, 0), array(0, 0, 0));
         $pdf->setFooterData(array(0, 0, 0), array(0, 0, 0));
 
@@ -117,7 +118,7 @@ class StampatabellaController extends FiController
           mettere exit al posto di return 0; questo opzione però non è accettata da gli strumenti di controllo del codice che non si
           aspettano exit nel codice
          */
-        $pdf->Output($request->get('nometabella').'.pdf', 'I');
+        $pdf->Output($request->get('nometabella') . '.pdf', 'I');
 
         return 0;
     }
@@ -147,7 +148,7 @@ class StampatabellaController extends FiController
 
         //Scrittura su file
         $sheet = $objPHPExcel->getActiveSheet();
-        $titolosheet = 'Esportazione '.$testata['tabella'];
+        $titolosheet = 'Esportazione ' . $testata['tabella'];
         $sheet->setTitle(substr($titolosheet, 0, 30));
         $sheet->getDefaultStyle()->getFont()->setName('Verdana');
 
@@ -163,10 +164,10 @@ class StampatabellaController extends FiController
         $todaydate = date('d-m-y');
 
         //$todaydate = $todaydate . '-' . date("H-i-s");
-        $filename = 'Exportazione_'.$testata['tabella'];
-        $filename = $filename.'-'.$todaydate.'-'.strtoupper(md5(uniqid(rand(), true)));
-        $filename = $filename.'.xls';
-        $filename = sys_get_temp_dir().DIRECTORY_SEPARATOR.$filename;
+        $filename = 'Exportazione_' . $testata['tabella'];
+        $filename = $filename . '-' . $todaydate . '-' . strtoupper(md5(uniqid(rand(), true)));
+        $filename = $filename . '.xls';
+        $filename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $filename;
 
         if (file_exists($filename)) {
             unlink($filename);
@@ -206,7 +207,7 @@ class StampatabellaController extends FiController
                     'color' => array('rgb' => 'FFFFFF'),
                 ),
             );
-            $sheet->getStyle('A1:'.$letteracolonna.'1')->applyFromArray($style_header);
+            $sheet->getStyle('A1:' . $letteracolonna . '1')->applyFromArray($style_header);
         }
 
         $sheet->getRowDimension('1')->setRowHeight(20);
@@ -246,42 +247,42 @@ class StampatabellaController extends FiController
             $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonna);
             switch ($modellocolonna['tipocampo']) {
                 case 'text':
-                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
                             ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
                     break;
                 case 'string':
-                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
                             ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
                     break;
                 case 'integer':
-                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
                             ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
                     break;
                 case 'float':
-                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
                             ->setFormatCode('#,##0.00');
                     break;
                 case 'number':
-                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
                             ->setFormatCode('#,##0.00');
                     break;
                 case 'datetime':
-                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
                             ->setFormatCode('dd/mm/yyyy');
                     break;
                 case 'date':
-                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
                             ->setFormatCode('dd/mm/yyyy');
                     break;
                 default:
-                    $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$row)
+                    $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
                             ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
                     break;

@@ -421,4 +421,33 @@ class Tabelle
     {
         return $this->nometabella.' ['.$this->nomecampo.']';
     }
+    /**
+     * @var boolean
+     */
+    private $registrastorico;
+
+
+    /**
+     * Set registrastorico
+     *
+     * @param boolean $registrastorico
+     *
+     * @return Tabelle
+     */
+    public function setRegistrastorico($registrastorico)
+    {
+        $this->registrastorico = $registrastorico;
+
+        return $this;
+    }
+
+    /**
+     * Get registrastorico
+     *
+     * @return boolean
+     */
+    public function isRegistrastorico()
+    {
+        return $this->registrastorico;
+    }
 }

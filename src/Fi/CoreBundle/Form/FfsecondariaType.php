@@ -8,24 +8,33 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class FfsecondariaType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('descsec')
-            ->add('ffprincipale')
-            ->add('data')
-            ->add('intero')
-            ->add('importo')
-            ->add('nota')
-            ->add('attivo');
+                ->add('descsec', null, array(
+                    'attr' => array(
+                        'class' => 'accessostorico'
+                    )
+                        ))
+                ->add('ffprincipale', null, array(
+                    'attr' => array(
+                        'class' => 'accessostorico'
+                    )
+                        ))
+                ->add('data')
+                ->add('intero')
+                ->add('importo')
+                ->add('nota')
+                ->add('attivo');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
             array(
-            'data_class' => 'Fi\CoreBundle\Entity\Ffsecondaria',
-            )
+                    'data_class' => 'Fi\CoreBundle\Entity\Ffsecondaria',
+                )
         );
     }
 

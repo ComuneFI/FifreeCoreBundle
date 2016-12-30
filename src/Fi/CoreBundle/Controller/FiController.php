@@ -5,9 +5,11 @@ namespace Fi\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\Events;
 
 class FiController extends Controller
 {
+
     public static $namespace;
     public static $bundle;
     public static $controller;
@@ -17,24 +19,24 @@ class FiController extends Controller
     protected function setup(Request $request)
     {
         $matches = array();
-        self::$controller = new \ReflectionClass(get_class($this));
+        $controllo = new \ReflectionClass(get_class($this));
 
-        preg_match('/(.*)\\\(.*)Bundle\\\Controller\\\(.*)Controller/', self::$controller->getName(), $matches);
+        preg_match('/(.*)\\\(.*)Bundle\\\Controller\\\(.*)Controller/', $controllo->getName(), $matches);
 
-        self::$namespace = isset($matches[1]) ? $matches[1] : '';
-        self::$bundle = isset($matches[2]) ? $matches[2] : '';
-        self::$controller = isset($matches[3]) ? $matches[3] : '';
+        self::$namespace = $matches[1];
+        self::$bundle = $matches[2];
+        self::$controller = $matches[3];
         self::$action = substr($request->attributes->get('_controller'), strrpos($request->attributes->get('_controller'), ':') + 1);
     }
 
-    public function setParametriGriglia($prepar = array())
+    protected function setParametriGriglia($prepar = array())
     {
         self::setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array();
 
         $paricevuti = array('container' => $this->container, 'nomebundle' => $nomebundle, 'nometabella' => $controller, 'escludere' => $escludi);
@@ -60,14 +62,13 @@ class FiController extends Controller
 
         $gestionepermessi = new GestionepermessiController();
         $gestionepermessi->setContainer($this->container);
-        //        $utentecorrente = $gestionepermessi->utentecorrenteAction();
+
         $canRead = ($gestionepermessi->leggereAction(array('modulo' => $controller)) ? 1 : 0);
         $idpassato = $request->get('id');
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
 
-        $em = $container->get('doctrine')->getManager();
-        //        $entities = $em->getRepository($nomebundle . ':' . $controller)->findAll();
+        $repotabelle = $this->container->get('OpzioniTabella_repository');
 
         $paricevuti = array('nomebundle' => $nomebundle, 'nometabella' => $controller, 'container' => $container);
 
@@ -75,35 +76,23 @@ class FiController extends Controller
 
         $testatagriglia['multisearch'] = 1;
         $testatagriglia['showconfig'] = 1;
+        $testatagriglia['overlayopen'] = 1;
 
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
 
         $this->setParametriGriglia(array('request' => $request));
         $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
 
-        /* @var $qb \Doctrine\ORM\QueryBuilder */
-        $qb = $em->createQueryBuilder();
-        $qb->select(array('a'));
-        $qb->from('FiCoreBundle:OpzioniTabella', 'a');
-        $qb->leftJoin('a.tabelle', 't');
-        $qb->where('t.nometabella = :tabella');
-        $qb->andWhere("t.nomecampo is null or t.nomecampo = ''");
-        $qb->setParameter('tabella', $controller);
-        $opzioni = $qb->getQuery()->getResult();
-        foreach ($opzioni as $opzione) {
-            $testatagriglia[$opzione->getParametro()] = $opzione->getValore();
-        }
-
-        $testata = json_encode($testatagriglia);
+        $testata = $repotabelle->editTestataFormTabelle($testatagriglia, $controller, $container);
 
         return $this->render(
-            $nomebundle.':'.$controller.':index.html.twig',
+            $nomebundle . ':' . $controller . ':index.html.twig',
             array(
                     //                    'entities' => $entities,
                     'nomecontroller' => $controller,
                     'testata' => $testata,
                     'canread' => $canRead,
-                    'idpassato' => $idpassato,
+                    'idpassato' => $idpassato
                         )
         );
     }
@@ -126,14 +115,14 @@ class FiController extends Controller
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
-        $classbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Entity\\'.$controller;
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $classbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Entity\\' . $controller;
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
 
         $entity = new $classbundle();
-        $formType = $formbundle.'Type';
+        $formType = $formbundle . 'Type';
 
-        // Questo codice per versioni che usano un symfony inferiore a 2.8
+// Questo codice per versioni che usano un symfony inferiore a 2.8
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             $form = $this->createForm($formType, $entity);
         } else {
@@ -151,12 +140,12 @@ class FiController extends Controller
             if ($continua == 0) {
                 return new Response('OK');
             } else {
-                return $this->redirect($this->generateUrl($controller.'_edit', array('id' => $entity->getId())));
+                return $this->redirect($this->generateUrl($controller . '_edit', array('id' => $entity->getId())));
             }
         }
 
         return $this->render(
-            $nomebundle.':'.$controller.':new.html.twig',
+            $nomebundle . ':' . $controller . ':new.html.twig',
             array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
@@ -175,22 +164,22 @@ class FiController extends Controller
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
-        $classbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Entity\\'.$controller;
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
-        $formType = $formbundle.'Type';
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $classbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Entity\\' . $controller;
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
+        $formType = $formbundle . 'Type';
 
         $entity = new $classbundle();
 
-        // Questo codice per versioni che usano un symfony inferiore a 2.8
+// Questo codice per versioni che usano un symfony inferiore a 2.8
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             $form = $this->createForm(
                 $formType,
                 $entity,
                 array('attr' => array(
-                    'id' => 'formdati'.$controller,
+                    'id' => 'formdati' . $controller,
                     ),
-                    'action' => $this->generateUrl($controller.'_create'),
+                    'action' => $this->generateUrl($controller . '_create'),
                     )
             );
         } else {
@@ -198,21 +187,37 @@ class FiController extends Controller
                 new $formType(),
                 $entity,
                 array('attr' => array(
-                    'id' => 'formdati'.$controller,
+                    'id' => 'formdati' . $controller,
                     ),
-                    'action' => $this->generateUrl($controller.'_create'),
+                    'action' => $this->generateUrl($controller . '_create'),
                     )
             );
         }
 
         return $this->render(
-            $nomebundle.':'.$controller.':new.html.twig',
+            $nomebundle . ':' . $controller . ':new.html.twig',
             array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
                         )
         );
+    }
+
+    protected function elencoModifiche($nomebundle, $controller, $id)
+    {
+        $controllerStorico = "Storicomodifiche";
+        $em = $this->getDoctrine()->getManager();
+        $risultato = $em->getRepository('FiCoreBundle:' . $controllerStorico)->findBy(
+            array(
+                    "nometabella" => $controller,
+                    "idtabella" => $id
+                )
+        );
+
+        //$risultato = $entity ? $entity->getArrayResult() : false;
+
+        return $risultato;
     }
 
     /**
@@ -228,27 +233,30 @@ class FiController extends Controller
 
         $allegati = ($request->get('allegati') == 1 ? 1 : 0);
 
-        $nomebundle = $namespace.$bundle.'Bundle';
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
-        $formType = $formbundle.'Type';
+
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
+        $formType = $formbundle . 'Type';
+
+        $elencomodifiche = $this->elencoModifiche($nomebundle, $controller, $id);
 
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository($nomebundle.':'.$controller)->find($id);
+        $entity = $em->getRepository($nomebundle . ':' . $controller)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find '.$controller.' entity.');
+            throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
 
-        // Questo codice per versioni che usano un symfony inferiore a 2.8
+// Questo codice per versioni che usano un symfony inferiore a 2.8
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             $editForm = $this->createForm(
                 $formType,
                 $entity,
                 array('attr' => array(
-                    'id' => 'formdati'.$controller,
+                    'id' => 'formdati' . $controller,
                     ),
-                    'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
+                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                     )
             );
         } else {
@@ -256,9 +264,9 @@ class FiController extends Controller
                 new $formType(),
                 $entity,
                 array('attr' => array(
-                    'id' => 'formdati'.$controller,
+                    'id' => 'formdati' . $controller,
                     ),
-                    'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
+                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                     )
             );
         }
@@ -266,12 +274,13 @@ class FiController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render(
-            $nomebundle.':'.$controller.':edit.html.twig',
+            $nomebundle . ':' . $controller . ':edit.html.twig',
             array(
                     'entity' => $entity,
                     'nomecontroller' => $controller,
                     'edit_form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
+                    'elencomodifiche' => $elencomodifiche,
                     'allegati' => $allegati,
                         )
         );
@@ -288,21 +297,23 @@ class FiController extends Controller
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
-        $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller;
-        $formType = $formbundle.'Type';
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
+        $formType = $formbundle . 'Type';
+
+        $repoStorico = $this->container->get('Storicomodifiche_repository');
 
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository($nomebundle.':'.$controller)->find($id);
+        $entity = $em->getRepository($nomebundle . ':' . $controller)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find '.$controller.' entity.');
+            throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
-        // Questo codice per versioni che usano un symfony inferiore a 2.8
+// Questo codice per versioni che usano un symfony inferiore a 2.8
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
             $editForm = $this->createForm($formType, $entity);
         } else {
@@ -312,19 +323,28 @@ class FiController extends Controller
         $editForm->submit($request->request->get($editForm->getName()));
 
         if ($editForm->isValid()) {
+            $originalData = $em->getUnitOfWork()->getOriginalEntityData($entity);
+
             $em->persist($entity);
             $em->flush();
+
+            $newData = $em->getUnitOfWork()->getOriginalEntityData($entity);
+            $changes = $repoStorico->isRecordChanged($nomebundle, $controller, $originalData, $newData);
+
+            if ($changes) {
+                $repoStorico->saveHistory($controller, $changes, $id, $this->getUser());
+            }
 
             $continua = $request->get('continua');
             if ($continua == 0) {
                 return new Response('OK');
             } else {
-                return $this->redirect($this->generateUrl($controller.'_edit', array('id' => $id)));
+                return $this->redirect($this->generateUrl($controller . '_edit', array('id' => $id)));
             }
         }
 
         return $this->render(
-            $nomebundle.':'.$controller.':edit.html.twig',
+            $nomebundle . ':' . $controller . ':edit.html.twig',
             array(
                     'entity' => $entity,
                     'edit_form' => $editForm->createView(),
@@ -345,7 +365,7 @@ class FiController extends Controller
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
         /* $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller; */
         /* $formType = $formbundle.'Type'; */
 
@@ -353,13 +373,16 @@ class FiController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository($nomebundle.':'.$controller)->find($id);
+        $entity = $em->getRepository($nomebundle . ':' . $controller)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find '.$controller.' entity.');
+            throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
 
-        throw $this->createNotFoundException("Implementare a seconda dell'esigenza 'aggiornaAction' del controller ".$nomebundle.'/'.$controller);
+        throw $this->createNotFoundException("Implementare a seconda dell'esigenza 'aggiornaAction' del controller "
+                . $nomebundle
+                . '/'
+                . $controller);
     }
 
     /**
@@ -373,16 +396,16 @@ class FiController extends Controller
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
 
-        //if (!$request->isXmlHttpRequest()) {
-        //    $request->checkCSRFProtection();
-        //}
+//if (!$request->isXmlHttpRequest()) {
+//    $request->checkCSRFProtection();
+//}
         try {
             $em = $this->getDoctrine()->getManager();
             $qb = $em->createQueryBuilder();
             $ids = explode(',', $request->get('id'));
-            $qb->delete($nomebundle.':'.$controller, 'u')
+            $qb->delete($nomebundle . ':' . $controller, 'u')
                     ->andWhere('u.id IN (:ids)')
                     ->setParameter('ids', $ids);
 
@@ -428,7 +451,7 @@ class FiController extends Controller
         /* $controller = $this->getController(); */
         $container = $this->container;
 
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
 
         $em = $this->getDoctrine()->getManager();
 
@@ -465,7 +488,7 @@ class FiController extends Controller
         $bundle = $this->getBundle();
         /* $controller = $this->getController(); */
         $container = $this->container;
-        $nomebundle = $namespace.$bundle.'Bundle';
+        $nomebundle = $namespace . $bundle . 'Bundle';
 
         $em = $this->getDoctrine()->getManager();
 
@@ -492,7 +515,7 @@ class FiController extends Controller
         $response = new Response();
 
         $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', 'attachment;filename="'.basename($fileexcel).'"');
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . basename($fileexcel) . '"');
 
         $response->setContent(file_get_contents($fileexcel));
 
@@ -527,22 +550,22 @@ class FiController extends Controller
         return $request->get('parametrigriglia') ? $parametrigriglia : $paricevuti;
     }
 
-    public function getNamespace()
+    protected function getNamespace()
     {
         return self::$namespace;
     }
 
-    public function getBundle()
+    protected function getBundle()
     {
         return self::$bundle;
     }
 
-    public function getController()
+    protected function getController()
     {
         return self::$controller;
     }
 
-    public function getAction()
+    protected function getAction()
     {
         return self::$action;
     }
