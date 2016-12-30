@@ -72,5 +72,4 @@ class FfprincipaleController extends FiCoreController
 
         return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
     }
-
 }

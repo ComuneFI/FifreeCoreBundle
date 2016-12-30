@@ -33,7 +33,7 @@ class EntityHiddenType extends AbstractType
                 ->setRequired(array('class'))
                 ->setDefaults(array(
                     'invalid_message' => 'The entity does not exist.',
-                    'query_builder' => NULL
+                    'query_builder' => null
                 ))
         ;
     }
@@ -47,5 +47,4 @@ class EntityHiddenType extends AbstractType
     {
         return 'entity_hidden';
     }
-
 }
