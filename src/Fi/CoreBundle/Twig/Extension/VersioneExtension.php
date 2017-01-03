@@ -17,7 +17,7 @@ class VersioneExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'versione_tag_git' => new \Twig_Function_Method($this, 'versioneTagGit', array('is_safe' => array('html')))
+            'versione_tag_git' => new \Twig_SimpleFunction('versioneTagGit', array($this, 'versioneTagGit', 'is_safe' => array('html')))
         );
     }
 
