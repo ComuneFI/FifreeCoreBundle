@@ -6,6 +6,7 @@ use Fi\CoreBundle\Controller\GestionepermessiController;
 
 class PermessiTwigExtension extends \Twig_Extension
 {
+
     protected $requeststack;
 
     public function __construct($container, $request_stack)
@@ -29,14 +30,14 @@ class PermessiTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            //'permesso' => new \Twig_Function_Method($this, 'controllaPermesso'),
+                //'permesso' => new \Twig_Function_Method($this, 'controllaPermesso'),
         );
     }
 
     public function getFilters()
     {
         return array(
-        new \Twig_SimpleFilter('permesso', array($this, 'singoloPermesso')),
+            new \Twig_SimpleFilter('permesso', array($this, 'singoloPermesso')),
         );
     }
 
@@ -50,16 +51,16 @@ class PermessiTwigExtension extends \Twig_Extension
         switch ($lettera) {
             case 'c':
                 return $gestionepermessi->creareAction($parametri);
-            break;
+                break;
             case 'r':
                 return $gestionepermessi->leggereAction($parametri);
-            break;
+                break;
             case 'u':
                 return $gestionepermessi->aggiornareAction($parametri);
-            break;
+                break;
             case 'd':
                 return $gestionepermessi->cancellareAction($parametri);
-            break;
+                break;
             default:
                 break;
         }

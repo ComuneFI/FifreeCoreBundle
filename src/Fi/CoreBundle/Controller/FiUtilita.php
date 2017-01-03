@@ -13,6 +13,9 @@ use Fi\CoreBundle\DependencyInjection\PercentualiStringhe;
 
 class FiUtilita
 {
+
+
+
     public function percentualiConfrontoStringheVettore($parametri = array())
     {
         $percentuali = new PercentualiStringhe();
@@ -29,7 +32,7 @@ class FiUtilita
 
     public function sommaMinuti($parametri = array())
     {
-        //parametri obbligatori
+//parametri obbligatori
         if (!isset($parametri['minuti'])) {
             return false;
         }
@@ -119,7 +122,7 @@ class FiUtilita
     {
         $separatore = ($senzalinea ? '' : '-');
 
-        $nuovadata = $aaaa.$separatore.$mm.$separatore.$gg;
+        $nuovadata = $aaaa . $separatore . $mm . $separatore . $gg;
 
         return strlen($gg) == 0 ? '' : $nuovadata;
     }
@@ -173,7 +176,7 @@ class FiUtilita
             return false;
         }
 
-        //parametri obbligatori
+//parametri obbligatori
         $elementi = $parametri['elementi'];
         $attributi = $this->getProSelectAttribute($parametri);
         $selezionato = $attributi['selezionato'];
@@ -184,7 +187,7 @@ class FiUtilita
             $elementonomecodice = $elemento[$nomecodice];
             $elementonomedescrizione = $elemento[$nomedescrizione];
             $elementoselezionato = ($elementonomecodice === $selezionato ? " selected='yes'" : '');
-            $stringaproselect .= '<option value="'.$elementonomecodice.'"'.$elementoselezionato.'>'.$elementonomedescrizione.'</option>';
+            $stringaproselect .= '<option value="' . $elementonomecodice . '"' . $elementoselezionato . '>' . $elementonomedescrizione . '</option>';
         }
 
         return $stringaproselect;
@@ -210,21 +213,21 @@ class FiUtilita
     public function cancellaDaVettore($parametri = array())
     {
 
-        //parametri obbligatori
+//parametri obbligatori
         if (isset($parametri['vettore'])) {
             $vettore = $parametri['vettore'];
         } else {
             return false;
         }
 
-        //parametri obbligatori
+//parametri obbligatori
         if (isset($parametri['chiave'])) {
             $chiave = $parametri['chiave'];
         } else {
             return $vettore;
         }
 
-        //parametri obbligatori
+//parametri obbligatori
         if (isset($parametri['valore'])) {
             $valore = $parametri['valore'];
         } else {
