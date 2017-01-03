@@ -2,14 +2,17 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}{{appname}}{% endblock %}</title>
+        {% set versionecor = versione_tag_git() %} 
+        <title>{% block title %}{{appname}}  - ver. {{versionecor}} {% endblock %} </title>
         <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
         {% block head %}
-            {{ include('FiCoreBundle:Default:css.html.twig') }}
+
+            {% set vars = {'versionecor': versionecor} %}
+            {{ include('FiCoreBundle:Default:css.html.twig', vars) }}
             {% block css %}
             {% endblock %}
 
-            {{ include('FiCoreBundle:Default:javascripts.html.twig') }}
+            {{ include('FiCoreBundle:Default:javascripts.html.twig', vars) }}
             {% block javascripts %}
             {% endblock %}
 
@@ -17,6 +20,7 @@
     </head>
 
     <body>
+
         {% for flashMessage in app.session.flashbag.get('notice') %}
             <div class="flash-message">
                 <em>Messaggio</em>: {{ flashMessage }}

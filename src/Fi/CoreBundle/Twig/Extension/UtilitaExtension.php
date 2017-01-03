@@ -6,6 +6,7 @@ use Fi\CoreBundle\Controller\fiUtilita;
 
 class UtilitaExtension extends \Twig_Extension
 {
+
     protected $loader;
     protected $controller;
 
@@ -25,16 +26,16 @@ class UtilitaExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-        new \Twig_SimpleFunction('db2data', array($this, 'getDb2data', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('db2data', array($this, 'getDb2data', 'is_safe' => array('html'))),
         );
     }
 
-  /*
-    public function getFilters() {
-    return array(
-    new \Twig_SimpleFilter('permesso', array($this, 'singoloPermesso')),
-    );
-    } */
+    /*
+      public function getFilters() {
+      return array(
+      new \Twig_SimpleFilter('permesso', array($this, 'singoloPermesso')),
+      );
+      } */
 
     public function getDb2data($giorno)
     {

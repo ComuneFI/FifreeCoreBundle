@@ -16,8 +16,13 @@ services:
         arguments: [ '@service_container', '@request_stack' ]
         tags:
             - { name: twig.extension }
-            
-            
+
+    fi.twig.fi_versione_extension:
+        class: Fi\CoreBundle\Twig\Extension\VersioneExtension
+        arguments: ['@service_container']
+        tags:
+          - { name: twig.extension }
+
     fi.twig.fi_utilita_extension:
       class: Fi\CoreBundle\Twig\Extension\UtilitaExtension
       tags:
