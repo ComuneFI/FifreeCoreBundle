@@ -19,7 +19,7 @@ services:
 
     fi.twig.fi_versione_extension:
         class: Fi\CoreBundle\Twig\Extension\VersioneExtension
-        arguments: [@service_container]
+        arguments: ['@service_container']
         tags:
           - { name: twig.extension }
 
