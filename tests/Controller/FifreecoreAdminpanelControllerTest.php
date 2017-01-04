@@ -82,21 +82,9 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
 
-        $page->pressButton('adminpanelcc');
-        $this->ajaxWait($session, 30000);
-        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-        $session->executeScript($scriptrun);
-        $this->ajaxWait($session, 60000);
-        //$session->getDriver()->getWebDriverSession()->accept_alert();
-        //echo $session->getPage()->getHtml();
-        $this->ajaxWait($session, 30000);
-        //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
-        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $session->executeScript($scriptclose);
-
         $session->stop();
-
-        //clearcache();
+        removecache();
+        
     }
 
     public function test30AdminpanelGenerateEntity()
@@ -144,23 +132,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         sleep(2);
         $session->executeScript($scriptclose);
 
-        //$this->generateentities();
-        //$this->clearcache();
-
-        $page->pressButton('adminpanelcc');
-        $this->ajaxWait($session, 30000);
-        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-        $session->executeScript($scriptrun);
-        $this->ajaxWait($session, 60000);
-        //$session->getDriver()->getWebDriverSession()->accept_alert();
-        //echo $session->getPage()->getHtml();
-        $this->ajaxWait($session, 30000);
-        //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
-        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $session->executeScript($scriptclose);
-
         $session->stop();
-
+        removecache();
         //clearcache();
     }
 
@@ -202,21 +175,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptclose);
         sleep(2);
 
-        $page->pressButton('adminpanelcc');
-        $this->ajaxWait($session, 30000);
-        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-        $session->executeScript($scriptrun);
-        $this->ajaxWait($session, 60000);
-        //$session->getDriver()->getWebDriverSession()->accept_alert();
-        //echo $session->getPage()->getHtml();
-        $this->ajaxWait($session, 30000);
-        //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
-        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $session->executeScript($scriptclose);
-
-        //$this->generateentities();
         $session->stop();
-        //removecache();
+        removecache();
         //clearcache();
     }
 
