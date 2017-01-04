@@ -166,13 +166,16 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
         parent::ajaxWait($session, 30000);
+        var_dump($session->getPage()->getHtml());
+        sleep(1);
+
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
         sleep(2);
         //$this->generateentities();
+        //removecache();
         $session->stop();
-        removecache();
     }
 
     /**
