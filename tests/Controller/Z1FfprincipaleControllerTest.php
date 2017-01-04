@@ -82,7 +82,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         $page->pressButton('_submit');
         //$page = $session->getPage();
 
-        sleep(1);
+        sleep(3);
         $this->crudoperation($session, $page);
 
         $this->searchoperation($session, $page);
