@@ -11,11 +11,23 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 class FifreecoreAdminpanelControllerTest extends FifreeTest
 {
 
+    protected $_application;
+
+    public function getContainer()
+    {
+        return $this->_application->getKernel()->getContainer();
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
+        $kernel = new \AppKernel("test", true);
+        $kernel->boot();
+        $this->_application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+        $this->_application->setAutoExit(false);
+        $this->runConsole("cache:clear", array("--env" => "test"));
         parent::setUp();
         $this->setClassName(get_class());
     }
@@ -83,7 +95,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptclose);
 
         $session->stop();
-        removecache();
+        //removecache();
         //clearcache();
     }
 
@@ -135,7 +147,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$this->generateentities();
         //$this->clearcache();
         $session->stop();
-        removecache();
+        //removecache();
         //clearcache();
     }
 
@@ -178,7 +190,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         sleep(2);
         //$this->generateentities();
         $session->stop();
-        removecache();
+        //removecache();
         //clearcache();
     }
 
@@ -290,6 +302,14 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         startTests();
     }
 
+    protected function runConsole($command, Array $options = array())
+    {
+        $options["-e"] = "test";
+        $options["-q"] = null;
+        $options = array_merge($options, array('command' => $command));
+        return $this->_application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -297,4 +317,5 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
     {
         parent::tearDown();
     }
+
 }
