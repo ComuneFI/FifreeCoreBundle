@@ -317,5 +317,4 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
     {
         parent::tearDown();
     }
-
 }
