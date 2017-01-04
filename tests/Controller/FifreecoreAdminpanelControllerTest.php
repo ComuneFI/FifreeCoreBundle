@@ -6,6 +6,9 @@ use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+
+require_once(__DIR__ . '/../../app/AppKernel.php');
 
 class FifreecoreAdminpanelControllerTest extends FifreeTest
 {
@@ -23,6 +26,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $this->setClassName(get_class());
         $kernel = new \AppKernel(static::$environment, static::$debug);
         $kernel->boot();
+        static::$application = new Application($kernel);
+        static::$application->setAutoExit(false);
     }
 
     public function test1starttest()
