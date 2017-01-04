@@ -23,7 +23,6 @@ function removecache()
 {
     $vendorDir = dirname(dirname(__FILE__));
     $testcache = $vendorDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'test';
-    echo "remove" . $testcache;
     if (file_exists($testcache)) {
         $command = 'rm -rf ' . $testcache;
         $process = new Process($command);
