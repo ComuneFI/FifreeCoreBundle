@@ -39,7 +39,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
     {
         //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()
         //$this->cleanFilesystem();
-        $this->restartKernel();
+        //$this->restartKernel();
         $client = $this->getClientAutorizzato();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $url = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage'/* , array('parms' => 'value') */);
@@ -56,7 +56,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
     public function test20AdminpanelGenerateBundle()
     {
-        $this->restartKernel();
+        //$this->restartKernel();
         $browser = 'firefox';
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
@@ -94,11 +94,12 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         $session->stop();
         removecache();
+        clearcache();
     }
 
     public function test30AdminpanelGenerateEntity()
     {
-        $this->restartKernel();
+        //$this->restartKernel();
         //$fs = new Filesystem();
         //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
         $browser = 'firefox';
@@ -145,11 +146,12 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$this->clearcache();
         $session->stop();
         removecache();
+        clearcache();
     }
 
     public function test40AdminpanelGenerateForm()
     {
-        $this->restartKernel();
+        //$this->restartKernel();
         //$fs = new Filesystem();
         //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
         $browser = 'firefox';
@@ -187,6 +189,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$this->generateentities();
         $session->stop();
         removecache();
+        clearcache();
     }
 
     /**
@@ -194,7 +197,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
      */
     public function test50AdminpanelTest()
     {
-        $this->restartKernel();
+        //$this->restartKernel();
         $browser = 'firefox';
         $urlRouting = "/Prova";
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
@@ -219,6 +222,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         $session->stop();
         removecache();
+        clearcache();
     }
 
     /*
