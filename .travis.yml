@@ -16,7 +16,7 @@ before_script:
   - sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
   - rm -rf app/cache/test
   - rm -rf app/cache/dev
-  - chmod +w app/cache app/logs src/ app/AppKernel.php app/config/routing.yml
+  - APACHEUSER=`ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data' | grep -v root | head -1 | cut -d\  -f1` && setfacl -R -m u:"$APACHEUSER":rwX -m u:`whoami`:rwX app/cache app/logs src/ app/AppKernel.php app/config/routing.yml && setfacl -dR -m u:"$APACHEUSER":rwX -m u:`whoami`:rwX app/cache app/logs src/ app/AppKernel.php app/config/routing.yml
 
 script:
   - ant
