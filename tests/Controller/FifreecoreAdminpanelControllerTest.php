@@ -134,7 +134,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$this->clearcache();
         $session->stop();
         removecache();
-        clearcache();
     }
 
     public function test40AdminpanelGenerateForm()
@@ -177,7 +176,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$this->generateentities();
         $session->stop();
         removecache();
-        clearcache();
     }
 
     /**
@@ -210,7 +208,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         $session->stop();
         removecache();
-        clearcache();
     }
 
     /*
