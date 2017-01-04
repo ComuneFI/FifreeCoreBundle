@@ -194,30 +194,30 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
      */
     public function test50AdminpanelTest()
     {
-//        //$this->restartKernel();
-//        $browser = 'firefox';
-//        $urlRouting = "/Prova";
-//        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
-//
-//        // Choose a Mink driver. More about it in later chapters.
-//        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
-//        $session = new Session($driver);
-//        // start the session
-//        $session->start();
-//        $session->visit($url);
-//        $page = $session->getPage();
-//
-//        var_dump($page->getHtml());
-//        sleep(1);
-//        // Login
-//        $page->fillField('username', 'admin');
-//        $page->fillField('password', 'admin');
-//        $page->pressButton('_submit');
-//
-//        sleep(3);
-//        $this->crudoperation($session, $page);
-//
-//        $session->stop();
+        //$this->restartKernel();
+        $browser = 'firefox';
+        $urlRouting = "/Prova";
+        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
+
+        // Choose a Mink driver. More about it in later chapters.
+        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
+        $session = new Session($driver);
+        // start the session
+        $session->start();
+        $session->visit($url);
+        $page = $session->getPage();
+
+        var_dump($page->getHtml());
+        sleep(1);
+        // Login
+        $page->fillField('username', 'admin');
+        $page->fillField('password', 'admin');
+        $page->pressButton('_submit');
+
+        sleep(3);
+        $this->crudoperation($session, $page);
+
+        $session->stop();
 //        removecache();
 //        //clearcache();
     }
