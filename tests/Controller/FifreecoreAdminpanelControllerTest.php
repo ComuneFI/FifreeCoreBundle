@@ -171,8 +171,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptclose);
         sleep(2);
         //$this->generateentities();
-        //$this->clearcache();
         $session->stop();
+        removecache();
     }
 
     /**
