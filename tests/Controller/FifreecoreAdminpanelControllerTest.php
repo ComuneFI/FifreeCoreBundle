@@ -13,11 +13,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
     protected $_application;
 
-    public function getContainer()
-    {
-        return $this->_application->getKernel()->getContainer();
-    }
-
     /**
      * {@inheritdoc}
      */
