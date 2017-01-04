@@ -4,9 +4,9 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 
-$file = __DIR__.'/../../../../vendor/autoload.php';
+$file = __DIR__.'/../vendor/autoload.php';
 if (!file_exists($file)) {
-    $file = __DIR__.'/../../../../../../vendor/autoload.php';
+    $file = __DIR__.'/../vendor/autoload.php';
     if (!file_exists($file)) {
         throw new RuntimeException('Install dependencies to run test suite.');
     }
@@ -21,7 +21,7 @@ function startTests()
 
 function removecache()
 {
-    $vendorDir = dirname(dirname(__FILE__)).'/../../../';
+    $vendorDir = dirname(dirname(__FILE__)).'/';
     $testcache = $vendorDir.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'test';
     if (file_exists($testcache)) {
         $command = 'rm -rf '.$testcache;
@@ -38,7 +38,7 @@ function removecache()
 
 function clearcache()
 {
-    $vendorDir = dirname(dirname(__FILE__)).'/../../../';
+    $vendorDir = dirname(dirname(__FILE__)).'/';
     if (OsFunctions::isWindows()) {
         $phpPath = OsFunctions::getPHPExecutableFromPath();
     } else {
@@ -68,7 +68,7 @@ function getErrorText($process, $command)
 function cleanFilesystem()
 {
     $DELETE = "new Fi\ProvaBundle\FiProvaBundle(),";
-    $vendorDir = dirname(dirname(__FILE__)).'/../../../';
+    $vendorDir = dirname(dirname(__FILE__)).'/';
     $kernelfile = $vendorDir.'/app/AppKernel.php';
     deleteLineFromFile($kernelfile, $DELETE);
     $routingfile = $vendorDir.'/app/config/routing.yml';
