@@ -10,6 +10,10 @@ use Symfony\Component\Filesystem\Filesystem;
 class FifreecoreAdminpanelControllerTest extends FifreeTest
 {
 
+    protected static $application;
+    protected static $environment = 'test';
+    protected static $debug = false;
+
     /**
      * {@inheritdoc}
      */
@@ -17,6 +21,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
     {
         parent::setUp();
         $this->setClassName(get_class());
+        $kernel = new \AppKernel(static::$environment, static::$debug);
+        $kernel->boot();
     }
 
     public function test1starttest()
@@ -292,4 +298,5 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
     {
         parent::tearDown();
     }
+
 }
