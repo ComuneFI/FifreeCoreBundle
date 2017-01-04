@@ -75,13 +75,14 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptrun);
         parent::ajaxWait($session, 60000);
         //$session->getDriver()->getWebDriverSession()->accept_alert();
+        echo $session->getPage()->getHtml();
         parent::ajaxWait($session, 30000);
         //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
 
         $session->stop();
-        removecache();
+        //removecache();
     }
 
     public function test30AdminpanelGenerateEntity()
@@ -132,7 +133,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$this->generateentities();
         //$this->clearcache();
         $session->stop();
-        removecache();
+        //removecache();
     }
 
     public function test40AdminpanelGenerateForm()
@@ -166,7 +167,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
         parent::ajaxWait($session, 30000);
-        echo $session->getPage()->getHtml();
         sleep(1);
 
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
