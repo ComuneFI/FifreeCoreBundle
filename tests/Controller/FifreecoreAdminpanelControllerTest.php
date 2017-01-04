@@ -2,49 +2,43 @@
 
 namespace Fi\PannelloAmministrazioneBundle\Tests\Controller;
 
+use Fi\CoreBundle\DependencyInjection\FifreeTest;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
-class FifreecoreAdminpanelControllerTest extends \PHPUnit_Framework_TestCase
+class FifreecoreAdminpanelControllerTest extends FifreeTest
 {
 
-    protected $_application;
+    public static function setUpBeforeClass()
+    {
+        startTests();
+    }
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $kernel = new \AppKernel("test", true);
-        $kernel->boot();
-        $this->_application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
-        $this->_application->setAutoExit(false);
-        $ret = $this->runConsole("cache:clear", array("--env" => "test"));
-        //parent::setUp();
-        //$this->setClassName(get_class());
+        parent::setUp();
+        $this->setClassName(get_class());
     }
 
-    public function test1starttest()
+    public function test10AdminpanelHomepage()
     {
-        startTests();
-    }
+        //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()
+        //$this->cleanFilesystem();
+        //$this->restartKernel();
+        $client = $this->getClientAutorizzato();
+        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
+        $url = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage'/* , array('parms' => 'value') */);
 
-//    public function test10AdminpanelHomepage()
-//    {
-//        //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()
-//        //$this->cleanFilesystem();
-//        //$this->restartKernel();
-//        $client = $this->getClientAutorizzato();
-//        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
-//        $url = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage'/* , array('parms' => 'value') */);
-//
-//        $client->request('GET', $url);
-//        $this->assertTrue(
-//                $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
-//        );
-//    }
+        $client->request('GET', $url);
+        $this->assertTrue(
+                $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
+        );
+    }
 
     /*
      * @test
@@ -54,7 +48,7 @@ class FifreecoreAdminpanelControllerTest extends \PHPUnit_Framework_TestCase
     {
         //$this->restartKernel();
         $browser = 'firefox';
-        $urlRouting = $this->_application->getKernel()->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
+        $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
@@ -77,6 +71,18 @@ class FifreecoreAdminpanelControllerTest extends \PHPUnit_Framework_TestCase
         $javascript = "window.alert = function() {};";
         $session->executeScript($javascript);
         $page->pressButton('adminpanelgeneratebundle');
+        parent::ajaxWait($session, 30000);
+        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptrun);
+        parent::ajaxWait($session, 60000);
+        //$session->getDriver()->getWebDriverSession()->accept_alert();
+        //echo $session->getPage()->getHtml();
+        parent::ajaxWait($session, 30000);
+        //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
+        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $session->executeScript($scriptclose);
+
+        $page->pressButton('adminpanelcc');
         $this->ajaxWait($session, 30000);
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
@@ -89,7 +95,7 @@ class FifreecoreAdminpanelControllerTest extends \PHPUnit_Framework_TestCase
         $session->executeScript($scriptclose);
 
         $session->stop();
-        //removecache();
+
         //clearcache();
     }
 
@@ -100,7 +106,7 @@ class FifreecoreAdminpanelControllerTest extends \PHPUnit_Framework_TestCase
         //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
         $browser = 'firefox';
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
-        $urlRouting = $this->_application->getKernel()->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
+        $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
@@ -125,7 +131,7 @@ class FifreecoreAdminpanelControllerTest extends \PHPUnit_Framework_TestCase
         $page->pressButton('adminpanelgenerateentity');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        $this->ajaxWait($session, 30000);
+        parent::ajaxWait($session, 30000);
         sleep(2);
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
@@ -134,14 +140,27 @@ class FifreecoreAdminpanelControllerTest extends \PHPUnit_Framework_TestCase
         $page->pressButton('adminpanelaggiornadatabase');
         $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptdb);
-        $this->ajaxWait($session, 30000);
+        parent::ajaxWait($session, 30000);
         sleep(2);
         $session->executeScript($scriptclose);
 
         //$this->generateentities();
         //$this->clearcache();
+
+        $page->pressButton('adminpanelcc');
+        $this->ajaxWait($session, 30000);
+        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptrun);
+        $this->ajaxWait($session, 60000);
+        //$session->getDriver()->getWebDriverSession()->accept_alert();
+        //echo $session->getPage()->getHtml();
+        $this->ajaxWait($session, 30000);
+        //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
+        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $session->executeScript($scriptclose);
+
         $session->stop();
-        //removecache();
+
         //clearcache();
     }
 
@@ -152,7 +171,7 @@ class FifreecoreAdminpanelControllerTest extends \PHPUnit_Framework_TestCase
         //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
         $browser = 'firefox';
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
-        $urlRouting = $this->_application->getKernel()->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
+        $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
@@ -175,13 +194,26 @@ class FifreecoreAdminpanelControllerTest extends \PHPUnit_Framework_TestCase
         $page->pressButton('adminpanelgenerateformcrud');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        $this->ajaxWait($session, 30000);
+        parent::ajaxWait($session, 30000);
         sleep(1);
 
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
         sleep(2);
+
+        $page->pressButton('adminpanelcc');
+        $this->ajaxWait($session, 30000);
+        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptrun);
+        $this->ajaxWait($session, 60000);
+        //$session->getDriver()->getWebDriverSession()->accept_alert();
+        //echo $session->getPage()->getHtml();
+        $this->ajaxWait($session, 30000);
+        //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
+        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $session->executeScript($scriptclose);
+
         //$this->generateentities();
         $session->stop();
         //removecache();
@@ -195,7 +227,12 @@ class FifreecoreAdminpanelControllerTest extends \PHPUnit_Framework_TestCase
     {
         //$this->restartKernel();
         $browser = 'firefox';
-        $urlRouting = "/Prova";
+        try {
+            $urlRouting = $this->getContainer()->get('router')->generate('Prova_container');
+        } catch (\Exception $exc) {
+            $urlRouting = "/Prova";
+        }
+
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
@@ -217,8 +254,8 @@ class FifreecoreAdminpanelControllerTest extends \PHPUnit_Framework_TestCase
         $this->crudoperation($session, $page);
 
         $session->stop();
-//        removecache();
-//        //clearcache();
+        //removecache();
+        //clearcache();
     }
 
     /*
@@ -252,11 +289,11 @@ class FifreecoreAdminpanelControllerTest extends \PHPUnit_Framework_TestCase
             }
         }
         /* Inserimento */
-        $this->ajaxWait($session, 20000);
+        parent::ajaxWait($session, 20000);
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         $page->fillField('fi_provabundle_prova_descrizione', $descrizionetest1);
         $page->find('css', 'a#sDataProvaS')->click();
-        $this->ajaxWait($session, 20000);
+        parent::ajaxWait($session, 20000);
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
@@ -268,46 +305,32 @@ class FifreecoreAdminpanelControllerTest extends \PHPUnit_Framework_TestCase
                 $e->click();
             }
         }
-        $this->ajaxWait($session, 20000);
+        parent::ajaxWait($session, 20000);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $page->fillField('fi_provabundle_prova_descrizione', $descrizionetest2);
         $page->find('css', 'a#sDataProvaS')->click();
-        $this->ajaxWait($session);
+        parent::ajaxWait($session);
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
-        $this->ajaxWait($session, 20000);
+        parent::ajaxWait($session, 20000);
 
         foreach ($elementdel as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
         }
-        $this->ajaxWait($session, 20000);
+        parent::ajaxWait($session, 20000);
         $page->find('css', 'a#dData')->click();
-        $this->ajaxWait($session, 20000);
+        parent::ajaxWait($session, 20000);
     }
 
     public function testZ9999999999PannelloAmministrazioneMain()
     {
         startTests();
-    }
-
-    protected function runConsole($command, Array $options = array())
-    {
-        $options["-e"] = "test";
-        $options["-q"] = null;
-        $options = array_merge($options, array('command' => $command));
-        return $this->_application->run(new \Symfony\Component\Console\Input\ArrayInput($options));
-    }
-
-    protected function ajaxWait($session, $timeout = 5000)
-    {
-        $session->wait($timeout, '(0 === jQuery.active)');
-        sleep(1);
     }
 
     /**
