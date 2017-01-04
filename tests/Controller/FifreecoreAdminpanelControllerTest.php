@@ -35,7 +35,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         $client->request('GET', $url);
         $this->assertTrue(
-            $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
+                $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
         );
     }
 
@@ -177,82 +177,36 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         sleep(2);
     }
 
+    /**
+     * @test
+     */
     public function test50AdminpanelTest()
     {
-        //        $em = $this->getEntityManager();
-//        $prova = new \Fi\ProvaBundle\Entity\Prova();
-//        $descrizione = 'Prova';
-//        $prova->setDescrizione($descrizione);
-//        $em->persist($prova);
-//        $em->flush();
-//        $this->assertEquals($descrizione, $prova->getDescrizione());
-//        $this->assertGreaterThanOrEqual(1, $prova->getId());
-//        $em->remove($prova);
-//        $em->flush();
-//        $em->clear();
-//        $this->assertTrue(is_null($prova->getId()));
-//        $browser = 'firefox';
-//        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
-//        //$urlRouting = $this->getContainer()->get('router')->generate('Prova_container');
-//        //$url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
-//        $urlRouting = '/Prova';
-//        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
-//        // Choose a Mink driver. More about it in later chapters.
-//        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
-//        $session = new Session($driver);
-//        // start the session
-//        $session->start();
-//        $session->visit($url);
-//        $page = $session->getPage();
-//        sleep(3);
-//        // Login
-//        $page->fillField('username', 'admin');
-//        $page->fillField('password', 'admin');
-//        $page->pressButton('_submit');
-//        sleep(1);
-//        $elementadd = $page->findAll('css', '.ui-icon-plus');
-//        foreach ($elementadd as $e) {
-//            if ($e->isVisible()) {
-//                $e->click();
-//            }
-//        }
-//        /* Inserimento */
-//        parent::ajaxWait($session, 20000);
-//        $descrizionetest1 = 'Test inserimento descrizione automatico';
-//        $page->fillField('fi_provabundle_prova_descrizione', $descrizionetest1);
-//        $page->find('css', 'a#sDataProvaS')->click();
-//        parent::ajaxWait($session, 20000);
-//        $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-//        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRow.'}()');
-//        $elementmod = $page->findAll('css', '.ui-icon-pencil');
-//        foreach ($elementmod as $e) {
-//            if ($e->isVisible()) {
-//                $e->click();
-//            }
-//        }
-//        parent::ajaxWait($session, 20000);
-//        /* Modifica */
-//        $descrizionetest2 = 'Test inserimento descrizione automatico 2';
-//        $page->fillField('fi_provabundle_prova_descrizione', $descrizionetest2);
-//        $page->find('css', 'a#sDataProvaS')->click();
-//        parent::ajaxWait($session, 20000);
-//        /* Cancellazione */
-//        $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
-//        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRowDel.'}()');
-//        $elementdel = $page->findAll('css', '.ui-icon-trash');
-//        parent::ajaxWait($session, 20000);
-//        foreach ($elementdel as $e) {
-//            if ($e->isVisible()) {
-//                $e->click();
-//            }
-//        }
-//        parent::ajaxWait($session, 20000);
-//        $page->find('css', 'a#dData')->click();
-//        parent::ajaxWait($session, 20000);
-//        //$this->generateentities();
-//        //$this->clearcache();
-//        $session->stop();
-//        removecache();
+        $this->restartKernel();
+        //$fs = new Filesystem();
+        //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
+        $browser = 'firefox';
+        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
+        $urlRouting = "/Prova";
+        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
+
+        // Choose a Mink driver. More about it in later chapters.
+        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
+        $session = new Session($driver);
+        // start the session
+        $session->start();
+        $session->visit($url);
+        $page = $session->getPage();
+        sleep(1);
+        // Login
+        $page->fillField('username', 'admin');
+        $page->fillField('password', 'admin');
+        $page->pressButton('_submit');
+
+        sleep(3);
+        $this->crudoperation($session, $page);
+
+        $session->stop();
     }
 
     /*
@@ -274,6 +228,55 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         /* save the login token into the session and put it in a cookie */
         $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
+    }
+
+    private function crudoperation($session, $page)
+    {
+        $elementadd = $page->findAll('css', '.ui-icon-plus');
+
+        foreach ($elementadd as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        /* Inserimento */
+        parent::ajaxWait($session, 20000);
+        $descrizionetest1 = 'Test inserimento descrizione automatico';
+        $page->fillField('fi_provabundle_prova_descrizione', $descrizionetest1);
+        $page->find('css', 'a#sDataProvaS')->click();
+        parent::ajaxWait($session, 20000);
+
+        $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
+
+        $elementmod = $page->findAll('css', '.ui-icon-pencil');
+
+        foreach ($elementmod as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+        /* Modifica */
+        $descrizionetest2 = 'Test inserimento descrizione automatico 2';
+        $page->fillField('fi_provabundle_prova_descrizione', $descrizionetest2);
+        $page->find('css', 'a#sDataProvaS')->click();
+        parent::ajaxWait($session);
+        /* Cancellazione */
+        $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
+
+        $elementdel = $page->findAll('css', '.ui-icon-trash');
+        parent::ajaxWait($session, 20000);
+
+        foreach ($elementdel as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+        $page->find('css', 'a#dData')->click();
+        parent::ajaxWait($session, 20000);
     }
 
     public function testZ9999999999PannelloAmministrazioneMain()
