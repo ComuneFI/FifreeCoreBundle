@@ -12,6 +12,8 @@ if (!file_exists($file)) {
     }
 }
 
+date_default_timezone_set( 'Europe/Rome' );
+
 function startTests()
 {
     removecache();
