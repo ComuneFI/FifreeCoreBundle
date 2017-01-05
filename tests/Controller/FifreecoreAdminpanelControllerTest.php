@@ -78,11 +78,11 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         parent::ajaxWait($session, 60000);
         //$session->getDriver()->getWebDriverSession()->accept_alert();
         //echo $session->getPage()->getHtml();
+        /**/
+        $screenshot = $driver->getWebDriverSession()->screenshot();
+        file_put_contents('/tmp/test1.png', base64_decode($screenshot));
+        /**/
         //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
-        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $session->executeScript($scriptclose);
-
-        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
 
@@ -91,7 +91,11 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptrun);
         parent::ajaxWait($session, 60000);
         sleep(2);
-        echo $session->getPage()->getHtml();
+        //echo $session->getPage()->getHtml();
+        /**/
+        $screenshot = $driver->getWebDriverSession()->screenshot();
+        file_put_contents('/tmp/test2.png', base64_decode($screenshot));
+        /**/
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
         sleep(2);
@@ -114,18 +118,26 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->pressButton('adminpanelgenerateentity');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 30000);
+        parent::ajaxWait($session, 60000);
         sleep(2);
         //echo $session->getPage()->getHtml();
+        /**/
+        $screenshot = $driver->getWebDriverSession()->screenshot();
+        file_put_contents('/tmp/test3.png', base64_decode($screenshot));
+        /**/
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
 
         $page->pressButton('adminpanelcc');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 30000);
+        parent::ajaxWait($session, 60000);
         sleep(2);
         //echo $session->getPage()->getHtml();
+        /**/
+        $screenshot = $driver->getWebDriverSession()->screenshot();
+        file_put_contents('/tmp/test4.png', base64_decode($screenshot));
+        /**/
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
@@ -133,9 +145,12 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->pressButton('adminpanelaggiornadatabase');
         $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptdb);
-        parent::ajaxWait($session, 30000);
+        parent::ajaxWait($session, 60000);
         sleep(2);
-        $session->executeScript($scriptclose);
+        /**/
+        $screenshot = $driver->getWebDriverSession()->screenshot();
+        file_put_contents('/tmp/test5.png', base64_decode($screenshot));
+        /**/
 
         //echo $session->getPage()->getHtml();
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
@@ -144,8 +159,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $driver->reload();
         sleep(2);
 
-        //removecache();
-        //clearcache();
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
@@ -159,12 +172,13 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->pressButton('adminpanelgenerateformcrud');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 30000);
+        parent::ajaxWait($session, 60000);
         sleep(1);
+        /**/
+        $screenshot = $driver->getWebDriverSession()->screenshot();
+        file_put_contents('/tmp/test6.png', base64_decode($screenshot));
+        /**/
 
-        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
-        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $session->executeScript($scriptclose);
         sleep(2);
 
         //echo $session->getPage()->getHtml();
@@ -175,7 +189,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->pressButton('adminpanelcc');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 30000);
+        parent::ajaxWait($session, 60000);
         sleep(2);
 
         $driver->reload();
@@ -199,8 +213,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         sleep(3);
         $session->stop();
-        //removecache();
-        //clearcache();
     }
 
     /*
@@ -285,4 +297,5 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
     {
         parent::tearDown();
     }
+
 }
