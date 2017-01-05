@@ -17,7 +17,6 @@ addons:
 before_script:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then phpenv config-add travis.php.ini; fi
   - if [[ "$TRAVIS_PHP_VERSION" == "7.0" ]]; then phpenv config-add travis.php.ini; fi
-#  - echo "hhvm.libxml.ext_entity_whitelist = file,http,https" >> /etc/hhvm/php.ini
   - echo -e '\nhhvm.libxml.ext_entity_whitelist = "file,http,https"' | sudo tee -a /etc/hhvm/php.ini
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
@@ -29,7 +28,9 @@ before_script:
   - rm -rf app/cache/test
   - rm -rf app/cache/dev
   - chmod 777 -R app/cache app/logs 
-  - chmod 777 src/ app/AppKernel.php app/config/routing.yml
+  - chmod 777 src/ src/Fi app/AppKernel.php app/config/routing.yml
+  - php app/console cache:clear --env=test
+  - php app/console cache:warmup --env=test
 
 script:
   - ant
