@@ -54,6 +54,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
         $session = new Session($driver);
+
         // start the session
         $session->start();
         $session->visit($url);
@@ -82,33 +83,27 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
 
-        $session->stop();
-        removecache();
-        
-    }
+        //echo $session->getPage()->getHtml();
+        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
+        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $session->executeScript($scriptclose);
 
-    public function test30AdminpanelGenerateEntity()
-    {
-        //$this->restartKernel();
-        //$fs = new Filesystem();
-        //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
-        $browser = 'firefox';
-        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
+        $page->pressButton('adminpanelcc');
+        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptrun);
+        parent::ajaxWait($session, 30000);
+        sleep(2);
+        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $session->executeScript($scriptclose);
+
+        $driver->reload();
+        sleep(2);
+
+        //***************************************************************************************************************
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
-        // Choose a Mink driver. More about it in later chapters.
-        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
-        $session = new Session($driver);
-        // start the session
-        $session->start();
         $session->visit($url);
-        $page = $session->getPage();
-        sleep(1);
-        // Login
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
-        $page->pressButton('_submit');
 
         sleep(3);
         $page->fillField('bundlename', 'Fi/ProvaBundle');
@@ -121,6 +116,16 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptrun);
         parent::ajaxWait($session, 30000);
         sleep(2);
+        //echo $session->getPage()->getHtml();
+        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $session->executeScript($scriptclose);
+
+        $page->pressButton('adminpanelcc');
+        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptrun);
+        parent::ajaxWait($session, 30000);
+        sleep(2);
+        //echo $session->getPage()->getHtml();
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
@@ -132,33 +137,20 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         sleep(2);
         $session->executeScript($scriptclose);
 
-        $session->stop();
-        removecache();
-        //clearcache();
-    }
+        //echo $session->getPage()->getHtml();
+        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
+        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $session->executeScript($scriptclose);
+        $driver->reload();
+        sleep(2);
 
-    public function test40AdminpanelGenerateForm()
-    {
-        //$this->restartKernel();
-        //$fs = new Filesystem();
-        //$fs->remove($this->getContainer()->getParameter('kernel.cache_dir'));
-        $browser = 'firefox';
-        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
+        //removecache();
+        //clearcache();
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
-        // Choose a Mink driver. More about it in later chapters.
-        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
-        $session = new Session($driver);
-        // start the session
-        $session->start();
         $session->visit($url);
         $page = $session->getPage();
-        sleep(1);
-        // Login
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
-        $page->pressButton('_submit');
 
         sleep(3);
         $page->fillField('bundlename', 'Fi/ProvaBundle');
@@ -175,47 +167,40 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptclose);
         sleep(2);
 
-        $session->stop();
-        removecache();
-        //clearcache();
-    }
+        //echo $session->getPage()->getHtml();
+        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
+        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $session->executeScript($scriptclose);
 
-    /**
-     * @test
-     */
-    public function test50AdminpanelTest()
-    {
-//        //$this->restartKernel();
-//        $browser = 'firefox';
-//        try {
-//            $urlRouting = $this->getContainer()->get('router')->generate('Prova_container');
-//        } catch (\Exception $exc) {
-//            $urlRouting = "/Prova";
-//        }
-//
-//        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
-//
-//        // Choose a Mink driver. More about it in later chapters.
-//        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
-//        $session = new Session($driver);
-//        // start the session
-//        $session->start();
-//        $session->visit($url);
-//        $page = $session->getPage();
-//
-//        var_dump($page->getHtml());
-//        sleep(1);
-//        // Login
-//        $page->fillField('username', 'admin');
-//        $page->fillField('password', 'admin');
-//        $page->pressButton('_submit');
-//
-//        sleep(3);
-//        $this->crudoperation($session, $page);
-//
-//        $session->stop();
-//        removecache();
-//        //clearcache();
+        $page->pressButton('adminpanelcc');
+        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptrun);
+        parent::ajaxWait($session, 30000);
+        sleep(2);
+
+        $driver->reload();
+        sleep(2);
+
+        //***************************************************************************************************************
+        try {
+            $urlRouting = $this->getContainer()->get('router')->generate('Prova_container');
+        } catch (\Exception $exc) {
+            $urlRouting = "/Prova";
+        }
+
+        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
+
+        $session->visit($url);
+        $page = $session->getPage();
+
+        //echo $page->getHtml();
+        sleep(3);
+        $this->crudoperation($session, $page);
+
+        sleep(3);
+        $session->stop();
+        //removecache();
+        //clearcache();
     }
 
     /*
