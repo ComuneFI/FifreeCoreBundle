@@ -47,7 +47,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
     public function test20AdminpanelGenerateBundle()
     {
         //$this->restartKernel();
-        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->getContainer());
         $browser = 'firefox';
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
@@ -79,44 +78,38 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         parent::ajaxWait($session, 60000);
         //$session->getDriver()->getWebDriverSession()->accept_alert();
         sleep(2);
-//        echo $session->getPage()->getHtml();
-//        /**/
-//        $screenshot = $driver->getWebDriverSession()->screenshot();
-//        file_put_contents('/tmp/test1.png', base64_decode($screenshot));
+        echo $session->getPage()->getHtml();
+        /**/
+        $screenshot = $driver->getWebDriverSession()->screenshot();
+        file_put_contents('/tmp/test1.png', base64_decode($screenshot));
         /**/
         //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
-        exec("rm -rf " . $apppath->getCachePath() . DIRECTORY_SEPARATOR . "test");
-        exec("rm -rf " . $apppath->getCachePath() . DIRECTORY_SEPARATOR . "dev");
-        exec("rm -rf " . $apppath->getCachePath() . DIRECTORY_SEPARATOR . "prod");
-//        $page->pressButton('adminpanelcc');
-//        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-//        $session->executeScript($scriptrun);
-//        parent::ajaxWait($session, 60000);
-//        sleep(2);
-//        echo $session->getPage()->getHtml();
-//        /**/
-//        $screenshot = $driver->getWebDriverSession()->screenshot();
-//        file_put_contents('/tmp/test2.png', base64_decode($screenshot));
-//        /**/
-//        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-//        $session->executeScript($scriptclose);
-//        sleep(2);
+
+        $page->pressButton('adminpanelcc');
+        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptrun);
+        parent::ajaxWait($session, 60000);
+        sleep(2);
+        echo $session->getPage()->getHtml();
+        /**/
+        $screenshot = $driver->getWebDriverSession()->screenshot();
+        file_put_contents('/tmp/test2.png', base64_decode($screenshot));
+        /**/
+        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $session->executeScript($scriptclose);
+        sleep(2);
 
         $driver->reload();
         sleep(2);
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
-        $page->pressButton('_submit');
-
-        sleep(1);
 
         //***************************************************************************************************************
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         $session->visit($url);
+        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->getContainer());
         $file = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle";
         $check = file_exists($file);
         $this->assertTrue($check, $file);
@@ -148,28 +141,25 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
                 "doctrine" . DIRECTORY_SEPARATOR . "Prova.orm.yml";
         $this->assertTrue(file_exists($check));
 
-//        $page->pressButton('adminpanelcc');
-//        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-//        $session->executeScript($scriptrun);
-//        parent::ajaxWait($session, 60000);
-//        sleep(2);
-//        //echo $session->getPage()->getHtml();
-//        /**/
-//        $screenshot = $driver->getWebDriverSession()->screenshot();
-//        file_put_contents('/tmp/test4.png', base64_decode($screenshot));
-//        /**/
-//        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
-//        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-//        $session->executeScript($scriptclose);
+        $page->pressButton('adminpanelcc');
+        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptrun);
+        parent::ajaxWait($session, 60000);
+        sleep(2);
+        //echo $session->getPage()->getHtml();
+        /**/
+        $screenshot = $driver->getWebDriverSession()->screenshot();
+        file_put_contents('/tmp/test4.png', base64_decode($screenshot));
+        /**/
+        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
+        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $session->executeScript($scriptclose);
 
         $page->pressButton('adminpanelaggiornadatabase');
         $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptdb);
         parent::ajaxWait($session, 60000);
         sleep(2);
-        exec("rm -rf " . $apppath->getCachePath() . DIRECTORY_SEPARATOR . "test");
-        exec("rm -rf " . $apppath->getCachePath() . DIRECTORY_SEPARATOR . "dev");
-        exec("rm -rf " . $apppath->getCachePath() . DIRECTORY_SEPARATOR . "prod");
         /**/
         $screenshot = $driver->getWebDriverSession()->screenshot();
         file_put_contents('/tmp/test5.png', base64_decode($screenshot));
@@ -181,11 +171,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptclose);
         $driver->reload();
         sleep(2);
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
-        $page->pressButton('_submit');
-
-        sleep(1);
 
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
@@ -216,9 +201,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $screenshot = $driver->getWebDriverSession()->screenshot();
         file_put_contents('/tmp/test6.png', base64_decode($screenshot));
         /**/
-        exec("rm -rf " . $apppath->getCachePath() . DIRECTORY_SEPARATOR . "test");
-        exec("rm -rf " . $apppath->getCachePath() . DIRECTORY_SEPARATOR . "dev");
-        exec("rm -rf " . $apppath->getCachePath() . DIRECTORY_SEPARATOR . "prod");
 
         sleep(2);
 
@@ -227,19 +209,14 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
 
-//        $page->pressButton('adminpanelcc');
-//        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-//        $session->executeScript($scriptrun);
-//        parent::ajaxWait($session, 60000);
-//        sleep(2);
+        $page->pressButton('adminpanelcc');
+        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptrun);
+        parent::ajaxWait($session, 60000);
+        sleep(2);
 
         $driver->reload();
         sleep(2);
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
-        $page->pressButton('_submit');
-
-        sleep(1);
 
         //***************************************************************************************************************
         try {
