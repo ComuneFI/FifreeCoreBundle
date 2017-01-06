@@ -181,7 +181,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         sleep(2);
 
-        //echo $session->getPage()->getHtml();
+        echo $session->getPage()->getHtml();
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
@@ -207,7 +207,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->visit($url);
         $page = $session->getPage();
 
-        echo $page->getHtml();
+        //echo $page->getHtml();
         sleep(3);
         $this->crudoperation($session, $page);
 
