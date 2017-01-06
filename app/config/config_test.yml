@@ -14,22 +14,3 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
-
-fi_core:
-    testroutes: true
-    testdb: true
-    
-twig:
-    cache:  false
-    
-doctrine:
-    dbal:
-        driver:   %database_driver%
-        host:     %database_host%
-        port:     %database_port%
-        dbname:   %database_name%
-        path:     %database_path%
-        user:     %database_user%
-        password: %database_password%
-        charset:  UTF8
-    
