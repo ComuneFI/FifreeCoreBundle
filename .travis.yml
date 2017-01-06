@@ -19,6 +19,7 @@ before_script:
   - if [[ "$TRAVIS_PHP_VERSION" == "7.0" ]]; then phpenv config-add travis.php.ini; fi
   - echo -e '\nhhvm.libxml.ext_entity_whitelist = "file,http,https"' | sudo tee -a /etc/hhvm/php.ini
   - echo -e '\nhhvm.enable_zend_compat=true' | sudo tee -a /etc/hhvm/php.ini
+  - echo -e '\ndate.timezone = "Europe/Rome"' | sudo tee -a /etc/hhvm/php.ini
   - echo 'date.timezone = "Europe/Rome"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
