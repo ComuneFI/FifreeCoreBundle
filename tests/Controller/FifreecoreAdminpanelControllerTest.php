@@ -77,7 +77,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptrun);
         parent::ajaxWait($session, 60000);
         //$session->getDriver()->getWebDriverSession()->accept_alert();
-        //echo $session->getPage()->getHtml();
+        sleep(2);
+        echo $session->getPage()->getHtml();
         /**/
         $screenshot = $driver->getWebDriverSession()->screenshot();
         file_put_contents('/tmp/test1.png', base64_decode($screenshot));
