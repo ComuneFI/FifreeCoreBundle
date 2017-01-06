@@ -120,7 +120,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptrun);
         parent::ajaxWait($session, 60000);
         sleep(2);
-        //echo $session->getPage()->getHtml();
+        echo $session->getPage()->getHtml();
         /**/
         $screenshot = $driver->getWebDriverSession()->screenshot();
         file_put_contents('/tmp/test3.png', base64_decode($screenshot));
@@ -181,7 +181,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         sleep(2);
 
-        echo $session->getPage()->getHtml();
+        //echo $session->getPage()->getHtml();
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
