@@ -3,7 +3,8 @@ language: php
 php:
   - 5.6
   - 7.0
-#  - hhvm
+  - 7.1
+  - hhvm
 
 #sudo: required
 #dist: trusty
@@ -15,8 +16,8 @@ addons:
   firefox: "latest-esr"
   
 before_script:
-  - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then phpenv config-add travis.php.ini; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == "7.0" ]]; then phpenv config-add travis.php.ini; fi
+  #- if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then phpenv config-add travis.php.ini; fi
+  #- if [[ "$TRAVIS_PHP_VERSION" == "7.1" ]]; then phpenv config-add travis.php.ini; fi
   - echo -e '\nhhvm.libxml.ext_entity_whitelist = "file,http,https"' | sudo tee -a /etc/hhvm/php.ini
   - echo -e '\nhhvm.enable_zend_compat=true' | sudo tee -a /etc/hhvm/php.ini
   - echo -e '\ndate.timezone = "Europe/Rome"' | sudo tee -a /etc/hhvm/php.ini
@@ -28,15 +29,15 @@ before_script:
   - php app/console fifree2:install admin admin admin@admin.it --env=test
   - php app/console server:start --env=test
   - sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
-  - rm -rf app/cache/test
-  - rm -rf app/cache/dev
-  - mkdir app/Resources
-  - chmod 777 -R app/cache app/logs 
-  - chmod 777 src/ src/Fi app/Resources app/AppKernel.php app/config/routing.yml
-  - php app/console cache:clear --env=test
-  - php app/console cache:warmup --env=test
-  - php -i | grep timezone
-  - php -i | grep ini
+  #- rm -rf app/cache/test
+  #- rm -rf app/cache/dev
+  #- mkdir app/Resources
+  #- chmod 777 -R app/cache app/logs 
+  #- chmod 777 src/ src/Fi app/Resources app/AppKernel.php app/config/routing.yml
+  #- php app/console cache:clear --env=test
+  #- php app/console cache:warmup --env=test
+  #- php -i | grep timezone
+  #- php -i | grep ini
 
 script:
   - ant
