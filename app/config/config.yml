@@ -30,28 +30,28 @@ framework:
 
 # Twig Configuration
 twig:
-    debug:            %kernel.debug%
-    strict_variables: %kernel.debug%
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
     globals:
         appname: "%appname%"
         database_driver: "%database_driver%"
         database_host: "%database_host%"
         database_name: "%database_name%"
         database_user: "%database_user%"
-        solosso: %solosso%
+        solosso: "%solosso%"
     form_themes:
         - FiCoreBundle:Standard:form_div_layout.html.twig
 
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   %database_driver%
-        host:     %database_host%
-        port:     %database_port%
-        dbname:   %database_name%
-        path:     %database_path%
-        user:     %database_user%
-        password: %database_password%
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        path:     "%database_path%"
+        user:     "%database_user%"
+        password: "%database_password%"
         charset:  UTF8
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
@@ -67,10 +67,10 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
     spool:     { type: memory }
 
 fos_user:
@@ -89,7 +89,7 @@ oneup_flysystem:
     adapters:
         allegati_adapter:
             local:
-                directory: %kernel.root_dir%/../web/allegati
+                directory: "%kernel.root_dir%/../web/allegati"
 
     filesystems:
         allegati_file_fs:
