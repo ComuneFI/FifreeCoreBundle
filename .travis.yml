@@ -20,8 +20,6 @@ before_script:
   - echo -e '\nhhvm.libxml.ext_entity_whitelist = "file,http,https"' | sudo tee -a /etc/hhvm/php.ini
   - echo -e '\nhhvm.enable_zend_compat=true' | sudo tee -a /etc/hhvm/php.ini
   - echo 'date.timezone = "Europe/Rome"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  - echo 'Europe/Rome' | sudo tee /etc/timezone
-  - sudo dpkg-reconfigure --frontend noninteractive tzdata
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
@@ -31,8 +29,9 @@ before_script:
   - sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
   - rm -rf app/cache/test
   - rm -rf app/cache/dev
+  - mkdir app/Resources
   - chmod 777 -R app/cache app/logs 
-  - chmod 777 src/ src/Fi app/AppKernel.php app/config/routing.yml
+  - chmod 777 src/ src/Fi app/Resources app/AppKernel.php app/config/routing.yml
   - php app/console cache:clear --env=test
   - php app/console cache:warmup --env=test
   - php -i | grep timezone
