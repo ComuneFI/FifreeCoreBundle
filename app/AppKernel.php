@@ -22,15 +22,15 @@ class AppKernel extends Kernel
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),
         );
 
-        $currentDir = dirname(dirname(__FILE__)).'/';
-        if (file_exists($currentDir.'src'.DIRECTORY_SEPARATOR.'Fi'.DIRECTORY_SEPARATOR.'ProvaBundle')) {
-            $bundles[] = new Fi\ProvaBundle\FiProvaBundle();
-        }
         if (in_array($this->getEnvironment(), array('dev', 'test', 'localhost'))) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $currentDir = dirname(dirname(__FILE__)).'/';
+            if (file_exists($currentDir.'src'.DIRECTORY_SEPARATOR.'Fi'.DIRECTORY_SEPARATOR.'ProvaBundle')) {
+                $bundles[] = new Fi\ProvaBundle\FiProvaBundle();
+            }
         }
 
         return $bundles;
