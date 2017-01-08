@@ -10,22 +10,31 @@ class PannelloAmministrazioneTest extends CommandTestCase
         startTests();
     }
 
-//    public function testPannelloGenerateBundle()
-//    {
-//        $client = self::createClient();
-//        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($client->getContainer());
-//
-//        $output = $this->runCommand($client, "generate:bundle --namespace=Fi/ProvaBundle --dir=src/ --format=yml --env=test --no-interaction");
-//        echo $output;
-//
-//        $client = self::createClient();
-//        $output = $this->runCommand($client, "pannelloamministrazione:generateentities wbadmintest.mwb Fi/ProvaBundle --schemaupdate --env=test");
-//        echo $output;
-//
-//        $output = $this->runCommand($client, "cache:clear --env=test");
-//        echo $output;
-//        $output = $this->runCommand($client, "cache:warmup --env=test");
-//        echo $output;
+    public function testPannelloGenerateBundle()
+    {
+        $client = self::createClient();
+        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($client->getContainer());
+
+        $output = $this->runCommand($client, "generate:bundle --namespace=Fi/ProvaBundle --dir=src/ --format=yml --env=test --no-interaction");
+        echo $output;
+
+        $client = self::createClient();
+        $output = $this->runCommand($client, "pannelloamministrazione:generateentities wbadmintest.mwb Fi/ProvaBundle --schemaupdate --env=test");
+        echo $output;
+
+        $check = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
+        $this->assertTrue(file_exists($check));
+
+        $check = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR .
+                "doctrine" . DIRECTORY_SEPARATOR . "Prova.orm.yml";
+        $this->assertTrue(file_exists($check));
+
+////        $output = $this->runCommand($client, "cache:clear --env=test");
+////        echo $output;
+////        $output = $this->runCommand($client, "cache:warmup --env=test");
+////        echo $output;
 //        
 //        $client = self::createClient();
 //        /* @var $em \Doctrine\ORM\EntityManager */
@@ -44,12 +53,11 @@ class PannelloAmministrazioneTest extends CommandTestCase
 //        $cmd = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\Commands($client->getContainer());
 //        $output = $cmd->generateFormCrud("FiProvaBundle", "Prova");
 //        var_dump($output);
-//    }
+    }
 
     protected function tearDown()
     {
         parent::tearDown();
         startTests();
     }
-
 }
