@@ -7,6 +7,7 @@ use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
 
 class FifreecoreAdminpanelControllerTest extends FifreeTest
 {
@@ -86,19 +87,20 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
-
-        $page->pressButton('adminpanelcc');
-        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-        $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 60000);
-        sleep(2);
-        echo $session->getPage()->getHtml();
+        $pammutils = new PannelloAmministrazioneUtils($this->getContainer());
+        $pammutils->clearcache();
+        /* $page->pressButton('adminpanelcc');
+          $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+          $session->executeScript($scriptrun);
+          parent::ajaxWait($session, 60000);
+          sleep(2);
+          echo $session->getPage()->getHtml(); */
         /**/
-        $screenshot = $driver->getWebDriverSession()->screenshot();
-        file_put_contents('/tmp/test2.png', base64_decode($screenshot));
+        //$screenshot = $driver->getWebDriverSession()->screenshot();
+        //file_put_contents('/tmp/test2.png', base64_decode($screenshot));
         /**/
-        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $session->executeScript($scriptclose);
+        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+          $session->executeScript($scriptclose); */
         sleep(2);
 
         $driver->reload();
@@ -108,6 +110,11 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
+        $page->fillField('username', 'admin');
+        $page->fillField('password', 'admin');
+        $page->pressButton('_submit');
+
+        sleep(1);
         $session->visit($url);
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->getContainer());
         $file = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle";
@@ -127,8 +134,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         sleep(2);
         //echo $session->getPage()->getHtml();
         /**/
-        $screenshot = $driver->getWebDriverSession()->screenshot();
-        file_put_contents('/tmp/test3.png', base64_decode($screenshot));
+        //$screenshot = $driver->getWebDriverSession()->screenshot();
+        //file_put_contents('/tmp/test3.png', base64_decode($screenshot));
         /**/
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
@@ -141,19 +148,19 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
                 "doctrine" . DIRECTORY_SEPARATOR . "Prova.orm.yml";
         $this->assertTrue(file_exists($check));
 
-        $page->pressButton('adminpanelcc');
-        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-        $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 60000);
-        sleep(2);
-        //echo $session->getPage()->getHtml();
+        /* $page->pressButton('adminpanelcc');
+          $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+          $session->executeScript($scriptrun);
+          parent::ajaxWait($session, 60000);
+          sleep(2);
+          //echo $session->getPage()->getHtml(); */
         /**/
-        $screenshot = $driver->getWebDriverSession()->screenshot();
-        file_put_contents('/tmp/test4.png', base64_decode($screenshot));
+        //$screenshot = $driver->getWebDriverSession()->screenshot();
+        //file_put_contents('/tmp/test4.png', base64_decode($screenshot));
         /**/
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
-        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $session->executeScript($scriptclose);
+        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+          $session->executeScript($scriptclose); */
 
         $page->pressButton('adminpanelaggiornadatabase');
         $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
@@ -161,19 +168,27 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         parent::ajaxWait($session, 60000);
         sleep(2);
         /**/
-        $screenshot = $driver->getWebDriverSession()->screenshot();
-        file_put_contents('/tmp/test5.png', base64_decode($screenshot));
+        //$screenshot = $driver->getWebDriverSession()->screenshot();
+        //file_put_contents('/tmp/test5.png', base64_decode($screenshot));
         /**/
 
         //echo $session->getPage()->getHtml();
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
+        $pammutils->clearcache();
         $driver->reload();
         sleep(2);
 
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
+
+        sleep(1);
+        $page->fillField('username', 'admin');
+        $page->fillField('password', 'admin');
+        $page->pressButton('_submit');
+
+        sleep(1);
 
         $session->visit($url);
         $page = $session->getPage();
@@ -209,11 +224,11 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
 
-        $page->pressButton('adminpanelcc');
-        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-        $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 60000);
-        sleep(2);
+        /* $page->pressButton('adminpanelcc');
+          $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+          $session->executeScript($scriptrun);
+          parent::ajaxWait($session, 60000); */
+        $pammutils->clearcache();
 
         $driver->reload();
         sleep(2);
@@ -226,6 +241,12 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         }
 
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
+
+        $page->fillField('username', 'admin');
+        $page->fillField('password', 'admin');
+        $page->pressButton('_submit');
+
+        sleep(1);
 
         $session->visit($url);
         $page = $session->getPage();
