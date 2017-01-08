@@ -85,8 +85,10 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         sleep(3);
         $this->crudoperation($session, $page);
 
+        sleep(1);
         $this->searchoperation($session, $page);
 
+        sleep(1);
         $this->printoperations($session, $page);
 
         $session->stop();
