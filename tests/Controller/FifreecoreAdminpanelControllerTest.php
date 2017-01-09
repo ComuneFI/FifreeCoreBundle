@@ -293,7 +293,13 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         /* Inserimento */
         parent::ajaxWait($session, 20000);
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        $page->fillField('fi_provabundle_prova_descrizione', $descrizionetest1);
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldhtml = 'prova_descrizione';
+        } else {
+            $fieldhtml = 'fi_provabundle_prova_descrizione';
+        }
+
+        $field = $page->fillField($fieldhtml, $descrizionetest1);
         $page->find('css', 'a#sDataProvaS')->click();
         parent::ajaxWait($session, 20000);
 
@@ -310,7 +316,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
-        $page->fillField('fi_provabundle_prova_descrizione', $descrizionetest2);
+        $page->fillField($fieldhtml, $descrizionetest2);
         $page->find('css', 'a#sDataProvaS')->click();
         parent::ajaxWait($session);
         /* Cancellazione */
