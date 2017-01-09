@@ -8,6 +8,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 class PannelloAmministrazioneTest extends CommandTestCase
 {
 
+    public static $conn;
+
     public static function setUpBeforeClass()
     {
         startTests();
@@ -52,19 +54,10 @@ class PannelloAmministrazioneTest extends CommandTestCase
                 DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR .
                 "doctrine" . DIRECTORY_SEPARATOR . "Prova.orm.yml";
         $this->assertTrue(file_exists($check));
-
-        //$output = $this->runCommand($client, "cache:warmup --env=test");
-        //echo $output;
-        //sleep(1);
     }
 
 //    public function testPannelloGenerateBundle2()
 //    {
-//        self::bootKernel();
-//
-//        $this->em = static::$kernel->getContainer()
-//                ->get('doctrine')
-//                ->getManager();
 //        /* @var $em \Doctrine\ORM\EntityManager */
 //        /* @var $reg \Doctrine\Bundle\DoctrineBundle\Registry */
 //        //$em = $client->getKernel()->getContainer()->get('doctrine')->getManager();
@@ -72,27 +65,23 @@ class PannelloAmministrazioneTest extends CommandTestCase
 //        //$output = $this->runCommand($client, "container:debug");
 //        //echo $output;
 //        //$records = $em->getRepository('FiProvaBundle:Prova')->findAll();
-//
-//
-//        $records = $this->em
-//                        ->getRepository('ProvaBundle:Prova')->findAll();
-//        ;
-//
-//        $this->assertCount(1, $records);
-//
-//        /* $client = self::createClient();
-//          $records = $this->createMock(\Fi\ProvaBundle\Entity\Prova::class);
-//          $entityManager = $this
-//          ->getMockBuilder(ObjectManager::class)
-//          ->disableOriginalConstructor()
-//          ->getMock();
-//
-//          $employeeRepository->expects($this->once())
-//          ->method('find')
-//          ->will($this->returnValue($records)); */
-//
+////        $client = self::createClient();
+////        var_dump(\Fi\CoreBundle\Entity\Permessi::class);
+////        exit;
+////        $records = $this->createMock(\Fi\ProvaBundle\Entity\Prova::class);
+////        $entityManager = $this
+////                ->getMockBuilder(ObjectManager::class)
+////                ->disableOriginalConstructor()
+////                ->getMock();
+////
+////        $employeeRepository->expects($this->once())
+////                ->method('find')
+////                ->will($this->returnValue($records));
 //        //echo count($records);
-//        exit;
+//        $client = self::createClient();
+//        $client->getKernel()->shutdown();
+//        $client->getKernel()->boot();
+//        $client->restart();
 //        sleep(1);
 //
 //        $output = $this->runCommand($client, "doctrine:generate:crud --entity=FiProvaBundle:Prova --route-prefix=Prova --with-write --format=yml --overwrite --no-interaction");
@@ -107,8 +96,6 @@ class PannelloAmministrazioneTest extends CommandTestCase
     {
         parent::tearDown();
         startTests();
-        removecache();
-        sleep(2);
     }
 
 }

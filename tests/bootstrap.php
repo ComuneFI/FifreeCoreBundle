@@ -4,9 +4,9 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 
-$file = __DIR__ . '/../vendor/autoload.php';
+$file = __DIR__ . '/../app/autoload.php';
 if (!file_exists($file)) {
-    $file = __DIR__ . '/../vendor/autoload.php';
+    $file = __DIR__ . '/../app/autoload.php';
     if (!file_exists($file)) {
         throw new RuntimeException('Install dependencies to run test suite.');
     }
