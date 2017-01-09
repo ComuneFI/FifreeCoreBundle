@@ -106,15 +106,20 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         sleep(3);
-        $page->fillField('fi_corebundle_ffsecondariatype_descsec', $descrizionetest1);
-        $page->selectFieldOption('fi_corebundle_ffsecondariatype_ffprincipale', 1);
-        $page->selectFieldOption('fi_corebundle_ffsecondariatype_data_day', (int) date('d'));
-        $page->selectFieldOption('fi_corebundle_ffsecondariatype_data_month', (int) date('m'));
-        $page->selectFieldOption('fi_corebundle_ffsecondariatype_data_year', (int) date('Y'));
-        $page->fillField('fi_corebundle_ffsecondariatype_importo', 1000000.12);
-        $page->fillField('fi_corebundle_ffsecondariatype_intero', 1000000);
-        $page->fillField('fi_corebundle_ffsecondariatype_nota', 'Prova la nota');
-        $page->fillField('fi_corebundle_ffsecondariatype_attivo', 1);
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'ffsecondaria_';
+        } else {
+            $fieldprefix = 'fi_corebundle_ffsecondariatype_';
+        }
+        $page->fillField($fieldprefix . 'descsec', $descrizionetest1);
+        $page->selectFieldOption($fieldprefix . 'ffprincipale', 1);
+        $page->selectFieldOption($fieldprefix . 'data_day', (int) date('d'));
+        $page->selectFieldOption($fieldprefix . 'data_month', (int) date('m'));
+        $page->selectFieldOption($fieldprefix . 'data_year', (int) date('Y'));
+        $page->fillField($fieldprefix . 'importo', 1000000.12);
+        $page->fillField($fieldprefix . 'intero', 1000000);
+        $page->fillField($fieldprefix . 'nota', 'Prova la nota');
+        $page->fillField($fieldprefix . 'attivo', 1);
 
         $page->find('css', 'a#sDataFfsecondariaS')->click();
         parent::ajaxWait($session);
@@ -130,7 +135,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
-        $page->fillField('fi_corebundle_ffsecondariatype_descsec', $descrizionetest2);
+        $page->fillField($fieldprefix . 'descsec', $descrizionetest2);
         $page->find('css', 'a#sDataFfsecondariaS')->click();
         parent::ajaxWait($session, 20000);
         $this->searchmodifiche($descrizionetest1);

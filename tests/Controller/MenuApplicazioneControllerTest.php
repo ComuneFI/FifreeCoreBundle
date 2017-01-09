@@ -9,6 +9,7 @@ use Behat\Mink\Session;
 
 class MenuApplicazioneControllerTest extends FifreeTest
 {
+
     /**
      * @test
      */
@@ -44,7 +45,7 @@ class MenuApplicazioneControllerTest extends FifreeTest
         $this->setClassName(get_class());
         $browser = 'firefox';
         $urlRouting = $this->getContainer()->get('router')->generate('MenuApplicazione_container');
-        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
+        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -95,14 +96,19 @@ class MenuApplicazioneControllerTest extends FifreeTest
         /* Inserimento */
         parent::ajaxWait($session, 20000);
         $descrizionetest1 = 'testmenu';
-        $page->fillField('fi_corebundle_menuapplicazione_nome', $descrizionetest1);
-        $page->fillField('fi_corebundle_menuapplicazione_percorso', 'http://www.google.it');
-        $page->fillField('fi_corebundle_menuapplicazione_autorizzazionerichiesta', 1);
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'menu_applicazione';
+        } else {
+            $fieldprefix = 'fi_corebundle_menuapplicazione';
+        }
+        $page->fillField($fieldprefix . '_nome', $descrizionetest1);
+        $page->fillField($fieldprefix . '_percorso', 'http://www.google.it');
+        $page->fillField($fieldprefix . '_autorizzazionerichiesta', 1);
         $page->find('css', 'a#sDataMenuApplicazioneS')->click();
         parent::ajaxWait($session, 20000);
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRow.'}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
         $elementmod = $page->findAll('css', '.ui-icon-pencil');
 
@@ -114,13 +120,13 @@ class MenuApplicazioneControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
         /* Modifica */
         $descrizionetest2 = 'testmenu 2';
-        $page->fillField('fi_corebundle_menuapplicazione_nome', $descrizionetest2);
+        $page->fillField($fieldprefix . '_nome', $descrizionetest2);
 
         $page->find('css', 'a#sDataMenuApplicazioneS')->click();
         parent::ajaxWait($session);
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRowDel.'}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
         parent::ajaxWait($session, 20000);
@@ -134,4 +140,5 @@ class MenuApplicazioneControllerTest extends FifreeTest
         $page->find('css', 'a#dData')->click();
         parent::ajaxWait($session, 20000);
     }
+
 }

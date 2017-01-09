@@ -166,9 +166,14 @@ class Z1FfprincipaleControllerTest extends FifreeTest
             }
         }
         /* Inserimento */
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'ffprincipale_';
+        } else {
+            $fieldprefix = 'fi_corebundle_ffprincipaletype_';
+        }
         parent::ajaxWait($session, 20000);
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        $page->fillField('fi_corebundle_ffprincipaletype_descrizione', $descrizionetest1);
+        $page->fillField($fieldprefix.'descrizione', $descrizionetest1);
         $page->find('css', 'a#sDataFfprincipaleS')->click();
         parent::ajaxWait($session, 20000);
 
@@ -185,7 +190,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
-        $page->fillField('fi_corebundle_ffprincipaletype_descrizione', $descrizionetest2);
+        $page->fillField($fieldprefix.'descrizione', $descrizionetest2);
         $page->find('css', 'a#sDataFfprincipaleS')->click();
         parent::ajaxWait($session);
         /* Cancellazione */

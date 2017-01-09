@@ -9,6 +9,7 @@ use Behat\Mink\Session;
 
 class RuoliControllerTest extends FifreeTest
 {
+
     /**
      * @test
      */
@@ -44,7 +45,7 @@ class RuoliControllerTest extends FifreeTest
         $this->setClassName(get_class());
         $browser = 'firefox';
         $urlRouting = $this->getContainer()->get('router')->generate('Ruoli');
-        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
+        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -92,16 +93,21 @@ class RuoliControllerTest extends FifreeTest
                 $e->click();
             }
         }
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'ruoli_';
+        } else {
+            $fieldprefix = 'fi_corebundle_ruolitype_';
+        }
         /* Inserimento */
         parent::ajaxWait($session, 20000);
         $descrizionetest1 = 'testruolo';
-        $page->fillField('fi_corebundle_ruolitype_ruolo', $descrizionetest1);
-        $page->fillField('fi_corebundle_ruolitype_is_user', 1);
+        $page->fillField($fieldprefix . 'ruolo', $descrizionetest1);
+        $page->fillField($fieldprefix . 'is_user', 1);
         $page->find('css', 'a#sDataRuoliS')->click();
         parent::ajaxWait($session, 20000);
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRow.'}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
         $elementmod = $page->findAll('css', '.ui-icon-pencil');
 
@@ -113,13 +119,13 @@ class RuoliControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
         /* Modifica */
         $descrizionetest2 = 'testruolo 2';
-        $page->fillField('fi_corebundle_ruolitype_ruolo', $descrizionetest2);
+        $page->fillField($fieldprefix . 'ruolo', $descrizionetest2);
 
         $page->find('css', 'a#sDataRuoliS')->click();
         parent::ajaxWait($session);
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRowDel.'}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
         parent::ajaxWait($session, 20000);
@@ -133,4 +139,5 @@ class RuoliControllerTest extends FifreeTest
         $page->find('css', 'a#dData')->click();
         parent::ajaxWait($session, 20000);
     }
+
 }
