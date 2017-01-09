@@ -9,6 +9,7 @@ use Behat\Mink\Session;
 
 class TabelleControllerTest extends FifreeTest
 {
+
     /**
      * @test
      */
@@ -44,7 +45,7 @@ class TabelleControllerTest extends FifreeTest
         $this->setClassName(get_class());
         $browser = 'firefox';
         $urlRouting = $this->getContainer()->get('router')->generate('Tabelle');
-        $url = 'http://127.0.0.1:8000/app_test.php'.$urlRouting;
+        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
@@ -94,13 +95,18 @@ class TabelleControllerTest extends FifreeTest
         }
         /* Inserimento */
         parent::ajaxWait($session, 20000);
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'tabelle_';
+        } else {
+            $fieldprefix = 'fi_corebundle_tabelletype_';
+        }
         $descrizionetest1 = 'testtabella';
-        $page->fillField('fi_corebundle_tabelletype_nometabella', $descrizionetest1);
+        $page->fillField($fieldprefix . 'nometabella', $descrizionetest1);
         $page->find('css', 'a#sDataTabelleS')->click();
         parent::ajaxWait($session, 20000);
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRow.'}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
         $elementmod = $page->findAll('css', '.ui-icon-pencil');
 
@@ -112,13 +118,13 @@ class TabelleControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
         /* Modifica */
         $descrizionetest2 = 'testtabella 2';
-        $page->fillField('fi_corebundle_tabelletype_nometabella', $descrizionetest2);
+        $page->fillField($fieldprefix . 'nometabella', $descrizionetest2);
 
         $page->find('css', 'a#sDataTabelleS')->click();
         parent::ajaxWait($session);
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRowDel.'}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
         parent::ajaxWait($session, 20000);
@@ -132,4 +138,5 @@ class TabelleControllerTest extends FifreeTest
         $page->find('css', 'a#dData')->click();
         parent::ajaxWait($session, 20000);
     }
+
 }
