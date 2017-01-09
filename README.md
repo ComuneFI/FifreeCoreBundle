@@ -17,30 +17,23 @@ composer require fi/fifreecorebundle
 ```
 
 - Test
-Scarico dipendenze
+
 ```
+    #Scarico dipendenze
     composer install
-```
-Preparare il db
-```
+
+    #Preparare il db
     rm app/dbtest.sqlite
     php app/console fifree:install admin admin admin@admin.it --env=test
     rm -rf app/cache/dev
     rm -rf app/cache/test
-```
-Assets install
-```
-php app/console assets:install --env=test
-```
-Start server
-```
-php app/console server:run --env=test 2>&1 &
-sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
-rm -rf app/cache/dev
-rm -rf app/cache/test
 
-```
-Lanciare i test
-```
+    #Assets install
+    php app/console assets:install --env=test
+
+    #Start server
+    php app/console server:run --env=test 2>&1 &
+    sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
+    #Lanciare i test
     vendor/bin/phpunit
 ```
