@@ -12,7 +12,7 @@ if (!file_exists($file)) {
     }
 }
 
-date_default_timezone_set( 'Europe/Rome' );
+date_default_timezone_set('Europe/Rome');
 
 function startTests()
 {
@@ -84,6 +84,12 @@ function cleanFilesystem()
             deleteFirstLineFile($routingfile);
         }
     }
+
+    $configfile = $vendorDir . '/app/config/config.yml';
+    $remove = '- { resource: "@FiProvaBundle/Resources/config/services.yml" }';
+    deleteLineFromFile($configfile, $remove);
+
+
     $bundledir = $vendorDir . '/src/Fi/ProvaBundle';
 
     $fs = new Filesystem();
