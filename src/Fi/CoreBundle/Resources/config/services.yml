@@ -16,8 +16,13 @@ services:
         arguments: [ '@service_container', '@request_stack' ]
         tags:
             - { name: twig.extension }
-            
-            
+
+    fi.twig.fi_versione_extension:
+        class: Fi\CoreBundle\Twig\Extension\VersioneExtension
+        arguments: ['@service_container']
+        tags:
+          - { name: twig.extension }
+
     fi.twig.fi_utilita_extension:
       class: Fi\CoreBundle\Twig\Extension\UtilitaExtension
       tags:
@@ -39,13 +44,13 @@ services:
             
     ficorebundle.tblprefix_subscriber:
         class: Fi\CoreBundle\Subscriber\TablePrefixSubscriber
-        arguments: [%ficorebundle.db.table_prefix%]
+        arguments: ["%ficorebundle.db.table_prefix%"]
         tags:
             - { name: doctrine.event_subscriber }
             
     ficorebundle.tblschema_subscriber:
         class: Fi\CoreBundle\Subscriber\TableSchemaSubscriber
-        arguments: [%ficorebundle.db.table_schema%]
+        arguments: ["%ficorebundle.db.table_schema%"]
         tags:
             - { name: doctrine.event_subscriber }
 

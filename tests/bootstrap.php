@@ -4,13 +4,15 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 
-$file = __DIR__.'/../../../../vendor/autoload.php';
+$file = __DIR__ . '/../vendor/autoload.php';
 if (!file_exists($file)) {
-    $file = __DIR__.'/../../../../../../vendor/autoload.php';
+    $file = __DIR__ . '/../vendor/autoload.php';
     if (!file_exists($file)) {
         throw new RuntimeException('Install dependencies to run test suite.');
     }
 }
+
+date_default_timezone_set( 'Europe/Rome' );
 
 function startTests()
 {
@@ -21,10 +23,10 @@ function startTests()
 
 function removecache()
 {
-    $vendorDir = dirname(dirname(__FILE__)).'/../../../';
-    $testcache = $vendorDir.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'test';
+    $vendorDir = dirname(dirname(__FILE__));
+    $testcache = $vendorDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'test';
     if (file_exists($testcache)) {
-        $command = 'rm -rf '.$testcache;
+        $command = 'rm -rf ' . $testcache;
         $process = new Process($command);
         $process->setTimeout(60 * 100);
         $process->run();
@@ -33,20 +35,22 @@ function removecache()
         } else {
             echo $process->getOutput();
         }
+    } else {
+        echo $testcache . " not found";
     }
 }
 
 function clearcache()
 {
-    $vendorDir = dirname(dirname(__FILE__)).'/../../../';
+    $vendorDir = dirname(dirname(__FILE__));
     if (OsFunctions::isWindows()) {
         $phpPath = OsFunctions::getPHPExecutableFromPath();
     } else {
         $phpPath = '/usr/bin/php';
     }
-    $console = $vendorDir.'app'.DIRECTORY_SEPARATOR.'console';
+    $console = $vendorDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'console';
     if (file_exists($console)) {
-        $command = $phpPath.' '.$console.' cache:warmup --env=test';
+        $command = $phpPath . ' ' . $console . ' --env=test';
         $process = new Process($command);
         $process->setTimeout(60 * 100);
         $process->run();
@@ -55,6 +59,8 @@ function clearcache()
         } else {
             echo $process->getOutput();
         }
+    } else {
+        echo $console . " not found";
     }
 }
 
@@ -62,23 +68,23 @@ function getErrorText($process, $command)
 {
     $error = ($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput());
 
-    return 'Errore nel comando '.$command.' '.$error.' ';
+    return 'Errore nel comando ' . $command . ' ' . $error . ' ';
 }
 
 function cleanFilesystem()
 {
     $DELETE = "new Fi\ProvaBundle\FiProvaBundle(),";
-    $vendorDir = dirname(dirname(__FILE__)).'/../../../';
-    $kernelfile = $vendorDir.'/app/AppKernel.php';
+    $vendorDir = dirname(dirname(__FILE__)) . '/';
+    $kernelfile = $vendorDir . '/app/AppKernel.php';
     deleteLineFromFile($kernelfile, $DELETE);
-    $routingfile = $vendorDir.'/app/config/routing.yml';
+    $routingfile = $vendorDir . '/app/config/routing.yml';
     $line = fgets(fopen($routingfile, 'r'));
     if (substr($line, 0, -1) == 'fi_prova:') {
         for ($index = 0; $index < 4; ++$index) {
             deleteFirstLineFile($routingfile);
         }
     }
-    $bundledir = $vendorDir.'/src/Fi/ProvaBundle';
+    $bundledir = $vendorDir . '/src/Fi/ProvaBundle';
 
     $fs = new Filesystem();
     if ($fs->exists($bundledir)) {

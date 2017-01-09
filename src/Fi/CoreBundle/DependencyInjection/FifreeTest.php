@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FifreeTest extends WebTestCase
 {
+
     private $clientNonAutorizzato;
     private $clientAutorizzato;
     private $testclassname;
@@ -29,7 +30,7 @@ class FifreeTest extends WebTestCase
      *
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    protected function getContainer(array $options = [])
+    protected function getContainer()
     {
         if (!$this->container) {
             $this->restartKernel();
@@ -40,10 +41,8 @@ class FifreeTest extends WebTestCase
 
     protected function restartKernel()
     {
-        $clientparms = array('environment' => 'test');
-        static::bootKernel($clientparms);
-        $this->clientNonAutorizzato = static::createClient($clientparms);
-        $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient($clientparms));
+        $this->clientNonAutorizzato = static::createClient();
+        $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient());
         $this->container = static::$kernel->getContainer();
         $this->em = $this->container->get('doctrine')->getManager();
     }
@@ -123,7 +122,7 @@ class FifreeTest extends WebTestCase
         }
 
         $controller = $this->getControllerNameByClassName();
-        $url = $this->clientAutorizzato->getContainer()->get('router')->generate($controller.'_container', array(), false);
+        $url = $this->clientAutorizzato->getContainer()->get('router')->generate($controller . '_container', array(), false);
         $this->clientAutorizzato->request('GET', $url);
 
         //$crawler = new Crawler($client->getResponse()->getContent());
@@ -155,7 +154,7 @@ class FifreeTest extends WebTestCase
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
         $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
 
@@ -178,7 +177,6 @@ class FifreeTest extends WebTestCase
         $session->wait($timeout, '(0 === jQuery.active)');
         sleep(1);
     }
-
     /*
       // Create a new client to browse the application
       $client = static::createClient();
