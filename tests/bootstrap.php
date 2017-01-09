@@ -16,7 +16,7 @@ date_default_timezone_set( 'Europe/Rome' );
 
 function startTests()
 {
-    removecache();
+    //removecache();
     //clearcache();
     cleanFilesystem();
 }
