@@ -107,6 +107,7 @@ class PannelloAmministrazioneTest extends CommandTestCase
     {
         parent::tearDown();
         startTests();
+        removecache();
         sleep(2);
     }
 
