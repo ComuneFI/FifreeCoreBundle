@@ -18,8 +18,8 @@ cache:
   directories:
     - $HOME/.composer/cache
     
-addons:
-  firefox: "latest-esr"
+#addons:
+#  firefox: "latest-esr"
   
 before_script:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
