@@ -63,6 +63,7 @@ before_script:
   - php app/console fifree2:install admin admin admin@admin.it --env=test
   #- php app/console server:start --env=test
   - sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
+  - /usr/bin/php -v
 
 script:
   - ant
