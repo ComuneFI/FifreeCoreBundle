@@ -16,7 +16,7 @@ cache:
 #  firefox: "latest-esr"
   
 before_script:
-  - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then phpenv config-add build/travis.php.ini; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
   - echo -e '\nhhvm.libxml.ext_entity_whitelist = "file,http,https"' | sudo tee -a /etc/hhvm/php.ini
   - echo -e '\nhhvm.enable_zend_compat=true' | sudo tee -a /etc/hhvm/php.ini
   - echo -e '\ndate.timezone = "Europe/Rome"' | sudo tee -a /etc/hhvm/php.ini
