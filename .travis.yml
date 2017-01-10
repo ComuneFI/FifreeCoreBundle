@@ -34,7 +34,9 @@ before_script:
   # configure apache virtual hosts
   - sudo cp -f ./testvhost.conf /etc/apache2/sites-available/default
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
-  - sudo sed -i 's/Listen 80/Listen \*:8000/' /etc/apache2/ports.conf
+  - sudo sed -i 's/Listen 80/Listen 8000/' /etc/apache2/ports.conf
+  - sudo sed -i 's/NameVirtualHost \*:80/NameVirtualHost \*:8000/' /etc/apache2/ports.conf
+  
   #- sed -i "/Listen \*:8000/a NameVirtualHost \*:8000" /etc/apache2/ports.conf
   - sudo service apache2 restart
   #- wget http://localhost:8000/
