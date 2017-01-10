@@ -62,7 +62,7 @@ before_script:
   - if [[ "$DB" == "pgsql" ]]; then psql -d unittest -c '\dt;' -U postgres; fi
   
   - if [[ "$DB" == "mysql" ]]; then echo "PROVISIONING WITH MySQL"; fi
-  - if [[ "$DB" == "pgsql" ]]; then sudo cp -f ./tests/build/parameters.mysql.yml $TRAVIS_BUILD_DIR/app/config/parameters.yml; fi
+  - if [[ "$DB" == "mysql" ]]; then sudo cp -f ./tests/build/parameters.mysql.yml $TRAVIS_BUILD_DIR/app/config/parameters.yml; fi
   - if [[ "$DB" == "mysql" ]]; then mysql --version; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -e "CREATE DATABASE unittest;" -uroot; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -e "GRANT ALL ON unittest.* TO 'travis'@'127.0.0.1';" -uroot; fi
