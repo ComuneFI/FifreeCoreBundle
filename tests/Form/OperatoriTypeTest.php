@@ -4,27 +4,21 @@ namespace Fi\CoreBundle\Tests\Form\Type;
 
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class TabelleTypeTest extends TypeTestCase
+class OperatoriTypeTest extends TypeTestCase
 {
 
     public function testSubmitValidData()
     {
         $formData = array(
-            'nometabella' => 'nometabella',
-            'nomecampo' => 'nomecampo',
-            'mostraindex' => true,
-            'ordineindex' => 10,
-            'larghezzaindex' => 20,
-            'etichettaindex' => "etichetta",
-            'mostrastampa' => false,
-            'ordinestampa' => 10,
-            'larghezzastampa' => 20,
-            'etichettastampa' => "etichettastampa",
-            'registrastorico' => false,
-            'operatori' => 1
+            'username' => "username",
+            'email' => "email",
+            'enabled' => true,
+            'password' => "pws",
+            'ruoli' => 1,
+            'operatore' => 'operatore',
         );
 
-        $type = "Fi\CoreBundle\Form\TabelleType";
+        $type = "Fi\CoreBundle\Form\OperatoriType";
         $form = $this->factory->create($type, $formData);
         $form->submit($formData);
 
