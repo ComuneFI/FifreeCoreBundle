@@ -89,7 +89,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptclose);
         $pammutils = new PannelloAmministrazioneUtils($this->getContainer());
         $ret = $pammutils->clearcache();
-        echo $ret["errmsg"];
+        //echo $ret["errmsg"];
         /* $page->pressButton('adminpanelcc');
           $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
           $session->executeScript($scriptrun);
@@ -133,7 +133,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptrun);
         parent::ajaxWait($session, 60000);
         sleep(2);
-        echo $session->getPage()->getHtml();
+        //echo $session->getPage()->getHtml();
         /**/
         //$screenshot = $driver->getWebDriverSession()->screenshot();
         //file_put_contents('/tmp/test3.png', base64_decode($screenshot));
