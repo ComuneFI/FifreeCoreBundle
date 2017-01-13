@@ -64,5 +64,4 @@ class Fifree2mysqlconvertdbengineCommand extends ContainerAwareCommand
         $text = 'Fine in ' . $tempo . ' secondi';
         $output->writeln($text);
     }
-
 }

@@ -10,13 +10,14 @@ use Symfony\Component\Console\Input\ArrayInput;
 
 class Fifree2dropdatabaseCommand extends ContainerAwareCommand
 {
+
     protected function configure()
     {
         $this
-            ->setName('fifree2:dropdatabase')
-            ->setDescription('Cancellazione database fifree')
-            ->setHelp('Cancella il database e tutti i dati di fifree')
-            ->addOption('force', null, InputOption::VALUE_NONE, 'Se non impostato, il comando non avrà effetto');
+                ->setName('fifree2:dropdatabase')
+                ->setDescription('Cancellazione database fifree')
+                ->setHelp('Cancella il database e tutti i dati di fifree')
+                ->addOption('force', null, InputOption::VALUE_NONE, 'Se non impostato, il comando non avrà effetto');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

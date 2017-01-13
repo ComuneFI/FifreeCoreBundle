@@ -61,5 +61,4 @@ class Fifree2mysqltruncatetablesCommand extends ContainerAwareCommand
         $text = 'Fine in ' . $tempo . ' secondi';
         $output->writeln($text);
     }
-
 }

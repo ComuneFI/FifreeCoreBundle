@@ -54,5 +54,4 @@ class Fifree2mysqldropforeignkeysCommand extends ContainerAwareCommand
         $text = 'Fine in ' . $tempo . ' secondi';
         $output->writeln($text);
     }
-
 }
