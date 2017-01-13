@@ -10,24 +10,31 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Fifree2mysqlconvertdbengineCommand extends ContainerAwareCommand
 {
+
     protected function configure()
     {
         $this
-            ->setName('fifree2:mysqlconvertdbengine')
-            ->setDescription('Converte il motore delle tabelle mysql')
-            ->addArgument('engine', InputArgument::REQUIRED, 'Specificare il tipo di motore che si vuole (MyISAM, INNODB, ecc)')
-            ->addOption('tablesfifree2', null, InputOption::VALUE_OPTIONAL, 'Si devono trattare anche le tabelle di fifree2', false)
-            ->setHelp('Modifica il motore mysql delle tabelle');
+                ->setName('fifree2:mysqlconvertdbengine')
+                ->setDescription('Converte il motore delle tabelle mysql')
+                ->addArgument('engine', InputArgument::REQUIRED, 'Specificare il tipo di motore che si vuole (MyISAM, INNODB, ecc)')
+                ->addOption('tablesfifree2', null, InputOption::VALUE_OPTIONAL, 'Si devono trattare anche le tabelle di fifree2', false)
+                ->setHelp('Modifica il motore mysql delle tabelle');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
         ini_set('memory_limit', '-1');
-
-        $inizio = microtime(true);
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $this->getContainer()->get('doctrine')->getManager();
+        $driver = $em->getConnection()->getDriver()->getName();
+
+        if ($driver != "pdo_mysql") {
+            $output->writeln("Non previsto per driver: " . $driver);
+            return 1;
+        }
+        $inizio = microtime(true);
+        /* @var $em \Doctrine\ORM\EntityManager */
         $engine = $input->getArgument('engine');
         $tablesfifree2 = $input->getOption('tablesfifree2');
         $dbname = $this->getContainer()->get('database_connection')->getDatabase();
@@ -36,7 +43,7 @@ class Fifree2mysqlconvertdbengineCommand extends ContainerAwareCommand
                 FROM information_schema.TABLES 
                 WHERE
                   TABLE_TYPE='BASE TABLE'
-                  AND TABLE_SCHEMA='" .$dbname."'";
+                  AND TABLE_SCHEMA='" . $dbname . "'";
         $conn = $em->getConnection();
         $rows = $conn->fetchAll($sql);
         foreach ($rows as $row) {
@@ -54,7 +61,8 @@ class Fifree2mysqlconvertdbengineCommand extends ContainerAwareCommand
         $fine = microtime(true);
         $tempo = gmdate('H:i:s', $fine - $inizio);
 
-        $text = 'Fine in '.$tempo.' secondi';
+        $text = 'Fine in ' . $tempo . ' secondi';
         $output->writeln($text);
     }
+
 }

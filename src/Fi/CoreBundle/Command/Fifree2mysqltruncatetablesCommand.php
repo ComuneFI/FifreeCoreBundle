@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Fifree2mysqltruncatetablesCommand extends ContainerAwareCommand
 {
+
     protected function configure()
     {
         $this
@@ -27,13 +28,19 @@ class Fifree2mysqltruncatetablesCommand extends ContainerAwareCommand
         $inizio = microtime(true);
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $this->getContainer()->get('doctrine')->getManager();
+        $driver = $em->getConnection()->getDriver()->getName();
+
+        if ($driver != "pdo_mysql") {
+            $output->writeln("Non previsto per driver: " . $driver);
+            return 1;
+        }
         $tablesfifree2 = $input->getOption('tablesfifree2');
 
         $dbname = $this->getContainer()->get('database_connection')->getDatabase();
 
         $sql = "SELECT Concat('TRUNCATE TABLE ',table_schema,'.',TABLE_NAME, ';') "
-                .'TRUNCTABLE, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES '
-                ."where  table_schema in ('".$dbname."')";
+                . 'TRUNCTABLE, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES '
+                . "where  table_schema in ('" . $dbname . "')";
 
         $conn = $em->getConnection();
         $rows = $conn->fetchAll($sql);
@@ -51,7 +58,8 @@ class Fifree2mysqltruncatetablesCommand extends ContainerAwareCommand
         $fine = microtime(true);
         $tempo = gmdate('H:i:s', $fine - $inizio);
 
-        $text = 'Fine in '.$tempo.' secondi';
+        $text = 'Fine in ' . $tempo . ' secondi';
         $output->writeln($text);
     }
+
 }
