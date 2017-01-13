@@ -91,15 +91,16 @@ class GrigliaDatiPrecondizioniUtils
             foreach ($valuepre as $chiave => $valore) {
                 $valuepre[$chiave] = fiUtilita::data2db($valore);
             }
+            return implode(', ', $valuepre);
         } elseif ($tipo && $tipo == 'string') {
             GrigliaUtils::setVettoriPerStringa();
             foreach ($valuepre as $chiave => $valore) {
-                $valuepre[$chiave] = strtolower($valore);
+                $valuepre[$chiave] = strtolower("'" . $valore . "'");
             }
+            return "'" . implode(', ', $valuepre) . "'";
         } else {
             GrigliaUtils::setVettoriPerNumero();
+            return implode(', ', $valuepre);
         }
-        /* se si tratta di valori numerici tutto ok, altrimenti non funziona */
-        return implode(', ', $valuepre);
     }
 }
