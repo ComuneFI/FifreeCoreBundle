@@ -155,7 +155,11 @@ class StampatabellaController extends FiCoreController
         $this->printHeaderXls($modellicolonne, $testata, $sheet);
 
         $risposta = json_decode($rispostaj);
-        $righe = $risposta->rows;
+        if (isset($risposta->rows)) {
+            $righe = $risposta->rows;
+        } else {
+            $righe = array();
+        }
 
         $this->printBodyXls($righe, $modellicolonne, $sheet);
 
