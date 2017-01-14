@@ -5,7 +5,6 @@ namespace Fi\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\Events;
 
 class FiController extends Controller
 {
@@ -88,7 +87,6 @@ class FiController extends Controller
         return $this->render(
             $nomebundle . ':' . $controller . ':index.html.twig',
             array(
-                    //                    'entities' => $entities,
                     'nomecontroller' => $controller,
                     'testata' => $testata,
                     'canread' => $canRead,
@@ -122,12 +120,7 @@ class FiController extends Controller
         $entity = new $classbundle();
         $formType = $formbundle . 'Type';
 
-// Questo codice per versioni che usano un symfony inferiore a 2.8
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
-            $form = $this->createForm($formType, $entity);
-        } else {
-            $form = $this->createForm(new $formType(), $entity);
-        }
+        $form = $this->createForm($formType, $entity);
 
         $form->submit($request->request->get($form->getName()));
 
@@ -171,28 +164,15 @@ class FiController extends Controller
 
         $entity = new $classbundle();
 
-// Questo codice per versioni che usano un symfony inferiore a 2.8
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
-            $form = $this->createForm(
-                $formType,
-                $entity,
-                array('attr' => array(
-                    'id' => 'formdati' . $controller,
-                    ),
-                    'action' => $this->generateUrl($controller . '_create'),
-                    )
-            );
-        } else {
-            $form = $this->createForm(
-                new $formType(),
-                $entity,
-                array('attr' => array(
-                    'id' => 'formdati' . $controller,
-                    ),
-                    'action' => $this->generateUrl($controller . '_create'),
-                    )
-            );
-        }
+        $form = $this->createForm(
+            $formType,
+            $entity,
+            array('attr' => array(
+                'id' => 'formdati' . $controller,
+                ),
+                'action' => $this->generateUrl($controller . '_create'),
+                )
+        );
 
         return $this->render(
             $nomebundle . ':' . $controller . ':new.html.twig',
@@ -214,8 +194,6 @@ class FiController extends Controller
                     "idtabella" => $id
                 )
         );
-
-        //$risultato = $entity ? $entity->getArrayResult() : false;
 
         return $risultato;
     }
@@ -248,28 +226,15 @@ class FiController extends Controller
             throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
         }
 
-// Questo codice per versioni che usano un symfony inferiore a 2.8
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
-            $editForm = $this->createForm(
-                $formType,
-                $entity,
-                array('attr' => array(
-                    'id' => 'formdati' . $controller,
-                    ),
-                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
-                    )
-            );
-        } else {
-            $editForm = $this->createForm(
-                new $formType(),
-                $entity,
-                array('attr' => array(
-                    'id' => 'formdati' . $controller,
-                    ),
-                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
-                    )
-            );
-        }
+        $editForm = $this->createForm(
+            $formType,
+            $entity,
+            array('attr' => array(
+                'id' => 'formdati' . $controller,
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                )
+        );
 
         $deleteForm = $this->createDeleteForm($id);
 
@@ -313,12 +278,7 @@ class FiController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
-// Questo codice per versioni che usano un symfony inferiore a 2.8
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
-            $editForm = $this->createForm($formType, $entity);
-        } else {
-            $editForm = $this->createForm(new $formType(), $entity);
-        }
+        $editForm = $this->createForm($formType, $entity);
 
         $editForm->submit($request->request->get($editForm->getName()));
 
@@ -430,25 +390,15 @@ class FiController extends Controller
      */
     protected function createDeleteForm($id)
     {
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '2.8') >= 0) {
-            return $this->createFormBuilder(array('id' => $id))
-                            ->add('id', get_class(new \Symfony\Component\Form\Extension\Core\Type\HiddenType()))
-                            ->getForm();
-        } else {
-            return $this->createFormBuilder(array('id' => $id))
-                            ->add('id', 'hidden')
-                            ->getForm();
-        }
+        return $this->createFormBuilder(array('id' => $id))
+                        ->add('id', get_class(new \Symfony\Component\Form\Extension\Core\Type\HiddenType()))
+                        ->getForm();
     }
 
-    public function stampatabellaAction(Request $request)
+    public function prepareOutput($request)
     {
-        self::setup($request);
-        $pdf = new StampatabellaController($this->container);
-
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
-        /* $controller = $this->getController(); */
         $container = $this->container;
 
         $nomebundle = $namespace . $bundle . 'Bundle';
@@ -473,6 +423,15 @@ class FiController extends Controller
         $corpogriglia = Griglia::datiPerGriglia($parametridatipergriglia);
 
         $parametri = array('request' => $request, 'testata' => $testatagriglia, 'griglia' => $corpogriglia);
+        return $parametri;
+    }
+
+    public function stampatabellaAction(Request $request)
+    {
+        self::setup($request);
+        $pdf = new StampatabellaController($this->container);
+
+        $parametri = $this->prepareOutput($request);
 
         $pdf->stampa($parametri);
 
@@ -484,32 +443,7 @@ class FiController extends Controller
         self::setup($request);
         $xls = new StampatabellaController($this->container);
 
-        $namespace = $this->getNamespace();
-        $bundle = $this->getBundle();
-        /* $controller = $this->getController(); */
-        $container = $this->container;
-        $nomebundle = $namespace . $bundle . 'Bundle';
-
-        $em = $this->getDoctrine()->getManager();
-
-        $paricevuti = array(
-            'nomebundle' => $nomebundle,
-            'nometabella' => $request->get('nometabella'),
-            'container' => $container,
-            'request' => $request,
-        );
-
-        $parametripertestatagriglia = $this->getParametersTestataPerGriglia($request, $container, $em, $paricevuti);
-        $testatagriglia = Griglia::testataPerGriglia($parametripertestatagriglia);
-        if ($request->get('titolo')) {
-            $testatagriglia['titolo'] = $request->get('titolo');
-        }
-
-        $parametridatipergriglia = $this->getParametersDatiPerGriglia($request, $container, $em, $paricevuti);
-
-        $corpogriglia = Griglia::datiPerGriglia($parametridatipergriglia);
-
-        $parametri = array('request' => $request, 'testata' => $testatagriglia, 'griglia' => $corpogriglia);
+        $parametri = $this->prepareOutput($request);
 
         $fileexcel = $xls->esportaexcel($parametri);
         $response = new Response();

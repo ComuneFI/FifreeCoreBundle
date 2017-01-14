@@ -2,8 +2,8 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Fi\CoreBundle\DependencyInjection\JqgridDati;
-use Fi\CoreBundle\DependencyInjection\JqgridTestata;
+use Fi\CoreBundle\DependencyInjection\GridDati;
+use Fi\CoreBundle\DependencyInjection\GridTestata;
 use Fi\CoreBundle\DependencyInjection\GrigliaParametriUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaRegoleUtils;
@@ -76,7 +76,7 @@ class Griglia extends Controller
         $testata['tabella'] = $nometabella;
         $testata['nomebundle'] = $nomebundle;
         $testata['output'] = $output;
-        $response = new JqgridTestata($testata);
+        $response = new GridTestata($testata);
 
         return $response->getResponse();
     }
@@ -231,7 +231,7 @@ class Griglia extends Controller
 
             GrigliaDatiMultiUtils::buildRowGriglia($singolo, $vettoreriga, $vettorerisposta);
         }
-        $response = new JqgridDati($vettorerisposta);
+        $response = new GridDati($vettorerisposta);
         return $response->getResponse();
     }
 }
