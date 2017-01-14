@@ -2,6 +2,8 @@
 
 namespace Fi\CoreBundle\Controller;
 
+use Fi\CoreBundle\DependencyInjection\JqgridDati;
+use Fi\CoreBundle\DependencyInjection\JqgridTestata;
 use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaRegoleUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaCampiExtraUtils;
@@ -74,8 +76,9 @@ class Griglia extends Controller
         $testata['tabella'] = $nometabella;
         $testata['nomebundle'] = $nomebundle;
         $testata['output'] = $output;
+        $response = new JqgridTestata($testata);
 
-        return $testata;
+        return $response->getResponse();
     }
 
     /**
@@ -129,8 +132,6 @@ class Griglia extends Controller
         $limit = $request->get('rows'); // get how many rows we want to have into the grid
         /* su quale campo fare l'ordinamento */
         $sidx = $request->get('sidx'); // get index row - i.e. user click to sort
-        /* direzione dell'ordinamento */
-        $sord = $request->get('sord'); // get the direction if(!$sidx) $sidx =1;
         GrigliaDatiUtils::getDatiOrdinamento($sidx, $nometabella);
         /* inizia la query */
         $entityName = $bundle . ':' . $nometabella;
@@ -231,7 +232,7 @@ class Griglia extends Controller
 
             GrigliaDatiMultiUtils::buildRowGriglia($singolo, $vettoreriga, $vettorerisposta);
         }
-
-        return json_encode($vettorerisposta);
+        $response = new JqgridDati($vettorerisposta);
+        return $response->getResponse();
     }
 }
