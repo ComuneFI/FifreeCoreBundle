@@ -61,7 +61,7 @@
         "sensio/distribution-bundle": "~5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
-        "sensio/generator-bundle": "~2.0",
+        "sensio/generator-bundle": "~3.0",
         "fi/mysql-workbench-schema-exporter": "^3.0",
         "fi/doctrine2-exporter": "^3.0",
         "behat/behat": "3.0.*",
