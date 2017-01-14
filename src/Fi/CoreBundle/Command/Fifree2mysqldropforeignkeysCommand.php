@@ -8,11 +8,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Fifree2mysqldropforeignkeysCommand extends ContainerAwareCommand
 {
+
     protected function configure()
     {
         $this
-            ->setName('fifree2:mysqldropforeignkeys')
-            ->setDescription('Cancella le foreign keys dal db')
+                ->setName('fifree2:mysqldropforeignkeys')
+                ->setDescription('Cancella le foreign keys dal db')
         //->setHelp('Modifica il motore mysql delle tabelle')
         ;
     }
@@ -26,6 +27,13 @@ class Fifree2mysqldropforeignkeysCommand extends ContainerAwareCommand
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $this->getContainer()->get('doctrine')->getManager();
         $this->getContainer()->get('database_connection')->getDatabase();
+
+        $driver = $em->getConnection()->getDriver()->getName();
+
+        if ($driver != "pdo_mysql") {
+            $output->writeln("Non previsto per driver: " . $driver);
+            return 1;
+        }
 
         $sql = "select concat('alter table ',table_schema,'.',table_name,' DROP FOREIGN KEY ',constraint_name,';') FKNAME
             from information_schema.table_constraints
@@ -43,7 +51,7 @@ class Fifree2mysqldropforeignkeysCommand extends ContainerAwareCommand
         $fine = microtime(true);
         $tempo = gmdate('H:i:s', $fine - $inizio);
 
-        $text = 'Fine in '.$tempo.' secondi';
+        $text = 'Fine in ' . $tempo . ' secondi';
         $output->writeln($text);
     }
 }

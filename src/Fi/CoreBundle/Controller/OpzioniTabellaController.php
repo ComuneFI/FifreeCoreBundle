@@ -31,8 +31,20 @@ class OpzioniTabellaController extends FiCoreController
             'descrizione' => array(
                 array(
                     'nomecampo' => 'descrizione',
-                    'lunghezza' => '600',
+                    'lunghezza' => '400',
                     'descrizione' => 'Descrizione',
+                    'tipo' => 'text',),),
+            'parametro' => array(
+                array(
+                    'nomecampo' => 'parametro',
+                    'lunghezza' => '300',
+                    'descrizione' => 'Parametro',
+                    'tipo' => 'text',),),
+            'valore' => array(
+                array(
+                    'nomecampo' => 'valore',
+                    'lunghezza' => '300',
+                    'descrizione' => 'Valore',
                     'tipo' => 'text',),),
             'tabelle_id' => array(
                 array(

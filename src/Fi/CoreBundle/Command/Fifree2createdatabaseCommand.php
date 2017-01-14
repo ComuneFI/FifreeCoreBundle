@@ -9,12 +9,13 @@ use Symfony\Component\Console\Input\ArrayInput;
 
 class Fifree2createdatabaseCommand extends ContainerAwareCommand
 {
+
     protected function configure()
     {
         $this
-            ->setName('fifree2:createdatabase')
-            ->setDescription('Creazione database fifree')
-            ->setHelp('Creazione di un nuovo database di fifree');
+                ->setName('fifree2:createdatabase')
+                ->setDescription('Creazione database fifree')
+                ->setHelp('Creazione di un nuovo database di fifree');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

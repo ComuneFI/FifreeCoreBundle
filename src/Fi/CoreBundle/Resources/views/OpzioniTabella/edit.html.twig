@@ -17,6 +17,13 @@
         autoFocus: true,
         appendTo: "#corpodettaglio"
     });
+    
+    $("#opzioni_tabella_parametro").autocomplete({
+        source: availableTags,
+        minLength: 0,
+        autoFocus: true,
+        appendTo: "#corpodettaglio"
+    });
 
     $("#fi_corebundle_opzionitabellatype_parametro").bind('focus', function() {
         $(this).autocomplete("search");

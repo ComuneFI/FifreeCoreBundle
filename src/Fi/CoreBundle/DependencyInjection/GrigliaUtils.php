@@ -6,6 +6,7 @@ use Fi\CoreBundle\Controller\GestionepermessiController;
 
 class GrigliaUtils
 {
+
     public static $decodificaop;
     public static $precarattere;
     public static $postcarattere;
@@ -82,7 +83,7 @@ class GrigliaUtils
             'nc' => '%\')',
             'nu' => '',
             'nn' => '',
-            'nt' => '', );
+            'nt' => '',);
     }
 
     public static function setVettoriPerData()
@@ -138,39 +139,6 @@ class GrigliaUtils
         self::$postcarattere['ge'] = '';
     }
 
-    public static function getOuputType($parametri)
-    {
-        if ((isset($parametri['output'])) && ($parametri['output'] == 'stampa')) {
-            $output = 'stampa';
-        } else {
-            $output = 'index';
-        }
-
-        return $output;
-    }
-
-    public static function getDoctrineByEm($parametri)
-    {
-        if (isset($parametri['em'])) {
-            $doctrine = $parametri['container']->get('doctrine')->getManager($parametri['em']);
-        } else {
-            $doctrine = $parametri['container']->get('doctrine')->getManager();
-        }
-
-        return $doctrine;
-    }
-
-    public static function getDoctrineFiCoreByEm($parametri, $doctrine)
-    {
-        if (isset($parametri['emficore'])) {
-            $doctrineficore = $parametri['container']->get('doctrine')->getManager($parametri['emficore']);
-        } else {
-            $doctrineficore = &$doctrine;
-        }
-
-        return $doctrineficore;
-    }
-
     public static function getCampiEsclusi($riga, $output)
     {
         $campoescluso = null;
@@ -205,12 +173,12 @@ class GrigliaUtils
             return false;
         }
 
-        $output = self::getOuputType($parametri);
+        $output = GrigliaParametriUtils::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
-        $doctrine = self::getDoctrineByEm($parametri);
-        $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
+        $doctrine = GrigliaParametriUtils::getDoctrineByEm($parametri);
+        $doctrineficore = GrigliaParametriUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
@@ -238,12 +206,12 @@ class GrigliaUtils
             return false;
         }
 
-        $output = self::getOuputType($parametri);
+        $output = GrigliaParametriUtils::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
-        $doctrine = self::getDoctrineByEm($parametri);
-        $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
+        $doctrine = GrigliaParametriUtils::getDoctrineByEm($parametri);
+        $doctrineficore = GrigliaParametriUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();
@@ -273,12 +241,12 @@ class GrigliaUtils
             return false;
         }
 
-        $output = self::getOuputType($parametri);
+        $output = GrigliaParametriUtils::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
-        $doctrine = self::getDoctrineByEm($parametri);
-        $doctrineficore = self::getDoctrineFiCoreByEm($parametri, $doctrine);
+        $doctrine = GrigliaParametriUtils::getDoctrineByEm($parametri);
+        $doctrineficore = GrigliaParametriUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();

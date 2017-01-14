@@ -49,7 +49,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
 
         $client->request('GET', $url);
         $this->assertTrue(
-            $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
+                $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
         );
     }
 
@@ -93,7 +93,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
     private function crudoperation($session, $page)
     {
         parent::ajaxWait($session, 20000);
-        
+
         $elementadd = $page->findAll('css', '.ui-icon-plus');
 
         foreach ($elementadd as $e) {
@@ -138,6 +138,45 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $page->fillField($fieldprefix . 'descsec', $descrizionetest2);
         $page->find('css', 'a#sDataFfsecondariaS')->click();
         parent::ajaxWait($session, 20000);
+
+        $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
+        $elementmod = $page->findAll('css', '.ui-icon-pencil');
+
+        foreach ($elementmod as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+
+        $selector = $fieldprefix . 'descsec';
+        $element = $page->find('css', "#" . $selector);
+
+        if (empty($element)) {
+            throw new \Exception("No html element found for the selector ('$selector')");
+        }
+
+        $element->rightClick();
+
+        sleep(1);
+        $elementmodifiche = $page->find('css', "div#jqContextMenu");
+
+        if (empty($element)) {
+            throw new \Exception("No html element found for the selector ('jqContextMenu')");
+        }
+        $elementmodifiche->click();
+        sleep(1);
+        $page->pressButton('Ok');
+
+        $elementchiudi = $page->find('css', ".fi-default-chiudi");
+
+        if (empty($element)) {
+            throw new \Exception("No html element found for the selector ('jqContextMenu')");
+        }
+
+        $elementchiudi->click();
+
         $this->searchmodifiche($descrizionetest1);
         /* Cancellazione */
         $jsSetFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
@@ -156,7 +195,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
     private function searchoperation($session, $page)
     {
         parent::ajaxWait($session, 20000);
-        
+
         $elementsearch = $page->findAll('css', '.ui-icon-search');
 
         foreach ($elementsearch as $e) {
@@ -254,7 +293,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
     {
 
         parent::ajaxWait($session, 20000);
-        
+
         /* Print pdf */
         $element = $page->findAll('css', '.ui-icon-print');
 
