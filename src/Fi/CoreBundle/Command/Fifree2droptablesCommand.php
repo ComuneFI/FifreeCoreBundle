@@ -36,18 +36,22 @@ class Fifree2droptablesCommand extends ContainerAwareCommand
             $output->writeln("Specificare l'opzione --force per eseguire il comando");
             return 1;
         }
+        $addcascade = "";
+        if ($driver == "pdo_pgsql") {
+            $addcascade = " CASCADE";
+        }
 
         //$this->dbh->query(sprintf('SET FOREIGN_KEY_CHECKS = 0;'));
         //Truncate tabelle
         $tables = $em->getConnection()->getSchemaManager()->listTables();
         foreach ($tables as $table) {
             $tableName = $table->getName();
-            $em->getConnection()->executeQuery(sprintf('TRUNCATE TABLE %s', $tableName));
+            $em->getConnection()->executeQuery(sprintf('TRUNCATE TABLE %s' . $addcascade, $tableName));
         }
         //Cancellazione tabelle
         foreach ($tables as $table) {
             $tableName = $table->getName();
-            $em->getConnection()->executeQuery(sprintf('DROP TABLE %s', $tableName));
+            $em->getConnection()->executeQuery(sprintf('DROP TABLE %s' . $addcascade, $tableName));
         }
         if ($driver == "pdo_pgsql") {
             //Cancellazione sequences
