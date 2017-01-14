@@ -121,12 +121,12 @@ class GrigliaRegoleUtils
             return false;
         }
 
-        $output = GrigliaUtils::getOuputType($parametri);
+        $output = GrigliaParametriUtils::getOuputType($parametri);
 
         $nometabella = $parametri['nometabella'];
 
-        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
-        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
+        $doctrine = GrigliaParametriUtils::getDoctrineByEm($parametri);
+        $doctrineficore = GrigliaParametriUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
 
         $gestionepermessi = new GestionepermessiController($parametri['container']);
         $operatorecorrente = $gestionepermessi->utentecorrenteAction();

@@ -19,7 +19,7 @@ class GrigliaDatiMultiUtils
 
     public static function prepareQuery($parametri, &$q, &$sidx, &$sord, &$page, &$limit, &$quanti)
     {
-        $output = GrigliaUtils::getOuputType($parametri);
+        $output = GrigliaParametriUtils::getOuputType($parametri);
         $nospan = GrigliaDatiUtils::getDatiNospan($parametri);
         /* su quale campo fare l'ordinamento */
         /* conta il numero di record di risposta
@@ -100,8 +100,7 @@ class GrigliaDatiMultiUtils
 
     public static function buildDatiGriglia($parametri, &$vettoreriga, &$singolo, &$nomecampo, &$indice, &$indicecolonna, &$singolocampo)
     {
-        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
-        /* $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine); */
+        $doctrine = GrigliaParametriUtils::getDoctrineByEm($parametri);
 
         $bundle = $parametri['nomebundle'];
         $nometabella = $parametri['nometabella'];

@@ -6,7 +6,7 @@ class GrigliaColonneUtils
 {
     public static function getColonne(&$nomicolonne, &$modellocolonne, &$indice, $paricevuti)
     {
-        $doctrine = GrigliaUtils::getDoctrineByEm($paricevuti);
+        $doctrine = GrigliaParametriUtils::getDoctrineByEm($paricevuti);
 
         $nometabella = $paricevuti['nometabella'];
         $bundle = $paricevuti['nomebundle'];

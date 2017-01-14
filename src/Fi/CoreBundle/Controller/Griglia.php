@@ -4,6 +4,7 @@ namespace Fi\CoreBundle\Controller;
 
 use Fi\CoreBundle\DependencyInjection\JqgridDati;
 use Fi\CoreBundle\DependencyInjection\JqgridTestata;
+use Fi\CoreBundle\DependencyInjection\GrigliaParametriUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaRegoleUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaCampiExtraUtils;
@@ -12,7 +13,6 @@ use Fi\CoreBundle\DependencyInjection\GrigliaDatiUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiPrecondizioniUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaExtraFunzioniUtils;
 use Fi\CoreBundle\DependencyInjection\GrigliaDatiMultiUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaDatiEclusioni;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class Griglia extends Controller
@@ -47,10 +47,10 @@ class Griglia extends Controller
     {
         $nometabella = $paricevuti['nometabella'];
         $nomebundle = $paricevuti['nomebundle'];
-        $output = GrigliaUtils::getOuputType($paricevuti);
+        $output = GrigliaParametriUtils::getOuputType($paricevuti);
 
-        $doctrine = GrigliaUtils::getDoctrineByEm($paricevuti);
-        $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine);
+        $doctrine = GrigliaParametriUtils::getDoctrineByEm($paricevuti);
+        $doctrineficore = GrigliaParametriUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine);
 
         $testata = array();
         $nomicolonne = array();
@@ -108,8 +108,7 @@ class Griglia extends Controller
     public static function datiPerGriglia($parametri = array())
     {
         $request = $parametri['request'];
-        $doctrine = GrigliaUtils::getDoctrineByEm($parametri);
-        /* $doctrineficore = GrigliaUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine); */
+        $doctrine = GrigliaParametriUtils::getDoctrineByEm($parametri);
         $bundle = $parametri['nomebundle'];
         $nometabella = $parametri['nometabella'];
         /* qui */
@@ -199,8 +198,8 @@ class Griglia extends Controller
 
 
 
-        $escludere = GrigliaDatiEclusioni::getDatiEscludere($parametri);
-        $escludereutente = GrigliaDatiEclusioni::getDatiEscludereDaTabella($parametri);
+        $escludere = GrigliaParametriUtils::getDatiEscludere($parametri);
+        $escludereutente = GrigliaParametriUtils::getDatiEscludereDaTabella($parametri);
         $ordinecolonne = GrigliaDatiUtils::getDatiOrdineColonne($parametri);
         $decodifiche = GrigliaDatiUtils::getDatiDecodifiche($parametri);
 
