@@ -26,12 +26,23 @@ class FfPrincipaleRepositoryFunctionalTest extends KernelTestCase
 
     public function testSearchBy()
     {
-        $object = $this->em
+        $objectsearch = $this->em
                 ->getRepository('FiCoreBundle:Ffprincipale')
                 ->findByDescrizione('Descrizione primo record')
         ;
 
-        $this->assertCount(1, $object);
+        $this->assertCount(1, $objectsearch);
+
+        $object = $this->em
+                ->getRepository('FiCoreBundle:Ffprincipale')
+                ->find(1);
+        $this->assertEquals(1, $object->getId());
+        $this->assertEquals(5, count($object->getFfsecondarias()));
+
+        $ffs = new \Fi\CoreBundle\Entity\Ffsecondaria();
+        $ffs->setDescsec("prova");
+        $object->addFfsecondaria($ffs);
+        $object->removeFfsecondaria($ffs);
     }
 
     /**
@@ -44,5 +55,4 @@ class FfPrincipaleRepositoryFunctionalTest extends KernelTestCase
         $this->em->close();
         $this->em = null; // avoid memory leaks
     }
-
 }
