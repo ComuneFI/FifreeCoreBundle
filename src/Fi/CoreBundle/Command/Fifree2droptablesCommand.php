@@ -25,7 +25,7 @@ class Fifree2droptablesCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
         $driver = $em->getConnection()->getDriver()->getName();
 
-        if ($driver != "pdo_mysql") {
+        if ($driver == "pdo_sqlite") {
             $output->writeln("Non previsto per driver: " . $driver);
             return 1;
         }
@@ -49,11 +49,13 @@ class Fifree2droptablesCommand extends ContainerAwareCommand
             $tableName = $table->getName();
             $em->getConnection()->executeQuery(sprintf('DROP TABLE %s', $tableName));
         }
-        //Cancellazione sequences
-        $sequences = $em->getConnection()->getSchemaManager()->listSequences();
-        foreach ($sequences as $sequence) {
-            $sequenceName = $sequence->getName();
-            $em->getConnection()->executeQuery(sprintf('DROP SEQUENCE %s', $sequenceName));
+        if ($driver == "pdo_pgsql") {
+            //Cancellazione sequences
+            $sequences = $em->getConnection()->getSchemaManager()->listSequences();
+            foreach ($sequences as $sequence) {
+                $sequenceName = $sequence->getName();
+                $em->getConnection()->executeQuery(sprintf('DROP SEQUENCE %s', $sequenceName));
+            }
         }
     }
 }
