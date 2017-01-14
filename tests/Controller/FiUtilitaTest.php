@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 class FiUtilitaTest extends KernelTestCase
 {
+
     public function setUp()
     {
         self::bootKernel();
@@ -50,4 +51,17 @@ class FiUtilitaTest extends KernelTestCase
         $retoptions = $fiUtilita->proSelect($parametri);
         $this->assertEquals($retoptions, '<option value="01">Primo</option>');
     }
+
+    public function testJsonRepsonse()
+    {
+        $fijson = new \Fi\CoreBundle\DependencyInjection\JsonResponse(-100, "not found");
+        $return = $fijson->getArrayResponse();
+        $this->assertEquals($return["errcode"], -100);
+        $this->assertEquals($return["message"], "not found");
+        $returndecode = json_decode($fijson->getEncodedResponse());
+
+        $this->assertEquals($returndecode->errcode, -100);
+        $this->assertEquals($returndecode->message, "not found");
+    }
+
 }
