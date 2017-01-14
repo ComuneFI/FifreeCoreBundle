@@ -42,12 +42,12 @@ class Fifree2droptablesCommand extends ContainerAwareCommand
         $tables = $em->getConnection()->getSchemaManager()->listTables();
         foreach ($tables as $table) {
             $tableName = $table->getName();
-            $em->getConnection()->executeQuery(sprintf('TRUNCATE TABLE %s CASCADE', $tableName));
+            $em->getConnection()->executeQuery(sprintf('TRUNCATE TABLE %s', $tableName));
         }
         //Cancellazione tabelle
         foreach ($tables as $table) {
             $tableName = $table->getName();
-            $em->getConnection()->executeQuery(sprintf('DROP TABLE %s CASCADE', $tableName));
+            $em->getConnection()->executeQuery(sprintf('DROP TABLE %s', $tableName));
         }
         //Cancellazione sequences
         $sequences = $em->getConnection()->getSchemaManager()->listSequences();
