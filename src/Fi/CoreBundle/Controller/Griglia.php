@@ -47,8 +47,6 @@ class Griglia extends Controller
     {
         $nometabella = $paricevuti['nometabella'];
         $nomebundle = $paricevuti['nomebundle'];
-        $output = GrigliaParametriUtils::getOuputType($paricevuti);
-
         $doctrine = GrigliaParametriUtils::getDoctrineByEm($paricevuti);
         $doctrineficore = GrigliaParametriUtils::getDoctrineFiCoreByEm($paricevuti, $doctrine);
 
@@ -75,9 +73,9 @@ class Griglia extends Controller
 
         $testata['tabella'] = $nometabella;
         $testata['nomebundle'] = $nomebundle;
-        $testata['output'] = $output;
+        $testata['output'] = GrigliaParametriUtils::getOuputType($paricevuti);
+        
         $response = new GridTestata($testata);
-
         return $response->getResponse();
     }
 

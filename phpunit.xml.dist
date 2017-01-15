@@ -16,6 +16,7 @@
     <testsuites>
         <testsuite name="Fifiree2 test suite">
             <directory suffix=".php">tests</directory>
+            <exclude>tests/FiProvaBundle</exclude>
         </testsuite>
     </testsuites>
     <php>
