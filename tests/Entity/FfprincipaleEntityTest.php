@@ -26,12 +26,14 @@ class FfPrincipaleRepositoryFunctionalTest extends KernelTestCase
 
     public function testSearchBy()
     {
+        $descrizione = 'Descrizione primo record';
         $objectsearch = $this->em
                 ->getRepository('FiCoreBundle:Ffprincipale')
-                ->findByDescrizione('Descrizione primo record')
+                ->findByDescrizione($descrizione)
         ;
 
         $this->assertCount(1, $objectsearch);
+        $this->assertEquals($descrizione, $objectsearch[0]);
 
         $object = $this->em
                 ->getRepository('FiCoreBundle:Ffprincipale')
@@ -55,4 +57,5 @@ class FfPrincipaleRepositoryFunctionalTest extends KernelTestCase
         $this->em->close();
         $this->em = null; // avoid memory leaks
     }
+
 }
