@@ -16,9 +16,9 @@ class OpzioniTabellaController extends FiCoreController
     /**
      * Lists all opzioniTabella entities.
      */
-    /* @var $em \Doctrine\ORM\EntityManager */
     public function indexAction(Request $request)
     {
+        /* @var $em \Doctrine\ORM\EntityManager */
         parent::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();

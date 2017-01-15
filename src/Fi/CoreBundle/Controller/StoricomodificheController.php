@@ -2,13 +2,7 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Fi\CoreBundle\Controller\FiController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Fi\CoreBundle\Controller\Griglia;
-use Fi\CoreBundle\Controller\gestionepermessiController;
-use Fi\CoreBundle\Entity\Storicomodifiche;
-use Fi\CoreBundle\Form\StoricomodificheType;
 
 /**
  * Storicomodifiche controller.

@@ -2,8 +2,6 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Fi\CoreBundle\Entity\menuApplicazione;
-
 /**
  * MenuApplicazione controller.
  */

@@ -50,9 +50,9 @@ class FiController extends Controller
     /**
      * Lists all tables entities.
      */
-    /* @var $em \Doctrine\ORM\EntityManager */
     public function indexAction(Request $request)
     {
+        /* @var $em \Doctrine\ORM\EntityManager */
         self::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -201,9 +201,9 @@ class FiController extends Controller
     /**
      * Displays a form to edit an existing table entity.
      */
-    /* @var $em \Doctrine\ORM\EntityManager */
     public function editAction(Request $request, $id)
     {
+        /* @var $em \Doctrine\ORM\EntityManager */
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -254,9 +254,9 @@ class FiController extends Controller
     /**
      * Edits an existing table entity.
      */
-    /* @var $em \Doctrine\ORM\EntityManager */
     public function updateAction(Request $request, $id)
     {
+        /* @var $em \Doctrine\ORM\EntityManager */
         self::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -317,17 +317,15 @@ class FiController extends Controller
     /**
      * Edits an existing table entity.
      */
-    /* @var $em \Doctrine\ORM\EntityManager */
     public function aggiornaAction(Request $request)
     {
+        /* @var $em \Doctrine\ORM\EntityManager */
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
         $nomebundle = $namespace . $bundle . 'Bundle';
-        /* $formbundle = $namespace.'\\'.$bundle.'Bundle'.'\\Form\\'.$controller; */
-        /* $formType = $formbundle.'Type'; */
 
         $id = $this->get('request')->request->get('id');
 
@@ -348,9 +346,9 @@ class FiController extends Controller
     /**
      * Deletes a table entity.
      */
-    /* @var $em \Doctrine\ORM\EntityManager */
     public function deleteAction(Request $request)
     {
+        /* @var $em \Doctrine\ORM\EntityManager */
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -358,9 +356,9 @@ class FiController extends Controller
 
         $nomebundle = $namespace . $bundle . 'Bundle';
 
-//if (!$request->isXmlHttpRequest()) {
-//    $request->checkCSRFProtection();
-//}
+        //if (!$request->isXmlHttpRequest()) {
+        //    $request->checkCSRFProtection();
+        //}
         try {
             $em = $this->getDoctrine()->getManager();
             $qb = $em->createQueryBuilder();

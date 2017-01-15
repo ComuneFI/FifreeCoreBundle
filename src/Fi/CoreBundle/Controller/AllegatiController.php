@@ -14,9 +14,9 @@ class AllegatiController extends FiCoreController
     /**
      * Edits an existing table entity.
      */
-    /* @var $em \Doctrine\ORM\EntityManager */
     public function updateAction(Request $request, $id)
     {
+        /* @var $em \Doctrine\ORM\EntityManager */
         self::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -57,9 +57,9 @@ class AllegatiController extends FiCoreController
     /**
      * Displays a form to edit an existing table entity.
      */
-    /* @var $em \Doctrine\ORM\EntityManager */
     public function editAction(Request $request, $id)
     {
+        /* @var $em \Doctrine\ORM\EntityManager */
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -104,9 +104,9 @@ class AllegatiController extends FiCoreController
     /**
      * Displays a form to edit an existing table entity.
      */
-    /* @var $em \Doctrine\ORM\EntityManager */
     public function editiframeAction(Request $request, $id)
     {
+        /* @var $em \Doctrine\ORM\EntityManager */
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -263,11 +263,6 @@ class AllegatiController extends FiCoreController
 
     public function popupAction(Request $request, $nometabella, $id)
     {
-
-        //    $entities = $em->getRepository($nomebundle . ':' . $controller)->findBy(
-        //            array('nometabella' => $nometabella, 'indicetabella' => $id), array('allegato' => 'ASC')
-        //    );
-
         self::setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -304,8 +299,6 @@ class AllegatiController extends FiCoreController
         $testatagriglia['parametriaggiuntivi_new'] = array('nometabella' => $nometabella, 'indicetabella' => $id);
 
         $testatagriglia['datipost'] = array('nometabella' => $nometabella, 'indicetabella' => $id);
-
-        // "nometabella" => $nometabella, "indicetabella" => $id
 
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
 
@@ -347,7 +340,6 @@ class AllegatiController extends FiCoreController
                     'valorecampo' => $indicetabella,
                 ),),
         );
-        //$prepar = array("request" => $request, "precondizioni" => array("indicetabella" => $indicetabella));
         $this->setParametriGriglia($prepar);
         $paricevuti = self::$parametrigriglia;
 

@@ -7,8 +7,6 @@ namespace Fi\CoreBundle\Controller;
  * Se c'è l'accoppiata RUOLO + MODULO allora vale quel permesso
  * Altrimenti solo MODULO
  * Se non trovo informazioni di sorta, il modulo è chiuso
- *
- *
  */
 
 class GestionepermessiController extends FiCoreController
@@ -32,8 +30,6 @@ class GestionepermessiController extends FiCoreController
         }
     }
 
-    //var_dump($utente);exit;
-    //get("session")->get('utente')
     public function leggereAction($parametri = array())
     {
         if (isset($parametri['modulo'])) {
@@ -160,7 +156,6 @@ class GestionepermessiController extends FiCoreController
                 ->findOneBy(array('ruoli_id' => $utentecorrente['ruolo_id'], 'modulo' => $this->modulo, 'operatori_id' => null));
 
         if ($q) {
-            //echo $utentecorrente["id"] . " ". $this->modulo . " " . $q->getSqlQuery() . "\n\n";
             $this->crud = $q->getCrud();
 
             return;
@@ -171,25 +166,15 @@ class GestionepermessiController extends FiCoreController
                 ->findOneBy(array('ruoli_id' => null, 'modulo' => $this->modulo, 'operatori_id' => null));
 
         if ($q) {
-            //echo $q->getSqlQuery() . "\n\n";
-
             $this->crud = $q->getCrud();
-
             return;
         }
 
         $this->crud = '';
     }
 
-    public function chiamato($parametri = array())
+    public function utentecorrenteAction()
     {
-        return array('nome' => 'chiamato');
-    }
-
-    public function utentecorrenteAction($parametri = array())
-    {
-        //$utente = sfContext::getInstance()->getUser()->getAttribute('utente');
-
         if (!$this->getUser()) {
             $utentecorrente['nome'] = 'Utente non registrato';
             $utentecorrente['id'] = 0;
@@ -204,16 +189,6 @@ class GestionepermessiController extends FiCoreController
                 ->find($utente);
 
         $utentecorrente = array();
-
-        //var_dump($q);
-
-        /*
-          $doctrine = $this->getDoctrine();
-          $q = $doctrine->createQueryBuilder("operatori")->
-          ->field("matricola")->equals($utente)
-          ->getQuery()
-          ->getArrayResult();
-         */
 
         $utentecorrente['username'] = $utente;
         $utentecorrente['codice'] = $utente;
