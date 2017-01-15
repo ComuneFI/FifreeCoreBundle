@@ -26,11 +26,13 @@ class DatabaseCollectorTest extends WebTestCase
         $crawler = $client->request('GET', '/');
 
         if ($profile = $client->getProfile()) {
-            $this->assertEquals($dbhostconnection, $profile->getCollector('databaseInfo')->getDatabaseHost());
-            $this->assertEquals($dbportconnection, $profile->getCollector('databaseInfo')->getDatabasePort());
-            $this->assertEquals($dbdatabaseconnection, $profile->getCollector('databaseInfo')->getDatabaseName());
-            $this->assertEquals($dbpwdconnection, $profile->getCollector('databaseInfo')->getDatabasePassword());
-            $this->assertEquals($dbuserconnection, $profile->getCollector('databaseInfo')->getDatabaseUser());
+            $profilerinfo = $profile->getCollector('databaseInfo');
+            $this->assertEquals($dbhostconnection, $profilerinfo->getDatabaseHost());
+            $this->assertEquals($dbportconnection, $profilerinfo->getDatabasePort());
+            $this->assertEquals($dbdatabaseconnection, $profilerinfo->getDatabaseName());
+            $this->assertEquals($dbpwdconnection, $profilerinfo->getDatabasePassword());
+            $this->assertEquals($dbuserconnection, $profilerinfo->getDatabaseUser());
         }
     }
+
 }
