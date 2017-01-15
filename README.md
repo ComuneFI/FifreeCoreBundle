@@ -1,8 +1,8 @@
 FifreeCoreBundle
 =============
 [![Build Status](https://travis-ci.org/ComuneFI/FifreeCoreBundle.svg?branch=master)]
-(https://travis-ci.org/ComuneFI/FifreeCoreBundle) [![Coverage Status](https://img.shields.io/coveralls/ComuneFI/FifreeCoreBundle.svg)] 
-[![Coverage Status](https://coveralls.io/repos/github/ComuneFI/FifreeCoreBundle/badge.svg?branch=master)](https://coveralls.io/github/ComuneFI/FifreeCoreBundle?branch=master)
+(https://travis-ci.org/ComuneFI/FifreeCoreBundle) [![Coverage Status](https://coveralls.io/repos/github/ComuneFI/FifreeCoreBundle/badge.svg?branch=master)](https://coveralls.io/github/ComuneFI/FifreeCoreBundle?branch=master)
+
 
 Installazione:
 -------------
