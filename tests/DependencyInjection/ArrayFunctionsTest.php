@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Fi\CoreBundle\DependencyInjection\ArrayFunctions;
 
-class ArrayFunctionsTestCase extends WebTestCase
+class ArrayFunctionsTest extends WebTestCase
 {
 
     private $rubrica = array();
@@ -40,12 +40,51 @@ class ArrayFunctionsTestCase extends WebTestCase
         $client = self::createClient();
         $em = $client->getKernel()->getContainer()->get('doctrine')->getManager();
         $arr = new ArrayFunctions();
+
         $risultato = $arr->inMultiarray("aiazzii", $this->rubrica, "cognome");
         $this->assertFalse($risultato);
+
         $risultato = $arr->inMultiarray("aiazzi", $this->rubrica, "cognome");
         $this->assertEquals(3, $risultato);
+
         $risultato = $arr->inMultiarray("andrea", $this->rubrica, "nome");
         $this->assertEquals(0, $risultato);
+    }
+
+    public function testInMultiarrayTutti()
+    {
+
+        $client = self::createClient();
+        $em = $client->getKernel()->getContainer()->get('doctrine')->getManager();
+        $arr = new ArrayFunctions();
+        $risultato = $arr->inMultiarrayTutti("aiazzii", $this->rubrica, "cognome", false);
+        $this->assertFalse($risultato);
+
+        $risultato = $arr->inMultiarrayTutti("aiazzi", $this->rubrica, "cognome", false);
+        $retarray = array(3);
+        $this->assertEquals($retarray, $risultato);
+
+        $risultato = $arr->inMultiarrayTutti("andrea", $this->rubrica, "nome", false);
+        $this->assertEquals(array(0, 3, 5), $risultato);
+    }
+
+    public function testMultiInMultiarray()
+    {
+
+        $client = self::createClient();
+        $em = $client->getKernel()->getContainer()->get('doctrine')->getManager();
+        $arr = new ArrayFunctions();
+        $risultato = $arr->multiInMultiarray($this->rubrica, array("cognome" => "aiazzii"));
+        $this->assertFalse($risultato);
+
+        $risultato = $arr->multiInMultiarray($this->rubrica, array("cognome" => "aiazzi"));
+        $this->assertEquals(3, $risultato);
+
+        $risultato = $arr->multiInMultiarray($this->rubrica, array("nome" => "andrea"));
+        $this->assertEquals(0, $risultato);
+
+        $risultato = $arr->multiInMultiarray($this->rubrica, array("nome" => "andrea"), false, true);
+        $this->assertEquals(array(0, 3, 5), $risultato);
     }
 
 }

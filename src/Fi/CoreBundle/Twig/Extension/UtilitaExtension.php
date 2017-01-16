@@ -30,13 +30,6 @@ class UtilitaExtension extends \Twig_Extension
         );
     }
 
-    /*
-      public function getFilters() {
-      return array(
-      new \Twig_SimpleFilter('permesso', array($this, 'singoloPermesso')),
-      );
-      } */
-
     public function getDb2data($giorno)
     {
         // highlight_string highlights php code only if '<?php' tag is present.

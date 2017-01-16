@@ -9,6 +9,7 @@ use Behat\Mink\Session;
 
 class Z1FfprincipaleControllerTest extends FifreeTest
 {
+
     /**
      * @test
      */
@@ -36,6 +37,72 @@ class Z1FfprincipaleControllerTest extends FifreeTest
 
         $this->assertEquals($this->getClassName(), get_class());
         $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
+
+        //insert
+        $client = parent::getClientAutorizzato();
+        $crawler = $client->request('GET', '/Ffprincipale/new');
+        $this->assertTrue($crawler->filter('html:contains("formdatiFfprincipale")')->count() > 0);
+        $descrizione = "descrizione";
+        /* Inserimento */
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'ffprincipale';
+        } else {
+            $fieldprefix = 'fi_corebundle_ffprincipaletype';
+        }
+        $valore = "provacrawler";
+        $campodescrizione = $fieldprefix . "[" . $descrizione . "]";
+        $form = $crawler->filter('form[id=formdatiFfprincipale]')->form(array("$campodescrizione" => $valore));
+
+        // submit that form
+        $crawler = $client->submit($form);
+
+        sleep(1);
+
+        //update
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select(array('a'));
+        $qb->from('FiCoreBundle:Ffprincipale', 'a');
+        $qb->where('a.descrizione = :descrizione');
+        $qb->setParameter('descrizione', $valore);
+        $record = $qb->getQuery()->getResult();
+        $recordadded = $record[0];
+
+        $this->assertEquals($recordadded->getDescrizione(), $valore);
+
+        $crawler = $client->request('GET', '/Ffprincipale/' . $recordadded->getId() . '/edit');
+        $this->assertTrue($crawler->filter('html:contains("formdatiFfprincipale")')->count() > 0);
+
+        $valorenew = "provacrawler2";
+        $campodescrizione = $fieldprefix . "[" . $descrizione . "]";
+        $form = $crawler->filter('form[id=formdatiFfprincipale]')->form(array("$campodescrizione" => $valorenew));
+
+        // submit that form
+        $crawler = $client->submit($form);
+
+
+        $em->clear();
+        $em = $this->getEntityManager();
+        $qb2 = $em->createQueryBuilder();
+        $qb2->select(array('a'));
+        $qb2->from('FiCoreBundle:Ffprincipale', 'a');
+        $qb2->where('a.descrizione = :descrizione');
+        $qb2->setParameter('descrizione', $valorenew);
+        $record2 = $qb2->getQuery()->getResult();
+        $recorddelete = $record2[0];
+        $this->assertEquals($recorddelete->getDescrizione(), $valorenew);
+
+        //delete
+        $crawler = $client->request('GET', '/Ffprincipale/' . $recorddelete->getId() . '/edit');
+        $this->assertTrue($crawler->filter('html:contains("formdatiFfprincipale")')->count() > 0);
+        $btn = $crawler->selectLink("Elimina")->link();
+        $client->click($btn);
+
+        //Non si riesce a premere Cancella si vede perchè viene creato a runtime il pulsante
+        //quindi lancio la delete a mano
+
+        $crawler = $client->request('GET', '/Ffprincipale/' . $recorddelete->getId() . '/delete');
     }
 
     /**
@@ -52,7 +119,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         $client->request('GET', $url);
         sleep(1);
         $this->assertTrue(
-            $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
+                $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
         );
     }
 
@@ -144,7 +211,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         sleep(1);
         //$page->selectFieldOption('inizia con', "cn");
         $var2 = '"cn"';
-        $javascript2 = "$('.selectopts option[value=".$var2."]').attr('selected', 'selected').change();;";
+        $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
 
         $session->executeScript($javascript2);
         $page->fillField('jqg1', $search2);
@@ -173,12 +240,12 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         }
         parent::ajaxWait($session, 20000);
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        $page->fillField($fieldprefix.'descrizione', $descrizionetest1);
+        $page->fillField($fieldprefix . 'descrizione', $descrizionetest1);
         $page->find('css', 'a#sDataFfprincipaleS')->click();
         parent::ajaxWait($session, 20000);
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRow.'}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
         $elementmod = $page->findAll('css', '.ui-icon-pencil');
 
@@ -190,12 +257,12 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
-        $page->fillField($fieldprefix.'descrizione', $descrizionetest2);
+        $page->fillField($fieldprefix . 'descrizione', $descrizionetest2);
         $page->find('css', 'a#sDataFfprincipaleS')->click();
         parent::ajaxWait($session);
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");'.$selectFirstRowDel.'}()');
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
         parent::ajaxWait($session, 20000);
@@ -241,4 +308,5 @@ class Z1FfprincipaleControllerTest extends FifreeTest
             $page = $session->getPage();
         }
     }
+
 }

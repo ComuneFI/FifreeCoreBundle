@@ -3,7 +3,6 @@
 namespace Fi\CoreBundle\Controller;
 
 use Fi\CoreBundle\Controller\GestionepermessiController as GestionePermessi;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Menu controller.
@@ -49,24 +48,7 @@ class MenuController extends MenuApplicazioneController
         if (file_exists($webdir . $pathmanuale)) {
             $risposta[] = array('percorso' => $this->getUrlObject('Manuale', $pathmanuale, '_blank'), 'nome' => 'Manuale', 'target' => '_blank');
         }
-        /*
-         * Questo codice per versioni che usano un symfony inferiore a 2.5
-          //Dalla versione 2.6 di symfony cambia la gestione del security
-          if (version_compare(Kernel::VERSION, '2.6') >= 0) {
-          $securityparm = 'security.token_storage';
-          } else {
-          $securityparm = 'security.context';
-          }
-          if ($this->get($securityparm)->getToken()->getProviderKey() === 'secured_area') {
-          $username = $this->getUser()->getUsername();
-          $urlLogout = $this->generateUrl("fi_autenticazione_signout");
-          }
 
-          if ($this->get($securityparm)->getToken()->getProviderKey() === 'main') {
-          $username = $this->get($securityparm)->getToken()->getUser()->getUsername();
-          $urlLogout = $this->generateUrl("fos_user_security_logout");
-          }
-         */
         if ($this->get('security.token_storage')->getToken()->getProviderKey() === 'secured_area') {
             $username = $this->getUser()->getUsername();
             $urlLogout = $this->generateUrl('fi_autenticazione_signout');
@@ -78,7 +60,6 @@ class MenuController extends MenuApplicazioneController
         }
 
         $risposta[] = array('percorso' => $this->getUrlObject($username, '', ''), 'nome' => $username, 'target' => '',
-            // "classe" => "ui-state-disabled",
             'sottolivello' => array(
                 array('percorso' => $urlLogout, 'nome' => 'Logout', 'target' => ''),
             ),
@@ -103,7 +84,6 @@ class MenuController extends MenuApplicazioneController
             }
 
             if ($visualizzare) {
-                //if (!$item->getPadre()) {
                 $qb = $em->createQueryBuilder();
                 $qb->select(array('a'));
                 $qb->from('FiCoreBundle:MenuApplicazione', 'a');
@@ -128,7 +108,6 @@ class MenuController extends MenuApplicazioneController
                 );
                 unset($submenu);
                 unset($sottomenutabelle);
-                //}
             }
         }
 
@@ -148,9 +127,6 @@ class MenuController extends MenuApplicazioneController
             }
 
             if ($visualizzare) {
-                if ($subitem->getId() == 13) {
-                    //var_dump($this->getMenu(array($subitem)));exit;
-                }
                 $vettoresottomenu = $this->getMenu(array($subitem));
                 $sottomenu = $vettoresottomenu[0];
 
@@ -172,20 +148,12 @@ class MenuController extends MenuApplicazioneController
         if ($this->routeExists($percorso)) {
             return array('percorso' => $this->generateUrl($percorso), 'nome' => $nome, 'target' => $target);
         } else {
-            //Commentato perchè richiede troppo tempo nel validare se il sito esterno è su o meno
-            //quindi si prende per buono, al limite si avrà una pagina non trovata ma il programma
-            //non da errore
-            //if ($this->urlExists($percorso)) {
             return array('percorso' => $percorso, 'nome' => $nome, 'target' => $target);
-            //} else {
-            //    return array("percorso" => '', "nome" => "NoRoute:" . $percorso);
-            //}
         }
     }
 
     protected function routeExists($name)
     {
-        // I assume that you have a link to the container in your twig extension class
         $router = $this->container->get('router');
 
         if ((null === $router->getRouteCollection()->get($name)) ? false : true) {
@@ -221,9 +189,7 @@ class MenuController extends MenuApplicazioneController
         curl_setopt($ch, CURLOPT_NOBODY, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
         curl_setopt($ch, CURLOPT_TIMEOUT, 1); //timeout in seconds
-        //curl_setopt($ch, CURLOPT_HEADER, TRUE);
         curl_exec($ch);
-        // $retcode > 400 -> not found, $retcode = 200, found.
         $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if ($retcode === 200 || $retcode === 401) {
             $exist = true;
