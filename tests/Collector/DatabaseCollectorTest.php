@@ -32,7 +32,9 @@ class DatabaseCollectorTest extends WebTestCase
             $this->assertEquals($dbdatabaseconnection, $profilerinfo->getDatabaseName());
             $this->assertEquals($dbpwdconnection, $profilerinfo->getDatabasePassword());
             $this->assertEquals($dbuserconnection, $profilerinfo->getDatabaseUser());
-            $this->assertTrue(strlen($profilerinfo->getDatabaseDriver() > 0));
+            $dbdrivertext=$profilerinfo->getDatabaseDriver();
+            $len = (strlen($dbdrivertext) > 0);
+            $this->assertTrue($len);
         }
     }
 
