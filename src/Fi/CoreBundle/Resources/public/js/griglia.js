@@ -18,6 +18,7 @@ function caricaGriglia(parametrijs) {
     var captiondel = parametrijs["captiondel"] || "";
     var showprint = (parametrijs["showprint"] == 0) ? false : true;
     var showexcel = (parametrijs["showexcel"] == 1) ? true : false;
+    var showimportexcel = (parametrijs["showimportexcel"] == 1) ? true : false;
     var captionprint = parametrijs["captionprint"] || "";
     var captionexcel = parametrijs["captionexcel"] || "";
     var showconfig = (parametrijs["showconfig"] == 1) ? true : false;
@@ -56,6 +57,7 @@ function caricaGriglia(parametrijs) {
     var imgwaiturl = parametrijs['imgwaiturl'] || '/bundles/ficore/images/wait.gif';
     var allegati = (parametrijs["allegati"] == 1) ? 1 : 0;
     var indirizzoexcel = (parametrijs["indirizzoexcel"]) ? parametrijs["indirizzoexcel"] : "Tabelle/esportaexcel/" + parametrijs["tabella"];
+    var importexcel = (parametrijs["importexcel"]) ? parametrijs["importexcel"] : "Tabelle/importaexcel/" + parametrijs["tabella"];
 
     var parametriaggiuntivi_edit = parametrijs["parametriaggiuntivi_edit"] || {};
     var open_new_window = parametrijs["open_new_window"] || 0;
@@ -101,7 +103,8 @@ function caricaGriglia(parametrijs) {
         'titolo': titolo,
         'parametritesta': parametritesta,
         'parametrigriglia': parametrigriglia,
-        'indirizzoexcel': indirizzoexcel
+        'indirizzoexcel': indirizzoexcel,
+        'importexcel': importexcel
                 //'filtri': jQuery(nomelist).getGridParam("postData").filters
     };
 
@@ -593,6 +596,21 @@ function caricaGriglia(parametrijs) {
 
     }
 
+    //Se si hanno i diritti per stampare si imposta il pulsante e la funizonalità
+    if (showimportexcel) {
+        jQuery(nomelist).navGrid(nomepager).navButtonAdd(nomepager, {
+            caption: captionexcel,
+            buttonicon: ((captionexcel === "") ? "ui-icon-circle-arrow-n" : "none"),
+            onClickButton: function () {
+                importaexcel(parametriexcel);
+            },
+            position: "last",
+            title: "",
+            cursor: "pointer"
+        });
+
+    }
+
     //Se si hanno i diritti per modificare la configurazioen della griglia si imposta il pulsante e la funizonalità
     if (showconfig) {
         jQuery(nomelist).navGrid(nomepager).navButtonAdd(nomepager, {
@@ -1076,6 +1094,60 @@ function esportaexcel(parametriexcel) {
     document.body.appendChild(formxls);    // Not entirely sure if this is necessary
     document.formesportaexcel.submit();
     jQuery("#formesportaexcel").remove();
+
+}
+
+function importaexcel(parametriexcel) {
+    var indirizzoexcel = parametriexcel["importexcel"];
+    jQuery("#formimportaexcel").remove();
+    var creaformxls = jQuery("<form id='formimportaexcel' name='formimportaexcel' class='dropzone'></form>");
+    if (!jQuery("#formesportaexcel").lenght) {
+        jQuery("#Secondo").append(creaformxls);
+    }
+
+    var tabella = parametriexcel["tabella"] || "";
+    var nomelist = parametriexcel["nomelist"] || "#list1";
+
+    var filtro = jQuery(nomelist).getGridParam("postData");
+
+    var formxls = document.formimportaexcel;
+    formxls.setAttribute("method", "post");
+    formxls.setAttribute("action", baseUrl + '/' + indirizzoexcel);
+    formxls.setAttribute("target", "_blank");
+
+    jQuery.each(parametriexcel, function (key, value) {
+        if (!filtro[key]) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", value);
+            hiddenField.setAttribute("type", "hidden");
+            formxls.appendChild(hiddenField);
+        }
+    });
+
+    jQuery.each(filtro, function (key, value) {
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("name", key);
+        hiddenField.setAttribute("value", value);
+        hiddenField.setAttribute("type", "hidden");
+        formxls.appendChild(hiddenField);
+
+
+    });
+
+    document.body.appendChild(formxls);    // Not entirely sure if this is necessary
+    $("#formimportaexcel").dropzone();
+    Dropzone.options.filedrop = {
+        init: function () {
+            this.on("complete", function (file) {
+                if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                    jQuery("#formimportaexcel").remove();
+                }
+            });
+        }
+    };
+    //document.formesportaexcel.submit();
+    //jQuery("#formesportaexcel").remove();
 
 }
 

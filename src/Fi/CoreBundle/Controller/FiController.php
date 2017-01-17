@@ -454,6 +454,61 @@ class FiController extends Controller
         return $response;
     }
 
+    public function importaexcelAction(Request $request)
+    {
+        self::setup($request);
+        $return = "OK";
+        try {
+            $file = $request->files->get('file');
+            $tablenamefile = preg_replace('/\\.[^.\\s]{3,4}$/', '', $file->getClientOriginalName());
+            $namespace = $this->getNamespace();
+            $bundle = $this->getBundle();
+            $nomebundle = $namespace . $bundle . 'Bundle';
+
+
+            $em = $this->getDoctrine()->getManager();
+            $classentitypath = "\\" . $namespace . "\\" . $bundle . "Bundle\\Entity\\" . $tablenamefile;
+            $entityname = $nomebundle . ':' . $tablenamefile;
+            $repo = $em->getRepository($entityname);
+            if (is_a($repo, "Doctrine\ORM\EntityRepository")) {
+                $objPHPExcel = \PHPExcel_IOFactory::load($file);
+                foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
+                    //$worksheetTitle = $worksheet->getTitle();
+                    $highestRow = $worksheet->getHighestRow(); // e.g. 10
+                    $highestColumn = $worksheet->getHighestColumn(); // e.g 'F'
+                    $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+                    $colonne = array();
+                    for ($index = 0; $index < $highestColumnIndex; $index++) {
+                        $colonne[] = strtolower($worksheet->getCellByColumnAndRow($index, 1)->getValue());
+                    }
+                    //var_dump($colonne);
+                    for ($rows = 2; $rows < $highestRow + 1; $rows++) {
+                        $newentity = new $classentitypath();
+                        for ($cols = 0; $cols < $highestColumnIndex; $cols++) {
+                            if ($colonne[$cols] != "id") {
+                                $valore = $worksheet->getCellByColumnAndRow($cols, $rows)->getValue();
+                                $fieldset = "set" . ucfirst($colonne[$cols]);
+                                $newentity->$fieldset($valore);
+                            }
+                            //echo $colonne[$cols] . ' = '. $valore."\n";
+                        }
+                        $em->persist($newentity);
+                        //$worksheet->getCellByColumnAndRow($index, 1)->getValue();
+                    }
+                    $em->flush();
+                }
+            } else {
+                $return = $entityname . " sconosciuta";
+            }
+        } catch (\Exception $exc) {
+            //$return = $exc->getTraceAsString();
+            $return = $exc->getMessage();
+        }
+
+        $response = new Response($return);
+        return $response;
+    }
+
     private function getParametersTestataPerGriglia($request, $container, $em, $paricevuti)
     {
         if ($request->get('parametritesta')) {
