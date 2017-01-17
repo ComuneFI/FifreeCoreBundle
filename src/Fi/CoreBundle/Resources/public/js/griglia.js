@@ -1136,13 +1136,18 @@ function importaexcel(parametriexcel) {
     });
 
     document.body.appendChild(formxls);    // Not entirely sure if this is necessary
-    $("#formimportaexcel").dropzone();
+    $("#formimportaexcel").dropzone({
+        success: function (file, response) {
+            alert(response);
+        }
+    });
     Dropzone.options.filedrop = {
         init: function () {
-            this.on("complete", function (file) {
+            this.on("complete", function (file, errormessage, xhr) {
                 if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
                     jQuery("#formimportaexcel").remove();
                 }
+                //location.reload();
             });
         }
     };

@@ -459,17 +459,17 @@ class FiController extends Controller
         self::setup($request);
         $return = "OK";
         try {
+            $em = $this->getDoctrine()->getManager();
             $file = $request->files->get('file');
             $tablenamefile = preg_replace('/\\.[^.\\s]{3,4}$/', '', $file->getClientOriginalName());
-            $namespace = $this->getNamespace();
-            $bundle = $this->getBundle();
-            $nomebundle = $namespace . $bundle . 'Bundle';
+            //$namespace = $this->getNamespace();
+            $parametri = json_decode($request->get("parametrigriglia"));
+            $bundle = $parametri->nomebundle;
+            //$nomebundle = $namespace . $bundle . 'Bundle';
+            $repo = $em->getRepository($bundle . ":" . $tablenamefile);
+            $className = $repo->getClassName();
 
-
-            $em = $this->getDoctrine()->getManager();
-            $classentitypath = "\\" . $namespace . "\\" . $bundle . "Bundle\\Entity\\" . $tablenamefile;
-            $entityname = $nomebundle . ':' . $tablenamefile;
-            $repo = $em->getRepository($entityname);
+            $classentitypath = "\\" . $className;
             if (is_a($repo, "Doctrine\ORM\EntityRepository")) {
                 $objPHPExcel = \PHPExcel_IOFactory::load($file);
                 foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
@@ -481,7 +481,6 @@ class FiController extends Controller
                     for ($index = 0; $index < $highestColumnIndex; $index++) {
                         $colonne[] = strtolower($worksheet->getCellByColumnAndRow($index, 1)->getValue());
                     }
-                    //var_dump($colonne);
                     for ($rows = 2; $rows < $highestRow + 1; $rows++) {
                         $newentity = new $classentitypath();
                         for ($cols = 0; $cols < $highestColumnIndex; $cols++) {
@@ -490,15 +489,13 @@ class FiController extends Controller
                                 $fieldset = "set" . ucfirst($colonne[$cols]);
                                 $newentity->$fieldset($valore);
                             }
-                            //echo $colonne[$cols] . ' = '. $valore."\n";
                         }
                         $em->persist($newentity);
-                        //$worksheet->getCellByColumnAndRow($index, 1)->getValue();
                     }
                     $em->flush();
                 }
             } else {
-                $return = $entityname . " sconosciuta";
+                $return = $className . " sconosciuta";
             }
         } catch (\Exception $exc) {
             //$return = $exc->getTraceAsString();
