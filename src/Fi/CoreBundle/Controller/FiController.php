@@ -465,11 +465,17 @@ class FiController extends Controller
             //$namespace = $this->getNamespace();
             $parametri = json_decode($request->get("parametrigriglia"));
             $bundle = $parametri->nomebundle;
+            $controller = $parametri->nometabella;
             //$nomebundle = $namespace . $bundle . 'Bundle';
             $repo = $em->getRepository($bundle . ":" . $tablenamefile);
             $className = $repo->getClassName();
 
             $classentitypath = "\\" . $className;
+            if (strtolower($controller) != strtolower($tablenamefile)) {
+                $response = new Response("Si sta cercando di caricare i dati di " . $tablenamefile . " in " . $controller);
+                return $response;
+            }
+
             if (is_a($repo, "Doctrine\ORM\EntityRepository")) {
                 $objPHPExcel = \PHPExcel_IOFactory::load($file);
                 foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
@@ -495,11 +501,12 @@ class FiController extends Controller
                     $em->flush();
                 }
             } else {
-                $return = $className . " sconosciuta";
+                $response = new Response($return);
+                return $response;
             }
         } catch (\Exception $exc) {
-            //$return = $exc->getTraceAsString();
-            $return = $exc->getMessage();
+            $response = new Response($exc->getMessage());
+            return $response;
         }
 
         $response = new Response($return);
