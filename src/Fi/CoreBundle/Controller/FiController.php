@@ -393,127 +393,7 @@ class FiController extends Controller
                         ->getForm();
     }
 
-    public function prepareOutput($request)
-    {
-        $namespace = $this->getNamespace();
-        $bundle = $this->getBundle();
-        $container = $this->container;
-
-        $nomebundle = $namespace . $bundle . 'Bundle';
-
-        $em = $this->getDoctrine()->getManager();
-
-        $paricevuti = array(
-            'nomebundle' => $nomebundle,
-            'nometabella' => $request->get('nometabella'),
-            'container' => $container,
-            'request' => $request,
-        );
-
-        $parametripertestatagriglia = $this->getParametersTestataPerGriglia($request, $container, $em, $paricevuti);
-
-        $testatagriglia = Griglia::testataPerGriglia($parametripertestatagriglia);
-
-        if ($request->get('titolo')) {
-            $testatagriglia['titolo'] = $request->get('titolo');
-        }
-        $parametridatipergriglia = $this->getParametersDatiPerGriglia($request, $container, $em, $paricevuti);
-        $corpogriglia = Griglia::datiPerGriglia($parametridatipergriglia);
-
-        $parametri = array('request' => $request, 'testata' => $testatagriglia, 'griglia' => $corpogriglia);
-        return $parametri;
-    }
-
-    public function stampatabellaAction(Request $request)
-    {
-        self::setup($request);
-        $pdf = new StampatabellaController($this->container);
-
-        $parametri = $this->prepareOutput($request);
-
-        $pdf->stampa($parametri);
-
-        return new Response('OK');
-    }
-
-    public function esportaexcelAction(Request $request)
-    {
-        self::setup($request);
-        $xls = new StampatabellaController($this->container);
-
-        $parametri = $this->prepareOutput($request);
-
-        $fileexcel = $xls->esportaexcel($parametri);
-        $response = new Response();
-
-        $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', 'attachment;filename="' . basename($fileexcel) . '"');
-
-        $response->setContent(file_get_contents($fileexcel));
-
-        return $response;
-    }
-
-    public function importaexcelAction(Request $request)
-    {
-        self::setup($request);
-        $return = "OK";
-        try {
-            $em = $this->getDoctrine()->getManager();
-            $file = $request->files->get('file');
-            $tablenamefile = preg_replace('/\\.[^.\\s]{3,4}$/', '', $file->getClientOriginalName());
-            //$namespace = $this->getNamespace();
-            $parametri = json_decode($request->get("parametrigriglia"));
-            $bundle = $parametri->nomebundle;
-            $controller = $parametri->nometabella;
-            //$nomebundle = $namespace . $bundle . 'Bundle';
-            $repo = $em->getRepository($bundle . ":" . $tablenamefile);
-            $className = $repo->getClassName();
-
-            $classentitypath = "\\" . $className;
-            if (strtolower($controller) != strtolower($tablenamefile)) {
-                $response = new Response("Si sta cercando di caricare i dati di " . $tablenamefile . " in " . $controller);
-                return $response;
-            }
-
-            if (is_a($repo, "Doctrine\ORM\EntityRepository")) {
-                $objPHPExcel = \PHPExcel_IOFactory::load($file);
-                foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
-                    //$worksheetTitle = $worksheet->getTitle();
-                    $highestRow = $worksheet->getHighestRow(); // e.g. 10
-                    $highestColumn = $worksheet->getHighestColumn(); // e.g 'F'
-                    $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
-                    $colonne = array();
-                    for ($index = 0; $index < $highestColumnIndex; $index++) {
-                        $colonne[] = strtolower($worksheet->getCellByColumnAndRow($index, 1)->getValue());
-                    }
-                    for ($rows = 2; $rows < $highestRow + 1; $rows++) {
-                        $newentity = new $classentitypath();
-                        for ($cols = 0; $cols < $highestColumnIndex; $cols++) {
-                            if ($colonne[$cols] != "id") {
-                                $valore = $worksheet->getCellByColumnAndRow($cols, $rows)->getValue();
-                                $fieldset = "set" . ucfirst($colonne[$cols]);
-                                $newentity->$fieldset($valore);
-                            }
-                        }
-                        $em->persist($newentity);
-                    }
-                    $em->flush();
-                }
-            } else {
-                $response = new Response($return);
-                return $response;
-            }
-        } catch (\Exception $exc) {
-            $response = new Response($exc->getMessage());
-            return $response;
-        }
-
-        $response = new Response($return);
-        return $response;
-    }
-
-    private function getParametersTestataPerGriglia($request, $container, $em, $paricevuti)
+    protected function getParametersTestataPerGriglia($request, $container, $em, $paricevuti)
     {
         if ($request->get('parametritesta')) {
             $jsonparms = json_decode($request->get('parametritesta'));
@@ -527,7 +407,7 @@ class FiController extends Controller
         return $request->get('parametritesta') ? $parametritesta : $paricevuti;
     }
 
-    private function getParametersDatiPerGriglia($request, $container, $em, $paricevuti)
+    protected function getParametersDatiPerGriglia($request, $container, $em, $paricevuti)
     {
         if ($request->get('parametrigriglia')) {
             $jsonparms = json_decode($request->get('parametrigriglia'));
