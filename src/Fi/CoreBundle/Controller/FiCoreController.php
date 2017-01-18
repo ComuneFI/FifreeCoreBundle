@@ -115,15 +115,17 @@ class FiCoreController extends FiController
                         foreach ($colonne as $colonna) {
                             $cols = $colonna["colxls"];
                             $valore = $worksheet->getCellByColumnAndRow($cols, $rows)->getValue();
-                            $fieldset = "set" . ucfirst($colonna["name"]);
-                            if ($colonna["type"] === "date") {
-                                $exceldata = \PHPExcel_Style_NumberFormat::toFormattedString($valore, 'YYYY-MM-DD');
-                                $nuovadata = \DateTime::createFromFormat('Y-m-d', $exceldata);
-                                $valore = $nuovadata;
-                            } elseif ($colonna["type"] === "boolean") {
-                                $valore = (($valore == 'SI') ? true : false);
+                            if ($valore) {
+                                $fieldset = "set" . ucfirst($colonna["name"]);
+                                if ($colonna["type"] === "date") {
+                                    $exceldata = \PHPExcel_Style_NumberFormat::toFormattedString($valore, 'YYYY-MM-DD');
+                                    $nuovadata = \DateTime::createFromFormat('Y-m-d', $exceldata);
+                                    $valore = $nuovadata;
+                                } elseif ($colonna["type"] === "boolean") {
+                                    $valore = (($valore == 'SI') ? true : false);
+                                }
+                                $newentity->$fieldset($valore);
                             }
-                            $newentity->$fieldset($valore);
                         }
                         $em->persist($newentity);
                     }
