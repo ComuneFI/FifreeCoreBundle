@@ -8,6 +8,36 @@ use Symfony\Component\HttpFoundation\Response;
 class FiCoreController extends FiController
 {
 
+    public function stampatabellaAction(Request $request)
+    {
+        self::setup($request);
+        $pdf = new StampatabellaController($this->container);
+
+        $parametri = $this->prepareOutput($request);
+
+        $pdf->stampa($parametri);
+
+        return new Response('OK');
+    }
+
+    public function esportaexcelAction(Request $request)
+    {
+        self::setup($request);
+        $xls = new StampatabellaController($this->container);
+
+        $parametri = $this->prepareOutput($request);
+
+        $fileexcel = $xls->esportaexcel($parametri);
+        $response = new Response();
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . basename($fileexcel) . '"');
+
+        $response->setContent(file_get_contents($fileexcel));
+
+        return $response;
+    }
+
     public function prepareOutput($request)
     {
         $namespace = $this->getNamespace();
@@ -37,36 +67,6 @@ class FiCoreController extends FiController
 
         $parametri = array('request' => $request, 'testata' => $testatagriglia, 'griglia' => $corpogriglia);
         return $parametri;
-    }
-
-    public function stampatabellaAction(Request $request)
-    {
-        self::setup($request);
-        $pdf = new StampatabellaController($this->container);
-
-        $parametri = $this->prepareOutput($request);
-
-        $pdf->stampa($parametri);
-
-        return new Response('OK');
-    }
-
-    public function esportaexcelAction(Request $request)
-    {
-        self::setup($request);
-        $xls = new StampatabellaController($this->container);
-
-        $parametri = $this->prepareOutput($request);
-
-        $fileexcel = $xls->esportaexcel($parametri);
-        $response = new Response();
-
-        $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', 'attachment;filename="' . basename($fileexcel) . '"');
-
-        $response->setContent(file_get_contents($fileexcel));
-
-        return $response;
     }
 
     public function importaexcelAction(Request $request)
@@ -117,13 +117,7 @@ class FiCoreController extends FiController
                             $valore = $worksheet->getCellByColumnAndRow($cols, $rows)->getValue();
                             if ($valore) {
                                 $fieldset = "set" . ucfirst($colonna["name"]);
-                                if ($colonna["type"] === "date") {
-                                    $exceldata = \PHPExcel_Style_NumberFormat::toFormattedString($valore, 'YYYY-MM-DD');
-                                    $nuovadata = \DateTime::createFromFormat('Y-m-d', $exceldata);
-                                    $valore = $nuovadata;
-                                } elseif ($colonna["type"] === "boolean") {
-                                    $valore = (($valore == 'SI') ? true : false);
-                                }
+                                $valore = $this->getValoreCampoExcel($valore, $colonna);
                                 $newentity->$fieldset($valore);
                             }
                         }
@@ -142,5 +136,19 @@ class FiCoreController extends FiController
 
         $response = new Response($return);
         return $response;
+    }
+
+    private function getValoreCampoExcel($valoreexcel, $colonna)
+    {
+        $valore = $valoreexcel;
+        if ($colonna["type"] === "date") {
+            $exceldata = \PHPExcel_Style_NumberFormat::toFormattedString($valoreexcel, 'YYYY-MM-DD');
+            $nuovadata = \DateTime::createFromFormat('Y-m-d', $exceldata);
+            $valore = $nuovadata;
+        } elseif ($colonna["type"] === "boolean") {
+            $valore = (($valoreexcel == 'SI') ? true : false);
+        }
+
+        return $valore;
     }
 }
