@@ -181,5 +181,4 @@ class ArrayFunctions
 
         return false;
     }
-
 }
