@@ -79,7 +79,7 @@ class GrigliaRegoleUtils
 
     public static function setSingolaRegola($tipo, $regola)
     {
-        if (!$tipo) {
+        if (!$tipo || $tipo == "integer" || $tipo == "float") {
             GrigliaUtils::setVettoriPerNumero();
         }
         if ($tipo == 'date' || $tipo == 'datetime') {

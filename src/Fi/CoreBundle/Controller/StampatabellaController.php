@@ -216,6 +216,27 @@ class StampatabellaController extends FiCoreController
         $sheet->getRowDimension('1')->setRowHeight(20);
     }
 
+    private function getValueCell($tipocampo, $vettorecella)
+    {
+        $valore = null;
+        switch ($tipocampo) {
+            case 'date':
+                $d = substr($vettorecella, 0, 2);
+                $m = substr($vettorecella, 3, 2);
+                $y = substr($vettorecella, 6, 4);
+                $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
+                $valore = $t_date;
+                break;
+            case 'boolean':
+                $valore = ($vettorecella == 1) ? 'SI' : 'NO';
+                break;
+            default:
+                $valore = $vettorecella;
+                break;
+        }
+        return $valore;
+    }
+
     private function printBodyXls($righe, $modellicolonne, $sheet)
     {
         $row = 2;
@@ -223,22 +244,11 @@ class StampatabellaController extends FiCoreController
             $vettorecelle = $riga->cell;
             $col = 0;
             foreach ($vettorecelle as $vettorecella) {
-                switch ($modellicolonne[$col]['tipocampo']) {
-                    case 'date':
-                        $d = substr($vettorecella, 0, 2);
-                        $m = substr($vettorecella, 3, 2);
-                        $y = substr($vettorecella, 6, 4);
-                        $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
-                        $sheet->setCellValueByColumnAndRow($col, $row, $t_date);
-                        break;
-                    case 'boolean':
-                        $sheet->setCellValueByColumnAndRow($col, $row, ($vettorecella == 1) ? 'SI' : 'NO');
-                        break;
-                    default:
-                        $sheet->setCellValueByColumnAndRow($col, $row, $vettorecella);
-                        break;
+                if (!$vettorecella) {
+                    continue;
                 }
-
+                $valore = $this->getValueCell($modellicolonne[$col]['tipocampo'], $vettorecella);
+                $sheet->setCellValueByColumnAndRow($col, $row, $valore);
                 $col = $col + 1;
             }
             $sheet->getRowDimension($row)->setRowHeight(18);

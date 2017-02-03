@@ -393,68 +393,7 @@ class FiController extends Controller
                         ->getForm();
     }
 
-    public function prepareOutput($request)
-    {
-        $namespace = $this->getNamespace();
-        $bundle = $this->getBundle();
-        $container = $this->container;
-
-        $nomebundle = $namespace . $bundle . 'Bundle';
-
-        $em = $this->getDoctrine()->getManager();
-
-        $paricevuti = array(
-            'nomebundle' => $nomebundle,
-            'nometabella' => $request->get('nometabella'),
-            'container' => $container,
-            'request' => $request,
-        );
-
-        $parametripertestatagriglia = $this->getParametersTestataPerGriglia($request, $container, $em, $paricevuti);
-
-        $testatagriglia = Griglia::testataPerGriglia($parametripertestatagriglia);
-
-        if ($request->get('titolo')) {
-            $testatagriglia['titolo'] = $request->get('titolo');
-        }
-        $parametridatipergriglia = $this->getParametersDatiPerGriglia($request, $container, $em, $paricevuti);
-        $corpogriglia = Griglia::datiPerGriglia($parametridatipergriglia);
-
-        $parametri = array('request' => $request, 'testata' => $testatagriglia, 'griglia' => $corpogriglia);
-        return $parametri;
-    }
-
-    public function stampatabellaAction(Request $request)
-    {
-        self::setup($request);
-        $pdf = new StampatabellaController($this->container);
-
-        $parametri = $this->prepareOutput($request);
-
-        $pdf->stampa($parametri);
-
-        return new Response('OK');
-    }
-
-    public function esportaexcelAction(Request $request)
-    {
-        self::setup($request);
-        $xls = new StampatabellaController($this->container);
-
-        $parametri = $this->prepareOutput($request);
-
-        $fileexcel = $xls->esportaexcel($parametri);
-        $response = new Response();
-
-        $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', 'attachment;filename="' . basename($fileexcel) . '"');
-
-        $response->setContent(file_get_contents($fileexcel));
-
-        return $response;
-    }
-
-    private function getParametersTestataPerGriglia($request, $container, $em, $paricevuti)
+    protected function getParametersTestataPerGriglia($request, $container, $em, $paricevuti)
     {
         if ($request->get('parametritesta')) {
             $jsonparms = json_decode($request->get('parametritesta'));
@@ -468,7 +407,7 @@ class FiController extends Controller
         return $request->get('parametritesta') ? $parametritesta : $paricevuti;
     }
 
-    private function getParametersDatiPerGriglia($request, $container, $em, $paricevuti)
+    protected function getParametersDatiPerGriglia($request, $container, $em, $paricevuti)
     {
         if ($request->get('parametrigriglia')) {
             $jsonparms = json_decode($request->get('parametrigriglia'));

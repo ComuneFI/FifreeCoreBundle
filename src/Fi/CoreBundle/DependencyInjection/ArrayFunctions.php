@@ -63,8 +63,8 @@ class ArrayFunctions
                 foreach ($value as $nomecolonna => $colonna) {
                     if ($colonna === $elem && $nomecolonna == $key) {
                         if ($debug) {
-                            echo "$colonna Ã¨ uguale a $elem a indice $indice \n";
-                            echo "$nomecolonna Ã¨ uguale a $key a indice $indice \n";
+                            echo "$colonna = $elem quando indice = $indice \n";
+                            echo "$nomecolonna = $key quando indice = $indice \n";
                             var_dump($array[$indice]);
                             echo "\n";
                         }
@@ -113,6 +113,7 @@ class ArrayFunctions
             }
 
             if ($trovato === false) {
+                $vettorerisultati = false;
                 break;
             }
 

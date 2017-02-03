@@ -39,6 +39,8 @@ class FfprincipaleController extends FiCoreController
         $testatagriglia['multisearch'] = 1;
         $testatagriglia['showconfig'] = 1;
         $testatagriglia['showexcel'] = 1;
+        $testatagriglia['showimportexcel'] = 1;
+        
         $testatagriglia['overlayopen'] = 1;
 
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
