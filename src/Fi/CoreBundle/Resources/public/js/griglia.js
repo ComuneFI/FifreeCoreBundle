@@ -1,7 +1,5 @@
-var lastsel = 0;
-var grid;
-
 function caricaGriglia(parametrijs) {
+    var lastsel = 0;
 
     var titolo = (parametrijs["titolo"] || "Elenco " + parametrijs["tabella"]);
     var tabella = parametrijs["tabella"];
@@ -1484,6 +1482,18 @@ function eliminaDettaglio(parametri) {
                         modal: true
                     });
                     jQuery(nometestodialog).html("Impossibile cancellare la riga (per esempio potrebbe essere usata in altre tabelle).");
+                    jQuery(nomedialog).show();
+                } else if (responseText.status === 200 && responseText.statusText !== "OK") {
+                    jQuery(nomedialog).dialog({
+                        title: 'Attenzione',
+                        buttons: {
+                            "Ok": function () {
+                                jQuery(this).dialog("close");
+                            }
+                        },
+                        modal: true
+                    });
+                    jQuery(nometestodialog).html(responseText.statusText);
                     jQuery(nomedialog).show();
                 } else {
                     jQuery(list).trigger("reloadGrid", [{
