@@ -1314,7 +1314,7 @@ function salvaDettaglio(parametri) {
     var rowid = parametri['id'];
     var div = parametri['div'] || "#dettaglio";
     var continua = parametri['continua'] || 0;
-    var refreshgrid = parametri['refreshgrid'] || 0;
+    var refreshgrid = parametri['refreshgrid'] || 1;
     var formdati = parametri['formdati'] || "#formdati";
     var list = parametri['list'] || "#list1";
     var parametriaggiuntivi = parametri["parametriaggiuntivi"] || {};
