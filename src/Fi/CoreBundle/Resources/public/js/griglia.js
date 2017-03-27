@@ -1366,10 +1366,10 @@ function salvaDettaglio(parametri) {
             funzionedaeseguireloadcomplete();
         }
 
-        jQuery(list).trigger("reloadGrid", [{
-                current: true
-            }]);
-
+        if (refreshgrid === 1) {
+            jQuery(list).trigger("reloadGrid", [{current: true}]);
+        }
+        
         if (jQuery.isEmptyObject(parametrireloadcombo)) {
             //console.log('i parametri non sono stati passati');
         } else {
