@@ -14,3 +14,4 @@ parameters:
     locale: it
     secret: ThisTokenIsNotSoSecretChangeIt
     temascelto: sunny
+	mailer_user: user@mail.com #fosuserbundle
