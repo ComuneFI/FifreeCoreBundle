@@ -9,9 +9,8 @@ parameters:
     database_password: null
     mailer_transport: smtp
     mailer_host: null
-    mailer_user: null
+    mailer_user: user@mail.com
     mailer_password: null
     locale: it
     secret: ThisTokenIsNotSoSecretChangeIt
     temascelto: sunny
-	mailer_user: user@mail.com #fosuserbundle
