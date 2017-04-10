@@ -378,9 +378,9 @@ function caricaGriglia(parametrijs) {
         jQuery(nomelist).jqGrid("setGridWidth", "1000");
     }
 
-    if (jQuery(nomelist).jqGrid('getGridParam', 'width') <= 600) {
-        jQuery(nomelist).jqGrid("setGridWidth", "600");
-    }
+    //if (jQuery(nomelist).jqGrid('getGridParam', 'width') <= 600) {
+    //    jQuery(nomelist).jqGrid("setGridWidth", "600");
+    //}
 
     if (larghezzagriglia) {
         jQuery(nomelist).jqGrid("setGridWidth", larghezzagriglia);
@@ -952,8 +952,8 @@ function caricaGriglia_inline(parametrijs, parametriaggiuntivi) {
 
     if (larghezzagriglia >= 1000) {
         jQuery(nomelist).jqGrid("setGridWidth", "1000");
-    } else if (larghezzagriglia <= 600) {
-        jQuery(nomelist).jqGrid("setGridWidth", "600");
+    //} else if (larghezzagriglia <= 600) {
+    //    jQuery(nomelist).jqGrid("setGridWidth", "600");
     } else
         jQuery(nomelist).jqGrid("setGridWidth", larghezzagriglia);
 
