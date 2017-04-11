@@ -1,7 +1,5 @@
-var lastsel = 0;
-var grid;
-
 function caricaGriglia(parametrijs) {
+    var lastsel = 0;
 
     var titolo = (parametrijs["titolo"] || "Elenco " + parametrijs["tabella"]);
     var tabella = parametrijs["tabella"];
@@ -380,9 +378,9 @@ function caricaGriglia(parametrijs) {
         jQuery(nomelist).jqGrid("setGridWidth", "1000");
     }
 
-    if (jQuery(nomelist).jqGrid('getGridParam', 'width') <= 600) {
-        jQuery(nomelist).jqGrid("setGridWidth", "600");
-    }
+    //if (jQuery(nomelist).jqGrid('getGridParam', 'width') <= 600) {
+    //    jQuery(nomelist).jqGrid("setGridWidth", "600");
+    //}
 
     if (larghezzagriglia) {
         jQuery(nomelist).jqGrid("setGridWidth", larghezzagriglia);
@@ -954,8 +952,8 @@ function caricaGriglia_inline(parametrijs, parametriaggiuntivi) {
 
     if (larghezzagriglia >= 1000) {
         jQuery(nomelist).jqGrid("setGridWidth", "1000");
-    } else if (larghezzagriglia <= 600) {
-        jQuery(nomelist).jqGrid("setGridWidth", "600");
+    //} else if (larghezzagriglia <= 600) {
+    //    jQuery(nomelist).jqGrid("setGridWidth", "600");
     } else
         jQuery(nomelist).jqGrid("setGridWidth", larghezzagriglia);
 
@@ -1316,7 +1314,7 @@ function salvaDettaglio(parametri) {
     var rowid = parametri['id'];
     var div = parametri['div'] || "#dettaglio";
     var continua = parametri['continua'] || 0;
-    var refreshgrid = parametri['refreshgrid'] || 0;
+    var refreshgrid = parametri['refreshgrid'] || 1;
     var formdati = parametri['formdati'] || "#formdati";
     var list = parametri['list'] || "#list1";
     var parametriaggiuntivi = parametri["parametriaggiuntivi"] || {};
@@ -1368,10 +1366,10 @@ function salvaDettaglio(parametri) {
             funzionedaeseguireloadcomplete();
         }
 
-        jQuery(list).trigger("reloadGrid", [{
-                current: true
-            }]);
-
+        if (refreshgrid === 1) {
+            jQuery(list).trigger("reloadGrid", [{current: true}]);
+        }
+        
         if (jQuery.isEmptyObject(parametrireloadcombo)) {
             //console.log('i parametri non sono stati passati');
         } else {
@@ -1484,6 +1482,18 @@ function eliminaDettaglio(parametri) {
                         modal: true
                     });
                     jQuery(nometestodialog).html("Impossibile cancellare la riga (per esempio potrebbe essere usata in altre tabelle).");
+                    jQuery(nomedialog).show();
+                } else if (responseText.status === 200 && responseText.statusText !== "OK") {
+                    jQuery(nomedialog).dialog({
+                        title: 'Attenzione',
+                        buttons: {
+                            "Ok": function () {
+                                jQuery(this).dialog("close");
+                            }
+                        },
+                        modal: true
+                    });
+                    jQuery(nometestodialog).html(responseText.statusText);
                     jQuery(nomedialog).show();
                 } else {
                     jQuery(list).trigger("reloadGrid", [{
