@@ -244,7 +244,8 @@ class StampatabellaController extends FiCoreController
             $vettorecelle = $riga->cell;
             $col = 0;
             foreach ($vettorecelle as $vettorecella) {
-                if (!$vettorecella) {
+                if ($vettorecella === '' || $vettorecella === null) {
+                    $col = $col + 1;
                     continue;
                 }
                 $valore = $this->getValueCell($modellicolonne[$col]['tipocampo'], $vettorecella);
