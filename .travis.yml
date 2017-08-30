@@ -21,7 +21,7 @@ env:
   - DB=sqlite3
   
 #sudo: required
-#dist: trusty
+dist: trusty
 cache:
   directories:
     - $HOME/.composer/cache
