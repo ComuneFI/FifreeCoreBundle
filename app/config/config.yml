@@ -87,28 +87,3 @@ parameters:
     appid_applicativo: 999
     user4test: admin
     solosso: false
-
-oneup_flysystem:
-    adapters:
-        allegati_adapter:
-            local:
-                directory: "%kernel.root_dir%/../web/allegati"
-
-    filesystems:
-        allegati_file_fs:
-            adapter:    allegati_adapter
-            mount:      allegati_file_fs
-
-vich_uploader:
-    db_driver: orm 
-    storage:   flysystem
-    
-    mappings:
-        file_allegati:
-            uri_prefix:         /allegati
-            upload_destination: allegati_file_fs
-            
-            inject_on_load:     false
-            delete_on_update:   true
-            delete_on_remove:   true
-            

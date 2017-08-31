@@ -209,9 +209,6 @@ class FiController extends Controller
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $allegati = ($request->get('allegati') == 1 ? 1 : 0);
-
-
         $nomebundle = $namespace . $bundle . 'Bundle';
         $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
         $formType = $formbundle . 'Type';
@@ -246,7 +243,6 @@ class FiController extends Controller
                     'edit_form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
                     'elencomodifiche' => $elencomodifiche,
-                    'allegati' => $allegati,
                         )
         );
     }

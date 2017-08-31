@@ -20,7 +20,6 @@
             {% if ("d" | permesso) %}
             <a class="fi-default-elimina fm-button ui-state-default ui-corner-all fm-button-icon-left" id="sData{{nomecontroller}}D">Elimina<span class="ui-icon ui-icon-trash"></span></a>
             {% endif %}
-        <a class="fi-default-elimina fm-button ui-state-default ui-corner-all fm-button-icon-left" id="sData{{nomecontroller}}A">Allegati<span class="ui-icon ui-icon-pin"></span></a>
     </p>
     {{ form_end(edit_form) }}
 </div>
@@ -43,10 +42,6 @@
 
     $("#sData{{nomecontroller}}D").click(function () {
         eliminaDettaglio({'tabella': '{{nomecontroller}}', 'id': '{{ entity.id }}'});
-    });
-
-    $("#sData{{nomecontroller}}A").click(function () {
-        gestioneAllegati({'tabella': '{{nomecontroller}}', 'id': '{{ entity.id }}'});
     });
 
     /*$(document).keypress(function (event) {
