@@ -50,11 +50,10 @@
         "friendsofsymfony/user-bundle": "~2.0",
         "fi/osbundle": "~2.0",
         "fi/pannelloamministrazionebundle": "~2.0",
-        "vich/uploader-bundle": "~1.0",
         "tecnickcom/tcpdf": "^6.2",
         "phpoffice/phpexcel": "^1.8",
-        "phpoffice/phpword": "^0.13.0",
-        "oneup/flysystem-bundle": "^1.4"
+        "phpoffice/phpword": "^0.13.0"
+        
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

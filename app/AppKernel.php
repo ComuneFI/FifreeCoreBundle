@@ -18,8 +18,6 @@ class AppKernel extends Kernel
             new Fi\CoreBundle\FiCoreBundle(),
             new Fi\PannelloAmministrazioneBundle\FiPannelloAmministrazioneBundle(),
             new FOS\UserBundle\FOSUserBundle(),
-            new Vich\UploaderBundle\VichUploaderBundle(),
-            new Oneup\FlysystemBundle\OneupFlysystemBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'localhost'))) {

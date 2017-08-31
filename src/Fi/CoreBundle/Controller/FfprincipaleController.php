@@ -47,8 +47,6 @@ class FfprincipaleController extends FiCoreController
 
         $this->setParametriGriglia(array('request' => $request));
 
-        $testatagriglia['allegati'] = 1;
-
         $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
 
         /* @var $qb \Doctrine\ORM\QueryBuilder */

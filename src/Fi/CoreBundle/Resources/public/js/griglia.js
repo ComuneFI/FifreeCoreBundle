@@ -53,7 +53,6 @@ function caricaGriglia(parametrijs) {
     var ridimensionabile = (parametrijs["ridimensionabile"] == 0) ? false : true;
     var overlayopen = (parametrijs["overlayopen"] == 1) ? true : false;
     var imgwaiturl = parametrijs['imgwaiturl'] || '/bundles/ficore/images/wait.gif';
-    var allegati = (parametrijs["allegati"] == 1) ? 1 : 0;
     var indirizzoexcel = (parametrijs["indirizzoexcel"]) ? parametrijs["indirizzoexcel"] : "Tabelle/esportaexcel/" + parametrijs["tabella"];
     var importexcel = (parametrijs["importexcel"]) ? parametrijs["importexcel"] : "Tabelle/importaexcel/" + parametrijs["tabella"];
 
@@ -64,13 +63,6 @@ function caricaGriglia(parametrijs) {
         if (stringapar_edit != "")
             stringapar_edit += "&";
         stringapar_edit += key + "=" + encodeURI(parametriaggiuntivi_edit[key]);
-    }
-
-    if (allegati === 1) {
-        if (stringapar_edit != "") {
-            stringapar_new += "&";
-        }
-        stringapar_edit += "allegati" + "=" + allegati;
     }
 
     var parametriaggiuntivi_new = parametrijs["parametriaggiuntivi_new"] || {};
@@ -244,7 +236,6 @@ function caricaGriglia(parametrijs) {
                         'div': div,
                         'divtesta': divtesta,
                         'parametripassa': stringapar_edit,
-                        'allegati': allegati,
                         'open_new_window': open_new_window
                     });
                 }
@@ -1282,30 +1273,6 @@ function chiudiDettaglio(parametri) {
     }
     //Funzione di overlay per ottenere l'effetto di finestra in backgroud trasparenti nel caso di sovrapposizione
     trasparenzadiv();
-}
-
-function gestioneAllegati(parametri) {
-    var tabella = parametri['tabella'];
-    var rowid = parametri['id'];
-    var div = parametri['div'] || "#gestioneallegati";
-
-    creadiv({
-        "caratteristiche": {
-            "id": div.substr(1),
-            "class": "ui-widget ui-widget-content ui-jqdialog ui-corner-all ui-draggable ui-resizable"
-        },
-        draggable: 1,
-        divtesta: "#testataallegatipopup",
-        top: 40,
-        left: 60,
-        altezza: 300,
-        larghezza: 500
-    });
-
-    jQuery(div).load(baseUrl + '/allegati/popup/' + tabella + "/" + rowid);
-
-    jQuery(div).show();
-
 }
 
 function salvaDettaglio(parametri) {
