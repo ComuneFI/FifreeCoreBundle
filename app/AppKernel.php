@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
             $currentDir = dirname(dirname(__FILE__)).'/';
             if (file_exists($currentDir.'src'.DIRECTORY_SEPARATOR.'Fi'.DIRECTORY_SEPARATOR.'ProvaBundle')) {
                 $bundles[] = new Fi\ProvaBundle\FiProvaBundle();

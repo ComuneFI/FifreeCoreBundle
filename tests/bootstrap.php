@@ -4,6 +4,14 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 
+if (isset($_ENV['BOOTSTRAP_CLEAR_CACHE_ENV'])) {
+    passthru(sprintf(
+        'php "%s/console" cache:clear --env=%s --no-warmup',
+        __DIR__ . '/../app/',
+        $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
+    ));
+}
+
 $file = __DIR__ . '/../app/autoload.php';
 if (!file_exists($file)) {
     $file = __DIR__ . '/../app/autoload.php';

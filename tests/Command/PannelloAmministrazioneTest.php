@@ -32,15 +32,19 @@ class PannelloAmministrazioneTest extends CommandTestCase
         $output = $this->runCommand($client, "generate:bundle --namespace=Fi/ProvaBundle --dir=src/ --format=yml --env=test --no-interaction");
         echo $output;
 
-        $output = $this->runCommand($client, "doctrine:cache:clear-metadata --env=test");
-        echo $output;
-        sleep(1);
-        $output = $this->runCommand($client, "cache:clear --env=test");
-        echo $output;
-        sleep(1);
-        $output = $this->runCommand($client, "cache:warmup --env=test");
-        echo $output;
-        sleep(1);
+        $cmddcc = "doctrine:cache:clear-metadata";
+        passthru(sprintf(
+                        'php "%s/console" ' . $cmddcc . ' --env=%s', __DIR__ . '/../../app/', $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
+        ));
+
+        $cmdcc = "cache:clear";
+        passthru(sprintf(
+                        'php "%s/console" ' . $cmd . ' --env=%s ', __DIR__ . '/../../app/', $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
+        ));
+        $cmdccw = "cache:warmup";
+        passthru(sprintf(
+                        'php "%s/console" ' . $cmdccw . ' --env=%s ', __DIR__ . '/../../app/', $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
+        ));
 
         $client = self::createClient();
         $output = $this->runCommand($client, "pannelloamministrazione:generateentities wbadmintest.mwb Fi/ProvaBundle --schemaupdate --env=test");

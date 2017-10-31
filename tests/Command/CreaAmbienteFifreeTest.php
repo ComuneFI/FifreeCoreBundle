@@ -20,7 +20,7 @@ class GeneraAmbienteTest extends CommandTestCase
         echo $output;
         $output = $this->runCommand($client, "fifree2:dropdatabase --force --env=test --no-interaction");
         echo $output;
-        $output = $this->runCommand($client, "fifree2:install  admin admin admin@admin.it --env=test");
+        $output = $this->runCommand($client, "fifree2:install admin admin admin@admin.it --env=test");
         echo $output;
         
         $output = $this->runCommand($client, "fifree2:pubblicamanuale --env=test");
