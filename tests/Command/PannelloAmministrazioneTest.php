@@ -37,16 +37,14 @@ class PannelloAmministrazioneTest extends CommandTestCase
                         'php "%s/console" ' . $cmddcc . ' --env=%s', __DIR__ . '/../../app/', $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
         ));
 
-        $cmdcc = "cache:clear";
+        /*$cmdcc = "cache:clear";
         passthru(sprintf(
                         'php "%s/console" ' . $cmdcc . ' --env=%s ', __DIR__ . '/../../app/', $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
-        ));
+        ));*/
         $cmdccw = "cache:warmup";
         passthru(sprintf(
                         'php "%s/console" ' . $cmdccw . ' --env=%s ', __DIR__ . '/../../app/', $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
         ));
-
-        sleep(5);
 
         $client = self::createClient();
         $output = $this->runCommand($client, "pannelloamministrazione:generateentities wbadmintest.mwb Fi/ProvaBundle --schemaupdate --env=test");
