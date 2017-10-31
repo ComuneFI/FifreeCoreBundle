@@ -131,8 +131,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->pressButton('adminpanelgenerateentity');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 60000);
-        sleep(2);
+        parent::ajaxWait($session, 120000);
+        sleep(5);
         //echo $session->getPage()->getHtml();
         /**/
         //$screenshot = $driver->getWebDriverSession()->screenshot();

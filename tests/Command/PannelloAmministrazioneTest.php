@@ -39,7 +39,7 @@ class PannelloAmministrazioneTest extends CommandTestCase
 
         $cmdcc = "cache:clear";
         passthru(sprintf(
-                        'php "%s/console" ' . $cmd . ' --env=%s ', __DIR__ . '/../../app/', $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
+                        'php "%s/console" ' . $cmdcc . ' --env=%s ', __DIR__ . '/../../app/', $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
         ));
         $cmdccw = "cache:warmup";
         passthru(sprintf(
