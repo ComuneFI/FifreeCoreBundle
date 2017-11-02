@@ -10,21 +10,21 @@ class GeneraAmbienteTest extends CommandTestCase
         $client = self::createClient();
 
         $output = $this->runCommand($client, 'fifree2:mysqlconvertdbengine INNODB --tablesfifree2 --env=test --no-interaction');
-        echo $output;
+        //echo $output;
         $output = $this->runCommand($client, "fifree2:mysqldropforeignkeys --env=test --no-interaction");
-        echo $output;
+        //echo $output;
         $output = $this->runCommand($client, "fifree2:mysqltruncatetables --tablesfifree2  --env=test --no-interaction");
-        echo $output;
+        //echo $output;
         
         $output = $this->runCommand($client, "fifree2:droptables --force --env=test --no-interaction");
-        echo $output;
+        //echo $output;
         $output = $this->runCommand($client, "fifree2:dropdatabase --force --env=test --no-interaction");
-        echo $output;
+        //echo $output;
         $output = $this->runCommand($client, "fifree2:install admin admin admin@admin.it --env=test");
-        echo $output;
+        //echo $output;
         
         $output = $this->runCommand($client, "fifree2:pubblicamanuale --env=test");
-        echo $output;
+        //echo $output;
         
     }
 

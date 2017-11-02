@@ -66,8 +66,4 @@ class PermessiTwigExtension extends \Twig_Extension
         }
     }
 
-    public function getName()
-    {
-        return 'fi_permessi_extension';
-    }
 }

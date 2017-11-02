@@ -73,6 +73,11 @@ class DatabaseInfoDataCollector extends DataCollector
         return $this->data['database_password'];
     }
 
+    public function reset()
+    {
+        return true;
+    }
+    
     public function getName()
     {
         return 'databaseInfo';

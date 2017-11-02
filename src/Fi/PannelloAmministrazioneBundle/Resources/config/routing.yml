@@ -1,0 +1,59 @@
+fi_pannello_amministrazione_homepage:
+    path:  /adminpanel
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:index }
+
+fi_pannello_amministrazione_clearcache:
+    path:  /adminpanel/clearcache
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:clearCache }
+
+fi_pannello_amministrazione_chown:
+    path:  /adminpanel/chown
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:chown }
+
+fi_pannello_amministrazione_getVcs:
+    path:  /adminpanel/getVcs
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:getVcs }
+
+fi_pannello_amministrazione_generateentity:
+    path:  /adminpanel/generateEntity
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:generateEntity }
+
+fi_pannello_amministrazione_generateentityclass:
+    path:  /adminpanel/generateEntityClass
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:generateEntityClass }
+
+fi_pannello_amministrazione_dropdatabase:
+    path:  /adminpanel/dropDatabase
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:dropdatabase }
+    
+fi_pannello_amministrazione_dropdatabaseconfirm:
+    path:  /adminpanel/dropDatabaseConfirm
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:dropdatabaseconfirm }
+
+fi_pannello_amministrazione_aggiornaschemadatabase:
+    path:  /adminpanel/aggiornaschemadatabase
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:aggiornaSchemaDatabase }
+
+fi_pannello_amministrazione_generatebundle:
+    path:  /adminpanel/generateBundle
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:generateBundle }
+
+fi_pannello_amministrazione_generateform:
+    path:  /adminpanel/generateForm
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:generateForm }
+
+fi_pannello_amministrazione_generateformcrud:
+    path:  /adminpanel/generateFormCrud
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:generateFormCrud }
+
+fi_pannello_amministrazione_symfonycommand:
+    path:  /adminpanel/symfonyCommand
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:symfonyCommand }
+
+fi_pannello_amministrazione_unixcommand:
+    path:  /adminpanel/unixCommand
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:unixCommand }
+
+fi_pannello_amministrazione_phpunittest:
+    path:  /adminpanel/phpunittest
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:phpunittest }

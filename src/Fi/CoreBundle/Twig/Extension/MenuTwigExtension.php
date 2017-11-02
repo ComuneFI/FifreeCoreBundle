@@ -36,8 +36,4 @@ class MenuTwigExtension extends \Twig_Extension
         return $html;
     }
 
-    public function getName()
-    {
-        return 'fi_menu_extension';
-    }
 }

@@ -41,8 +41,4 @@ class MiscExtension extends \Twig_Extension
         return $this->container->has($service);
     }
 
-    public function getName()
-    {
-        return 'fi_misc_extension';
-    }
 }

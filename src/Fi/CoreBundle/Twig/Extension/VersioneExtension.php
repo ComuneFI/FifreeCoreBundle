@@ -28,8 +28,4 @@ class VersioneExtension extends \Twig_Extension
         return FiVersioneController::$versione;
     }
 
-    public function getName()
-    {
-        return 'fi_versione_extension';
-    }
 }

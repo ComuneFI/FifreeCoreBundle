@@ -52,6 +52,22 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
+        //url da testare
+        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->getContainer());
+        $fileprovabundle = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle";
+        $checkentityprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
+        $checkresourceprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR .
+                "doctrine" . DIRECTORY_SEPARATOR . "Prova.orm.yml";
+        $checktypeprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Form" . DIRECTORY_SEPARATOR . "ProvaType.php";
+        $checkviewsprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "Prova";
+        $checkindexprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "Prova" .
+                DIRECTORY_SEPARATOR . "index.html.twig";
+
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
         $session = new Session($driver);
@@ -87,8 +103,16 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
-        $pammutils = new PannelloAmministrazioneUtils($this->getContainer());
-        $ret = $pammutils->clearcache();
+
+        echo passthru("php " . __DIR__ . '/../../app/console' . " cache:cache --env=test ");
+        sleep(3);
+        $driver->reload();
+        sleep(3);
+        $driver->reload();
+
+        //echo passthru("php " . __DIR__ . '/../../app/console' . " cache:clear --env=test ");
+        //$pammutils = new PannelloAmministrazioneUtils($this->getContainer());
+        //$ret = $pammutils->clearcache();
         //echo $ret["errmsg"];
         /* $page->pressButton('adminpanelcc');
           $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
@@ -102,25 +126,18 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         /**/
         /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
           $session->executeScript($scriptclose); */
-        sleep(2);
-
-        $driver->reload();
-        sleep(2);
 
         //***************************************************************************************************************
-        $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
-
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
-        $page->pressButton('_submit');
+        //$urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
+        //$url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
+        //$page->fillField('username', 'admin');
+        //$page->fillField('password', 'admin');
+        //$page->pressButton('_submit');
 
         sleep(1);
         $session->visit($url);
-        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->getContainer());
-        $file = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle";
-        $check = file_exists($file);
-        $this->assertTrue($check, $file);
+        $checkprovabundle = file_exists($fileprovabundle);
+        $this->assertTrue($checkprovabundle, $fileprovabundle);
 
         sleep(3);
         $page->fillField('bundlename', 'Fi/ProvaBundle');
@@ -131,8 +148,21 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->pressButton('adminpanelgenerateentity');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 120000);
-        sleep(5);
+        parent::ajaxWait($session, 6000);
+        sleep(2);
+
+        $driver->reload();
+
+        $page->fillField('bundlename', 'Fi/ProvaBundle');
+
+        $page->selectFieldOption('entitybundle', 'Fi/ProvaBundle');
+        $page->selectFieldOption('entityfile', 'wbadmintest.mwb');
+        $page->pressButton('adminpanelgenerateentity');
+        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptrun);
+        parent::ajaxWait($session, 6000);
+        sleep(2);
+
         //echo $session->getPage()->getHtml();
         /**/
         //$screenshot = $driver->getWebDriverSession()->screenshot();
@@ -140,14 +170,9 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         /**/
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
-        $check = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
-                DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
-        $this->assertTrue(file_exists($check));
+        $this->assertTrue(file_exists($checkentityprova));
 
-        $check = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
-                DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR .
-                "doctrine" . DIRECTORY_SEPARATOR . "Prova.orm.yml";
-        $this->assertTrue(file_exists($check));
+        $this->assertTrue(file_exists($checkresourceprova));
 
         /* $page->pressButton('adminpanelcc');
           $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
@@ -177,17 +202,14 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
-        $pammutils->clearcache();
+        echo passthru("php " . __DIR__ . '/../../app/console' . " cache:cache --env=test ");
+        sleep(2);
+
         $driver->reload();
         sleep(2);
 
-        $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
-
-        sleep(1);
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
-        $page->pressButton('_submit');
+        //$urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
+        //$url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         sleep(1);
 
@@ -203,16 +225,9 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptrun);
         parent::ajaxWait($session, 60000);
         sleep(1);
-        $check = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
-                DIRECTORY_SEPARATOR . "Form" . DIRECTORY_SEPARATOR . "ProvaType.php";
-        $this->assertTrue(file_exists($check));
-        $check = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
-                DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "Prova";
-        $this->assertTrue(file_exists($check));
-        $check = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
-                DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "Prova" .
-                DIRECTORY_SEPARATOR . "index.html.twig";
-        $this->assertTrue(file_exists($check));
+        $this->assertTrue(file_exists($checktypeprova));
+        $this->assertTrue(file_exists($checkviewsprova));
+        $this->assertTrue(file_exists($checkindexprova));
         /**/
         $screenshot = $driver->getWebDriverSession()->screenshot();
         file_put_contents('/tmp/test6.png', base64_decode($screenshot));
@@ -229,7 +244,9 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
           $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
           $session->executeScript($scriptrun);
           parent::ajaxWait($session, 60000); */
-        $pammutils->clearcache();
+        echo passthru("php " . __DIR__ . '/../../app/console' . " cache:cache --env=test ");
+        sleep(2);
+
 
         $driver->reload();
         sleep(2);
@@ -243,11 +260,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
-        $page->pressButton('_submit');
-
-        sleep(1);
 
         $session->visit($url);
         $page = $session->getPage();
@@ -296,7 +308,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 //        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
 //            $fieldhtml = 'prova_descrizione';
 //        } else {
-            $fieldhtml = 'fi_provabundle_prova_descrizione';
+        $fieldhtml = 'fi_provabundle_prova_descrizione';
 //        }
 
         $page->fillField($fieldhtml, $descrizionetest1);

@@ -37,13 +37,4 @@ class UtilitaExtension extends \Twig_Extension
         return fiUtilita::db2data($giorno, true);
     }
 
-    /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
-    {
-        return 'db2data';
-    }
 }

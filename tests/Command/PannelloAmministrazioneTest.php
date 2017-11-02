@@ -29,35 +29,33 @@ class PannelloAmministrazioneTest extends CommandTestCase
         $client = self::createClient();
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($client->getContainer());
 
-        $output = $this->runCommand($client, "generate:bundle --namespace=Fi/ProvaBundle --dir=src/ --format=yml --env=test --no-interaction");
-        echo $output;
-
-        $cmddcc = "doctrine:cache:clear-metadata";
-        passthru(sprintf(
-                        'php "%s/console" ' . $cmddcc . ' --env=%s', __DIR__ . '/../../app/', $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
-        ));
-
-        /*$cmdcc = "cache:clear";
-        passthru(sprintf(
-                        'php "%s/console" ' . $cmdcc . ' --env=%s ', __DIR__ . '/../../app/', $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
-        ));*/
-        $cmdccw = "cache:warmup";
-        passthru(sprintf(
-                        'php "%s/console" ' . $cmdccw . ' --env=%s ', __DIR__ . '/../../app/', $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
-        ));
-
-        $client = self::createClient();
-        $output = $this->runCommand($client, "pannelloamministrazione:generateentities wbadmintest.mwb Fi/ProvaBundle --schemaupdate --env=test");
-        echo $output;
-
-        $check = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+        $checkent = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
                 DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
-        $this->assertTrue(file_exists($check));
 
-        $check = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+        $checkres = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
                 DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR .
                 "doctrine" . DIRECTORY_SEPARATOR . "Prova.orm.yml";
-        $this->assertTrue(file_exists($check));
+
+        $console = __DIR__ . '/../../app/console';
+        /*
+          "cache:clear --no-warmup",
+          "cache:warmup",
+         */
+        $listcommands = array(
+            "generate:bundle --namespace=Fi/ProvaBundle --dir=src/ --format=yml --no-interaction",
+            "doctrine:cache:clear-metadata",
+            "cache:clear",
+            "pannelloamministrazione:generateentities wbadmintest.mwb Fi/ProvaBundle --schemaupdate",
+        );
+        $megacommand = "";
+        foreach ($listcommands as $cmd) {
+            $megacommand = $megacommand . "php " . $console . " " . $cmd . " --env=test &&";
+        }
+        $megacommand = substr($megacommand, 0, -3);
+        passthru($megacommand);
+
+        $this->assertTrue(file_exists($checkent));
+        $this->assertTrue(file_exists($checkres));
     }
 
 //    public function testPannelloGenerateBundle2()

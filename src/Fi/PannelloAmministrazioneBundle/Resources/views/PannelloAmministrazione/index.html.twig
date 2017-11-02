@@ -1,0 +1,440 @@
+{% extends "FiCoreBundle::layout.html.twig" %}
+
+{% block title %}Pannello di amministrazione progetto {{appname}}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{asset('bundles/pannelloamministrazione/css/bootstrap.min.css')}}" />
+    <link rel="stylesheet" href="{{asset('bundles/pannelloamministrazione/css/bootstrap-theme.min.css')}}" />
+    <link rel="stylesheet" href="{{asset('bundles/pannelloamministrazione/css/pannelloamministrazione.css')}}" />
+{% endblock %}
+
+{% block body %}
+    <div id="container">
+        <div class="adminpanel utility">
+            <fieldset class="groupbox" id="grpulitita">
+                <legend>Utilità</legend>
+                <button id="adminpanelcc" class="active btn btn-default" data-reactid=".3.0" type="button">Symfony2 ClearCache</button>
+                <br/><br/>
+                {% if (svn == true) %}
+                    <button id="adminpanelvcs" class="active btn btn-info" data-reactid=".3.0" type="button">Prendi l'ultima versione da svn</button>
+                    <br/><br/>
+                {% endif %}
+                {% if (git == true) %}
+                    <button id="adminpanelvcs" class="active btn btn-info" data-reactid=".3.0" type="button">Prendi l'ultima versione da Git</button>
+                    <br/><br/>
+                {% endif %}
+                <button id="adminpanelphpunittest" class="active btn btn-success" data-reactid=".3.0" type="button">PHPUnit test</button>
+                <br/><br/>
+                <!--<input class="button" type="button" id="adminpanelchown" value="Riassegna diritti al progetto"/>-->
+                <label for='symfonycommand'>Comando symfony:</label><br/>
+                <input class="form-control" type="text" id="symfonycommand" value="" /><br/>
+                <button id="adminpanelsymfonycommand" class="active btn btn-warning" data-reactid=".3.0" type="button">Esegue comando symfony</button>
+                <br/><br/>
+
+                <label for='unixcommand'>Comando shell:</label><br/>
+                <input class="form-control" type="text" id="unixcommand" value="" /><br/>
+                <button id="adminpanelunixcommand" class="active btn btn-danger" data-reactid=".3.0" type="button">Esegue comando da shell</button>
+
+            </fieldset>
+        </div>
+
+        <div class="adminpanel bundle">
+            <fieldset class="groupbox" id="grpbundle">
+                <legend>Bundle e Form</legend>
+                <div>
+                    <button id="adminpanelgeneratebundle" class="active btn btn-default" data-reactid=".3.0" type="button">Genera bundle</button>
+                    <br/><br/>
+                    <div class="inputbox">
+                        <label for='bundlename'>Nome Bundle:</label>
+                        <input class="form-control" type="text" id="bundlename" value="Fi/DemoBundle"/><br/>
+                    </div>
+                </div>
+                <div>
+                    <button id="adminpanelgenerateformcrud" class="active btn btn-default" data-reactid=".3.0" type="button">Genera CRUD per il form</button>
+                    <!--<button id="adminpanelgenerateform" class="active btn btn-default" data-reactid=".3.0" type="button">Genera form</button>-->
+                    <br/><br/>
+                    <label for='entityform'>Entità:</label>
+                    <input class="form-control" type="text" id="entityform" value="ffprincipale"/><br/>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="adminpanel entity">
+            <fieldset class="groupbox" id="grpentities">
+                <legend title="{{database_host}} {{database_name}} ({{database_driver}})">Database</legend>
+                <div>
+                    <button id="adminpanelgenerateentity" class="active btn btn-success" data-reactid=".3.0" type="button">Genera entity da modello workbench</button>
+                    <div class="inputbox">
+                        <label for='entityfile'>File modello:</label>
+                        <select class="form-control" id="entityfile">
+                            {% for mwb in mwbs %}
+                                <option value="{{mwb}}">{{mwb}}</option>
+                            {% endfor %}
+                        </select>
+                        <br/>
+                        <label for='entitybundle'>Bundle:</label><br/>
+                        <select class="form-control" id="entitybundle">
+                            {% for bundle in bundles %}
+                                <option value="{{bundle}}">{{bundle}}</option>
+                            {% endfor %}
+                        </select>
+                        <br/><br/>
+                    </div>
+                </div>
+                <!--<button id="adminpanelgenerateclassentity" class="active btn btn-default" data-reactid=".3.0" type="button">Genera le classi dalle entities</button>
+                <br/><br/>-->
+                <button id="adminpanelaggiornadatabase" class="active btn btn-danger" data-reactid=".3.0" type="button">Aggiorna schema database</button>
+            </fieldset>
+        </div>
+    </div>
+    <div id="risultato"></div>
+    {% block javascripts %}
+        {%set userdir = rootdir | slice(0, rootdir|length - (appname|length) - 1)%}
+        <script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/bootstrap.min.js') }}" ></script>
+        <script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/pannelloamministrazione.js') }}" ></script>
+        <script type="text/javascript">
+            var currentfunction = "";
+            $(document).ready(function () {
+
+                var apachemacro = '"$APACHEUSER"';
+                //Unix command autocomplete
+                var unixcommandlist = [
+                    {label: "Cancella file di lock", value: "{{comandishell.lockfile}}"},
+                    {label: "Cancella composer.lock", value: "{{comandishell.composerlock}}"},
+                    {label: "Cancella log files", value: "{{comandishell.logsfiles}}"},
+                    {label: "Cancella cache prod", value: "{{comandishell.cacheprodfiles}}"},
+                    {label: "Cancella cache dev", value: "{{comandishell.cachedevfiles}}"},
+                    /**/{% if (iswindows == false) %}
+                    {label: "Composer install", value: ". {{userdir}}/envvars && cd {{rootdir}} && export COMPOSER_HOME={{rootdir | slice(0, rootdir|length - (appname|length) - 1)}}/.composer && composer install --no-interaction 2>&1"},
+                    {label: "Clona progetto git", value: ". {{userdir}}/envvars && cd {{rootdir}} && git clone http://gitserver.comune.intranet:{{appname}}.git"},
+                    {label: "Correggi diritti per apache", value: "cd {{rootdir}} && APACHEUSER=`ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data' | grep -v root | head -1 | cut -d\  -f1`; setfacl -R -m u:" + apachemacro + ":rwX -m u:`whoami`:rwX app/cache app/logs app/tmp src/ app/AppKernel.php app/config/routing.yml && setfacl -dR -m u:" + apachemacro + ":rwX -m u:`whoami`:rwX app/cache app/logs app/tmp src/ app/AppKernel.php app/config/routing.yml"},
+                    {label: "Assegna diritti a apache", value: "cd {{rootdir}} && sudo chown -R apache:apache {{rootdir}}"},
+                    {label: "Assegna diritti a po.bogdso", value: "cd {{rootdir}} && sudo chown -R po.bogdso:po.bogdso {{rootdir}}"},
+                    {label: "Sostituisci stringa in file", value: "sed -i -e 's/cercastringa@/sostituiscistringa@/g' {{rootdir}}/app/config/parameters.yml"}
+                    /**/{% endif%}
+
+                ];
+                $("#unixcommand").autocomplete({
+                    source: unixcommandlist,
+                    minLength: 0,
+                    autoFocus: true,
+                    select: function (e, ui) {
+                        e.preventDefault() // <--- Prevent the value from being inserted.
+                        $(this).val(ui.item.value);
+                    }
+                });
+                $("#unixcommand, #symfonycommand").bind('focus', function () {
+                    $(this).animate({width: "500px"}, {duration: 300, complete: function () {
+                            $(this).autocomplete("search");
+                        }});
+                });
+                $("#unixcommand, #symfonycommand").bind('blur', function () {
+                    $(this).animate({width: "300px"}, {duration: 300, complete: function () {
+
+                        }});
+                });
+                //Symfony command autocomplete
+                var symfonycommandlist = [
+                    'cache:clear --env="prod"',
+                    "cache:clear",
+                    "cache:warmup",
+                    "fos:user:promote username ROLE_SUPER_ADMIN",
+                    'assets:install {{rootdir ~ '/web'}}',
+                    "pannelloamministrazione:checkgitversion"
+                ];
+                $("#symfonycommand").autocomplete({
+                    source: symfonycommandlist,
+                    minLength: 0,
+                    autoFocus: true
+                });
+            });
+            $("#adminpanelcc").click(function () {
+                var domanda = "Vuoi pulire la cache per l'ambiente di sviluppo e produzione?";
+                conferma(domanda).then(function (answer) {
+                    if ((String(answer) == "true")) {
+                        $("#risultato").hide();
+                        $("#risultato").html("");
+                        $.ajax({
+                            url: "{{ path("fi_pannello_amministrazione_clearcache") }}",
+                            context: document.body
+                        }).done(function (data) {
+                            $("#risultato").html(data);
+                            opendialogrisultato();
+                            $("#risultato").slideDown("slow");
+                        }).fail(function (jqXHR, textStatus) {
+                            $("#risultato").html(jqXHR.responseText);
+                            $("#risultato").show();
+                            msgbox("Si è verificato un errore!");
+                            return false;
+                        });
+                    } else {
+                        //FALSE
+                    }
+                });
+            });
+            $("#adminpanelvcs").click(function () {
+                var vcs = "";
+            {% if (git == true) %}vcs = "git";{% endif %}
+            {% if (svn == true) %}vcs = "svn";{% endif %}
+                    var domanda = "Vuoi prendere l'ultima versione dei sorgenti dal server " + vcs + "?";
+                    conferma(domanda).then(function (answer) {
+                        if ((String(answer) == "true")) {
+                            $("#risultato").hide();
+                            $("#risultato").html("");
+                            $.ajax({
+                                url: "{{ path("fi_pannello_amministrazione_getVcs") }}",
+                                context: document.body
+                            }).done(function (data) {
+                                $("#risultato").html(data);
+                                opendialogrisultato();
+                                $("#risultato").slideDown("slow");
+                            }).fail(function (jqXHR, textStatus) {
+                                $("#risultato").html(jqXHR.responseText);
+                                $("#risultato").show();
+                                msgbox("Si è verificato un errore!");
+                                return false;
+                            });
+                        } else {
+                            //FALSE
+                        }
+                    });
+                });
+                $("#adminpanelgenerateentity").click(function () {
+                    var entitybundle = $("#entitybundle").val();
+                    var entityfile = $("#entityfile").val();
+                    var domanda = "Vuoi creare le entità nel bundle: " + entitybundle + " partendo dal file: " + entityfile;
+                    conferma(domanda).then(function (answer) {
+                        if ((String(answer) == "true")) {
+                            $("#risultato").hide();
+                            $("#risultato").html("");
+                            $.ajax({
+                                url: "{{ path("fi_pannello_amministrazione_generateentity") }}",
+                                data: {bundle: entitybundle, file: entityfile},
+                                context: document.body
+                            }).done(function (data) {
+                                $("#risultato").html(data);
+                                opendialogrisultato();
+                                $("#risultato").slideDown("slow");
+                            }).fail(function (jqXHR, textStatus) {
+                                $("#risultato").html(jqXHR.responseText);
+                                $("#risultato").show();
+                                msgbox("Si è verificato un errore!");
+                                return false;
+                            });
+                        } else {
+                            //FALSE
+                        }
+                    });
+                });
+                $("#adminpanelgeneratebundle").click(function () {
+                    var bundlename = $("#bundlename").val();
+                    var domanda = "Vuoi creare il bundle: " + bundlename;
+                    conferma(domanda).then(function (answer) {
+                        if ((String(answer) == "true")) {
+                            $("#risultato").hide();
+                            $("#risultato").html("");
+                            $.ajax({
+                                url: "{{ path("fi_pannello_amministrazione_generatebundle") }}",
+                                data: {bundlename: bundlename},
+                                context: document.body
+                            }).done(function (data) {
+                                $("#risultato").html(data);
+                                opendialogrisultato();
+                                $("#risultato").slideDown("slow");
+                            }).fail(function (jqXHR, textStatus) {
+                                $("#risultato").html(jqXHR.responseText);
+                                $("#risultato").show();
+                                msgbox("Si è verificato un errore!");
+                                return false;
+                            });
+                        } else {
+                            //FALSE
+                        }
+                    });
+                });
+                $("#adminpanelgenerateform").click(function () {
+                    var entityform = $("#entityform").val();
+                    var bundlename = $("#bundlename").val();
+                    var domanda = "Vuoi creare il form " + entityform + " nel bundle: " + bundlename;
+                    conferma(domanda).then(function (answer) {
+                        if ((String(answer) == "true")) {
+                            $("#risultato").hide();
+                            $("#risultato").html("");
+                            $.ajax({
+                                url: "{{ path("fi_pannello_amministrazione_generateform") }}",
+                                data: {entityform: entityform, bundlename: bundlename},
+                                context: document.body
+                            }).done(function (data) {
+                                $("#risultato").html(data);
+                                opendialogrisultato();
+                                $("#risultato").slideDown("slow");
+                            }).fail(function (jqXHR, textStatus) {
+                                $("#risultato").html(jqXHR.responseText);
+                                $("#risultato").show();
+                                msgbox("Si è verificato un errore!");
+                                return false;
+                            });
+                        } else {
+                            //FALSE
+                        }
+                    });
+                });
+                $("#adminpanelgenerateformcrud").click(function () {
+                    var entityform = $("#entityform").val();
+                    var bundlename = $("#bundlename").val();
+                    var domanda = "Vuoi creare il crud per il form " + entityform + " nel bundle: " + bundlename;
+                    conferma(domanda).then(function (answer) {
+                        if ((String(answer) == "true")) {
+                            $("#risultato").hide();
+                            $("#risultato").html("");
+                            $.ajax({
+                                url: "{{ path("fi_pannello_amministrazione_generateformcrud") }}",
+                                data: {entityform: entityform, bundlename: bundlename},
+                                context: document.body
+                            }).done(function (data) {
+                                $("#risultato").html(data);
+                                opendialogrisultato();
+                                $("#risultato").slideDown("slow");
+                                //msgbox("Controllare il log, e in caso di routing.yml non aggiornabile automaticamente, inserire a mano la parte suggerita tenendo conto nell'indentazione");
+                            }).fail(function (jqXHR, textStatus) {
+                                $("#risultato").html(jqXHR.responseText);
+                                $("#risultato").show();
+                                msgbox("Si è verificato un errore!");
+                                return false;
+                            });
+                        } else {
+                            //FALSE
+                        }
+                    });
+                });
+                $("#adminpanelaggiornadatabase").click(function () {
+                    var domanda = "Vuoi aggiornare il database partendo dalla definizione dalle entità esistenti";
+                    conferma(domanda).then(function (answer) {
+                        if ((String(answer) == "true")) {
+                            $("#risultato").hide();
+                            $("#risultato").html("");
+                            $.ajax({
+                                url: "{{ path("fi_pannello_amministrazione_aggiornaschemadatabase") }}",
+                                context: document.body
+                            }).done(function (data) {
+                                $("#risultato").html(data);
+                                opendialogrisultato();
+                                $("#risultato").slideDown("slow");
+                            }).fail(function (jqXHR, textStatus) {
+                                $("#risultato").html(jqXHR.responseText);
+                                $("#risultato").show();
+                                msgbox("Si è verificato un errore!");
+                                return false;
+                            });
+                        } else {
+                            //FALSE
+                        }
+                    });
+                });
+                $("#adminpanelsymfonycommand").click(function () {
+                    var symfonycommand = $("#symfonycommand").val();
+                    if (symfonycommand.trim().length <= 0) {
+                        msgbox("Specificare un comando valido");
+                        return false;
+                    }
+                    var domanda = "Vuoi eseguire il comando " + symfonycommand;
+                    conferma(domanda).then(function (answer) {
+                        if ((String(answer) == "true")) {
+                            $("#risultato").hide();
+                            $("#risultato").html("");
+                            $.ajax({
+                                url: "{{ path("fi_pannello_amministrazione_symfonycommand") }}",
+                                data: {symfonycommand: symfonycommand},
+                                context: document.body
+                            }).done(function (data) {
+                                $("#risultato").html(data);
+                                opendialogrisultato();
+                                $("#risultato").slideDown("slow");
+                            }).fail(function (jqXHR, textStatus) {
+                                $("#risultato").html(jqXHR.responseText);
+                                $("#risultato").show();
+                                msgbox("Si è verificato un errore!");
+                                return false;
+                            });
+                        } else {
+                            //FALSE
+                        }
+                    });
+                });
+                $("#adminpanelunixcommand").click(function () {
+                    var unixcommand = $("#unixcommand").val();
+                    if (unixcommand.trim().length <= 0) {
+                        msgbox("Specificare un comando valido");
+                        return false;
+                    }
+
+                    var domanda = "Vuoi eseguire il comando unix: " + unixcommand;
+                    conferma(domanda).then(function (answer) {
+                        if ((String(answer) == "true")) {
+                            $("#risultato").hide();
+                            $("#risultato").html("");
+                            $.ajax({
+                                url: "{{ path("fi_pannello_amministrazione_unixcommand") }}",
+                                data: {unixcommand: unixcommand},
+                                context: document.body
+                            }).done(function (data) {
+                                $("#risultato").html(data);
+                                opendialogrisultato();
+                                $("#risultato").slideDown("slow");
+                            }).fail(function (jqXHR, textStatus) {
+                                $("#risultato").html(jqXHR.responseText);
+                                $("#risultato").show();
+                                msgbox("Si è verificato un errore!");
+                                return false;
+                            });
+                        } else {
+                            //FALSE
+                        }
+                    });
+                });
+                //PHPUNIT
+                $("#adminpanelphpunittest").click(function () {
+                    var domanda = "Vuoi eseguire tutti i test unitari?";
+                    conferma(domanda).then(function (answer) {
+                        if ((String(answer) == "true")) {
+                            //TRUE
+                            $("#risultato").hide();
+                            $("#risultato").html("");
+                            $.ajax({
+                                url: "{{ path("fi_pannello_amministrazione_phpunittest") }}",
+                                context: document.body
+                            }).done(function (data) {
+                                $("#risultato").html(data);
+                                opendialogrisultato();
+                                $("#risultato").slideDown("slow");
+                            }).fail(function (jqXHR, textStatus) {
+                                $("#risultato").html(jqXHR.responseText);
+                                $("#risultato").show();
+                                msgbox("Si è verificato un errore!");
+                                return false;
+                            });
+                        } else {
+                            //FALSE
+                        }
+                    });
+                });
+                function msgbox(text, title)
+                {
+                    title = typeof title !== 'undefined' ? title : "Attenzione";
+                    $("#dialog").dialog({
+                        title: title,
+                        dialogClass: "noclose",
+                        buttons: {
+                            "Ok": function () {
+                                $(this).dialog("close");
+                            }
+                        },
+                        modal: true
+                    });
+                    $("#testodialog").html(text);
+                }
+
+
+        </script>
+    {% endblock %}
+{% endblock %}
