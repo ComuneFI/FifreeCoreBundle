@@ -67,7 +67,7 @@ class FiController extends Controller
 
         $nomebundle = $namespace . $bundle . 'Bundle';
 
-        $repotabelle = $this->container->get('OpzioniTabella_repository');
+        $repotabelle = $this->get('OpzioniTabella_repository');
 
         $paricevuti = array('nomebundle' => $nomebundle, 'nometabella' => $controller, 'container' => $container);
 
