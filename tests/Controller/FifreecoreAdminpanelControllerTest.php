@@ -74,6 +74,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         // start the session
         $session->start();
+        $url = 'http://127.0.0.1:8000';
         $session->visit($url);
         $page = $session->getPage();
         sleep(1);
