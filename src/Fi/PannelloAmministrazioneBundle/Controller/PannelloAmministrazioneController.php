@@ -223,7 +223,6 @@ class PannelloAmministrazioneController extends Controller
             //return $commanddev . '<br/>' . $cmdoutputdev . '<br/><br/>' . $commandprod . '<br/>' . $cmdoutputprod;
             //return new Response(nl2br($result));
             echo nl2br($result);
-            exit;
         }
     }
 

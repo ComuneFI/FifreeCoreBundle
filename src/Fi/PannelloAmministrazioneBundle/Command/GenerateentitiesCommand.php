@@ -90,10 +90,10 @@ class GenerateentitiesCommand extends ContainerAwareCommand
 
         $generatecheck = $this->generateentities($bundlename, $emdest, $schemaupdate, $output);
         if ($generatecheck < 0) {
-            exit(1);
+            return 1;
         }
 
-        exit(0);
+        return 0;
     }
 
     private function getExportJsonCommand($bundlePath, $wbFile)
