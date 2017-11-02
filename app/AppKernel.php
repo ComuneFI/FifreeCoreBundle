@@ -5,6 +5,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
+
     public function registerBundles()
     {
         $bundles = array(
@@ -26,8 +27,8 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
-            $currentDir = dirname(dirname(__FILE__)).'/';
-            if (file_exists($currentDir.'src'.DIRECTORY_SEPARATOR.'Fi'.DIRECTORY_SEPARATOR.'ProvaBundle')) {
+            $currentDir = dirname(dirname(__FILE__)) . '/';
+            if (file_exists($currentDir . 'src' . DIRECTORY_SEPARATOR . 'Fi' . DIRECTORY_SEPARATOR . 'ProvaBundle')) {
                 $bundles[] = new Fi\ProvaBundle\FiProvaBundle();
             }
         }
@@ -35,8 +36,19 @@ class AppKernel extends Kernel
         return $bundles;
     }
 
+    public function getLogDir()
+    {
+        return dirname(__DIR__) . '/var/logs/' . $this->environment;
+    }
+
+    public function getCacheDir()
+    {
+        return dirname(__DIR__) . '/var/cache/' . $this->environment;
+    }
+
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+        $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
     }
+
 }

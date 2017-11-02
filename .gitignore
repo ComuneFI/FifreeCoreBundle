@@ -4,6 +4,17 @@
 !app/cache/.gitkeep
 !app/logs/.gitkeep
 
+# Email spool folder
+/app/spool/*
+
+# Cache, session files and logs (Symfony3)
+/var/cache/*
+/var/logs/*
+/var/sessions/*
+!var/cache/.gitkeep
+!var/logs/.gitkeep
+!var/sessions/.gitkeep
+
 /app/dbtest.sqlite
 /app/SymfonyRequirements.php
 /app/check.php
@@ -22,7 +33,19 @@
 !bin/console
 !bin/symfony_requirements
 
+# PHPUnit
+/app/phpunit.xml
+/phpunit.xml
+
+# Build data
 /build/
+
+# Backup entities generated with doctrine:generate:entities command
+**/Entity/*~
+
+# Embedded web-server pid file
+/.web-server-pid
+
 /cache.properties
 /composer.lock
 /composer.phar
