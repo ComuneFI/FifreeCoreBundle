@@ -9,14 +9,14 @@ class MenuTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-        'vocimenu' => new \Twig_Function_Method($this, 'vociMenu'),
+            'vocimenu' => new \Twig_Function_Method($this, 'vociMenu'),
         );
     }
 
     public function getFilters()
     {
         return array(
-        new \Twig_SimpleFilter('menuhtml', array($this, 'menuHtml')),
+            new \Twig_SimpleFilter('menuhtml', array($this, 'menuHtml')),
         );
     }
 
@@ -35,5 +35,4 @@ class MenuTwigExtension extends \Twig_Extension
 
         return $html;
     }
-
 }

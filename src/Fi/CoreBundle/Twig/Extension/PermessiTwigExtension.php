@@ -6,7 +6,6 @@ use Fi\CoreBundle\Controller\GestionepermessiController;
 
 class PermessiTwigExtension extends \Twig_Extension
 {
-
     protected $requeststack;
 
     public function __construct($container, $request_stack)
@@ -65,5 +64,4 @@ class PermessiTwigExtension extends \Twig_Extension
                 break;
         }
     }
-
 }

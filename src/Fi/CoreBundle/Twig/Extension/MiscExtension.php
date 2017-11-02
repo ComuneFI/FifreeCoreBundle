@@ -16,14 +16,8 @@ class MiscExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction(
-                'serviceExists',
-                array($this, 'serviceExists')
-            ),
-            new \Twig_SimpleFunction(
-                'getParameter',
-                array($this, 'getParameter')
-            ),
+            new \Twig_SimpleFunction('serviceExists', array($this, 'serviceExists')),
+            new \Twig_SimpleFunction('getParameter', array($this, 'getParameter')),
         );
     }
 
@@ -40,5 +34,4 @@ class MiscExtension extends \Twig_Extension
     {
         return $this->container->has($service);
     }
-
 }

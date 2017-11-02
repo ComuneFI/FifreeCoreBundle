@@ -6,7 +6,6 @@ use Fi\CoreBundle\Controller\fiUtilita;
 
 class UtilitaExtension extends \Twig_Extension
 {
-
     protected $loader;
     protected $controller;
 
@@ -36,5 +35,4 @@ class UtilitaExtension extends \Twig_Extension
 
         return fiUtilita::db2data($giorno, true);
     }
-
 }
