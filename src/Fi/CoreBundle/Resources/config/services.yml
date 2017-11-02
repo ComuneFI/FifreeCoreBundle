@@ -56,12 +56,14 @@ services:
 
     OpzioniTabella_repository: 
         class: Fi\CoreBundle\Entity\OpzioniTabellaRepository
+        public: true
         factory: ["@doctrine.orm.entity_manager", getRepository]
         arguments:  
             - 'Fi\CoreBundle\Entity\OpzioniTabella'   
 
     Storicomodifiche_repository: 
         class: Fi\CoreBundle\Entity\StoricomodificheRepository
+        public: true
         factory: ["@doctrine.orm.entity_manager", getRepository]
         arguments:  
             - 'Fi\CoreBundle\Entity\Storicomodifiche'
