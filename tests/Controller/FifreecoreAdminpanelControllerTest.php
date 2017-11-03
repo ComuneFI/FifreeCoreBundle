@@ -105,7 +105,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
 
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:cache --env=test ");
+        //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
         sleep(3);
         $driver->reload();
         sleep(3);
@@ -203,7 +203,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:cache --env=test ");
+        //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
         sleep(2);
 
         $driver->reload();
@@ -245,7 +245,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
           $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
           $session->executeScript($scriptrun);
           parent::ajaxWait($session, 60000); */
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:cache --env=test ");
+        //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
         sleep(2);
 
 
