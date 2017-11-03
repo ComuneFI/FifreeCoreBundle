@@ -96,6 +96,9 @@
             "@symfony-scripts"
         ]
     },
+    "config": {
+        "sort-packages": true
+    },
     "extra": {
         "symfony-app-dir": "app",
         "symfony-bin-dir": "bin",

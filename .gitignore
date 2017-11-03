@@ -15,16 +15,9 @@
 !var/logs/.gitkeep
 !var/sessions/.gitkeep
 
-/app/dbtest.sqlite
-/app/SymfonyRequirements.php
-/app/check.php
-
 # Parameters
 /app/config/parameters.yml
 /app/config/parameters.ini
-
-!.gitignore
-/nbproject/private/
 
 # Managed by Composer
 /app/bootstrap.php.cache
@@ -32,6 +25,10 @@
 /bin/*
 !bin/console
 !bin/symfony_requirements
+
+# Assets and user uploads
+/web/bundles/
+/web/uploads/
 
 # PHPUnit
 /app/phpunit.xml
@@ -46,11 +43,6 @@
 # Embedded web-server pid file
 /.web-server-pid
 
-/cache.properties
-/composer.lock
-/composer.phar
 /vendor/
-
-# Assets and user uploads
-/web/bundles/
-/web/uploads/
+app/dbtest.sqlite
+composer.lock
