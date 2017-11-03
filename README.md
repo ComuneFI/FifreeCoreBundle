@@ -24,15 +24,17 @@ composer require fi/fifreecorebundle
 
     #Preparare il db
     rm app/dbtest.sqlite
-    php app/console fifree:install admin admin admin@admin.it --env=test
-    rm -rf app/cache/dev
-    rm -rf app/cache/test
+    php bin/console fifree:install admin admin admin@admin.it --env=test
+    rm -rf var/cache/dev
+    rm -rf var/cache/test
+    php bin/console cache:clear --env=test
 
     #Assets install
-    php app/console assets:install --env=test
+    php bin/console assets:install --env=test
 
     #Start server
-    php app/console server:run --env=test 2>&1 &
+    php bin/console server:stop --env=test > /dev/null 2>&1 &
+    php bin/console server:run --env=test 2>&1 &
     sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
     #Lanciare i test
     vendor/bin/phpunit
