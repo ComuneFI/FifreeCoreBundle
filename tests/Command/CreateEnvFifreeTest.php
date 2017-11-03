@@ -73,7 +73,7 @@ class CreateEnvFifreeTest extends KernelTestCase
         $this->assertRegExp('/.../', $commandTester->getDisplay());
     }
 
-    /*public function test30InstallFifree()
+    public function test30InstallFifree()
     {
 
         $kernel = $this->createKernel();
@@ -109,7 +109,7 @@ class CreateEnvFifreeTest extends KernelTestCase
 
         $this->assertTrue(file_exists($checkent));
         $this->assertTrue(file_exists($checkres));
-    }*/
+    }
 
     /*
       $output = $this->runCommand($client, 'fifree2:mysqlconvertdbengine INNODB --tablesfifree2 --env=test --no-interaction');
