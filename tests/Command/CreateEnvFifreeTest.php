@@ -9,26 +9,40 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 class CreateEnvFifreeTest extends KernelTestCase
 {
 
-    /*public function test10InstallFifree()
+    public static function setUpBeforeClass()
     {
+        startTests();
+    }
 
-        $kernel = $this->createKernel();
-        $kernel->boot();
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp()
+    {
+        //self::bootKernel();
+        //$this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
+    }
 
-        $application = new Application($kernel);
-        $application->add(new \Fi\CoreBundle\Command\Fifree2droptablesCommand());
+    /* public function test10InstallFifree()
+      {
 
-        $command = $application->find('fifree2:droptables');
-        $commandTester = new CommandTester($command);
-        $commandTester->execute(
-                array(
-                    '--force' => true,
-                    '--no-interaction' => 'true'
-                )
-        );
+      $kernel = $this->createKernel();
+      $kernel->boot();
 
-        $this->assertRegExp('/.../', $commandTester->getDisplay());
-    }*/
+      $application = new Application($kernel);
+      $application->add(new \Fi\CoreBundle\Command\Fifree2droptablesCommand());
+
+      $command = $application->find('fifree2:droptables');
+      $commandTester = new CommandTester($command);
+      $commandTester->execute(
+      array(
+      '--force' => true,
+      '--no-interaction' => 'true'
+      )
+      );
+
+      $this->assertRegExp('/.../', $commandTester->getDisplay());
+      } */
 
     public function test15InstallFifree()
     {
@@ -95,7 +109,7 @@ class CreateEnvFifreeTest extends KernelTestCase
                     '--schemaupdate' => true,
                 )
         );
-        echo $commandTester->getDisplay();exit;
+        
         $this->assertRegExp('/.../', $commandTester->getDisplay());
 
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($kernel->getContainer());
