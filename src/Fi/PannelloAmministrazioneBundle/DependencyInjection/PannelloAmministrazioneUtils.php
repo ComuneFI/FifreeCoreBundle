@@ -28,7 +28,7 @@ class PannelloAmministrazioneUtils
         }
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
-        $command = $phpPath . ' ' . $this->apppaths->getConsole() . ' cache:clear --no-debug '
+        $command = $phpPath . ' ' . $this->apppaths->getConsole() . ' cache:clear --no-debug --no-warmup '
                 . '--env=' . $env;
 
         return PannelloAmministrazioneUtils::runCommand($command);

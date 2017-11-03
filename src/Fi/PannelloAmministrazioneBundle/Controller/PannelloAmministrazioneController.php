@@ -16,6 +16,7 @@ use Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
 
 class PannelloAmministrazioneController extends Controller
 {
+
     protected $apppaths;
 
     public function indexAction()
@@ -30,7 +31,7 @@ class PannelloAmministrazioneController extends Controller
         foreach ($bundlelists as $bundle) {
             if (substr($bundle, 0, 2) === 'Fi') {
                 $bundle = str_replace('\\', '/', $bundle);
-                $bundlepath = $this->apppaths->getSrcPath().DIRECTORY_SEPARATOR.substr($bundle, 0, strripos($bundle, '/'));
+                $bundlepath = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . substr($bundle, 0, strripos($bundle, '/'));
                 if ($fs->exists($bundlepath)) {
                     $bundles[] = substr($bundle, 0, strripos($bundle, '/'));
                 }
@@ -47,13 +48,13 @@ class PannelloAmministrazioneController extends Controller
             }
         }
 
-        if ($fs->exists($projectDir.'/.svn')) {
+        if ($fs->exists($projectDir . '/.svn')) {
             $svn = true;
         } else {
             $svn = false;
         }
 
-        if ($fs->exists($projectDir.'/.git')) {
+        if ($fs->exists($projectDir . '/.git')) {
             $git = true;
         } else {
             $git = false;
@@ -69,11 +70,11 @@ class PannelloAmministrazioneController extends Controller
             $windows = true;
         }
 
-        $dellockfile = $delcmd.' '.$this->apppaths->getCachePath().DIRECTORY_SEPARATOR.'running.run';
-        $delcomposerfile = $delcmd.' '.$projectDir.DIRECTORY_SEPARATOR.'composer.lock';
-        $dellogsfiles = $delcmd.' '.$this->apppaths->getLogsPath().DIRECTORY_SEPARATOR.'*';
-        $delcacheprodfiles = $delcmd.' '.$this->apppaths->getCachePath().DIRECTORY_SEPARATOR.'prod'.DIRECTORY_SEPARATOR.'*';
-        $delcachedevfiles = $delcmd.' '.$this->apppaths->getCachePath().DIRECTORY_SEPARATOR.'dev'.DIRECTORY_SEPARATOR.'*';
+        $dellockfile = $delcmd . ' ' . $this->apppaths->getCachePath() . DIRECTORY_SEPARATOR . 'running.run';
+        $delcomposerfile = $delcmd . ' ' . $projectDir . DIRECTORY_SEPARATOR . 'composer.lock';
+        $dellogsfiles = $delcmd . ' ' . $this->apppaths->getLogsPath() . DIRECTORY_SEPARATOR . '*';
+        $delcacheprodfiles = $delcmd . ' ' . $this->apppaths->getCachePath() . DIRECTORY_SEPARATOR . 'prod' . DIRECTORY_SEPARATOR . '*';
+        $delcachedevfiles = $delcmd . ' ' . $this->apppaths->getCachePath() . DIRECTORY_SEPARATOR . 'dev' . DIRECTORY_SEPARATOR . '*';
 
         $comandishell = array(
             'lockfile' => $this->fixSlash($dellockfile),
@@ -85,7 +86,7 @@ class PannelloAmministrazioneController extends Controller
 
         $twigparms = array('svn' => $svn, 'git' => $git, 'bundles' => $bundles, 'mwbs' => $mwbs,
             'rootdir' => $this->fixSlash($projectDir),
-            'comandishell' => $comandishell, 'iswindows' => $windows, );
+            'comandishell' => $comandishell, 'iswindows' => $windows,);
 
         return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:index.html.twig', $twigparms);
     }
@@ -193,11 +194,11 @@ class PannelloAmministrazioneController extends Controller
             $result = $commands->getVcs();
             (new LockSystem($this->container))->lockFile(false);
             if ($result['errcode'] < 0) {
-                $responseout = '<pre>Errore nel comando: <i style = "color: white;">'.$result['command'].'</i>'
-                        .'<br/><i style = "color: red;">'.nl2br($result['errmsg']).'</i></pre>';
+                $responseout = '<pre>Errore nel comando: <i style = "color: white;">' . $result['command'] . '</i>'
+                        . '<br/><i style = "color: red;">' . nl2br($result['errmsg']) . '</i></pre>';
             } else {
-                $responseout = '<pre>Eseguito comando: <i style = "color: white;">'.$result['command'].'</i><br/>'.
-                        nl2br($result['errmsg']).'</pre>';
+                $responseout = '<pre>Eseguito comando: <i style = "color: white;">' . $result['command'] . '</i><br/>' .
+                        nl2br($result['errmsg']) . '</pre>';
             }
 
             return new Response($responseout);
@@ -221,8 +222,7 @@ class PannelloAmministrazioneController extends Controller
 
             /* Uso exit perchè new response avendo cancellato la cache schianta non avendo più a disposizione i file */
             //return $commanddev . '<br/>' . $cmdoutputdev . '<br/><br/>' . $commandprod . '<br/>' . $cmdoutputprod;
-            //return new Response(nl2br($result));
-            echo nl2br($result);
+            return new Response(nl2br($result));
         }
     }
 
@@ -239,19 +239,19 @@ class PannelloAmministrazioneController extends Controller
             $this->apppaths = new ProjectPath($this->container);
             $pammutils = new PannelloAmministrazioneUtils($this->container);
             $phpPath = OsFunctions::getPHPExecutableFromPath();
-            $result = $pammutils->runCommand($phpPath.' '.$this->apppaths->getConsole().' '.$comando);
+            $result = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' ' . $comando);
 
             (new LockSystem($this->container))->lockFile(false);
             if ($result['errcode'] < 0) {
-                $responseout = 'Errore nel comando: <i style = "color: white;">'.
-                        str_replace(';', '<br/>', str_replace('&&', '<br/>', $comando)).
-                        '</i><br/><i style = "color: red;">'.nl2br($result['errmsg']).'</i>';
+                $responseout = 'Errore nel comando: <i style = "color: white;">' .
+                        str_replace(';', '<br/>', str_replace('&&', '<br/>', $comando)) .
+                        '</i><br/><i style = "color: red;">' . nl2br($result['errmsg']) . '</i>';
 
                 return new Response($responseout);
             }
-            $responseout = '<pre>Eseguito comando:<br/><br/><i style = "color: white;">'.
-                    str_replace(';', '<br/>', str_replace('&&', '<br/>', $comando)).'</i><br/><br/>'.
-                    str_replace("\n", '<br/>', $result['errmsg']).'</pre>';
+            $responseout = '<pre>Eseguito comando:<br/><br/><i style = "color: white;">' .
+                    str_replace(';', '<br/>', str_replace('&&', '<br/>', $comando)) . '</i><br/><br/>' .
+                    str_replace("\n", '<br/>', $result['errmsg']) . '</pre>';
 
             return new Response($responseout);
         }
@@ -269,18 +269,18 @@ class PannelloAmministrazioneController extends Controller
         }
         //Se viene lanciato il comando per cancellare il file di lock su bypassa tutto e si lancia
         $filelock = str_replace('\\', '\\\\', (new LockSystem($this->container))->getFileLock());
-        if (str_replace('\\\\', '/', $command) == str_replace('\\\\', '\\', $lockdelcmd.$filelock)) {
+        if (str_replace('\\\\', '/', $command) == str_replace('\\\\', '\\', $lockdelcmd . $filelock)) {
             $fs = new Filesystem();
             if ((!($fs->exists($filelock)))) {
-                return new Response('Non esiste il file di lock: <i style = "color: white;">'.$filelock.'</i><br/>');
+                return new Response('Non esiste il file di lock: <i style = "color: white;">' . $filelock . '</i><br/>');
             } else {
                 $result = $pammutils->runCommand($command);
 
                 // eseguito deopo la fine del comando
                 if ($result['errmsg'] < 0) {
-                    $responseout = 'Errore nel comando: <i style = "color: white;">'.
-                            str_replace(';', '<br/>', str_replace('&&', '<br/>', $command)).
-                            '</i><br/><i style = "color: red;">'.str_replace("\n", '<br/>', $result['errmsg']).'</i>';
+                    $responseout = 'Errore nel comando: <i style = "color: white;">' .
+                            str_replace(';', '<br/>', str_replace('&&', '<br/>', $command)) .
+                            '</i><br/><i style = "color: red;">' . str_replace("\n", '<br/>', $result['errmsg']) . '</i>';
 
                     return new Response($responseout);
                 }
@@ -299,9 +299,9 @@ class PannelloAmministrazioneController extends Controller
             (new LockSystem($this->container))->lockFile(false);
             // eseguito deopo la fine del comando
             if ($result['errcode'] < 0) {
-                $errmsg = 'Errore nel comando: <i style = "color: white;">'.
-                        str_replace(';', '<br/>', str_replace('&&', '<br/>', $command)).
-                        '</i><br/><i style = "color: red;">'.nl2br($result['errmsg']).'</i>';
+                $errmsg = 'Errore nel comando: <i style = "color: white;">' .
+                        str_replace(';', '<br/>', str_replace('&&', '<br/>', $command)) .
+                        '</i><br/><i style = "color: red;">' . nl2br($result['errmsg']) . '</i>';
 
                 return new Response($errmsg);
                 //Uso exit perchè new response avendo cancellato la cache schianta non avendo più a disposizione i file
@@ -309,9 +309,9 @@ class PannelloAmministrazioneController extends Controller
                 /* return new Response('Errore nel comando: <i style = "color: white;">' .
                  * $command . '</i><br/><i style = "color: red;">' . str_replace("\n", '<br/>', $process->getErrorOutput()) . '</i>'); */
             }
-            $msgok = '<pre>Eseguito comando:<br/><i style = "color: white;"><br/>'.
-                    str_replace(';', '<br/>', str_replace('&&', '<br/>', $command)).'</i><br/>'.
-                    nl2br($result['errmsg']).'</pre>';
+            $msgok = '<pre>Eseguito comando:<br/><i style = "color: white;"><br/>' .
+                    str_replace(';', '<br/>', str_replace('&&', '<br/>', $command)) . '</i><br/>' .
+                    nl2br($result['errmsg']) . '</pre>';
             //Uso exit perchè new response avendo cancellato la cache schianta non avendo più a disposizione i file
             return new Response($msgok);
             //return;
@@ -335,11 +335,11 @@ class PannelloAmministrazioneController extends Controller
 
                 // Questo codice per versioni che usano un symfony 2 o 3
                 if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-                    $command = 'cd '.$this->apppaths->getRootPath().$sepchr.
-                            $phpPath.' '.'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'phpunit';
+                    $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr .
+                            $phpPath . ' ' . 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'phpunit';
                 } else {
-                    $command = 'cd '.$this->apppaths->getRootPath().$sepchr.
-                            $phpPath.' '.'bin'.DIRECTORY_SEPARATOR.'phpunit -c app';
+                    $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr .
+                            $phpPath . ' ' . 'bin' . DIRECTORY_SEPARATOR . 'phpunit -c app';
                 }
 
                 $process = new Process($command);
@@ -352,8 +352,8 @@ class PannelloAmministrazioneController extends Controller
                  * $command . '</i><br/><i style = "color: red;">' . str_replace("\n",
                  * '<br/>', $process->getErrorOutput()) . '</i>');
                   } */
-                $responseout = '<pre>Eseguito comando: <i style = "color: white;">'.$command.'</i><br/>'.
-                        str_replace("\n", '<br/>', $process->getOutput()).'</pre>';
+                $responseout = '<pre>Eseguito comando: <i style = "color: white;">' . $command . '</i><br/>' .
+                        str_replace("\n", '<br/>', $process->getOutput()) . '</pre>';
 
                 return new Response($responseout);
             } else {
@@ -361,4 +361,5 @@ class PannelloAmministrazioneController extends Controller
             }
         }
     }
+
 }
