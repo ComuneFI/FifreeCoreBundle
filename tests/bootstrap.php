@@ -7,7 +7,7 @@ use Fi\OsBundle\DependencyInjection\OsFunctions;
 if (isset($_ENV['BOOTSTRAP_CLEAR_CACHE_ENV'])) {
     passthru(sprintf(
         'php "%s/console" cache:clear --env=%s --no-warmup',
-        __DIR__ . '/../app/',
+        __DIR__ . '/../bin/',
         $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
     ));
 }
@@ -32,7 +32,7 @@ function startTests()
 function removecache()
 {
     $vendorDir = dirname(dirname(__FILE__));
-    $testcache = $vendorDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'test';
+    $testcache = $vendorDir . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'test';
     if (file_exists($testcache)) {
         $command = 'rm -rf ' . $testcache;
         $process = new Process($command);
@@ -56,7 +56,7 @@ function clearcache()
     } else {
         $phpPath = '/usr/bin/php';
     }
-    $console = $vendorDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'console';
+    $console = $vendorDir . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'console';
     if (file_exists($console)) {
         $command = $phpPath . ' ' . $console . ' --env=test';
         $process = new Process($command);
