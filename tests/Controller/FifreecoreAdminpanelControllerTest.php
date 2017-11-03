@@ -108,10 +108,19 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
         sleep(3);
         $driver->reload();
-        sleep(3);
-        $driver->reload();
 
-        //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
+        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-warmup --env=test ");
+        $session->visit($url);
+        $page = $session->getPage();
+        sleep(1);
+        //echo $session->getPage()->getHtml();
+        /* Login */
+        $page->fillField('username', 'admin');
+        $page->fillField('password', 'admin');
+        $page->pressButton('_submit');
+
+        sleep(1);
+
         //$pammutils = new PannelloAmministrazioneUtils($this->getContainer());
         //$ret = $pammutils->clearcache();
         //echo $ret["errmsg"];
@@ -151,7 +160,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptrun);
         parent::ajaxWait($session, 6000);
         sleep(2);
-
         $driver->reload();
 
         $page->fillField('bundlename', 'Fi/ProvaBundle');
@@ -203,17 +211,17 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
-        //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
-        sleep(2);
-
-        $driver->reload();
-        sleep(2);
-
-        //$urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        //$url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
+        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-warmup --env=test ");
+        $session->visit($url);
+        $page = $session->getPage();
+        sleep(1);
+        //echo $session->getPage()->getHtml();
+        /* Login */
+        $page->fillField('username', 'admin');
+        $page->fillField('password', 'admin');
+        $page->pressButton('_submit');
 
         sleep(1);
-
         $session->visit($url);
         $page = $session->getPage();
 
