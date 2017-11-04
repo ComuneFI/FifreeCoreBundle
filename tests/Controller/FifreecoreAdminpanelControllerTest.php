@@ -109,7 +109,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         sleep(3);
         $driver->reload();
 
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-warmup --env=test ");
+        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
         $session->visit($url);
         $page = $session->getPage();
         sleep(1);
@@ -161,7 +161,16 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         parent::ajaxWait($session, 6000);
         sleep(2);
         $driver->reload();
-
+        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
+        $session->visit($url);
+        $page = $session->getPage();
+        sleep(1);
+//echo $session->getPage()->getHtml();
+        /* Login */
+        $page->fillField('username', 'admin');
+        $page->fillField('password', 'admin');
+        $page->pressButton('_submit');
+        sleep(1);
         $page->fillField('bundlename', 'Fi/ProvaBundle');
 
         $page->selectFieldOption('entitybundle', 'Fi/ProvaBundle');
@@ -172,6 +181,10 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         parent::ajaxWait($session, 6000);
         sleep(2);
 
+
+
+
+        sleep(1);
         //echo $session->getPage()->getHtml();
         /**/
         //$screenshot = $driver->getWebDriverSession()->screenshot();
@@ -211,7 +224,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-warmup --env=test ");
+        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
         $session->visit($url);
         $page = $session->getPage();
         sleep(1);
@@ -357,17 +370,12 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
     }
 
-    public function testZ9999999999PannelloAmministrazioneMain()
-    {
-        startTests();
-    }
-
     /**
      * {@inheritdoc}
      */
     protected function tearDown()
     {
+        startTests();
         parent::tearDown();
     }
-
 }

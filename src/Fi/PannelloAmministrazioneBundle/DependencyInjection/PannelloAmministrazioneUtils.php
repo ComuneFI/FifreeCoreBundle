@@ -26,10 +26,16 @@ class PannelloAmministrazioneUtils
         if (!$env) {
             $env = $this->container->get('kernel')->getEnvironment();
         }
+
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
-        $command = $phpPath . ' ' . $this->apppaths->getConsole() . ' cache:clear --no-debug --no-warmup '
+        $command = $phpPath . ' ' . $this->apppaths->getConsole() . ' cache:clear '
                 . '--env=' . $env;
+        if (in_array($env, array('dev', 'test', 'localhost'))) {
+            $command = $command . " ";
+        } else {
+            $command = $command . " --no-debug ";
+        }
 
         return PannelloAmministrazioneUtils::runCommand($command);
     }

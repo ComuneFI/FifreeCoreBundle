@@ -12,7 +12,7 @@ use Fi\OsBundle\DependencyInjection\OsFunctions;
   } */
 
 passthru(sprintf(
-                'php "%s/console" cache:clear --env=%s', __DIR__ . '/../bin/', "test"
+                'php "%s/console" cache:clear --no-debug --env=%s', __DIR__ . '/../bin/', "test"
 ));
 
 
@@ -28,7 +28,7 @@ date_default_timezone_set('Europe/Rome');
 
 function startTests()
 {
-    //removecache();
+    removecache();
     //clearcache();
     cleanFilesystem();
 }

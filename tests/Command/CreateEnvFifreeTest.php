@@ -99,19 +99,21 @@ class CreateEnvFifreeTest extends KernelTestCase
         $console = __DIR__ . '/../../bin/console';
         $cmd = "php " . $console . " generate:bundle --namespace=Fi/ProvaBundle --dir=src/ --format=yml --no-interaction --env=test";
         echo passthru($cmd);
+        $console = __DIR__ . '/../../bin/console';
+        $cmd = "php " . $console . " pannelloamministrazione:generateentities wbadmintest.mwb Fi/ProvaBundle --schemaupdate --env=test";
+        echo passthru($cmd);
+        /* $command = $application->find('pannelloamministrazione:generateentities');
+          $commandTester = new CommandTester($command);
+          $commandTester->execute(
+          array(
+          'mwbfile' => 'wbadmintest.mwb',
+          'bundlename' => 'Fi/ProvaBundle',
+          '--schemaupdate' => true,
+          )
+          );
 
-        $command = $application->find('pannelloamministrazione:generateentities');
-        $commandTester = new CommandTester($command);
-        $commandTester->execute(
-                array(
-                    'mwbfile' => 'wbadmintest.mwb',
-                    'bundlename' => 'Fi/ProvaBundle',
-                    '--schemaupdate' => true,
-                )
-        );
-        
-        $this->assertRegExp('/.../', $commandTester->getDisplay());
-
+          $this->assertRegExp('/.../', $commandTester->getDisplay());
+         */
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($kernel->getContainer());
         $checkent = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
                 DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
@@ -137,5 +139,4 @@ class CreateEnvFifreeTest extends KernelTestCase
         parent::tearDown();
         startTests();
     }
-
 }
