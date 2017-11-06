@@ -78,7 +78,7 @@
         "symfony/phpunit-bridge": "^3.0",
         "se/selenium-server-standalone": "^2.0",
         "phpunit/phpunit": "^5.5",
-        "symfony/web-server-bundle": "v3.4.0-BETA2"
+        "symfony/web-server-bundle": "v3.4.0-BETA3"
     },
     "scripts": {
         "symfony-scripts": [
