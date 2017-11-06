@@ -105,11 +105,12 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
 
-        //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
+        //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        sleep(3);
+
+        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
         sleep(3);
         $driver->reload();
-
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
         $session->visit($url);
         $page = $session->getPage();
         sleep(1);
@@ -158,11 +159,12 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->pressButton('adminpanelgenerateentity');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 12000);
+        parent::ajaxWait($session, 120000);
+        sleep(3);
+
+        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
         sleep(3);
         $driver->reload();
-
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
         $session->visit($url);
         $page = $session->getPage();
         sleep(1);
@@ -222,7 +224,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
+        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
         $session->visit($url);
         $page = $session->getPage();
         sleep(1);
@@ -264,13 +266,24 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
           $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
           $session->executeScript($scriptrun);
           parent::ajaxWait($session, 60000); */
-        //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
-        sleep(2);
+        //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
 
+        sleep(3);
 
+        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        sleep(3);
         $driver->reload();
-        sleep(2);
+        sleep(1);
+        $session->visit($url);
+        $page = $session->getPage();
+        sleep(1);
+        //echo $session->getPage()->getHtml();
+        /* Login */
+        $page->fillField('username', 'admin');
+        $page->fillField('password', 'admin');
+        $page->pressButton('_submit');
 
+        sleep(1);
         //***************************************************************************************************************
         try {
             $urlRouting = $this->getContainer()->get('router')->generate('Prova_container');

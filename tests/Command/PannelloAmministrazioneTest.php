@@ -44,7 +44,7 @@ class PannelloAmministrazioneTest extends CommandTestCase
         $listcommands = array(
             "generate:bundle --namespace=Fi/ProvaBundle --dir=src/ --format=yml --no-interaction",
             "doctrine:cache:clear-metadata",
-            "cache:clear",
+            "cache:clear --no-debug ",
             "pannelloamministrazione:generateentities wbadmintest.mwb Fi/ProvaBundle --schemaupdate",
         );
         $megacommand = "";
@@ -55,8 +55,8 @@ class PannelloAmministrazioneTest extends CommandTestCase
         passthru($megacommand);
 
         //TODO: Ripristinare il test
-        //$this->assertTrue(file_exists($checkent));
-        //$this->assertTrue(file_exists($checkres));
+        $this->assertTrue(file_exists($checkent));
+        $this->assertTrue(file_exists($checkres));
     }
 
 //    public function testPannelloGenerateBundle2()
