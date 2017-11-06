@@ -158,14 +158,24 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->pressButton('adminpanelgenerateentity');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 6000);
-        sleep(2);
+        parent::ajaxWait($session, 12000);
+        sleep(3);
         $driver->reload();
+
         echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --env=test ");
         $session->visit($url);
         $page = $session->getPage();
         sleep(1);
-//echo $session->getPage()->getHtml();
+        //echo $session->getPage()->getHtml();
+        /* Login */
+        $page->fillField('username', 'admin');
+        $page->fillField('password', 'admin');
+        $page->pressButton('_submit');
+
+        sleep(1);
+
+
+        //echo $session->getPage()->getHtml();
         /* Login */
         $page->fillField('username', 'admin');
         $page->fillField('password', 'admin');
@@ -373,4 +383,5 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         startTests();
         parent::tearDown();
     }
+
 }
