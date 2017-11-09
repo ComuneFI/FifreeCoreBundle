@@ -43,9 +43,8 @@ class PannelloAmministrazioneTest extends CommandTestCase
          */
         $listcommands = array(
             "generate:bundle --namespace=Fi/ProvaBundle --dir=src/ --format=yml --no-interaction",
-            "doctrine:cache:clear-metadata",
-            "cache:clear ",
             "doctrine:cache:clear-metadata --flush ",
+            "cache:clear --no-debug ",
             "pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle",
             "pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate",
         );

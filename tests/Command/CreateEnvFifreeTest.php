@@ -32,48 +32,48 @@ class CreateEnvFifreeTest extends WebTestCase
 //        //$this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
 //    }
 //
-//    /* public function test10InstallFifree()
-//      {
-//
-//      $kernel = $this->createKernel();
-//      $kernel->boot();
-//
-//      $application = new Application($kernel);
-//      $application->add(new \Fi\CoreBundle\Command\Fifree2droptablesCommand());
-//
-//      $command = $application->find('fifree2:droptables');
-//      $commandTester = new CommandTester($command);
-//      $commandTester->execute(
-//      array(
-//      '--force' => true,
-//      '--no-interaction' => 'true'
-//      )
-//      );
-//
-//      $this->assertRegExp('/.../', $commandTester->getDisplay());
-//      } */
-//
-//    public function test15InstallFifree()
-//    {
-//
-//        $kernel = $this->createKernel();
-//        $kernel->boot();
-//
-//        $application = new Application($kernel);
-//        $application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
-//
-//        $command = $application->find('fifree2:dropdatabase');
-//        $commandTester = new CommandTester($command);
-//        $commandTester->execute(
-//                array(
-//                    '--force' => true,
-//                    '--no-interaction' => true
-//                )
-//        );
-//
-//        $this->assertRegExp('/.../', $commandTester->getDisplay());
-//    }
-//
+    public function test10InstallFifree()
+    {
+
+        $kernel = $this->createKernel();
+        $kernel->boot();
+
+        $application = new Application($kernel);
+        $application->add(new \Fi\CoreBundle\Command\Fifree2droptablesCommand());
+
+        $command = $application->find('fifree2:droptables');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+                array(
+                    '--force' => true,
+                    '--no-interaction' => 'true'
+                )
+        );
+
+        $this->assertRegExp('/.../', $commandTester->getDisplay());
+    }
+
+    public function test15InstallFifree()
+    {
+
+        $kernel = $this->createKernel();
+        $kernel->boot();
+
+        $application = new Application($kernel);
+        $application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
+
+        $command = $application->find('fifree2:dropdatabase');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+                array(
+                    '--force' => true,
+                    '--no-interaction' => true
+                )
+        );
+
+        $this->assertRegExp('/.../', $commandTester->getDisplay());
+    }
+
     public function test20InstallFifree()
     {
 
@@ -137,11 +137,9 @@ class CreateEnvFifreeTest extends WebTestCase
         $cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --no-debug --format=yml  -n --env=test";
         echo passthru($cmd);
 
-
         $kernel = static::$kernel;
         $application = new Application($kernel);
         $application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand());
-        $application->add(new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand());
         $command = $application->find('pannelloamministrazione:generateymlentities');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
@@ -155,8 +153,7 @@ class CreateEnvFifreeTest extends WebTestCase
 
         $this->assertRegExp('/.../', $commandTester->getDisplay());
 
-        $kernel = static::$kernel;
-        $application = new Application($kernel);
+        $application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand());
         $application->add(new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand());
         $command = $application->find('pannelloamministrazione:generateentities');
         $commandTester = new CommandTester($command);
