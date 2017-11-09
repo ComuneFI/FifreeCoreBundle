@@ -32,26 +32,26 @@ class CreateEnvFifreeTest extends WebTestCase
 //        //$this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
 //    }
 //
-    public function test10InstallFifree()
-    {
+    /* public function test10InstallFifree()
+      {
 
-        $kernel = $this->createKernel();
-        $kernel->boot();
+      $kernel = $this->createKernel();
+      $kernel->boot();
 
-        $application = new Application($kernel);
-        $application->add(new \Fi\CoreBundle\Command\Fifree2droptablesCommand());
+      $application = new Application($kernel);
+      $application->add(new \Fi\CoreBundle\Command\Fifree2droptablesCommand());
 
-        $command = $application->find('fifree2:droptables');
-        $commandTester = new CommandTester($command);
-        $commandTester->execute(
-                array(
-                    '--force' => true,
-                    '--no-interaction' => 'true'
-                )
-        );
+      $command = $application->find('fifree2:droptables');
+      $commandTester = new CommandTester($command);
+      $commandTester->execute(
+      array(
+      '--force' => true,
+      '--no-interaction' => 'true'
+      )
+      );
 
-        $this->assertRegExp('/.../', $commandTester->getDisplay());
-    }
+      $this->assertRegExp('/.../', $commandTester->getDisplay());
+      } */
 
     public function test15InstallFifree()
     {
