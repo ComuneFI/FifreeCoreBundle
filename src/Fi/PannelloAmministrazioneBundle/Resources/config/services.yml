@@ -5,3 +5,20 @@ services:
 #    fi_pannello_amministrazione.example:
 #        class: %fi_pannello_amministrazione.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+    pannelloamministrazione.command.generateentities:
+        class: Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    pannelloamministrazione.command.generateymlentities:
+        class: Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    pannelloamministrazione.command.checkgitversion:
+        class: Fi\PannelloAmministrazioneBundle\Command\CheckgitversionCommand
+        public: false
+        tags:
+            -  { name: console.command }            

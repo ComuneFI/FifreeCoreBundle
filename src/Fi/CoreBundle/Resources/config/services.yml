@@ -4,10 +4,6 @@ parameters:
   ficorebundle.db.table_prefix: __corebundle_
   
 services:
-#    fi_core.example:
-#        class: %fi_core.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
-
     request:
         class:        Symfony\Component\HttpFoundation\Request
 
@@ -74,3 +70,52 @@ services:
         tags:
         - { name: form.type, alias: entity_hidden }
      
+#Commands as services
+    fifree.command.createdatabase:
+        class: Fi\CoreBundle\Command\Fifree2createdatabaseCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    fifree.command.dropdatabase:
+        class: Fi\CoreBundle\Command\Fifree2dropdatabaseCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    fifree.command.droptables:
+        class: Fi\CoreBundle\Command\Fifree2droptablesCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    fifree.command.install:
+        class: Fi\CoreBundle\Command\Fifree2installCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    fifree.command.mysqlconvertdbengine:
+        class: Fi\CoreBundle\Command\Fifree2mysqlconvertdbengineCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    fifree.command.mysqldropforeignkeys:
+        class: Fi\CoreBundle\Command\Fifree2mysqldropforeignkeysCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    fifree.command.mysqltruncatetables:
+        class: Fi\CoreBundle\Command\Fifree2mysqltruncatetablesCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    fifree.command.pubblicamanuale:
+        class: Fi\CoreBundle\Command\Fifree2pubblicamanualeCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
