@@ -153,6 +153,22 @@ class PannelloAmministrazioneController extends Controller
             $commands = new Commands($this->container);
             $ret = $commands->generateEntity($wbFile, $bundlePath);
             (new LockSystem($this->container))->lockFile(false);
+            return new Response($ret['message']);
+        }
+    }
+
+    /* ENTITIES */
+
+    public function generateEntityClassAction(Request $request)
+    {
+        if ((new LockSystem($this->container))->isLockedFile()) {
+            return (new LockSystem($this->container))->lockedFunctionMessage();
+        } else {
+            (new LockSystem($this->container))->lockFile(true);
+            $bundlePath = $request->get('bundle');
+            $commands = new Commands($this->container);
+            $ret = $commands->generateEntityClass($bundlePath);
+            (new LockSystem($this->container))->lockFile(false);
 
             return new Response($ret['message']);
         }
@@ -170,11 +186,16 @@ class PannelloAmministrazioneController extends Controller
             $commands = new Commands($this->container);
             $bundleName = $request->get('bundlename');
             $result = $commands->generateBundle($bundleName);
-            echo '<script type="text/javascript">alert("Per abilitare il nuovo bundle nel kernel aggiornare la pagina");</script>';
+            $msg = "Per abilitare il nuovo bundle nel kernel pulire la cache e aggiornare la pagina";
+            echo '<script type="text/javascript">alert("' . $msg . '");location.reload(); </script>';
             (new LockSystem($this->container))->lockFile(false);
             //Uso exit perchè la render avendo creato un nuovo bundle schianta perchè non è caricato nel kernel il nuovo bundle ancora
             //exit;
             $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
+
+            $commands->clearcache();
+            $this->container->get('kernel')->shutdown();
+            $this->container->get('kernel')->boot();
 
             return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
         }

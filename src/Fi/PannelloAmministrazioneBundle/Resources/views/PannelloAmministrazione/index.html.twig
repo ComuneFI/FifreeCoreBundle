@@ -81,8 +81,8 @@
                         <br/><br/>
                     </div>
                 </div>
-                <!--<button id="adminpanelgenerateclassentity" class="active btn btn-default" data-reactid=".3.0" type="button">Genera le classi dalle entities</button>
-                <br/><br/>-->
+                <button id="adminpanelgenerateclassentity" class="active btn btn-default" data-reactid=".3.0" type="button">Genera le classi dalle entities</button>
+                <br/><br/>
                 <button id="adminpanelaggiornadatabase" class="active btn btn-danger" data-reactid=".3.0" type="button">Aggiorna schema database</button>
             </fieldset>
         </div>
@@ -210,6 +210,32 @@
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_generateentity") }}",
                                 data: {bundle: entitybundle, file: entityfile},
+                                context: document.body
+                            }).done(function (data) {
+                                $("#risultato").html(data);
+                                opendialogrisultato();
+                                $("#risultato").slideDown("slow");
+                            }).fail(function (jqXHR, textStatus) {
+                                $("#risultato").html(jqXHR.responseText);
+                                $("#risultato").show();
+                                msgbox("Si è verificato un errore!");
+                                return false;
+                            });
+                        } else {
+                            //FALSE
+                        }
+                    });
+                });
+                $("#adminpanelgenerateclassentity").click(function () {
+                    var entitybundle = $("#entitybundle").val();
+                    var domanda = "Vuoi creare le classi per le entità del bundle: " + entitybundle;
+                    conferma(domanda).then(function (answer) {
+                        if ((String(answer) == "true")) {
+                            $("#risultato").hide();
+                            $("#risultato").html("");
+                            $.ajax({
+                                url: "{{ path("fi_pannello_amministrazione_generateentityclass") }}",
+                                data: {bundle: entitybundle},
                                 context: document.body
                             }).done(function (data) {
                                 $("#risultato").html(data);

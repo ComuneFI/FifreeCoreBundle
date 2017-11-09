@@ -44,9 +44,12 @@ class PannelloAmministrazioneTest extends CommandTestCase
         $listcommands = array(
             "generate:bundle --namespace=Fi/ProvaBundle --dir=src/ --format=yml --no-interaction",
             "doctrine:cache:clear-metadata",
-            "cache:clear --no-debug ",
-            "pannelloamministrazione:generateentities wbadmintest.mwb Fi/ProvaBundle --schemaupdate",
+            "cache:clear ",
+            "doctrine:cache:clear-metadata --flush ",
+            "pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle",
+            "pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate",
         );
+        
         $megacommand = "";
         foreach ($listcommands as $cmd) {
             $megacommand = $megacommand . "php " . $console . " " . $cmd . " --env=test &&";

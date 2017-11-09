@@ -81,7 +81,40 @@ class Commands
     public function generateEntity($wbFile, $bundlePath)
     {
         $console = $this->apppaths->getConsole();
-        $pannellocmd = "pannelloamministrazione:generateentities $wbFile $bundlePath";
+        $pannellocmd = "pannelloamministrazione:generateymlentities $wbFile $bundlePath ";
+
+        $scriptGenerator = $console . " " . $pannellocmd;
+
+        $phpPath = OsFunctions::getPHPExecutableFromPath();
+        $sepchr = OsFunctions::getSeparator();
+
+        $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr
+                . $phpPath . ' ' . $scriptGenerator . ' --no-debug --env=' . $this->container->get('kernel')->getEnvironment();
+        $process = new Process($command);
+        $process->setTimeout(60 * 100);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            return array(
+                'errcode' => -1,
+                'message' => 'Errore nel comando: <i style="color: white;">' .
+                $command . '</i><br/><i style="color: red;">' .
+                str_replace("\n", '<br/>', ($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput())) .
+                'in caso di errori eseguire il comando symfony non da web: pannelloamministrazione:generateymlentities ' .
+                $wbFile . ' ' . $bundlePath . '<br/></i>',
+            );
+        }
+
+        return array(
+            'errcode' => 0,
+            'message' => '<pre>Eseguito comando: <i style = "color: white;">' .
+            $command . '</i><br/>' . str_replace("\n", '<br/>', $process->getOutput()) . '</pre>',);
+    }
+
+    public function generateEntityClass($bundlePath)
+    {
+        $console = $this->apppaths->getConsole();
+        $pannellocmd = "pannelloamministrazione:generateentities $bundlePath";
 
         $scriptGenerator = $console . " " . $pannellocmd;
 
@@ -102,7 +135,7 @@ class Commands
                 $command . '</i><br/><i style="color: red;">' .
                 str_replace("\n", '<br/>', ($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput())) .
                 'in caso di errori eseguire il comando symfony non da web: pannelloamministrazione:generateentities ' .
-                $wbFile . ' ' . $bundlePath . '<br/>Opzione --schemaupdate oer aggiornare anche lo schema database</i>',
+                $bundlePath . '<br/>Opzione --schemaupdate oer aggiornare anche lo schema database</i>',
             );
         }
 
