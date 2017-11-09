@@ -16,7 +16,7 @@ class DatabaseCollectorTest extends WebTestCase
         $client->enableProfiler();
 
         /* @var $em \Doctrine\ORM\EntityManager */
-        $em = $client->getKernel()->getContainer()->get("doctrine")->getEntityManager();
+        $em = $client->getKernel()->getContainer()->get("doctrine")->getManager();
         $dbhostconnection = $em->getConnection()->getHost();
         $dbportconnection = $em->getConnection()->getPort();
         $dbdatabaseconnection = $em->getConnection()->getDatabase();
