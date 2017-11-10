@@ -10,7 +10,7 @@ use Fi\OsBundle\DependencyInjection\OsFunctions;
   'php "%s/console" cache:clear --env=%s', __DIR__ . '/../bin/', $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
   ));
   } */
-
+PHPUnit_Framework_Error_Deprecated::$enabled = false;
 passthru(sprintf(
                 'php "%s/console" cache:clear --no-debug --env=%s', __DIR__ . '/../bin/', "test"
 ));
