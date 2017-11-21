@@ -1,7 +1,3 @@
-fi_prova:
-    resource: "@FiProvaBundle/Resources/config/routing.yml"
-    prefix:   /
-
 fi_pannello_amministrazione:
     resource: "@PannelloAmministrazioneBundle/Resources/config/routing.yml"
     prefix:   /
