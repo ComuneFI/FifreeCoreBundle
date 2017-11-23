@@ -20,6 +20,16 @@ class FifreeUserTest extends FifreeTest
 
         $username4test = $container->getParameter('usernoprivileges4test');
         $user = $userManager->findUserBy(array('username' => $username4test));
+        $userManipulator = $container->get('fos_user.util.user_manipulator');
+        if (!$user) {
+            $adminPassword = $username4test;
+            $adminUsername = $username4test;
+            $adminEmail = $username4test . "@test.test";
+            $isActive = true;
+            $isSuperAdmin = false;
+            $userManipulator->create($adminUsername, $adminPassword, $adminEmail, $isActive, $isSuperAdmin);
+            $user = $userManager->findUserBy(array('username' => $username4test));
+        }
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */

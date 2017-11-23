@@ -94,6 +94,12 @@ class FfsecondariaController extends FiCoreController
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
+        $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
+        $canRead = ($gestionepermessi->leggere(array('modulo' => $controller)) ? 1 : 0);
+        if (!$canRead) {
+            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
+        }
+
         $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array('nota', 'ffprincipale');
         $tabellej['ffprincipale_id'] = array('tabella' => 'ffprincipale', 'campi' => array('descrizione'));

@@ -36,6 +36,12 @@ class FiController extends Controller
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
+        $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
+        $canRead = ($gestionepermessi->leggere(array('modulo' => $controller)) ? 1 : 0);
+        if (!$canRead) {
+            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
+        }
+
         $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array();
 
@@ -62,6 +68,9 @@ class FiController extends Controller
 
         $gestionepermessi = $this->get('ficorebundle.gestionepermessi');
         $canRead = ($gestionepermessi->leggere(array('modulo' => $controller)) ? 1 : 0);
+        if (!$canRead) {
+            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
+        }
         $idpassato = $request->get('id');
 
         $nomebundle = $namespace . $bundle . 'Bundle';
@@ -82,19 +91,15 @@ class FiController extends Controller
         $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
 
         $testata = $repotabelle->editTestataFormTabelle($testatagriglia, $controller, $container);
-        if (!$canRead) {
-            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
-        } else {
-            return $this->render(
-                $nomebundle . ':' . $controller . ':index.html.twig',
-                array(
-                        'nomecontroller' => $controller,
-                        'testata' => $testata,
-                        'canread' => $canRead,
-                        'idpassato' => $idpassato,
-                            )
-            );
-        }
+        return $this->render(
+            $nomebundle . ':' . $controller . ':index.html.twig',
+            array(
+                    'nomecontroller' => $controller,
+                    'testata' => $testata,
+                    'canread' => $canRead,
+                    'idpassato' => $idpassato,
+                        )
+        );
     }
 
     public function grigliaAction(Request $request)
