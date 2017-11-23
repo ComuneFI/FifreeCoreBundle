@@ -70,7 +70,17 @@
 
         $(document).ready(function () {
         {% if ((canread is defined and canread == 0)) %}
-                alert("Non si hanno i permessi per visualizzare questo contenuto");
+                $("#dialog").dialog({
+                    title: 'Attenzione',
+                    buttons: {
+                        "Ok": function () {
+                            $(this).dialog("close");
+                        }
+                    },
+                    modal: true
+                });
+                jQuery("#testodialog").html("Non si hanno i permessi per visualizzare questo contenuto");
+                jQuery("#dialog").show();
         {% else %}
                 caricaGriglia({{ testata|raw }});
                 $(".ui-jqgrid-bdiv").focus();

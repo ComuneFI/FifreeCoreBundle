@@ -3,8 +3,8 @@
 namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-
 use Fi\CoreBundle\DependencyInjection\GestionePermessi;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Ffprincipale controller.
@@ -23,7 +23,7 @@ class FfprincipaleController extends FiCoreController
         $bundle = $this->getBundle();
         $controller = $this->getController();
         $container = $this->container;
-        
+
         $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
         $canRead = ($gestionepermessi->leggere(array('modulo' => $controller)) ? 1 : 0);
 
@@ -70,6 +70,10 @@ class FfprincipaleController extends FiCoreController
             'canread' => $canRead,
         );
 
-        return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
+        if (!$canRead) {
+            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
+        } else {
+            return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
+        }
     }
 }

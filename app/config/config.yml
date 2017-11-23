@@ -85,5 +85,4 @@ parameters:
     locale: it
     appname: fifreecorebundle
     appid_applicativo: 999
-    user4test: admin
     solosso: false

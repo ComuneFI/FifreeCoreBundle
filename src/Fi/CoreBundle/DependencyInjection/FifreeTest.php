@@ -4,8 +4,6 @@ namespace Fi\CoreBundle\DependencyInjection;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpFoundation\Response;
 
 class FifreeTest extends WebTestCase
 {

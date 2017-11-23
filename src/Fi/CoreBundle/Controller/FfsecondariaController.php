@@ -3,6 +3,7 @@
 namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Ffsecondaria controller.
@@ -69,13 +70,21 @@ class FfsecondariaController extends FiCoreController
         $this->setParametriGriglia(array('request' => $request));
         $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
 
+        $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
+        $canRead = ($gestionepermessi->leggere(array('modulo' => $controller)) ? 1 : 0);
+
         $testata = json_encode($testatagriglia);
         $twigparms = array(
             'nomecontroller' => $controller,
             'testata' => $testata,
+            'canread' => $canRead,
         );
 
-        return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
+        if (!$canRead) {
+            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
+        } else {
+            return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
+        }
     }
 
     public function setParametriGriglia($prepar = array())

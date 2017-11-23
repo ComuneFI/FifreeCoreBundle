@@ -219,8 +219,9 @@ class GrigliaControllerTest extends FifreeTest
         $page = $session->getPage();
 
         /* Login */
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
+        $username4test = $this->getContainer()->getParameter('user4test');
+        $page->fillField('username', $username4test);
+        $page->fillField('password', $username4test);
         $page->pressButton('_submit');
         //$page = $session->getPage();
 
@@ -231,4 +232,5 @@ class GrigliaControllerTest extends FifreeTest
 
         $session->stop();
     }
+
 }

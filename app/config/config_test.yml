@@ -14,3 +14,7 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+parameters:
+    user4test: admin
+    usernoprivileges4test: user4test

@@ -5,6 +5,7 @@ namespace Fi\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class FiController extends Controller
 {
@@ -81,16 +82,19 @@ class FiController extends Controller
         $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
 
         $testata = $repotabelle->editTestataFormTabelle($testatagriglia, $controller, $container);
-
-        return $this->render(
-            $nomebundle . ':' . $controller . ':index.html.twig',
-            array(
-                    'nomecontroller' => $controller,
-                    'testata' => $testata,
-                    'canread' => $canRead,
-                    'idpassato' => $idpassato,
-                        )
-        );
+        if (!$canRead) {
+            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
+        } else {
+            return $this->render(
+                $nomebundle . ':' . $controller . ':index.html.twig',
+                array(
+                        'nomecontroller' => $controller,
+                        'testata' => $testata,
+                        'canread' => $canRead,
+                        'idpassato' => $idpassato,
+                            )
+            );
+        }
     }
 
     public function grigliaAction(Request $request)
