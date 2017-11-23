@@ -4,6 +4,8 @@ namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Fi\CoreBundle\DependencyInjection\GestionePermessi;
+
 /**
  * Ffprincipale controller.
  */
@@ -21,11 +23,9 @@ class FfprincipaleController extends FiCoreController
         $bundle = $this->getBundle();
         $controller = $this->getController();
         $container = $this->container;
-
-        $gestionepermessi = new GestionepermessiController();
-        $gestionepermessi->setContainer($this->container);
-        $gestionepermessi->utentecorrenteAction();
-        $canRead = ($gestionepermessi->leggereAction(array('modulo' => $controller)) ? 1 : 0);
+        
+        $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
+        $canRead = ($gestionepermessi->leggere(array('modulo' => $controller)) ? 1 : 0);
 
         $nomebundle = $namespace . $bundle . 'Bundle';
 

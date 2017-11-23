@@ -2,7 +2,6 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-use Fi\CoreBundle\Controller\GestionepermessiController;
 use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
 
 class GrigliaParametriUtils
@@ -86,14 +85,14 @@ class GrigliaParametriUtils
 
         $nometabella = $parametri["nometabella"];
 
-        $doctrine = $parametri['container']->get('doctrine');
+        $container = $parametri['container'];
+        $doctrine = $container->get('doctrine');
 
         //$bundle = $parametri["nomebundle"];
         //Fisso il CoreBundle perchè si passa sempre da questo bundle per le esclusioni
         $bundle = "FiCoreBundle";
-
-        $gestionepermessi = new GestionepermessiController($parametri["container"]);
-        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
+        $gestionepermessi = $container->get("ficorebundle.gestionepermessi");
+        $operatorecorrente = $gestionepermessi->utentecorrente();
 
         $escludi = array();
 

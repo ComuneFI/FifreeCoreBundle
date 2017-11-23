@@ -38,6 +38,11 @@ services:
         tags:
             - { name: data_collector , template: "FiCoreBundle:Collector:databaseInfo", id: "databaseInfo" }
             
+    #Gestione permessi
+    ficorebundle.gestionepermessi:
+        class: Fi\CoreBundle\DependencyInjection\GestionePermessi
+        arguments: [ '@service_container', '@security.token_storage', '@doctrine.orm.entity_manager' ]
+            
     ficorebundle.tblprefix_subscriber:
         class: Fi\CoreBundle\Subscriber\TablePrefixSubscriber
         arguments: ["%ficorebundle.db.table_prefix%"]

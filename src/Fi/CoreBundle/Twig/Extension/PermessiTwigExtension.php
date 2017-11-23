@@ -2,10 +2,9 @@
 
 namespace Fi\CoreBundle\Twig\Extension;
 
-use Fi\CoreBundle\Controller\GestionepermessiController;
-
 class PermessiTwigExtension extends \Twig_Extension
 {
+
     protected $requeststack;
 
     public function __construct($container, $request_stack)
@@ -42,23 +41,22 @@ class PermessiTwigExtension extends \Twig_Extension
 
     public function singoloPermesso($lettera)
     {
-        $gestionepermessi = new GestionepermessiController();
-        $gestionepermessi->setContainer($this->container);
+        $gestionepermessi = $this->container->get("ficorebundle.gestionepermessi");
 
         $parametri = array();
         $parametri['modulo'] = $this->getControllerName();
         switch ($lettera) {
             case 'c':
-                return $gestionepermessi->creareAction($parametri);
+                return $gestionepermessi->creare($parametri);
                 break;
             case 'r':
-                return $gestionepermessi->leggereAction($parametri);
+                return $gestionepermessi->leggere($parametri);
                 break;
             case 'u':
-                return $gestionepermessi->aggiornareAction($parametri);
+                return $gestionepermessi->aggiornare($parametri);
                 break;
             case 'd':
-                return $gestionepermessi->cancellareAction($parametri);
+                return $gestionepermessi->cancellare($parametri);
                 break;
             default:
                 break;

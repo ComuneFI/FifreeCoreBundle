@@ -2,8 +2,6 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Fi\CoreBundle\Controller\GestionepermessiController as GestionePermessi;
-
 /**
  * Menu controller.
  */
@@ -12,16 +10,13 @@ class MenuController extends MenuApplicazioneController
 
     protected function initGestionePermessi()
     {
-        $gestionepermessi = new GestionePermessi();
-        $gestionepermessi->setContainer($this->container);
+        $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
 
         return $gestionepermessi;
     }
 
     public function generamenuAction()
     {
-        $gestionepermessi = $this->initGestionePermessi();
-        $gestionepermessi->utentecorrenteAction();
         $router = $this->get('router')->match('/')['_route'];
         //$homeurl = $this->generateUrl($router, array(), true);
 
@@ -71,7 +66,6 @@ class MenuController extends MenuApplicazioneController
     protected function getMenu($menu)
     {
         $gestionepermessi = $this->initGestionePermessi();
-        $gestionepermessi->utentecorrenteAction();
 
         $risposta = array();
         $em = $this->get('doctrine')->getManager();
@@ -80,7 +74,7 @@ class MenuController extends MenuApplicazioneController
             $visualizzare = true;
 
             if ($item->isAutorizzazionerichiesta()) {
-                $visualizzare = $gestionepermessi->sulmenuAction(array('modulo' => $item->getTag()));
+                $visualizzare = $gestionepermessi->sulmenu(array('modulo' => $item->getTag()));
             }
 
             if ($visualizzare) {
@@ -117,13 +111,12 @@ class MenuController extends MenuApplicazioneController
     protected function getSubMenu($submenu)
     {
         $gestionepermessi = $this->initGestionePermessi();
-        $gestionepermessi->utentecorrenteAction();
 
         $sottomenutabelle = array();
         foreach ($submenu as $subitem) {
             $visualizzare = true;
             if ($subitem->isAutorizzazionerichiesta()) {
-                $visualizzare = $gestionepermessi->sulmenuAction(array('modulo' => $subitem->getTag()));
+                $visualizzare = $gestionepermessi->sulmenu(array('modulo' => $subitem->getTag()));
             }
 
             if ($visualizzare) {

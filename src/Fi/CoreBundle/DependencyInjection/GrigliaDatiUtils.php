@@ -2,8 +2,6 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-use Fi\CoreBundle\Controller\GestionepermessiController;
-
 class GrigliaDatiUtils
 {
 

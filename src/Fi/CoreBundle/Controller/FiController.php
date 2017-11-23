@@ -59,10 +59,8 @@ class FiController extends Controller
         $controller = $this->getController();
         $container = $this->container;
 
-        $gestionepermessi = new GestionepermessiController();
-        $gestionepermessi->setContainer($this->container);
-
-        $canRead = ($gestionepermessi->leggereAction(array('modulo' => $controller)) ? 1 : 0);
+        $gestionepermessi = $this->get('ficorebundle.gestionepermessi');
+        $canRead = ($gestionepermessi->leggere(array('modulo' => $controller)) ? 1 : 0);
         $idpassato = $request->get('id');
 
         $nomebundle = $namespace . $bundle . 'Bundle';
@@ -90,7 +88,7 @@ class FiController extends Controller
                     'nomecontroller' => $controller,
                     'testata' => $testata,
                     'canread' => $canRead,
-                    'idpassato' => $idpassato
+                    'idpassato' => $idpassato,
                         )
         );
     }
@@ -186,12 +184,12 @@ class FiController extends Controller
 
     protected function elencoModifiche($nomebundle, $controller, $id)
     {
-        $controllerStorico = "Storicomodifiche";
+        $controllerStorico = 'Storicomodifiche';
         $em = $this->getDoctrine()->getManager();
         $risultato = $em->getRepository('FiCoreBundle:' . $controllerStorico)->findBy(
             array(
-                    "nometabella" => $controller,
-                    "idtabella" => $id
+                    'nometabella' => $controller,
+                    'idtabella' => $id,
                 )
         );
 

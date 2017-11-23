@@ -7,6 +7,7 @@ use Fi\CoreBundle\Controller\FiUtilita;
 
 class GrigliaRegoleUtils
 {
+
     public static function getTipoRegola(&$tipo, &$regola, $parametri)
     {
         $doctrine = $parametri['doctrine'];
@@ -22,7 +23,7 @@ class GrigliaRegoleUtils
                 $tipo = $type['type'];
 
                 //Si aggiunge l'alias al campo altrimenti da Doctrine2 fallisce la query
-                $regola['field'] = $nometabella.'.'.$regola['field'];
+                $regola['field'] = $nometabella . '.' . $regola['field'];
             }
         } else {
             //Altrimenti stiamo analizzando il campo di una tabella in leftjoin pertanto si cercano le informazioni sul tipo
@@ -30,7 +31,7 @@ class GrigliaRegoleUtils
             $tablejoined = substr($regola['field'], 0, strrpos($regola['field'], '.'));
             $fieldjoined = substr($regola['field'], strrpos($regola['field'], '.') + 1);
 
-            $entityNametablejoined = $bundle.':'.$tablejoined;
+            $entityNametablejoined = $bundle . ':' . $tablejoined;
 
             $type = $doctrine->getClassMetadata($entityNametablejoined)->getFieldMapping($fieldjoined);
             $tipo = $type['type'];
@@ -60,17 +61,17 @@ class GrigliaRegoleUtils
                 continue;
             }
             if ($tipof == 'OR') {
-                $condizioneOR = $regola['field'].' '.
-                        GrigliaUtils::$decodificaop[$regola['op']].' '.
-                        GrigliaUtils::$precarattere[$regola['op']].
-                        $regola['data'].
+                $condizioneOR = $regola['field'] . ' ' .
+                        GrigliaUtils::$decodificaop[$regola['op']] . ' ' .
+                        GrigliaUtils::$precarattere[$regola['op']] .
+                        $regola['data'] .
                         GrigliaUtils::$postcarattere[$regola['op']];
                 $q->orWhere($condizioneOR);
             } else {
-                $condizioneAND = $regola['field'].' '.
-                        GrigliaUtils::$decodificaop[$regola['op']].' '.
-                        GrigliaUtils::$precarattere[$regola['op']].
-                        $regola['data'].
+                $condizioneAND = $regola['field'] . ' ' .
+                        GrigliaUtils::$decodificaop[$regola['op']] . ' ' .
+                        GrigliaUtils::$precarattere[$regola['op']] .
+                        $regola['data'] .
                         GrigliaUtils::$postcarattere[$regola['op']];
                 $q->andWhere($condizioneAND);
             }
@@ -87,7 +88,7 @@ class GrigliaRegoleUtils
             $regola['data'] = FiUtilita::data2db($regola['data']);
         } elseif ($tipo == 'string') {
             GrigliaUtils::setVettoriPerStringa();
-            $regola['field'] = 'lower('.$regola['field'].')';
+            $regola['field'] = 'lower(' . $regola['field'] . ')';
         }
         if ($tipo == 'boolean') {
             self::setTipoBoolean($regola, $tipo);
@@ -127,9 +128,10 @@ class GrigliaRegoleUtils
 
         $doctrine = GrigliaParametriUtils::getDoctrineByEm($parametri);
         $doctrineficore = GrigliaParametriUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
+        $container = $parametri['container'];
 
-        $gestionepermessi = new GestionepermessiController($parametri['container']);
-        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
+        $gestionepermessi = $container->get("ficorebundle.gestionepermessi");
+        $operatorecorrente = $gestionepermessi->utentecorrente();
 
         $escludi = array();
         $q = GrigliaUtils::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);

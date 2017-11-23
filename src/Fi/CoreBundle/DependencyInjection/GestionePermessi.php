@@ -1,6 +1,8 @@
 <?php
 
-namespace Fi\CoreBundle\Controller;
+namespace Fi\CoreBundle\DependencyInjection;
+
+use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 /*
  * Se c'è l'accoppiata UTENTE + MODULO allora vale quel permesso
@@ -9,16 +11,16 @@ namespace Fi\CoreBundle\Controller;
  * Se non trovo informazioni di sorta, il modulo è chiuso
  */
 
-class GestionepermessiController extends FiCoreController
+class GestionePermessi
 {
+
     protected $modulo;
     protected $crud;
+    private $container;
 
-    public function __construct($container = null)
+    public function __construct(Container $container)
     {
-        if ($container) {
-            $this->setContainer($container);
-        }
+        $this->container = $container;
     }
 
     private function presente($lettera)
@@ -30,7 +32,7 @@ class GestionepermessiController extends FiCoreController
         }
     }
 
-    public function leggereAction($parametri = array())
+    public function leggere($parametri = array())
     {
         if (isset($parametri['modulo'])) {
             $this->modulo = $parametri['modulo'];
@@ -38,8 +40,8 @@ class GestionepermessiController extends FiCoreController
 
         $this->setCrud();
 
-        $utente = $this->getUser()->getId();
-        $q = $this->getDoctrine()
+        $utente = $this->container->get('security.token_storage')->getToken()->getUser()->getId();
+        $q = $this->container->get('doctrine')
                 ->getRepository('FiCoreBundle:Operatori')
                 ->find($utente);
 
@@ -53,14 +55,14 @@ class GestionepermessiController extends FiCoreController
         return $this->presente('R') || ($isSuperAdmin); //SuperAdmin
     }
 
-    public function cancellareAction($parametri = array())
+    public function cancellare($parametri = array())
     {
         if (isset($parametri['modulo'])) {
             $this->modulo = $parametri['modulo'];
         }
         $this->setCrud();
-        $utente = $this->getUser()->getId();
-        $q = $this->getDoctrine()
+        $utente = $this->container->get('security.token_storage')->getToken()->getUser()->getId();
+        $q = $this->container->get('doctrine')
                 ->getRepository('FiCoreBundle:Operatori')
                 ->find($utente);
 
@@ -74,14 +76,14 @@ class GestionepermessiController extends FiCoreController
         return $this->presente('D') || ($isSuperAdmin); //SuperAdmin
     }
 
-    public function creareAction($parametri = array())
+    public function creare($parametri = array())
     {
         if (isset($parametri['modulo'])) {
             $this->modulo = $parametri['modulo'];
         }
         $this->setCrud();
-        $utente = $this->getUser()->getId();
-        $q = $this->getDoctrine()
+        $utente = $this->container->get('security.token_storage')->getToken()->getUser()->getId();
+        $q = $this->container->get('doctrine')
                 ->getRepository('FiCoreBundle:Operatori')
                 ->find($utente);
 
@@ -95,14 +97,14 @@ class GestionepermessiController extends FiCoreController
         return $this->presente('C') || ($isSuperAdmin); //SuperAdmin
     }
 
-    public function aggiornareAction($parametri = array())
+    public function aggiornare($parametri = array())
     {
         if (isset($parametri['modulo'])) {
             $this->modulo = $parametri['modulo'];
         }
         $this->setCrud();
-        $utente = $this->getUser()->getId();
-        $q = $this->getDoctrine()
+        $utente = $this->container->get('security.token_storage')->getToken()->getUser()->getId();
+        $q = $this->container->get('doctrine')
                 ->getRepository('FiCoreBundle:Operatori')
                 ->find($utente);
 
@@ -116,15 +118,15 @@ class GestionepermessiController extends FiCoreController
         return $this->presente('U') || ($isSuperAdmin); //SuperAdmin
     }
 
-    public function sulmenuAction($parametri = array())
+    public function sulmenu($parametri = array())
     {
         if (isset($parametri['modulo'])) {
             $this->modulo = $parametri['modulo'];
         }
-        $permesso = $this->leggereAction($parametri) ||
-                $this->cancellareAction($parametri) ||
-                $this->creareAction($parametri) ||
-                $this->aggiornareAction($parametri);
+        $permesso = $this->leggere($parametri) ||
+                $this->cancellare($parametri) ||
+                $this->creare($parametri) ||
+                $this->aggiornare($parametri);
 
         if ($permesso) {
             return true;
@@ -139,9 +141,9 @@ class GestionepermessiController extends FiCoreController
             $this->modulo = $parametri['modulo'];
         }
 
-        $utentecorrente = $this->utentecorrenteAction();
+        $utentecorrente = $this->utentecorrente();
 
-        $q = $this->getDoctrine()
+        $q = $this->container->get('doctrine')
                 ->getRepository('FiCoreBundle:Permessi')
                 ->findOneBy(array('operatori_id' => $utentecorrente['id'], 'modulo' => $this->modulo));
 
@@ -151,7 +153,7 @@ class GestionepermessiController extends FiCoreController
             return;
         }
 
-        $q = $this->getDoctrine()
+        $q = $this->container->get('doctrine')
                 ->getRepository('FiCoreBundle:Permessi')
                 ->findOneBy(array('ruoli_id' => $utentecorrente['ruolo_id'], 'modulo' => $this->modulo, 'operatori_id' => null));
 
@@ -161,7 +163,7 @@ class GestionepermessiController extends FiCoreController
             return;
         }
 
-        $q = $this->getDoctrine()
+        $q = $this->container->get('doctrine')
                 ->getRepository('FiCoreBundle:Permessi')
                 ->findOneBy(array('ruoli_id' => null, 'modulo' => $this->modulo, 'operatori_id' => null));
 
@@ -173,9 +175,9 @@ class GestionepermessiController extends FiCoreController
         $this->crud = '';
     }
 
-    public function utentecorrenteAction()
+    public function utentecorrente()
     {
-        if (!$this->getUser()) {
+        if (!$this->container->get('security.token_storage')->getToken()->getUser()) {
             $utentecorrente['nome'] = 'Utente non registrato';
             $utentecorrente['id'] = 0;
             $utentecorrente['ruolo_id'] = 0;
@@ -183,8 +185,8 @@ class GestionepermessiController extends FiCoreController
             return $utentecorrente;
         }
 
-        $utente = $this->getUser()->getId();
-        $q = $this->getDoctrine()
+        $utente = $this->container->get('security.token_storage')->getToken()->getUser()->getId();
+        $q = $this->container->get('doctrine')
                 ->getRepository('FiCoreBundle:Operatori')
                 ->find($utente);
 
@@ -212,10 +214,10 @@ class GestionepermessiController extends FiCoreController
     {
         $risposta = array();
 
-        $risposta['permessiedit'] = $this->aggiornareAction($parametri);
-        $risposta['permessidelete'] = $this->cancellareAction($parametri);
-        $risposta['permessicreate'] = $this->creareAction($parametri);
-        $risposta['permessiread'] = $this->leggereAction($parametri);
+        $risposta['permessiedit'] = $this->aggiornare($parametri);
+        $risposta['permessidelete'] = $this->cancellare($parametri);
+        $risposta['permessicreate'] = $this->creare($parametri);
+        $risposta['permessiread'] = $this->leggere($parametri);
 
         return $risposta;
     }

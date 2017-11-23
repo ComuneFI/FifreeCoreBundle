@@ -16,9 +16,8 @@ class TabelleController extends FiCoreController
     public function aggiornaAction(Request $request)
     {
         if ($request->get('oper') == 'edit') {
-            $gestionepermessi = new GestionepermessiController();
-            $gestionepermessi->setContainer($this->container);
-            $operatore = $gestionepermessi->utentecorrenteAction();
+            $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
+            $operatore = $gestionepermessi->utentecorrente();
 
             $id = $request->get('id');
 
@@ -87,9 +86,8 @@ class TabelleController extends FiCoreController
     public function configuraAction(Request $request, $nometabella)
     {
         parent::setup($request);
-        $gestionepermessi = new GestionepermessiController();
-        $gestionepermessi->setContainer($this->container);
-        $operatore = $gestionepermessi->utentecorrenteAction();
+        $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
+        $operatore = $gestionepermessi->utentecorrente();
         $this->generaDB(array('tabella' => $nometabella), $request);
         $this->generaDB(array('tabella' => $nometabella, 'operatore' => $operatore['id']), $request);
 
@@ -268,9 +266,8 @@ class TabelleController extends FiCoreController
         $nomebundle = $namespace . $bundle . 'Bundle';
         $em = $this->getDoctrine()->getManager();
 
-        $gestionepermessi = new GestionepermessiController();
-        $gestionepermessi->setContainer($this->container);
-        $operatore = $gestionepermessi->utentecorrenteAction();
+        $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
+        $operatore = $gestionepermessi->utentecorrente();
 
         $tabellej['operatori_id'] = array('tabella' => 'operatori', 'campi' => array('username', 'operatore'));
 
@@ -367,9 +364,8 @@ class TabelleController extends FiCoreController
     {
         $risposta = array();
         if ($escludiid == 1) {
-            $gestionepermessi = new GestionepermessiController();
-            $gestionepermessi->setContainer($this->container);
-            $operatore = $gestionepermessi->utentecorrenteAction();
+            $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
+            $operatore = $gestionepermessi->utentecorrente();
             foreach ($colonne as $colonna) {
                 $nomecampo = trim(strtolower($colonna));
                 if (($nomecampo !== 'id') && (strpos($colonna, '_id') == false)) {

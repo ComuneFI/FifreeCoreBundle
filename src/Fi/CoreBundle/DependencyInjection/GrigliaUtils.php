@@ -2,8 +2,6 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-use Fi\CoreBundle\Controller\GestionepermessiController;
-
 class GrigliaUtils
 {
 
@@ -179,9 +177,10 @@ class GrigliaUtils
 
         $doctrine = GrigliaParametriUtils::getDoctrineByEm($parametri);
         $doctrineficore = GrigliaParametriUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
+        $container = $parametri['container'];
+        $gestionepermessi = $container->get("ficorebundle.gestionepermessi");
 
-        $gestionepermessi = new GestionepermessiController($parametri['container']);
-        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
+        $operatorecorrente = $gestionepermessi->utentecorrente();
 
         $etichette = array();
 
@@ -213,8 +212,9 @@ class GrigliaUtils
         $doctrine = GrigliaParametriUtils::getDoctrineByEm($parametri);
         $doctrineficore = GrigliaParametriUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
 
-        $gestionepermessi = new GestionepermessiController($parametri['container']);
-        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
+        $container = $parametri['container'];
+        $gestionepermessi = $container->get("ficorebundle.gestionepermessi");
+        $operatorecorrente = $gestionepermessi->utentecorrente();
 
         $etichette = array();
 
@@ -247,9 +247,11 @@ class GrigliaUtils
 
         $doctrine = GrigliaParametriUtils::getDoctrineByEm($parametri);
         $doctrineficore = GrigliaParametriUtils::getDoctrineFiCoreByEm($parametri, $doctrine);
+        $container = $parametri['container'];
 
-        $gestionepermessi = new GestionepermessiController($parametri['container']);
-        $operatorecorrente = $gestionepermessi->utentecorrenteAction();
+        $gestionepermessi = $container->get("ficorebundle.gestionepermessi");
+
+        $operatorecorrente = $gestionepermessi->utentecorrente();
 
         $ordine = array();
 
@@ -346,10 +348,9 @@ class GrigliaUtils
 
         $container = $paricevuti['container'];
         $nometabella = $paricevuti['nometabella'];
-        $permessi = new GestionepermessiController();
-        $permessi->setContainer($container);
+        $gestionepermessi = $container->get("ficorebundle.gestionepermessi");
 
-        $vettorepermessi = $permessi->impostaPermessi(array('modulo' => $nometabella));
+        $vettorepermessi = $gestionepermessi->impostaPermessi(array('modulo' => $nometabella));
 
         return array_merge($testata, $vettorepermessi);
     }
