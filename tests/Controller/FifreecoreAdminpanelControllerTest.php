@@ -71,7 +71,9 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
         $session = new Session($driver);
-
+        //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        //sleep(3);
+        //$driver->reload();
         // start the session
         $session->start();
         $session->visit($url);
@@ -108,7 +110,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         removecache();
         clearcache();
-        $driver->reload();
+        //$driver->reload();
         $session->visit($url);
         $page = $session->getPage();
         sleep(1);
@@ -161,7 +163,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         sleep(1);
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
-        
+
         sleep(1);
         $page->pressButton('adminpanelgenerateclassentity');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
@@ -255,8 +257,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
         sleep(3);
-        $driver->reload();
-        sleep(1);
+        //$driver->reload();
+        //sleep(1);
         $session->visit($url);
         $page = $session->getPage();
         sleep(1);
@@ -296,9 +298,9 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
     {
         $container = $this->getContainer();
         /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
-        $userManager = $container->get('fos_user.user_manager');
+        $userManager = $container->get('fifree.fos_user.user_manager');
         /* @var $loginManager \FOS\UserBundle\Security\LoginManager */
-        $loginManager = $container->get('fos_user.security.login_manager');
+        $loginManager = $container->get('fifree.fos_user.security.login_manager');
         $firewallName = $container->getParameter('fos_user.firewall_name');
         $username4test = $container->getParameter('user4test');
         $user = $userManager->findUserBy(array('username' => $username4test));

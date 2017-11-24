@@ -125,3 +125,11 @@ services:
         tags:
             -  { name: console.command }
             
+    fifree.fos_user.security.login_manager:
+        alias: fos_user.security.login_manager
+        public: true
+            
+    fifree.fos_user.user_manager:
+        alias: fos_user.user_manager
+        public: true
+            
