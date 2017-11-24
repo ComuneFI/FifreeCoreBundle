@@ -72,7 +72,9 @@ before_script:
   - sleep 3 # give xvfb some time to start
   #- php bin/console server:start --env=test
   - sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
-  #- /usr/bin/php -v
+  - /usr/bin/php -v
+  - wget -O - http://127.0.0.1:8000/app_test.php/adminpanel
+  
 
 script:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then ant; fi
@@ -96,7 +98,7 @@ after_failure:
   - sudo cat /var/log/apache2/access.log
   - sudo cat /var/log/apache2/other_vhosts_access.log
   - sudo cat /var/log/apache2/fifree_error.log
-  - sudo cat /var/log/apache2/fifree_access.log combined
+  - sudo cat /var/log/apache2/fifree_access.log
 
 notifications:
   email:
