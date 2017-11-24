@@ -4,13 +4,6 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 
-/* if (isset($_ENV['BOOTSTRAP_CLEAR_CACHE_ENV'])) {
-  //'php "%s/console" cache:clear --env=%s --no-warmup', __DIR__ . '/../bin/', $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
-  passthru(sprintf(
-  'php "%s/console" cache:clear --env=%s', __DIR__ . '/../bin/', $_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']
-  ));
-  } */
-
 passthru(sprintf(
                 'php "%s/console" cache:clear --no-debug --env=%s', __DIR__ . '/../bin/', "test"
 ));
