@@ -1,11 +1,10 @@
 <VirtualHost *:8000>
-  # [...]
     DocumentRoot %TRAVIS_BUILD_DIR%/web
 
     <Directory "%TRAVIS_BUILD_DIR%/web">
-    Options FollowSymLinks MultiViews ExecCGI
-    AllowOverride All
-    Require all granted
+        Options FollowSymLinks ExecCGI
+        AllowOverride All
+        Require all granted
 
         <IfModule mod_rewrite.c>
             Options -MultiViews
@@ -15,12 +14,6 @@
         </IfModule>
     </Directory>
 
-    # uncomment the following lines if you install assets as symlinks
-    # or run into problems when compiling LESS/Sass/CoffeScript assets
-    # <Directory /src/php/gestionespesefamiliari>
-    #     Options FollowSymlinks
-    # </Directory>
-
     # optionally disable the RewriteEngine for the asset directories
     # which will allow apache to simply reply with a 404 when files are
     # not found instead of passing the request into the full symfony stack
@@ -29,8 +22,8 @@
             RewriteEngine Off
         </IfModule>
     </Directory>
-    #ErrorLog /var/log/apache2/project_error.log
-    #CustomLog /var/log/apache2/project_access.log combined
+    ErrorLog /var/log/apache2/fifree_error.log
+    CustomLog /var/log/apache2/fifree_access.log combined
 
     # Wire up Apache to use Travis CI's php-fpm.
   <IfModule mod_fastcgi.c>
