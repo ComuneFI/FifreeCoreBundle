@@ -75,7 +75,7 @@ before_script:
     #- php bin/console server:start --env=test
   - sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
   - /usr/bin/php -v
-  - wget -O - http://127.0.0.1:8000/app_test.php/adminpanel
+  #- wget -O - http://127.0.0.1:8000/app_test.php/adminpanel
   
 
 script:

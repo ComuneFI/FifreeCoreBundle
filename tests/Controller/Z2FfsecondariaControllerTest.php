@@ -311,6 +311,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
             $element = $page->find('css', '.textLayer');
 
             if (empty($element)) {
+                echo $page->getHtml();
                 throw new \Exception("No html element found for the selector 'textLayer'");
             }
             sleep(1);
