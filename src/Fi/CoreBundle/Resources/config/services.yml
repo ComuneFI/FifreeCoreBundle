@@ -133,3 +133,7 @@ services:
         alias: fos_user.user_manager
         public: true
             
+    fifree.fos_user.util.user_manipulator:
+        alias: fos_user.util.user_manipulator
+        public: true
+            

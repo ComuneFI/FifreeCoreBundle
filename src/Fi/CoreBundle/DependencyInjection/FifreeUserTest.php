@@ -20,7 +20,7 @@ class FifreeUserTest extends FifreeTest
 
         $username4test = $container->getParameter('usernoprivileges4test');
         $user = $userManager->findUserBy(array('username' => $username4test));
-        $userManipulator = $container->get('fos_user.util.user_manipulator');
+        $userManipulator = $container->get('fifree.fos_user.util.user_manipulator');
         if (!$user) {
             $adminPassword = $username4test;
             $adminUsername = $username4test;
