@@ -296,7 +296,9 @@ class GrigliaUtils
         if ($capitalise_first_char) {
             $str[0] = strtoupper($str[0]);
         }
-        $func = function($matches) {return strtoupper($matches[1]);};
+        $func = function ($matches) {
+            return strtoupper($matches[1]);
+        };
 
         return preg_replace_callback('/_([a-z])/', $func, $str);
     }
