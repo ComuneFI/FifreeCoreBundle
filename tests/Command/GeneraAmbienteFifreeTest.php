@@ -1,37 +1,36 @@
 <?php
 
-namespace Fi\CoreBundle\Tests\Command;
+/*namespace Fi\CoreBundle\Tests\Command;
 
-class GeneraAmbienteTest extends CommandTestCase
+class GeneraAmbienteFifreeTest extends CommandTestCase
 {
+     public function testGenerateAmbiente()
+      {
+      $client = self::createClient();
 
-    public function testGenerateAmbiente()
-    {
-        $client = self::createClient();
+      $output = $this->runCommand($client, 'fifree2:mysqlconvertdbengine INNODB --tablesfifree2 --env=test --no-interaction');
+      //echo $output;
+      $output = $this->runCommand($client, "fifree2:mysqldropforeignkeys --env=test --no-interaction");
+      //echo $output;
+      $output = $this->runCommand($client, "fifree2:mysqltruncatetables --tablesfifree2  --env=test --no-interaction");
+      //echo $output;
 
-        $output = $this->runCommand($client, 'fifree2:mysqlconvertdbengine INNODB --tablesfifree2 --env=test --no-interaction');
-        //echo $output;
-        $output = $this->runCommand($client, "fifree2:mysqldropforeignkeys --env=test --no-interaction");
-        //echo $output;
-        $output = $this->runCommand($client, "fifree2:mysqltruncatetables --tablesfifree2  --env=test --no-interaction");
-        //echo $output;
-        
-        $output = $this->runCommand($client, "fifree2:droptables --force --env=test --no-interaction");
-        //echo $output;
-        $output = $this->runCommand($client, "fifree2:dropdatabase --force --env=test --no-interaction");
-        //echo $output;
-        $output = $this->runCommand($client, "fifree2:install admin admin admin@admin.it --env=test");
-        //echo $output;
-        
-        $output = $this->runCommand($client, "fifree2:pubblicamanuale --env=test");
-        //echo $output;
-        
-    }
+      $output = $this->runCommand($client, "fifree2:droptables --force --env=test --no-interaction");
+      //echo $output;
+      $output = $this->runCommand($client, "fifree2:dropdatabase --force --env=test --no-interaction");
+      //echo $output;
+      $output = $this->runCommand($client, "fifree2:install admin admin admin@admin.it --env=test");
+      //echo $output;
+
+      $output = $this->runCommand($client, "fifree2:pubblicamanuale --env=test");
+      //echo $output;
+
+      } 
 
 //    public function testPannelloGenerateBundle2()
 //    {
-//        /* @var $em \Doctrine\ORM\EntityManager */
-//        /* @var $reg \Doctrine\Bundle\DoctrineBundle\Registry */
+//        // @var $em \Doctrine\ORM\EntityManager 
+//        // @var $reg \Doctrine\Bundle\DoctrineBundle\Registry 
 //        //$em = $client->getKernel()->getContainer()->get('doctrine')->getManager();
 //        //var_dump($client->getKernel()->registerBundles());exit;
 //        //$output = $this->runCommand($client, "container:debug");
@@ -64,10 +63,10 @@ class GeneraAmbienteTest extends CommandTestCase
 //        var_dump($output);
 //    }
 
-    protected function tearDown()
-    {
-        parent::tearDown();
-        startTests();
-    }
-
-}
+        protected function tearDown()
+      {
+      parent::tearDown();
+      startTests();
+      }
+     
+}*/
