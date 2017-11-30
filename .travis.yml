@@ -2,14 +2,17 @@ language: php
 
 php:
   - 5.6
-  - 7.0
   - 7.1
   - hhvm
+
+services:
+  - mysql
+  - pgsql
   
 matrix:
     allow_failures:
         - php: hhvm
-    #    - php: 7.1
+       # - php: 7.1
     exclude:
     - php: hhvm
       env: DB=pgsql
@@ -30,23 +33,26 @@ addons:
   firefox: "45.8.0esr"
   
 before_script:
+  - sudo apt-get update
+  - sudo apt-get install apache2 libapache2-mod-fastcgi make
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
   - if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then echo -e '\nhhvm.libxml.ext_entity_whitelist = "file,http,https"' | sudo tee -a /etc/hhvm/php.ini; fi
   - if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then echo -e '\nhhvm.enable_zend_compat=true' | sudo tee -a /etc/hhvm/php.ini; fi
   - if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then echo -e '\ndate.timezone = "Europe/Rome"' | sudo tee -a /etc/hhvm/php.ini; fi
   - if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then echo -e '\nhhvm.enable_hip_hop_syntax = true' | sudo tee -a /etc/hhvm/php.ini; fi
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo 'date.timezone = "Europe/Rome"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
-  - sudo apt-get update
-  - sudo apt-get install apache2 libapache2-mod-fastcgi make
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then sudo apt-get install -y --force-yes php5-dev php-pear php5-mysql php5-curl php5-gd php5-json php5-sqlite php5-pgsql; fi
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.0" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.1" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
+  - if [[ $TRAVIS_PHP_VERSION == "7.2" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
   - sudo a2enmod rewrite actions fastcgi alias
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then sudo sed -i -e "s,www-data,travis,g" /etc/apache2/envvars; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then sudo chown -R travis:travis /var/lib/apache2/fastcgi; fi
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm; fi
-  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then sudo cp -f ./tests/build/testvhost.conf /etc/apache2/sites-available/default; fi
-  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then sudo cp -f ./tests/build/travis-ci-apache /etc/apache2/sites-available/000-default.conf; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf; fi
   - sudo sed -i 's/Listen 80/Listen 8000/' /etc/apache2/ports.conf
   - sudo sed -i 's/NameVirtualHost \*:80/NameVirtualHost \*:8000/' /etc/apache2/ports.conf
   - sudo service apache2 restart
@@ -54,13 +60,18 @@ before_script:
   - if [[ "$DB" == "pgsql" ]]; then echo "PROVISIONING WITH PostgreSQL"; fi
   - if [[ "$DB" == "pgsql" ]]; then cp -f ./tests/build/parameters.pgsql.yml $TRAVIS_BUILD_DIR/app/config/parameters.yml; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c 'create database unittest;' -U postgres; fi
-  - if [[ "$DB" == "pgsql" ]]; then psql -d unittest -c '\dt;' -U postgres; fi
+  - if [[ "$DB" == "pgsql" ]]; then psql -c "CREATE USER fifreeuser WITH PASSWORD 'fifreeuserpwd';" -U postgres; fi
+  - if [[ "$DB" == "pgsql" ]]; then psql -c "GRANT ALL PRIVILEGES ON DATABASE unittest TO fifreeuser;" -U postgres; fi
+  - if [[ "$DB" == "pgsql" ]]; then psql -c "ALTER USER fifreeuser CREATEDB;" -U postgres; fi
+  - if [[ "$DB" == "pgsql" ]]; then psql -c "alter role fifreeuser superuser;" -U postgres; fi
+  
   
   - if [[ "$DB" == "mysql" ]]; then echo "PROVISIONING WITH MySQL"; fi
   - if [[ "$DB" == "mysql" ]]; then cp -f ./tests/build/parameters.mysql.yml $TRAVIS_BUILD_DIR/app/config/parameters.yml; fi
   - if [[ "$DB" == "mysql" ]]; then mysql --version; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -e "CREATE DATABASE unittest;" -uroot; fi
-  - if [[ "$DB" == "mysql" ]]; then mysql -e "GRANT ALL ON unittest.* TO 'travis'@'%';" -uroot; fi
+  - if [[ "$DB" == "mysql" ]]; then mysql -u root -e "CREATE USER 'fifreeuser'@'localhost' IDENTIFIED BY 'fifreeuserpwd';"; fi
+  - if [[ "$DB" == "mysql" ]]; then mysql -u root -e "GRANT ALL ON unittest.* TO 'fifreeuser'@'localhost';"; fi
   
   - if [[ "$DB" == "sqlite3" ]]; then echo "PROVISIONING WITH Sqlite3"; fi
   - if [[ "$DB" == "sqlite3" ]]; then cp -f ./tests/build/parameters.sqlite.yml $TRAVIS_BUILD_DIR/app/config/parameters.yml; fi
@@ -69,15 +80,18 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
   - composer install
-  - php app/console fifree2:install admin admin admin@admin.it --env=test
-  #- php app/console server:start --env=test
+  # - php bin/console fifree2:install admin admin admin@admin.it --env=test
+  # - php bin/console server:start --env=test
   - sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
-  #- /usr/bin/php -v
+  - /usr/bin/php -v
+  # - wget -O - http://127.0.0.1:8000/app_test.php/adminpanel
+  
 
 script:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then ant; fi
   - if [[ "$TRAVIS_PHP_VERSION" == "7.0" ]]; then ant; fi
   - if [[ "$TRAVIS_PHP_VERSION" == "7.1" ]]; then ant; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == "7.2" ]]; then ant; fi
   - if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then vendor/bin/phpunit --filter FiUtilitaTest --filter OperatoriCommandTest --filter PannelloAmministrazioneTest --filter ArrayFunctionsTestCase --filter testAddOperatore; fi
   - if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then vendor/bin/phpunit tests/Entity; fi
   - if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then vendor/bin/phpunit tests/Form; fi
@@ -85,15 +99,17 @@ script:
 
 after_success:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then php vendor/satooshi/php-coveralls/bin/coveralls -v; fi
-  - vendor/bin/security-checker -n security:check
+  - if [[ "$TRAVIS_PHP_VERSION" == "7.2" ]]; then php vendor/satooshi/php-coveralls/bin/coveralls -v; fi
   - rm app/dbtest.sqlite
-  - php app/console server:stop --env=test
+  - php bin/console server:stop --env=test
   - pkill java
 
 after_failure:
   - sudo cat /var/log/apache2/error.log
   - sudo cat /var/log/apache2/access.log
   - sudo cat /var/log/apache2/other_vhosts_access.log
+  - sudo cat /var/log/apache2/fifree_error.log
+  - sudo cat /var/log/apache2/fifree_access.log
 
 notifications:
   email:
