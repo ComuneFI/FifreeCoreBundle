@@ -57,7 +57,7 @@ class CreateEnvFifreeTest extends WebTestCase
     {
         $console = __DIR__ . '/../../bin/console';
         $cmd = "php " . $console . " fifree2:dropdatabase --force --no-interaction --no-debug --env=test";
-        passthru($cmd);
+        echo passthru($cmd);
         /* $kernel = $this->createKernel();
           $kernel->boot();
 
@@ -81,7 +81,7 @@ class CreateEnvFifreeTest extends WebTestCase
 
         $console = __DIR__ . '/../../bin/console';
         $cmd = "php " . $console . " fifree2:install admin admin admin@admin.it --no-debug --env=test";
-        passthru($cmd);
+        echo passthru($cmd);
         /* $application = new Application(static::$kernel);
           $application->add(new \Fi\CoreBundle\Command\Fifree2installCommand());
           $application->add(new \Fi\CoreBundle\Command\Fifree2createdatabaseCommand());
