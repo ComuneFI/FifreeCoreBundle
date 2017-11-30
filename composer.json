@@ -65,7 +65,7 @@
         "symfony/swiftmailer-bundle": "^2.4",
         "phpoffice/phpexcel": "^1.8",
         "phpoffice/phpword": "^0.13.0",
-        "tecnickcom/tcpdf": "^6.2",
+        "fi/tcpdf": "^6.2",
         "mockery/mockery": "^0.9.5",
         "behat/behat": "^3.0",
         "behat/mink-selenium2-driver": "^1.3",
