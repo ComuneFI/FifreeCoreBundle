@@ -63,6 +63,8 @@ before_script:
   - if [[ "$DB" == "pgsql" ]]; then psql -c "CREATE USER fifreeuser WITH PASSWORD 'fifreeuserpwd';" -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "GRANT ALL PRIVILEGES ON DATABASE unittest TO fifreeuser;" -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "ALTER USER fifreeuser CREATEDB;" -U postgres; fi
+  - if [[ "$DB" == "pgsql" ]]; then psql -c "alter role fifreeuser superuser;" -U postgres; fi
+  
   
   - if [[ "$DB" == "mysql" ]]; then echo "PROVISIONING WITH MySQL"; fi
   - if [[ "$DB" == "mysql" ]]; then cp -f ./tests/build/parameters.mysql.yml $TRAVIS_BUILD_DIR/app/config/parameters.yml; fi
