@@ -20,9 +20,21 @@ class Fifree2createdatabaseCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $command = $this->getApplication()->find('doctrine:database:create');
+        /* @var $em \Doctrine\ORM\EntityManager */
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $driver = $em->getConnection()->getDriver()->getName();
+
+
+        if ($driver != "pdo_sqlite") {
+            $command = $this->getApplication()->find('doctrine:database:create');
+            $arguments = array('--if-not-exists' => true);
+            $inputcmd = new ArrayInput($arguments);
+            $command->run($inputcmd, $output);
+        }
+        $command = $this->getApplication()->find('doctrine:schema:create');
         $arguments = array('');
         $inputcmd = new ArrayInput($arguments);
         $command->run($inputcmd, $output);
     }
+
 }

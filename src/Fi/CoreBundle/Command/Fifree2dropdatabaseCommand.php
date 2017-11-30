@@ -30,9 +30,10 @@ class Fifree2dropdatabaseCommand extends ContainerAwareCommand
             return 1;
         }
 
-        $command = $this->getApplication()->find('doctrine:database:drop');
-        $arguments = array('command' => 'doctrine:database:drop', '--force' => true);
+        $command = $this->getApplication()->find('doctrine:schema:drop');
+        $arguments = array('command' => 'doctrine:schema:drop', '--force' => true);
         $inputcmd = new ArrayInput($arguments);
         $command->run($inputcmd, $output);
     }
+
 }
