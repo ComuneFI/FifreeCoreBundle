@@ -52,11 +52,6 @@ class Fifree2installCommand extends ContainerAwareCommand
         $inputc = new ArrayInput($argumentsdb);
         $commanddb->run($inputc, $output);
 
-        $commandschema = $this->getApplication()->find('doctrine:schema:create');
-        $argumentsc = array('');
-        $inputsc = new ArrayInput($argumentsc);
-        $commandschema->run($inputsc, $output);
-
         $commandfos = $this->getApplication()->find('fos:user:create');
         $argumentsfos = array(
             'command' => 'fos:user:create',

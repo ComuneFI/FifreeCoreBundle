@@ -53,11 +53,11 @@ class CreateEnvFifreeTest extends WebTestCase
       $this->assertRegExp('/.../', $commandTester->getDisplay());
       } */
 
-    public function test15InstallFifree()
+    public function test20InstallFifree()
     {
         $console = __DIR__ . '/../../bin/console';
         $cmd = "php " . $console . " fifree2:dropdatabase --force --no-interaction --no-debug --env=test";
-        echo passthru($cmd);
+        passthru($cmd);
         /* $kernel = $this->createKernel();
           $kernel->boot();
 
@@ -74,14 +74,10 @@ class CreateEnvFifreeTest extends WebTestCase
           );
 
           $this->assertRegExp('/.../', $commandTester->getDisplay()); */
-    }
-
-    public function test20InstallFifree()
-    {
 
         $console = __DIR__ . '/../../bin/console';
         $cmd = "php " . $console . " fifree2:install admin admin admin@admin.it --no-debug --env=test";
-        echo passthru($cmd);
+        passthru($cmd);
         /* $application = new Application(static::$kernel);
           $application->add(new \Fi\CoreBundle\Command\Fifree2installCommand());
           $application->add(new \Fi\CoreBundle\Command\Fifree2createdatabaseCommand());
@@ -144,10 +140,20 @@ class CreateEnvFifreeTest extends WebTestCase
 
         $console = __DIR__ . '/../../bin/console';
         $cmd = "php " . $console . " pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle --no-debug --env=test";
+        //$cmd = "php " . $console . " pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle --env=test";
+        passthru($cmd);
+
+        $console = __DIR__ . '/../../bin/console';
+        $cmd = "php " . $console . " doctrine:cache:clear-metadata --no-debug --env=test";
+        passthru($cmd);
+        
+        $console = __DIR__ . '/../../bin/console';
+        $cmd = "php " . $console . " cache:clear --no-debug --env=test";
         passthru($cmd);
 
         $console = __DIR__ . '/../../bin/console';
         $cmd = "php " . $console . " pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate --no-debug --env=test";
+        //$cmd = "php " . $console . " pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate --env=test";
         passthru($cmd);
 
         /* $kernel = static::$kernel;
@@ -158,13 +164,13 @@ class CreateEnvFifreeTest extends WebTestCase
           $commandTester->execute(
           array(
           'mwbfile' => 'wbadmintest.mwb',
-          'bundlename' => 'Fi/ProvaBundle' ,
+          'bundlename' => 'Fi/ProvaBundle'/* ,
           '--no-debug' => true
           )
-          ); */
+          );
 
 
-        /* $this->assertRegExp('/.../', $commandTester->getDisplay());
+          $this->assertRegExp('/.../', $commandTester->getDisplay());
 
           $application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand());
           $application->add(new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand());
@@ -173,7 +179,7 @@ class CreateEnvFifreeTest extends WebTestCase
           $commandTester->execute(
           array(
           'bundlename' => 'Fi/ProvaBundle',
-          '--schemaupdate' => true ,
+          '--schemaupdate' => true,
           '--no-debug' => true
           )
           );
