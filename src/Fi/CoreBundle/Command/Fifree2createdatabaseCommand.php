@@ -36,5 +36,4 @@ class Fifree2createdatabaseCommand extends ContainerAwareCommand
         $inputcmd = new ArrayInput($arguments);
         $command->run($inputcmd, $output);
     }
-
 }
