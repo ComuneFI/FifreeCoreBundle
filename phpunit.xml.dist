@@ -9,14 +9,13 @@
     convertNoticesToExceptions  = "true"
     convertWarningsToExceptions = "true"
     processIsolation            = "false"
-    stopOnFailure               = "false"
+    stopOnFailure               = "true"
     syntaxCheck                 = "false"
     bootstrap                   = "tests/bootstrap.php" >
 
     <testsuites>
         <testsuite name="Fifiree2 test suite">
-            <directory suffix=".php">tests</directory>
-            <exclude>tests/FiProvaBundle</exclude>
+            <directory suffix=".php">./tests</directory>
         </testsuite>
     </testsuites>
     <php>
@@ -25,7 +24,7 @@
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
+            <directory>./src</directory>
         </whitelist>
     </filter>    
 </phpunit>
