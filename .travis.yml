@@ -4,12 +4,13 @@ php:
   - 5.6
   - 7.0
   - 7.1
+  - 7.2
   - hhvm
   
 matrix:
     allow_failures:
         - php: hhvm
-    #    - php: 7.1
+        - php: 7.2
     exclude:
     - php: hhvm
       env: DB=pgsql
