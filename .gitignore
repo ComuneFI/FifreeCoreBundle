@@ -4,6 +4,12 @@
 !app/cache/.gitkeep
 !app/logs/.gitkeep
 
+# Cache and logs (Symfony3)
+/var/cache/*
+/var/logs/*
+!var/cache/.gitkeep
+!var/logs/.gitkeep
+
 /app/dbtest.sqlite
 /app/SymfonyRequirements.php
 /app/check.php
