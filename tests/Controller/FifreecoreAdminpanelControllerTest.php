@@ -211,7 +211,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        sleep(2);
         $session->visit($url);
         $page = $session->getPage();
         sleep(1);
@@ -257,7 +258,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
         sleep(3);
 
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
         sleep(3);
         //$driver->reload();
         //sleep(1);
@@ -284,7 +285,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->visit($url);
         $page = $session->getPage();
 
-        //echo $page->getHtml();
+        echo $page->getHtml();
         sleep(3);
         $this->crudoperation($session, $page);
 
