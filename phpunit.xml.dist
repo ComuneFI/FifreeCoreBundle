@@ -11,15 +11,16 @@
     processIsolation            = "false"
     stopOnFailure               = "true"
     syntaxCheck                 = "false"
-    bootstrap                   = "tests/bootstrap.php" >
+    bootstrap                   = "vendor/autoload.php" >
 
     <testsuites>
-        <testsuite name="Fifiree2 test suite">
+        <testsuite name="Fifree2 test suite">
             <directory suffix=".php">./tests</directory>
         </testsuite>
     </testsuites>
     <php>
         <server name="KERNEL_CLASS" value="AppKernel" />
+        
     </php>
 
     <filter>

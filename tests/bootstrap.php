@@ -8,17 +8,6 @@ passthru(sprintf(
                 'php "%s/console" cache:clear --no-debug --env=%s', __DIR__ . '/../bin/', "test"
 ));
 
-
-$file = __DIR__ . '/../app/autoload.php';
-if (!file_exists($file)) {
-    $file = __DIR__ . '/../app/autoload.php';
-    if (!file_exists($file)) {
-        throw new RuntimeException('Install dependencies to run test suite.');
-    }
-}
-
-date_default_timezone_set('Europe/Rome');
-
 function startTests()
 {
     removecache();
