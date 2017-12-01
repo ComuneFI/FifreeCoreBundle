@@ -64,12 +64,14 @@ class Commands
             '--dir' => $srcPath . DIRECTORY_SEPARATOR,
             '--format' => 'yml',
             '--env' => $this->container->get('kernel')->getEnvironment(),
-            '--no-interaction' => true);
+            '--no-interaction' => true,
+            '--no-debug' => true,
+        );
         $result = $commands->runSymfonyCommand('generate:bundle', $commandparms);
         $bundlePath = $srcPath . DIRECTORY_SEPARATOR . $bundleName;
         if ($fs->exists($bundlePath)) {
-            $addmessage = 'Per abilitare il nuovo bundle nel kernel controllare che sia presente in app/AppKernel.php '
-                    . 'e aggiornare la pagina';
+            $addmessage = 'Per abilitare il nuovo bundle nel kernel controllare che sia presente in app/AppKernel.php, '
+                    . 'pulire la cache e aggiornare la pagina';
             $ret = array('errcode' => 0, 'command' => 'generate:bundle', 'message' => $result["message"] . $addmessage);
         } else {
             $addmessage = "Non e' stato creato il bundle in $bundlePath";
@@ -229,10 +231,11 @@ class Commands
     public function clearcache()
     {
         $cmdoutput = "";
-        $envs = array("dev", "test", "prod");
-        foreach ($envs as $env) {
-            $cmdoutput = $cmdoutput . $this->clearcacheEnv($env);
-        }
+        /* $envs = array("dev", "test", "prod");
+          foreach ($envs as $env) {
+          $cmdoutput = $cmdoutput . $this->clearcacheEnv($env);
+          } */
+        $cmdoutput = $cmdoutput . $this->clearcacheEnv($this->container->get('kernel')->getEnvironment());
 
         return $cmdoutput;
     }

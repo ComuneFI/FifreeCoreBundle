@@ -4,16 +4,14 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 
-passthru(sprintf(
-                'php "%s/console" cache:clear --no-debug --env=%s', __DIR__ . '/../bin/', "test"
-));
+clearcache();
 
 require __DIR__ . '/../vendor/autoload.php';
 
 function startTests()
 {
-    removecache();
-//clearcache();
+    //removecache();
+    clearcache();
     cleanFilesystem();
 }
 
@@ -38,26 +36,9 @@ function removecache()
 
 function clearcache()
 {
-    $vendorDir = dirname(dirname(__FILE__));
-    if (OsFunctions::isWindows()) {
-        $phpPath = OsFunctions::getPHPExecutableFromPath();
-    } else {
-        $phpPath = '/usr/bin/php';
-    }
-    $console = $vendorDir . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'console';
-    if (file_exists($console)) {
-        $command = $phpPath . ' ' . $console . ' cache:clear --no-debug --env=test';
-        $process = new Process($command);
-        $process->setTimeout(60 * 100);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            echo getErrorText($process, $command);
-        } else {
-            echo $process->getOutput();
-        }
-    } else {
-        echo $console . " not found";
-    }
+    passthru(sprintf(
+                    'php "%s/console" cache:clear --no-debug --env=%s', __DIR__ . '/../bin/', "test"
+    ));
 }
 
 function getErrorText($process, $command)

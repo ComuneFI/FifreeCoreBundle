@@ -105,7 +105,7 @@ class GenerateentitiesCommand extends ContainerAwareCommand
 
             $phpPath = OsFunctions::getPHPExecutableFromPath();
             $command = $phpPath . ' ' . $scriptGenerator . ' --force --em=' . $emdest
-                    . ' --env=' . $this->getContainer()->get('kernel')->getEnvironment();
+                    . ' --no-debug --env=' . $this->getContainer()->get('kernel')->getEnvironment();
 
 
             $schemaupdateresult = PannelloAmministrazioneUtils::runCommand($command);

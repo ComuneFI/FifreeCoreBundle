@@ -3,7 +3,7 @@
 namespace Fi\PannelloAmministrazioneBundle\DependencyInjection;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Process\Process;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
@@ -30,12 +30,12 @@ class PannelloAmministrazioneUtils
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
         $command = $phpPath . ' ' . $this->apppaths->getConsole() . ' cache:clear '
-                . '--env=' . $env;
-        if (in_array($env, array('dev', 'test', 'localhost'))) {
-            $command = $command . " ";
-        } else {
-            $command = $command . " --no-debug ";
-        }
+                . '--no-debug --env=' . $env;
+        /* if (in_array($env, array('dev', 'test', 'localhost'))) {
+          $command = $command . " ";
+          } else {
+          $command = $command . " --no-debug ";
+          } */
 
         return PannelloAmministrazioneUtils::runCommand($command);
     }
@@ -69,23 +69,11 @@ class PannelloAmministrazioneUtils
 
         $cmdoptions = array_merge(array('command' => $command), $options);
 
-        $fp = tmpfile();
-        $outputStream = new StreamOutput($fp);
-        $returncode = $application->run(new ArrayInput($cmdoptions), $outputStream);
-        $output = $this->getOutput($fp);
-        fclose($fp);
+        $outputbuf = new BufferedOutput();
+        // return the output, don't use if you used NullOutput()
+        $returncode = $application->run(new ArrayInput($cmdoptions), $outputbuf);
+        $output = $outputbuf->fetch();
 
         return array('errcode' => ($returncode == 0 ? false : true), 'command' => $cmdoptions['command'], 'message' => $output);
-    }
-
-    private function getOutput($fpOutupStream)
-    {
-        fseek($fpOutupStream, 0);
-        $output = '';
-        while (!feof($fpOutupStream)) {
-            $output = $output . fread($fpOutupStream, 4096);
-        }
-
-        return $output;
     }
 }

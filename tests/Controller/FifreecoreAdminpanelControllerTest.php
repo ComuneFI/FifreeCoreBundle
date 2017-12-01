@@ -71,7 +71,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
         $session = new Session($driver);
-        //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
         //sleep(3);
         //$driver->reload();
         // start the session
