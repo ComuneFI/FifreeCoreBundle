@@ -8,10 +8,12 @@ passthru(sprintf(
                 'php "%s/console" cache:clear --no-debug --env=%s', __DIR__ . '/../bin/', "test"
 ));
 
+require __DIR__ . '/../vendor/autoload.php';
+
 function startTests()
 {
     removecache();
-    //clearcache();
+//clearcache();
     cleanFilesystem();
 }
 
@@ -132,4 +134,9 @@ function deleteLineFromFile($file, $DELETE)
     }
     flock($fp, LOCK_UN);
     fclose($fp);
+}
+
+function writestdout($buffer)
+{
+    fwrite(STDOUT, print_r($buffer . "\n", TRUE));
 }
