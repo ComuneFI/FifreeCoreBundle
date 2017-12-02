@@ -187,8 +187,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
           $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
           $session->executeScript($scriptrun);
           parent::ajaxWait($session, 60000);
-          sleep(2);
-          //echo $session->getPage()->getHtml(); */
+          sleep(2); */
+        //echo $session->getPage()->getHtml(); 
         /**/
         //$screenshot = $driver->getWebDriverSession()->screenshot();
         //file_put_contents('/tmp/test4.png', base64_decode($screenshot));
@@ -197,22 +197,9 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
           $session->executeScript($scriptclose); */
 
-        $page->pressButton('adminpanelaggiornadatabase');
-        $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
-        $session->executeScript($scriptdb);
-        parent::ajaxWait($session, 60000);
-        sleep(2);
-        /**/
-        //$screenshot = $driver->getWebDriverSession()->screenshot();
-        //file_put_contents('/tmp/test5.png', base64_decode($screenshot));
-        /**/
-
-        //echo $session->getPage()->getHtml();
-        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
-        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $session->executeScript($scriptclose);
-        passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
-        sleep(2);
+        removecache();
+        clearcache();
+        //$driver->reload();
         $session->visit($url);
         $page = $session->getPage();
         sleep(1);
@@ -223,10 +210,36 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->pressButton('_submit');
 
         sleep(1);
-        $session->visit($url);
-        $page = $session->getPage();
 
-        sleep(3);
+        $page->pressButton('adminpanelaggiornadatabase');
+        $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptdb);
+        parent::ajaxWait($session, 60000);
+        /**/
+        //$screenshot = $driver->getWebDriverSession()->screenshot();
+        //file_put_contents('/tmp/test5.png', base64_decode($screenshot));
+        /**/
+
+        //echo $session->getPage()->getHtml();
+        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
+        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $session->executeScript($scriptclose);
+        //passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        sleep(2);
+        /* $session->visit($url);
+          $page = $session->getPage();
+          sleep(1);
+          //echo $session->getPage()->getHtml();
+          //Login
+          $page->fillField('username', 'admin');
+          $page->fillField('password', 'admin');
+          $page->pressButton('_submit');
+
+          sleep(1);
+          $session->visit($url);
+          $page = $session->getPage();
+
+          sleep(3); */
         $page->fillField('bundlename', 'Fi/ProvaBundle');
         $page->fillField('entityform', 'Prova');
 
@@ -256,12 +269,9 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
           parent::ajaxWait($session, 60000); */
         //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
 
-        sleep(3);
-
-        passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
-        sleep(3);
+        removecache();
+        clearcache();
         //$driver->reload();
-        //sleep(1);
         $session->visit($url);
         $page = $session->getPage();
         sleep(1);
