@@ -295,7 +295,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->visit($url);
         $page = $session->getPage();
 
-        echo $page->getHtml();
+        //echo $page->getHtml();
         sleep(3);
         $this->crudoperation($session, $page);
 
