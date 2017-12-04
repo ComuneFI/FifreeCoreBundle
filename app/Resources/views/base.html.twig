@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{asset('bundles/pannelloamministrazione/css/bootstrap.min.css')}}" />
+		<script type="text/javascript" src = "{{ asset('bundles/ficore/js/vendor/jquery/jquery-1.11.0.min.js') }}" ></script>
+		<script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/bootstrap.min.js') }}" ></script>
 </head>
 <body>
 <style>
@@ -82,6 +84,12 @@
     .login-help{
         font-size: 12px;
     }
+    .loginerror{
+		text-align: center;
+        font-size: 1.8em;
+        font-family: roboto;
+        color: red;
+    }
 </style>
 {% for type, messages in app.session.flashBag.all %}
     {% for message in messages %}
@@ -91,8 +99,6 @@
     {% endfor %}
 {% endfor %}
 {% block fos_user_content %}{% endblock %}
-<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 {% block javascripts %}{% endblock %}
 </body>
 </html>
