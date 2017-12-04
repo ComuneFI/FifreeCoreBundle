@@ -386,5 +386,4 @@ class PannelloAmministrazioneController extends Controller
             }
         }
     }
-
 }
