@@ -234,13 +234,14 @@ class PannelloAmministrazioneController extends Controller
     public function clearCacheAction(Request $request)
     {
         set_time_limit(0);
+        $env = $request->get("env");
         if ((new LockSystem($this->container))->isLockedFile()) {
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {
             (new LockSystem($this->container))->lockFile(true);
             $commands = new Commands($this->container);
 
-            $result = $commands->clearcache();
+            $result = $commands->clearcacheEnv($env);
 
             (new LockSystem($this->container))->lockFile(false);
 
@@ -385,4 +386,5 @@ class PannelloAmministrazioneController extends Controller
             }
         }
     }
+
 }
