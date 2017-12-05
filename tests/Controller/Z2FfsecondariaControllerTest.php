@@ -105,7 +105,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        sleep(3);
+        sleep(1);
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'ffsecondaria_';
         } else {
@@ -307,7 +307,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
             $page = $session->getPage();
-            sleep(3);
+            sleep(1);
             $element = $page->find('css', '.textLayer');
 
             if (empty($element)) {
