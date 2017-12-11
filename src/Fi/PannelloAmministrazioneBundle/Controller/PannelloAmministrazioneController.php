@@ -240,14 +240,14 @@ class PannelloAmministrazioneController extends Controller
         } else {
             (new LockSystem($this->container))->lockFile(true);
             $commands = new Commands($this->container);
-
-            $result = $commands->clearcacheEnv($env);
+            $result = $commands->clearcache();
 
             (new LockSystem($this->container))->lockFile(false);
 
             /* Uso exit perchè new response avendo cancellato la cache schianta non avendo più a disposizione i file */
             //return $commanddev . '<br/>' . $cmdoutputdev . '<br/><br/>' . $commandprod . '<br/>' . $cmdoutputprod;
-            return new Response(nl2br($result));
+            //return new Response(nl2br($result));
+            exit(nl2br($result));
         }
     }
 

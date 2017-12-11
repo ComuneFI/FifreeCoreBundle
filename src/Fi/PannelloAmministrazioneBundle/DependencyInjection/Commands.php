@@ -231,12 +231,11 @@ class Commands
     public function clearcache()
     {
         $cmdoutput = "";
-        /* $envs = array("dev", "test", "prod");
-          foreach ($envs as $env) {
-          $cmdoutput = $cmdoutput . $this->clearcacheEnv($env);
-          } */
-        $cmdoutput = $cmdoutput . $this->clearcacheEnv($this->container->get('kernel')->getEnvironment());
-
+        $envs = array("dev", "test", "prod");
+        foreach ($envs as $env) {
+            $cmdoutput = $cmdoutput . $this->clearcacheEnv($env);
+        }
+        //$cmdoutput = $cmdoutput . $this->clearcacheEnv($this->container->get('kernel')->getEnvironment());
         return $cmdoutput;
     }
 
