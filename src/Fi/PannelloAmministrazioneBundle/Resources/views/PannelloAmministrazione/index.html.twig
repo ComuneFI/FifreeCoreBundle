@@ -151,7 +151,7 @@
                 });
             });
             $("#adminpanelcc").click(function () {
-                var domanda = "Vuoi pulire la cache per l'ambiente di produzione?";
+                var domanda = "Vuoi pulire tutte le cache?";
                 conferma(domanda).then(function (answer) {
                     if ((String(answer) == "true")) {
                         $("#risultato").hide();
