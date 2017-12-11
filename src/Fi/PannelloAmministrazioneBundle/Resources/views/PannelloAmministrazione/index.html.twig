@@ -14,9 +14,7 @@
             <fieldset class="groupbox" id="grpulitita">
                 <legend>Utilità</legend>
                 <div class="">Clear cache: <br/>
-                    <button id="adminpanelccd" class="active btn btn-default" style="width: 97px;" data-reactid=".3.0" type="button">Dev</button>
-                    <button id="adminpanelcct" class="active btn btn-info" style="width: 97px;" data-reactid=".3.0" type="button">Test</button>
-                    <button id="adminpanelccp" class="active btn btn-success" style="width: 97px;" data-reactid=".3.0" type="button">Prod</button>
+                    <button id="adminpanelcc" class="active btn btn-success" data-reactid=".3.0" type="button">Clear cache</button>
                 </div>
                 <br/>
                 {% if (svn == true) %}
@@ -152,7 +150,7 @@
                     autoFocus: true
                 });
             });
-            $("#adminpanelccp").click(function () {
+            $("#adminpanelcc").click(function () {
                 var domanda = "Vuoi pulire la cache per l'ambiente di produzione?";
                 conferma(domanda).then(function (answer) {
                     if ((String(answer) == "true")) {
@@ -177,56 +175,56 @@
                     }
                 });
             });
-            $("#adminpanelccd").click(function () {
-                var domanda = "Vuoi pulire la cache per l'ambiente di sviluppo?";
-                conferma(domanda).then(function (answer) {
-                    if ((String(answer) == "true")) {
-                        $("#risultato").hide();
-                        $("#risultato").html("");
-                        $.ajax({
-                            url: "{{ path("fi_pannello_amministrazione_clearcache") }}",
-                            data: {env: "dev"},
-                            context: document.body
-                        }).done(function (data) {
-                            $("#risultato").html(data);
-                            opendialogrisultato();
-                            $("#risultato").slideDown("slow");
-                        }).fail(function (jqXHR, textStatus) {
-                            $("#risultato").html(jqXHR.responseText);
-                            $("#risultato").show();
-                            msgbox("Si è verificato un errore!");
-                            return false;
-                        });
-                    } else {
-                        //FALSE
-                    }
-                });
-            });
-            $("#adminpanelcct").click(function () {
-                var domanda = "Vuoi pulire la cache per l'ambiente di test?";
-                conferma(domanda).then(function (answer) {
-                    if ((String(answer) == "true")) {
-                        $("#risultato").hide();
-                        $("#risultato").html("");
-                        $.ajax({
-                            url: "{{ path("fi_pannello_amministrazione_clearcache") }}",
-                            data: {env: "test"},
-                            context: document.body
-                        }).done(function (data) {
-                            $("#risultato").html(data);
-                            opendialogrisultato();
-                            $("#risultato").slideDown("slow");
-                        }).fail(function (jqXHR, textStatus) {
-                            $("#risultato").html(jqXHR.responseText);
-                            $("#risultato").show();
-                            msgbox("Si è verificato un errore!");
-                            return false;
-                        });
-                    } else {
-                        //FALSE
-                    }
-                });
-            });
+            /*$("#adminpanelccd").click(function () {
+             var domanda = "Vuoi pulire la cache per l'ambiente di sviluppo?";
+             conferma(domanda).then(function (answer) {
+             if ((String(answer) == "true")) {
+             $("#risultato").hide();
+             $("#risultato").html("");
+             $.ajax({
+             url: "{{ path("fi_pannello_amministrazione_clearcache") }}",
+             data: {env: "dev"},
+             context: document.body
+             }).done(function (data) {
+             $("#risultato").html(data);
+             opendialogrisultato();
+             $("#risultato").slideDown("slow");
+             }).fail(function (jqXHR, textStatus) {
+             $("#risultato").html(jqXHR.responseText);
+             $("#risultato").show();
+             msgbox("Si è verificato un errore!");
+             return false;
+             });
+             } else {
+             //FALSE
+             }
+             });
+             });
+             $("#adminpanelcct").click(function () {
+             var domanda = "Vuoi pulire la cache per l'ambiente di test?";
+             conferma(domanda).then(function (answer) {
+             if ((String(answer) == "true")) {
+             $("#risultato").hide();
+             $("#risultato").html("");
+             $.ajax({
+             url: "{{ path("fi_pannello_amministrazione_clearcache") }}",
+             data: {env: "test"},
+             context: document.body
+             }).done(function (data) {
+             $("#risultato").html(data);
+             opendialogrisultato();
+             $("#risultato").slideDown("slow");
+             }).fail(function (jqXHR, textStatus) {
+             $("#risultato").html(jqXHR.responseText);
+             $("#risultato").show();
+             msgbox("Si è verificato un errore!");
+             return false;
+             });
+             } else {
+             //FALSE
+             }
+             });
+             });*/
 
             $("#adminpanelvcs").click(function () {
                 var vcs = "";

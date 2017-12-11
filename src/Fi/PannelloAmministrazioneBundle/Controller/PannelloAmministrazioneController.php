@@ -231,10 +231,14 @@ class PannelloAmministrazioneController extends Controller
 
     /* CLEAR CACHE */
 
+    /**
+     * Suppress PMD warnings per exit.
+     *
+     * @SuppressWarnings(PHPMD)
+     */
     public function clearCacheAction(Request $request)
     {
         set_time_limit(0);
-        $env = $request->get("env");
         if ((new LockSystem($this->container))->isLockedFile()) {
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {

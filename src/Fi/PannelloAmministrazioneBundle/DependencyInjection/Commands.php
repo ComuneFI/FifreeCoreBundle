@@ -236,6 +236,7 @@ class Commands
             $cmdoutput = $cmdoutput . $this->clearcacheEnv($env);
         }
         //$cmdoutput = $cmdoutput . $this->clearcacheEnv($this->container->get('kernel')->getEnvironment());
+
         return $cmdoutput;
     }
 
