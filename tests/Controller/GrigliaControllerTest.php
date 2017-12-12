@@ -162,8 +162,8 @@ class GrigliaControllerTest extends FifreeTest
         if (is_object($datigriglia)) {
             $datigriglia = get_object_vars($datigriglia);
         }
-        $this->assertEquals(6, $datigriglia['total']);
-        $this->assertEquals(6, count($datigriglia['rows']));
+        $this->assertEquals(9, $datigriglia['total']);
+        $this->assertEquals(9, count($datigriglia['rows']));
 
         $rows = $datigriglia['rows'];
         // @var $em \Doctrine\ORM\EntityManager
@@ -228,7 +228,7 @@ class GrigliaControllerTest extends FifreeTest
         sleep(1);
 
         $numrowsgrid = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
-        $this->assertEquals(6, $numrowsgrid);
+        $this->assertEquals(9, $numrowsgrid);
 
         $session->stop();
     }
