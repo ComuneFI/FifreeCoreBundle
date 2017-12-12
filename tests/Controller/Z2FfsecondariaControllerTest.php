@@ -224,7 +224,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         }
         parent::ajaxWait($session, 20000);
         $search2 = '1°';
-//$page->selectFieldOption('inizia con', "cn");
+        //$page->selectFieldOption('inizia con', "cn");
         $var2 = '"cn"';
         $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
 
@@ -236,7 +236,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
 
         $numrowsgrid2 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
-        $this->assertEquals(4, $numrowsgrid2);
+        $this->assertEquals(5, $numrowsgrid2);
         parent::ajaxWait($session, 20000);
         sleep(1);
 
@@ -276,7 +276,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $numrowsgrid3 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid3);
 
-//reset filtri
+        //reset filtri
         $elementsearch4 = $page->findAll('css', '.ui-icon-search');
 
         foreach ($elementsearch4 as $e) {
@@ -287,6 +287,99 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
         $page->find('css', 'a#fbox_list1_reset')->click();
         sleep(1);
+        
+        
+        /* Ricerca 4 */
+        $elementsearch4 = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch4 as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+        /**/
+        $var5 = '"attivo"';
+        $selector5 = '#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first';
+        $javascript5 = "$('" . $selector5 . ' option[value=' . $var5 . "]').attr('selected', 'selected').change();";
+        parent::ajaxWait($session, 20000);
+        $session->executeScript($javascript5);
+        parent::ajaxWait($session, 20000);
+        /**/
+        
+        $page->find('css', 'a#fbox_list1_search')->click();
+        parent::ajaxWait($session, 20000);
+
+        $numrowsgrid5 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(9, $numrowsgrid5);
+        parent::ajaxWait($session, 20000);
+        sleep(1);
+        
+        /* Ricerca 5 */
+        $elementsearch5 = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch4 as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+        /**/
+        $var6 = '"true"';
+        $selector6 = '.input-elm';
+        $javascript6 = "$('" . $selector6 . ' option[value=' . $var6 . "]').attr('selected', 'selected').change();";
+        parent::ajaxWait($session, 20000);
+        $session->executeScript($javascript6);
+        parent::ajaxWait($session, 20000);
+        /**/
+        
+        $page->find('css', 'a#fbox_list1_search')->click();
+        parent::ajaxWait($session, 20000);
+
+        $numrowsgrid5 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(6, $numrowsgrid5);
+        parent::ajaxWait($session, 20000);
+        sleep(1);
+
+        /* Ricerca 6 */
+        $elementsearch6 = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch6 as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+        /**/
+        $var6 = '"false"';
+        $selector6 = '.input-elm';
+        $javascript6 = "$('" . $selector6 . ' option[value=' . $var6 . "]').attr('selected', 'selected').change();";
+        parent::ajaxWait($session, 20000);
+        $session->executeScript($javascript6);
+        parent::ajaxWait($session, 20000);
+        /**/
+        
+        $page->find('css', 'a#fbox_list1_search')->click();
+        parent::ajaxWait($session, 20000);
+
+        $numrowsgrid5 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(3, $numrowsgrid5);
+        parent::ajaxWait($session, 20000);
+        sleep(1);
+
+        //reset filtri
+        $elementsearch6 = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch6 as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+        $page->find('css', 'a#fbox_list1_reset')->click();
+        sleep(1);
+        
+        
     }
 
     private function printoperations($session, $page)
