@@ -26,6 +26,20 @@ class ChecksrcCommand extends ContainerAwareCommand
         $srcPath = $prjpath->getSrcPath();
         $rootPath = $prjpath->getRootPath();
 
+        /* phpcpd */
+        $phpcpdcmd = $vendorBin . "phpcpd " . $srcPath;
+        $phpcpdoutput = $this->runcmd($phpcpdcmd);
+        if (!$phpcpdoutput) {
+            $output->writeln("phpmd: OK");
+        } else {
+            if (strpos($phpcpdoutput, "0.00%")) {
+                $output->writeln("phpmd: OK");
+            } else {
+                $output->writeln($phpcpdoutput);
+            }
+        }
+        /* phpcpd */
+
         /* phpcs */
         $phpcscmd = $vendorBin . "phpcs --standard=" . $rootPath . "/tools/phpcs/ruleset.xml  --extensions=php " . $srcPath;
         $phpcsoutput = $this->runcmd($phpcscmd);
@@ -47,20 +61,6 @@ class ChecksrcCommand extends ContainerAwareCommand
             $output->writeln($phpmdoutput);
         }
         /* phpmd */
-
-        /* phpmd */
-        $phpcpdcmd = $vendorBin . "phpcpd " . $srcPath;
-        $phpcpdoutput = $this->runcmd($phpcpdcmd);
-        if (!$phpcpdoutput) {
-            $output->writeln("phpmd: OK");
-        } else {
-            if (strpos($phpcpdoutput, "0.00%")) {
-                $output->writeln("phpmd: OK");
-            } else {
-                $output->writeln($phpcpdoutput);
-            }
-        }
-        /* phpcpd */
     }
 
     private function runcmd($cmd)
