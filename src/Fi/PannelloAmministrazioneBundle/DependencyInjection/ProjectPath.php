@@ -127,5 +127,4 @@ class ProjectPath
         }
         return $console;
     }
-
 }
