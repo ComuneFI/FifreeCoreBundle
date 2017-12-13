@@ -179,7 +179,7 @@ class GrigliaControllerTest extends FifreeTest
             if ($modellocolonne[$idx]['tipocampo'] == 'date') {
                 $row[$idx] = \DateTime::createFromFormat('d/m/Y', $row[$idx])->format('Y-m-d');
             }
-            if (!$modellocolonne[$idx]['search'] === false) {
+            if (!isset($modellocolonne[$idx]['search']) || !$modellocolonne[$idx]['search'] === false) {
                 $qu = $em->createQueryBuilder();
                 $qu->select(array('c'))
                         ->from('FiCoreBundle:Ffsecondaria', 'c')
