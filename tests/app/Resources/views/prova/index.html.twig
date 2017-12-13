@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Provas list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Descrizione</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for prova in provas %}
+            <tr>
+                <td><a href="{{ path('Prova_show', { 'id': prova.id }) }}">{{ prova.id }}</a></td>
+                <td>{{ prova.descrizione }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('Prova_show', { 'id': prova.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('Prova_edit', { 'id': prova.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('Prova_new') }}">Create a new prova</a>
+        </li>
+    </ul>
+{% endblock %}

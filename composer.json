@@ -30,17 +30,17 @@
         "psr-4": {
             "Fi\\CoreBundle\\": "src/Fi/CoreBundle",
             "Fi\\PannelloAmministrazioneBundle\\": "src/Fi/PannelloAmministrazioneBundle",
-            "Fi\\ProvaBundle\\": "src/Fi/ProvaBundle"
-        },
-        "classmap": [
-            "app/AppKernel.php",
-            "app/AppCache.php"
-        ]
+            "Fi\\ProvaBundle\\": "tests/src/Fi/ProvaBundle"
+        }
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
         },
+        "classmap": [
+            "tests/app/AppKernel.php",
+            "tests/app/AppCache.php"
+        ],
         "files": [
             "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
         ]
@@ -103,18 +103,18 @@
         "sort-packages": true
     },
     "extra": {
-        "symfony-app-dir": "app",
+        "symfony-app-dir": "tests/app",
         "symfony-bin-dir": "bin",
         "symfony-var-dir": "var",
         "symfony-web-dir": "web",
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
-            "file": "app/config/parameters.yml",
+            "file": "tests/app/config/parameters.yml",
             "keep-outdated": true
         },
         "branch-alias": {
-            "dev-master": "3.1-dev"
+            "dev-master": "3.4-dev"
         }
     }
 }

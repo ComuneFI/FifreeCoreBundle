@@ -53,7 +53,10 @@ class ProjectPath
     {
         $vendorbindir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'bin';
         if (!file_exists($vendorbindir)) {
-            throw new \Exception("Cartella Bin in vendor non trovata", -100);
+            $vendorbindir = $this->getProjectPath() . '/../vendor/bin';
+            if (!file_exists($vendorbindir)) {
+                throw new \Exception("Cartella Bin in vendor non trovata", -100);
+            }
         }
         return $vendorbindir;
     }
@@ -124,4 +127,5 @@ class ProjectPath
         }
         return $console;
     }
+
 }

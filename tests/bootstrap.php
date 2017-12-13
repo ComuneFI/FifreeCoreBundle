@@ -51,7 +51,7 @@ function getErrorText($process, $command)
 function cleanFilesystem()
 {
     $DELETE = "new Fi\ProvaBundle\FiProvaBundle(),";
-    $vendorDir = dirname(dirname(__FILE__)) . '/';
+    $vendorDir = dirname(dirname(__FILE__) . '/tests');
     $kernelfile = $vendorDir . '/app/AppKernel.php';
     deleteLineFromFile($kernelfile, $DELETE);
     $routingfile = $vendorDir . '/app/config/routing.yml';
