@@ -191,7 +191,7 @@ class CreateEnvFifreeTest extends WebTestCase
           );
 
           $this->assertRegExp('/.../', $commandTester->getDisplay()); */
-
+echo $checkent;
         $this->assertTrue(file_exists($checkent));
         $this->assertTrue(file_exists($checkres));
     }

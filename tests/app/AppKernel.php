@@ -46,6 +46,12 @@ class AppKernel extends Kernel
         return dirname(__DIR__) . '/var/cache/' . $this->environment;
     }
 
+
+    public function getBinDir()
+    {
+        return dirname(__DIR__) . '/bin';
+    }
+
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
