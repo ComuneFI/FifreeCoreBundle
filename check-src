@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+
+set_time_limit(0);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$kernel = new AppKernel("dev", false);
+$application = new Application($kernel);
+
+$command = new Fi\PannelloAmministrazioneBundle\Command\ChecksrcCommand();
+
+$application->add($command);
+
+$application->setDefaultCommand($command->getName(), true);
+$application->run();

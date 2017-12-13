@@ -102,6 +102,7 @@
     "config": {
         "sort-packages": true
     },
+    "bin": ["check-src"],
     "extra": {
         "symfony-app-dir": "tests/app",
         "symfony-bin-dir": "bin",

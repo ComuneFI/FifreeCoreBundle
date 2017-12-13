@@ -20,12 +20,14 @@ class ChecksrcCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        //$container = $this->getContainer();
-        $vendorBin = getcwd() . "/vendor/bin/";
-
+        $container = $this->getContainer();
+        $prjpath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($container);
+        $vendorBin = $prjpath->getVendorBinPath() . "/";
+        $srcPath = $prjpath->getSrcPath();
+        $rootPath = $prjpath->getRootPath();
 
         /* phpcs */
-        $phpcscmd = $vendorBin . "phpcs --standard=tools/phpcs/ruleset.xml  --extensions=php src";
+        $phpcscmd = $vendorBin . "phpcs --standard=" . $rootPath . "/tools/phpcs/ruleset.xml  --extensions=php " . $srcPath;
         $phpcsoutput = $this->runcmd($phpcscmd);
         if (!$phpcsoutput) {
             $output->writeln("phpcs: OK");
@@ -37,7 +39,7 @@ class ChecksrcCommand extends ContainerAwareCommand
         /* phpcs */
 
         /* phpmd */
-        $phpmdcmd = $vendorBin . "phpmd src text tools/phpmd/ruleset.xml";
+        $phpmdcmd = $vendorBin . "phpmd " . $srcPath . " text " . $rootPath . "/tools/phpmd/ruleset.xml";
         $phpmdoutput = $this->runcmd($phpmdcmd);
         if (!$phpmdoutput) {
             $output->writeln("phpmd: OK");
@@ -47,7 +49,7 @@ class ChecksrcCommand extends ContainerAwareCommand
         /* phpmd */
 
         /* phpmd */
-        $phpcpdcmd = $vendorBin . "phpcpd src";
+        $phpcpdcmd = $vendorBin . "phpcpd " . $srcPath;
         $phpcpdoutput = $this->runcmd($phpcpdcmd);
         if (!$phpcpdoutput) {
             $output->writeln("phpmd: OK");
