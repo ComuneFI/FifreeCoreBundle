@@ -188,6 +188,9 @@ class GrigliaControllerTest extends FifreeTest
             $ffrow = $qu->getQuery()->getResult();
             $ff = $ffrow[0];
             $colmacro = 'get' . ucfirst($modellocolonne[$idx]['name']);
+            if (!method_exists($ff,$colmacro)){
+                $colmacro = 'is' . ucfirst($modellocolonne[$idx]['name']);
+            }
             if ($modellocolonne[$idx]['tipocampo'] == 'date') {
                 $datadb = \DateTime::createFromFormat('Y-m-d', $ff->$colmacro()->format('Y-m-d'));
                 $datagriglia = \DateTime::createFromFormat('Y-m-d', $row[$idx]);
