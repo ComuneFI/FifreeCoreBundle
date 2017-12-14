@@ -21,5 +21,7 @@ class ResponseListener
     public function onKernelResponse(FilterResponseEvent $event)
     {
         $event->getResponse()->headers->set('x-frame-options', 'deny');
+        $event->getResponse()->headers->set('x-content-type', 'nosniff');
+        
     }
 }
