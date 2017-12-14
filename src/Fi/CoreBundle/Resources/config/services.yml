@@ -137,3 +137,7 @@ services:
         alias: fos_user.util.user_manipulator
         public: true
             
+    kernel.listener.response_listener:
+        class: Fi\CoreBundle\Listener\ResponseListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
