@@ -22,3 +22,10 @@
         {% endfor %}
     </ul>
 {% endmacro %}
+
+{% set pathform = (entity.id is defined and entity.id != 0) ? path(nomecontroller ~ '_update', { 'id': entity.id }) :path(nomecontroller ~ '_create') %}
+{% set form = (edit_form is defined )?edit_form:form  %} 
+{{ form_start(form,{'id': 'formdati'~nomecontroller,'name': 'formdati'~nomecontroller, method: 'POST', action: pathform}) }}
+<input type="submit" style="display: none;"/>
+<input type="hidden" name="_method" value="PUT" />
+{{ form_widget(form) }}
