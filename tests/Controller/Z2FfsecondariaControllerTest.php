@@ -227,7 +227,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         }
 
         $element->doubleClick();
-        $script = 'function(){$("#18_mostraindex").prop("checked", false);}()';
+        $script = 'function(){$("input[name=mostraindex]").prop("checked", false);}()';
         $session->evaluateScript($script);
 
         $script = 'function(){$("input").trigger("keydown", {which: 50});}()';
@@ -258,7 +258,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         }
 
         $element->doubleClick();
-        $script = 'function(){$("#18_mostraindex").prop("checked", true);}()';
+        $script = 'function(){$("input[name=mostraindex]").prop("checked", true);}()';
         $session->evaluateScript($script);
 
         $script = 'function(){$("input").trigger("keydown", {which: 50});}()';
