@@ -423,5 +423,4 @@ class TabelleController extends FiCoreController
 
         return $risposta;
     }
-
 }
