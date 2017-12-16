@@ -215,6 +215,8 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
         $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
+        parent::ajaxWait($session, 20000);
+        sleep(1);
         $selector = '18_ordineindex';
         $element = $page->find('css', "#" . $selector);
 
@@ -244,6 +246,8 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
         $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
+        parent::ajaxWait($session, 20000);
+        sleep(1);
         $selector = '18_ordineindex';
         $element = $page->find('css', "#" . $selector);
 
