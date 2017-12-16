@@ -230,14 +230,28 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $script = 'function(){$("input[name=mostraindex]").prop("checked", false);}()';
         $session->evaluateScript($script);
 
-        $script = 'function(){$("#listconfigura").trigger("keydown", {which: 50});}()';
-        $session->evaluateScript($script);
+        //$script = 'function(){$("#listconfigura").trigger("keydown", {which: 50});}()';
+        //$session->evaluateScript($script);
+        $jsSaveFirstRow = '$("#listconfigura").saveRow(rowidcalsave);';
+        $session->evaluateScript('function(){ var rowidcalsave = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSaveFirstRow . '}()');
+        parent::ajaxWait($session, 20000);
 
-        $script = 'function(){$("input").trigger("keydown", {which: 50});}()';
-        $session->evaluateScript($script);
+        $selector = '.ui-icon-circle-close';
+        $element = $page->find('css', $selector);
+
+        if (empty($element)) {
+            throw new \Exception("No html element found for the selector ('$selector')");
+        }
+
+        $element->click();
+
+        $elementattivo = $page->findAll('css', '#jqgh_list1_attivo');
+        foreach ($elementattivo as $e) {
+            $this->assertTrue(!$e->isVisible());
+        }
 
         /**/
-        sleep(5);
+        sleep(1);
         $elementcalc = $page->findAll('css', '.ui-icon-calculator');
 
         foreach ($elementcalc as $e) {
@@ -261,8 +275,12 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $script = 'function(){$("input[name=mostraindex]").prop("checked", true);}()';
         $session->evaluateScript($script);
 
-        $script = 'function(){$("#listconfigura").trigger("keydown", {which: 50});}()';
-        $session->evaluateScript($script);
+        //$script = 'function(){$("#listconfigura").trigger("keydown", {which: 50});}()';
+        //$session->evaluateScript($script);
+
+        $jsSaveFirstRow = '$("#listconfigura").saveRow(rowidcalsave);';
+        $session->evaluateScript('function(){ var rowidcalsave = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSaveFirstRow . '}()');
+        parent::ajaxWait($session, 20000);
 
         $selector = '.ui-icon-circle-close';
         $element = $page->find('css', $selector);
@@ -272,6 +290,11 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         }
 
         $element->click();
+
+        $elementattivo = $page->findAll('css', '#jqgh_list1_attivo');
+        foreach ($elementattivo as $e) {
+            $this->assertTrue($e->isVisible());
+        }
     }
 
     private function validationoperation($session, $page)
