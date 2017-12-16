@@ -94,6 +94,17 @@ class CreateEnvFifreeTest extends WebTestCase
           );
 
           $this->assertRegExp('/.../', $commandTester->getDisplay()); */
+        $container = $this->getContainer();
+        $username4test = $container->getParameter('user4test');
+        $em = $this->getEntityManager();
+        $qb2 = $em->createQueryBuilder();
+        $qb2->select(array('a'));
+        $qb2->from('FiCoreBundle:Operatori', 'a');
+        $qb2->where('a.operatore = :descrizione');
+        $qb2->setParameter('descrizione', $username4test);
+        $record2 = $qb2->getQuery()->getResult();
+        $recorddelete = $record2[0];
+        $this->assertEquals($recorddelete->getOperatore(), $username4test);
     }
 
     public function test30InstallFifree()
@@ -191,7 +202,7 @@ class CreateEnvFifreeTest extends WebTestCase
           );
 
           $this->assertRegExp('/.../', $commandTester->getDisplay()); */
-echo $checkent;
+        echo $checkent;
         $this->assertTrue(file_exists($checkent));
         $this->assertTrue(file_exists($checkres));
     }
