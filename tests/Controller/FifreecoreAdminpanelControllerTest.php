@@ -307,22 +307,22 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
      * @test
      */
 
-    public function test100PannelloAmministrazioneMain()
+    /*public function test100PannelloAmministrazioneMain()
     {
         $container = $this->getContainer();
-        /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
+        // @var $userManager \FOS\UserBundle\Doctrine\UserManager 
         $userManager = $container->get('fifree.fos_user.user_manager');
-        /* @var $loginManager \FOS\UserBundle\Security\LoginManager */
+        // @var $loginManager \FOS\UserBundle\Security\LoginManager
         $loginManager = $container->get('fifree.fos_user.security.login_manager');
         $firewallName = $container->getParameter('fos_user.firewall_name');
         $username4test = $container->getParameter('user4test');
         $user = $userManager->findUserBy(array('username' => $username4test));
         $loginManager->loginUser($firewallName, $user);
 
-        /* save the login token into the session and put it in a cookie */
+        // save the login token into the session and put it in a cookie 
         $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
-    }
+    }*/
 
     private function crudoperation($session, $page)
     {

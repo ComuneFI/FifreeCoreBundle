@@ -104,7 +104,17 @@ class PermessiControllerTest extends FifreeTest
         $page->fillField($fieldprefix . 'modulo', $descrizionetest1);
         $page->find('css', 'a#sDataPermessiS')->click();
         parent::ajaxWait($session, 20000);
-
+        
+        $em = $this->getEntityManager();
+        $qb2 = $em->createQueryBuilder();
+        $qb2->select(array('a'));
+        $qb2->from('FiCoreBundle:Permessi', 'a');
+        $qb2->where('a.modulo = :descrizione');
+        $qb2->setParameter('descrizione', $descrizionetest1);
+        $record2 = $qb2->getQuery()->getResult();
+        $recorddelete = $record2[0];
+        $this->assertEquals($recorddelete->getModulo(), $descrizionetest1);
+        
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 

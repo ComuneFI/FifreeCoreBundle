@@ -106,6 +106,17 @@ class OpzioniTabellaControllerTest extends FifreeTest
         $page->find('css', 'a#sDataOpzioniTabellaS')->click();
         parent::ajaxWait($session, 20000);
 
+        $em = $this->getEntityManager();
+        $qb2 = $em->createQueryBuilder();
+        $qb2->select(array('a'));
+        $qb2->from('FiCoreBundle:OpzioniTabella', 'a');
+        $qb2->where('a.descrizione = :descrizione');
+        $qb2->setParameter('descrizione', $descrizionetest1);
+        $record2 = $qb2->getQuery()->getResult();
+        $recorddelete = $record2[0];
+        $this->assertEquals($recorddelete->getDescrizione(), $descrizionetest1);
+        
+        
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
