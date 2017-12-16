@@ -311,7 +311,13 @@ class TabelleController extends FiCoreController
         $tabellej['operatori_id'] = array('tabella' => 'operatori', 'campi' => array('username'));
         $escludi = array("operatori"); //'operatori_id'
 
-        $paricevuti = array('container' => $this->container, 'nomebundle' => $nomebundle, 'nometabella' => $controller, 'tabellej' => $tabellej, 'escludere' => $escludi);
+        $paricevuti = array(
+            'container' => $this->container,
+            'nomebundle' => $nomebundle,
+            'nometabella' => $controller,
+            'tabellej' => $tabellej,
+            'escludere' => $escludi
+        );
 
         if ($prepar) {
             $paricevuti = array_merge($paricevuti, $prepar);
