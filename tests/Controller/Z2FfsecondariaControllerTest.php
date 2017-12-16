@@ -230,7 +230,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $script = 'function(){$("input[name=mostraindex]").prop("checked", false);}()';
         $session->evaluateScript($script);
 
-        $script = 'function(){$("input").trigger("keydown", {which: 50});}()';
+        $script = 'function(){$("#listconfigura").trigger("keydown", {which: 50});}()';
         $session->evaluateScript($script);
 
         $script = 'function(){$("input").trigger("keydown", {which: 50});}()';
@@ -261,7 +261,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $script = 'function(){$("input[name=mostraindex]").prop("checked", true);}()';
         $session->evaluateScript($script);
 
-        $script = 'function(){$("input").trigger("keydown", {which: 50});}()';
+        $script = 'function(){$("#listconfigura").trigger("keydown", {which: 50});}()';
         $session->evaluateScript($script);
 
         $selector = '.ui-icon-circle-close';
