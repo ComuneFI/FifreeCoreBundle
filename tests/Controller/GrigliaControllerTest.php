@@ -162,8 +162,8 @@ class GrigliaControllerTest extends FifreeTest
         if (is_object($datigriglia)) {
             $datigriglia = get_object_vars($datigriglia);
         }
-        $this->assertEquals(6, $datigriglia['total']);
-        $this->assertEquals(6, count($datigriglia['rows']));
+        $this->assertEquals(9, $datigriglia['total']);
+        $this->assertEquals(9, count($datigriglia['rows']));
 
         $rows = $datigriglia['rows'];
         // @var $em \Doctrine\ORM\EntityManager
@@ -179,21 +179,28 @@ class GrigliaControllerTest extends FifreeTest
             if ($modellocolonne[$idx]['tipocampo'] == 'date') {
                 $row[$idx] = \DateTime::createFromFormat('d/m/Y', $row[$idx])->format('Y-m-d');
             }
-
-            $qu = $em->createQueryBuilder();
-            $qu->select(array('c'))
-                    ->from('FiCoreBundle:Ffsecondaria', 'c')
-                    ->where('c.' . $modellocolonne[$idx]['name'] . ' = :value')
-                    ->setParameter('value', $row[$idx]);
-            $ffrow = $qu->getQuery()->getResult();
-            $ff = $ffrow[0];
-            $colmacro = 'get' . ucfirst($modellocolonne[$idx]['name']);
-            if ($modellocolonne[$idx]['tipocampo'] == 'date') {
-                $datadb = \DateTime::createFromFormat('Y-m-d', $ff->$colmacro()->format('Y-m-d'));
-                $datagriglia = \DateTime::createFromFormat('Y-m-d', $row[$idx]);
-                $this->assertEquals($datadb, $datagriglia);
-            } else {
-                $this->assertEquals($ff->$colmacro(), $row[$idx]);
+            if (!isset($modellocolonne[$idx]['search']) || !$modellocolonne[$idx]['search'] === false) {
+                $qu = $em->createQueryBuilder();
+                $qu->select(array('c'))
+                        ->from('FiCoreBundle:Ffsecondaria', 'c')
+                        ->where('c.' . $modellocolonne[$idx]['name'] . ' = :value')
+                        ->setParameter('value', $row[$idx]);
+                $ffrow = $qu->getQuery()->getResult();
+                $ff = $ffrow[0];
+                $colmacro = 'get' . ucfirst($modellocolonne[$idx]['name']);
+                if (!method_exists($ff, $colmacro)) {
+                    $colmacro = 'is' . ucfirst($modellocolonne[$idx]['name']);
+                    if (!method_exists($ff, $colmacro)) {
+                        throw new \Exception("Colonna " . $modellocolonne[$idx]['name'] . " non trovata");
+                    }
+                }
+                if ($modellocolonne[$idx]['tipocampo'] == 'date') {
+                    $datadb = \DateTime::createFromFormat('Y-m-d', $ff->$colmacro()->format('Y-m-d'));
+                    $datagriglia = \DateTime::createFromFormat('Y-m-d', $row[$idx]);
+                    $this->assertEquals($datadb, $datagriglia);
+                } else {
+                    $this->assertEquals($ff->$colmacro(), $row[$idx]);
+                }
             }
         }
     }
@@ -228,7 +235,7 @@ class GrigliaControllerTest extends FifreeTest
         sleep(1);
 
         $numrowsgrid = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
-        $this->assertEquals(6, $numrowsgrid);
+        $this->assertEquals(9, $numrowsgrid);
 
         $session->stop();
     }

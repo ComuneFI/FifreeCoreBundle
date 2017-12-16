@@ -149,7 +149,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         $page->pressButton('_submit');
         //$page = $session->getPage();
 
-        sleep(3);
+        sleep(1);
         $this->crudoperation($session, $page);
 
         sleep(1);
@@ -292,7 +292,7 @@ class Z1FfprincipaleControllerTest extends FifreeTest
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
             $page = $session->getPage();
-            sleep(3);
+            sleep(1);
             $element = $page->find('css', '.textLayer');
 
             if (empty($element)) {

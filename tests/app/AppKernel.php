@@ -15,13 +15,13 @@ class AppKernel extends Kernel
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
             new Fi\CoreBundle\FiCoreBundle(),
             new Fi\PannelloAmministrazioneBundle\PannelloAmministrazioneBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'localhost'))) {
-			$bundles[] = new FOS\UserBundle\FOSUserBundle();
-            $bundles[] = new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle();
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
@@ -44,6 +44,12 @@ class AppKernel extends Kernel
     public function getCacheDir()
     {
         return dirname(__DIR__) . '/var/cache/' . $this->environment;
+    }
+
+
+    public function getBinDir()
+    {
+        return dirname(__DIR__) . '/bin';
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)

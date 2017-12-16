@@ -104,12 +104,12 @@ class GrigliaRegoleUtils
         if ($regola['data'] === 'false' || $regola['data'] === false) {
             GrigliaUtils::setVettoriPerBoolean();
             $regola['op'] = 'eq';
-            $regola['data'] = 0;
+            $regola['data'] = "0";
         }
         if ($regola['data'] === 'true' || $regola['data'] === true) {
             GrigliaUtils::setVettoriPerBoolean();
             $regola['op'] = 'eq';
-            $regola['data'] = 1;
+            $regola['data'] = "1";
         }
         if ($tipo == 'boolean' && $regola['data'] == 'null') {
             $regola = array();

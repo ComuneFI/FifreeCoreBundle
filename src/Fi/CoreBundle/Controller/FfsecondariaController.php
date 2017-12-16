@@ -118,11 +118,11 @@ class FfsecondariaController extends FiCoreController
             'valorecampo' => date('Y-m-d'),
             'operatorelogico' => 'AND',);
 
-        $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
-            'nomecampo' => 'attivo',
-            'operatore' => '=',
-            'valorecampo' => true,
-            'operatorelogico' => 'AND',);
+        /* $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
+          'nomecampo' => 'attivo',
+          'operatore' => '=',
+          'valorecampo' => true,
+          'operatorelogico' => 'AND',); */
 
         $paricevuti = array('container' => $this->container,
             'nomebundle' => $nomebundle,

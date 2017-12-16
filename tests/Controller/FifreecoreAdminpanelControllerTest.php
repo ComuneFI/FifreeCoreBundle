@@ -52,6 +52,9 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
+        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        sleep(1);
+
         //url da testare
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->getContainer());
         $fileprovabundle = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle";
@@ -71,8 +74,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
         $session = new Session($driver);
-        //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
-        //sleep(3);
         //$driver->reload();
         // start the session
         $session->start();
@@ -98,7 +99,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $session->executeScript($scriptrun);
         //parent::ajaxWait($session, 60000);
         //$session->getDriver()->getWebDriverSession()->accept_alert();
-        sleep(2);
+        sleep(1);
         //echo $session->getPage()->getHtml();
         /**/
         $screenshot = $driver->getWebDriverSession()->screenshot();
@@ -130,7 +131,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
           $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
           $session->executeScript($scriptrun);
           parent::ajaxWait($session, 60000);
-          sleep(2);
+          sleep(1);
           echo $session->getPage()->getHtml(); */
         /**/
         //$screenshot = $driver->getWebDriverSession()->screenshot();
@@ -186,8 +187,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
           $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
           $session->executeScript($scriptrun);
           parent::ajaxWait($session, 60000);
-          sleep(2);
-          //echo $session->getPage()->getHtml(); */
+          sleep(1); */
+        //echo $session->getPage()->getHtml(); 
         /**/
         //$screenshot = $driver->getWebDriverSession()->screenshot();
         //file_put_contents('/tmp/test4.png', base64_decode($screenshot));
@@ -196,21 +197,9 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
           $session->executeScript($scriptclose); */
 
-        $page->pressButton('adminpanelaggiornadatabase');
-        $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
-        $session->executeScript($scriptdb);
-        parent::ajaxWait($session, 60000);
-        sleep(2);
-        /**/
-        //$screenshot = $driver->getWebDriverSession()->screenshot();
-        //file_put_contents('/tmp/test5.png', base64_decode($screenshot));
-        /**/
-
-        //echo $session->getPage()->getHtml();
-        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
-        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $session->executeScript($scriptclose);
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        removecache();
+        clearcache();
+        //$driver->reload();
         $session->visit($url);
         $page = $session->getPage();
         sleep(1);
@@ -221,10 +210,36 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page->pressButton('_submit');
 
         sleep(1);
-        $session->visit($url);
-        $page = $session->getPage();
 
-        sleep(3);
+        $page->pressButton('adminpanelaggiornadatabase');
+        $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptdb);
+        parent::ajaxWait($session, 60000);
+        /**/
+        //$screenshot = $driver->getWebDriverSession()->screenshot();
+        //file_put_contents('/tmp/test5.png', base64_decode($screenshot));
+        /**/
+
+        //echo $session->getPage()->getHtml();
+        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
+        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $session->executeScript($scriptclose);
+        //passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        sleep(1);
+        /* $session->visit($url);
+          $page = $session->getPage();
+          sleep(1);
+          //echo $session->getPage()->getHtml();
+          //Login
+          $page->fillField('username', 'admin');
+          $page->fillField('password', 'admin');
+          $page->pressButton('_submit');
+
+          sleep(1);
+          $session->visit($url);
+          $page = $session->getPage();
+
+          sleep(1); */
         $page->fillField('bundlename', 'Fi/ProvaBundle');
         $page->fillField('entityform', 'Prova');
 
@@ -241,7 +256,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         file_put_contents('/tmp/test6.png', base64_decode($screenshot));
         /**/
 
-        sleep(2);
+        sleep(1);
 
         //echo $session->getPage()->getHtml();
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
@@ -254,12 +269,9 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
           parent::ajaxWait($session, 60000); */
         //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
 
-        sleep(3);
-
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
-        sleep(3);
+        removecache();
+        clearcache();
         //$driver->reload();
-        //sleep(1);
         $session->visit($url);
         $page = $session->getPage();
         sleep(1);
@@ -284,10 +296,10 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
         $page = $session->getPage();
 
         //echo $page->getHtml();
-        sleep(3);
+        sleep(1);
         $this->crudoperation($session, $page);
 
-        sleep(3);
+        sleep(1);
         $session->stop();
     }
 
@@ -295,22 +307,22 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
      * @test
      */
 
-    public function test100PannelloAmministrazioneMain()
+    /*public function test100PannelloAmministrazioneMain()
     {
         $container = $this->getContainer();
-        /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
+        // @var $userManager \FOS\UserBundle\Doctrine\UserManager 
         $userManager = $container->get('fifree.fos_user.user_manager');
-        /* @var $loginManager \FOS\UserBundle\Security\LoginManager */
+        // @var $loginManager \FOS\UserBundle\Security\LoginManager
         $loginManager = $container->get('fifree.fos_user.security.login_manager');
         $firewallName = $container->getParameter('fos_user.firewall_name');
         $username4test = $container->getParameter('user4test');
         $user = $userManager->findUserBy(array('username' => $username4test));
         $loginManager->loginUser($firewallName, $user);
 
-        /* save the login token into the session and put it in a cookie */
+        // save the login token into the session and put it in a cookie 
         $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
-    }
+    }*/
 
     private function crudoperation($session, $page)
     {

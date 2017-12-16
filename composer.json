@@ -30,17 +30,17 @@
         "psr-4": {
             "Fi\\CoreBundle\\": "src/Fi/CoreBundle",
             "Fi\\PannelloAmministrazioneBundle\\": "src/Fi/PannelloAmministrazioneBundle",
-            "Fi\\ProvaBundle\\": "src/Fi/ProvaBundle"
-        },
-        "classmap": [
-            "app/AppKernel.php",
-            "app/AppCache.php"
-        ]
+            "Fi\\ProvaBundle\\": "tests/src/Fi/ProvaBundle"
+        }
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
         },
+        "classmap": [
+            "tests/app/AppKernel.php",
+            "tests/app/AppCache.php"
+        ],
         "files": [
             "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
         ]
@@ -50,6 +50,8 @@
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
         "fi/osbundle": "~2.0",
+        "mysql-workbench-schema-exporter/doctrine2-exporter": "^3.0",
+        "mysql-workbench-schema-exporter/mysql-workbench-schema-exporter": "^3.0",
         "incenteev/composer-parameter-handler": "^2.0",
         "sensio/distribution-bundle": "~5.0",
         "sensio/framework-extra-bundle": "^5.0.0",
@@ -57,30 +59,28 @@
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/polyfill-apcu": "^1.0",
         "symfony/symfony": "3.4.*",
-        "twig/twig": "^1.0||^2.0"
+        "twig/twig": "^1.0||^2.0",
+        "friendsofsymfony/user-bundle": "~2.0"
     },
     "require-dev": {
-        "behat/behat": "^3.0",
+        "sensio/generator-bundle": "^3.0",
+        "symfony/web-server-bundle": "3.4.*",
+        "behat/behat": "^3.4",
         "behat/mink-browserkit-driver": "^1.3",
         "behat/mink-extension": "^2.2",
         "behat/mink-goutte-driver": "^1.2",
         "behat/mink-selenium2-driver": "^1.3",
-        "behat/symfony2-extension": "^2.0",
-        "friendsofsymfony/user-bundle": "~2.0",
+        "behat/symfony2-extension": "^2.1",
         "mockery/mockery": "^0.9.5",
-        "mysql-workbench-schema-exporter/doctrine2-exporter": "^3.0",
-        "mysql-workbench-schema-exporter/mysql-workbench-schema-exporter": "^3.0",
         "phpmd/phpmd": "^2.4",
         "phpoffice/phpexcel": "^1.8",
         "phpoffice/phpword": "^0.13.0",
-        "satooshi/php-coveralls": "^1.0",
+        "satooshi/php-coveralls": "^2.0",
         "se/selenium-server-standalone": "^2.0",
         "sebastian/phpcpd": "^2.0",
-        "sensio/generator-bundle": "^3.0",
         "sensiolabs/security-checker": "^4.0",
         "squizlabs/php_codesniffer": "^2.7",
-        "symfony/phpunit-bridge": "dev-master",
-        "symfony/web-server-bundle": "3.4.*",
+        "symfony/phpunit-bridge": "^4.0",
         "tecnickcom/tcpdf": "^6.2"
     },
     "scripts": {
@@ -102,19 +102,20 @@
     "config": {
         "sort-packages": true
     },
+    "bin": ["check-src"],
     "extra": {
-        "symfony-app-dir": "app",
+        "symfony-app-dir": "tests/app",
         "symfony-bin-dir": "bin",
         "symfony-var-dir": "var",
         "symfony-web-dir": "web",
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
-            "file": "app/config/parameters.yml",
+            "file": "tests/app/config/parameters.yml",
             "keep-outdated": true
         },
         "branch-alias": {
-            "dev-master": "3.0-dev"
+            "dev-master": "3.4-dev"
         }
     }
 }

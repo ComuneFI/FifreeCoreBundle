@@ -1,36 +1,39 @@
-<div id="testatadettaglio" class="ui-jqdialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">Nuova riga 
-  <a class="fi-default-chiudi ui-jqdialog-titlebar-close ui-corner-all ui-state-hover" onclick="chiudiDettaglio({});" style="right: 0.3em;"><span class="ui-icon ui-icon-closethick"></span></a>
+<div id="testatadettaglio" class="ui-jqdialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">Nuovo {{nomecontroller}}
+    <a class="fi-default-chiudi ui-jqdialog-titlebar-close ui-corner-all ui-state-hover" onclick="chiudiDettaglio({overlayclose: 1});" style="right: 0.3em;"><span class="ui-icon ui-icon-closethick"></span></a>
 </div>
 
 <div id="corpodettaglio" class="ui-jqdialog-content ui-widget-content">
-  {% if (errori is defined and errori is not null)  %}
-    <ul class="error_list">
-      <li>{{ errori  }}</li>
-    </ul>
-  {% endif  %}
+    {% if (errori is defined and errori is not null)  %}
+        <ul class="error_list">
+            <li>{{ errori  }}</li>
+        </ul>
+    {% endif  %}
 
-  {{ form_start(form) }}
+    {% set vars = {'form': form,"tipo":"new"} %}
+    {% include 'FiCoreBundle:Standard:form.html.twig' with vars %}
 
-  {{ form_widget(form) }}
-  <p>
-    <a class="fi-default-salva fm-button ui-state-default ui-corner-all fm-button-icon-left" id="sData{{nomecontroller}}S" onclick="presubmit('formdati{{nomecontroller}}');">Salva<span class="ui-icon ui-icon-disk"></span></a>
-  </p>
+    <div id="bottoni" class="acapo" style="padding-top: 1em">
+        <p>
+            <a class="fi-default-salva fm-button ui-state-default ui-corner-all fm-button-icon-left" id="sData{{nomecontroller}}S" onclick="presubmit('formdati{{nomecontroller}}');">Salva<span class="ui-icon ui-icon-disk"></span></a>
+        </p>
+    </div>
 
-  <input type="submit" style="display: none;"/>
-  {{ form_end(form) }}
+</div>
+</div>
 
-  <script type="text/javascript">
+
+<script type="text/javascript">
     var validato = false;
     $("#formdati{{nomecontroller}}").submit(function (e) {
-      validato = true;
-      e.preventDefault();
-      return false;
+        validato = true;
+        e.preventDefault();
+        return false;
     });
 
     $("#sData{{nomecontroller}}S").click(function () {
-      if (validato) {
-        salvaDettaglio({'tabella': '{{nomecontroller}}', 'formdati': '#formdati{{nomecontroller}}', 'id': '{{ 0 }}'});
-      }
+        if (validato) {
+            salvaDettaglio({'tabella': '{{nomecontroller}}', 'formdati': '#formdati{{nomecontroller}}', 'id': '{{ 0 }}'});
+        }
     });
 
     /*$(document).keypress(function (event) {
@@ -59,11 +62,11 @@
 
     $(function () {
 
-      $(".ficorebundle_datepicker").datepicker({
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'dd/mm/yy'
-      });
+        $(".ficorebundle_datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy'
+        });
 
     });
-  </script>
+</script>

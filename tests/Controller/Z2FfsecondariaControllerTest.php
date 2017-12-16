@@ -81,6 +81,11 @@ class Z2FfsecondariaControllerTest extends FifreeTest
 //$page = $session->getPage();
 
         sleep(1);
+
+        $this->configuratabelleoperation($session, $page);
+
+        $this->validationoperation($session, $page);
+
         $this->crudoperation($session, $page);
 
         $this->searchoperation($session, $page);
@@ -105,7 +110,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        sleep(3);
+        sleep(1);
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'ffsecondaria_';
         } else {
@@ -192,6 +197,164 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session);
     }
 
+    private function configuratabelleoperation($session, $page)
+    {
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'ffsecondaria_';
+        } else {
+            $fieldprefix = 'fi_corebundle_ffsecondariatype_';
+        }
+        /**/
+        $elementcalc = $page->findAll('css', '.ui-icon-calculator');
+
+        foreach ($elementcalc as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+        $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowidcal);';
+        $session->evaluateScript('function(){ var rowidcal = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
+        parent::ajaxWait($session, 20000);
+        sleep(1);
+
+        $selector = 'input[name=ordineindex]';
+        $element = $page->find('css', $selector);
+
+        if (empty($element)) {
+            echo $page->getHtml();
+            throw new \Exception("No html element found for the selector ('$selector')");
+        }
+
+        $element->doubleClick();
+        $script = 'function(){$("input[name=mostraindex]").prop("checked", false);}()';
+        $session->evaluateScript($script);
+
+        //$script = 'function(){$("#listconfigura").trigger("keydown", {which: 50});}()';
+        //$session->evaluateScript($script);
+        $jsSaveFirstRow = '$("#listconfigura").saveRow(rowidcalsave);';
+        $session->evaluateScript('function(){ var rowidcalsave = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSaveFirstRow . '}()');
+        parent::ajaxWait($session, 20000);
+
+        $selector = '.ui-icon-circle-close';
+        $element = $page->find('css', $selector);
+
+        if (empty($element)) {
+            throw new \Exception("No html element found for the selector ('$selector')");
+        }
+
+        $element->click();
+
+        $elementattivo = $page->findAll('css', '#jqgh_list1_attivo');
+        foreach ($elementattivo as $e) {
+            $this->assertTrue(!$e->isVisible());
+        }
+
+        /**/
+        sleep(1);
+        $elementcalc = $page->findAll('css', '.ui-icon-calculator');
+
+        foreach ($elementcalc as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+        $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowid);';
+        $session->evaluateScript('function(){ var rowid = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
+        parent::ajaxWait($session, 20000);
+        sleep(1);
+        $selector = 'input[name=ordineindex]';
+        $element = $page->find('css', $selector);
+
+        if (empty($element)) {
+            throw new \Exception("No html element found for the selector ('$selector')");
+        }
+
+        $element->doubleClick();
+        $script = 'function(){$("input[name=mostraindex]").prop("checked", true);}()';
+        $session->evaluateScript($script);
+
+        //$script = 'function(){$("#listconfigura").trigger("keydown", {which: 50});}()';
+        //$session->evaluateScript($script);
+
+        $jsSaveFirstRow = '$("#listconfigura").saveRow(rowidcalsave);';
+        $session->evaluateScript('function(){ var rowidcalsave = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSaveFirstRow . '}()');
+        parent::ajaxWait($session, 20000);
+
+        $selector = '.ui-icon-circle-close';
+        $element = $page->find('css', $selector);
+
+        if (empty($element)) {
+            throw new \Exception("No html element found for the selector ('$selector')");
+        }
+
+        $element->click();
+
+        $elementattivo = $page->findAll('css', '#jqgh_list1_attivo');
+        foreach ($elementattivo as $e) {
+            $this->assertTrue($e->isVisible());
+        }
+    }
+
+    private function validationoperation($session, $page)
+    {
+        parent::ajaxWait($session, 20000);
+
+        $elementadd = $page->findAll('css', '.ui-icon-plus');
+
+        foreach ($elementadd as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+
+        parent::ajaxWait($session, 20000);
+        /* Inserimento */
+        $descrizionetest1 = 'Test inserimento descrizione automatico';
+        sleep(1);
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'ffsecondaria_';
+        } else {
+            $fieldprefix = 'fi_corebundle_ffsecondariatype_';
+        }
+        $page->fillField($fieldprefix . 'descsec', $descrizionetest1);
+        $page->selectFieldOption($fieldprefix . 'ffprincipale', 1);
+        $page->selectFieldOption($fieldprefix . 'data_day', (int) date('d'));
+        $page->selectFieldOption($fieldprefix . 'data_month', (int) date('m'));
+        $page->selectFieldOption($fieldprefix . 'data_year', (int) date('Y'));
+        $page->fillField($fieldprefix . 'importo', 1);
+        $page->fillField($fieldprefix . 'intero', 1);
+        $page->fillField($fieldprefix . 'nota', 'Prova la nota validation');
+        $page->fillField($fieldprefix . 'attivo', 0);
+
+        $page->find('css', 'a#sDataFfsecondariaS')->click();
+        parent::ajaxWait($session);
+        $elementvalid = $page->findAll('css', '.error_list');
+
+        foreach ($elementvalid as $e) {
+            $this->assertTrue($e->isVisible());
+        }
+
+        $page->fillField($fieldprefix . 'importo', 2);
+        $page->fillField($fieldprefix . 'intero', 2);
+        $page->find('css', 'a#sDataFfsecondariaS')->click();
+        parent::ajaxWait($session);
+
+        /* Cancellazione */
+        $jsSetFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
+        $elementdel = $page->findAll('css', '.ui-icon-trash');
+
+        foreach ($elementdel as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        $page->find('css', 'a#dData')->click();
+        parent::ajaxWait($session);
+    }
+
     private function searchoperation($session, $page)
     {
         parent::ajaxWait($session, 20000);
@@ -224,7 +387,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         }
         parent::ajaxWait($session, 20000);
         $search2 = '1°';
-//$page->selectFieldOption('inizia con', "cn");
+        //$page->selectFieldOption('inizia con', "cn");
         $var2 = '"cn"';
         $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
 
@@ -236,7 +399,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
 
         $numrowsgrid2 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
-        $this->assertEquals(4, $numrowsgrid2);
+        $this->assertEquals(5, $numrowsgrid2);
         parent::ajaxWait($session, 20000);
         sleep(1);
 
@@ -276,10 +439,101 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $numrowsgrid3 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid3);
 
-//reset filtri
+        //reset filtri
         $elementsearch4 = $page->findAll('css', '.ui-icon-search');
 
         foreach ($elementsearch4 as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+        $page->find('css', 'a#fbox_list1_reset')->click();
+        sleep(1);
+
+
+        /* Ricerca 4 */
+        $elementsearch4 = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch4 as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+        /**/
+        $var5 = '"attivo"';
+        $selector5 = '#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first';
+        $javascript5 = "$('" . $selector5 . ' option[value=' . $var5 . "]').attr('selected', 'selected').change();";
+        parent::ajaxWait($session, 20000);
+        $session->executeScript($javascript5);
+        parent::ajaxWait($session, 20000);
+        /**/
+
+        $page->find('css', 'a#fbox_list1_search')->click();
+        parent::ajaxWait($session, 20000);
+
+        $numrowsgrid5 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(9, $numrowsgrid5);
+        parent::ajaxWait($session, 20000);
+        sleep(1);
+
+        /* Ricerca 5 */
+        $elementsearch5 = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch4 as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+        /**/
+        $var6 = '"true"';
+        $selector6 = '.input-elm';
+        $javascript6 = "$('" . $selector6 . ' option[value=' . $var6 . "]').attr('selected', 'selected').change();";
+        parent::ajaxWait($session, 20000);
+        $session->executeScript($javascript6);
+        parent::ajaxWait($session, 20000);
+        /**/
+
+        $page->find('css', 'a#fbox_list1_search')->click();
+        parent::ajaxWait($session, 20000);
+
+        $numrowsgrid5 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(6, $numrowsgrid5);
+        parent::ajaxWait($session, 20000);
+        sleep(1);
+
+        /* Ricerca 6 */
+        $elementsearch6 = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch6 as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+        /**/
+        $var6 = '"false"';
+        $selector6 = '.input-elm';
+        $javascript6 = "$('" . $selector6 . ' option[value=' . $var6 . "]').attr('selected', 'selected').change();";
+        parent::ajaxWait($session, 20000);
+        $session->executeScript($javascript6);
+        parent::ajaxWait($session, 20000);
+        /**/
+
+        $page->find('css', 'a#fbox_list1_search')->click();
+        parent::ajaxWait($session, 20000);
+
+        $numrowsgrid5 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(3, $numrowsgrid5);
+        parent::ajaxWait($session, 20000);
+        sleep(1);
+
+        //reset filtri
+        $elementsearch6 = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch6 as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
@@ -307,7 +561,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
             $page = $session->getPage();
-            sleep(3);
+            sleep(1);
             $element = $page->find('css', '.textLayer');
 
             if (empty($element)) {
@@ -344,6 +598,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $this->assertEquals(count($ff), 1);
         $this->assertEquals($ff[0]->getValoreprecedente(), $valoreprecedente);
     }
+
 }
 
 /* $client = $this->getClientAutorizzato();

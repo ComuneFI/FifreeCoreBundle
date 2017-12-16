@@ -124,6 +124,17 @@ class MenuApplicazioneControllerTest extends FifreeTest
 
         $page->find('css', 'a#sDataMenuApplicazioneS')->click();
         parent::ajaxWait($session);
+        
+        $em = $this->getEntityManager();
+        $qb2 = $em->createQueryBuilder();
+        $qb2->select(array('a'));
+        $qb2->from('FiCoreBundle:MenuApplicazione', 'a');
+        $qb2->where('a.nome = :descrizione');
+        $qb2->setParameter('descrizione', $descrizionetest2);
+        $record2 = $qb2->getQuery()->getResult();
+        $recorddelete = $record2[0];
+        $this->assertEquals($recorddelete->getNome(), $descrizionetest2);
+        
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');

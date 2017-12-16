@@ -1,5 +1,5 @@
-<div id="testatadettaglio" class="ui-jqdialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" style="height: 15px;">Modifica {{nomecontroller}}
-    <a class="fi-default-chiudi ui-jqdialog-titlebar-close ui-corner-all ui-state-hover" onclick="chiudiDettaglio({});" style="right: 0.3em;"><span class="ui-icon ui-icon-closethick"></span></a>
+<div id="testatadettaglio" class="ui-jqdialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">Modifica {{nomecontroller}}
+    <a class="fi-default-chiudi ui-jqdialog-titlebar-close ui-corner-all ui-state-hover" onclick="chiudiDettaglio({overlayclose: 1});" style="right: 0.3em;"><span class="ui-icon ui-icon-closethick"></span></a>
 </div>
 
 <div id="corpodettaglio" class="ui-jqdialog-content ui-widget-content">
@@ -9,19 +9,19 @@
         </ul>
     {% endif  %}
 
-    {{ form_start(edit_form) }}
-    <input type="submit" style="display: none;"/>
-    <input type="hidden" name="_method" value="PUT" />
-    {{ form_widget(edit_form) }}
-    <p>
-        {% if ("u" | permesso) %}
-            <a class="fi-default-salva fm-button ui-state-default ui-corner-all fm-button-icon-left" id="sData{{nomecontroller}}S" onclick="presubmit('formdati{{nomecontroller}}');">Salva<span class="ui-icon ui-icon-disk"></span></a>
-            {% endif %}
-            {% if ("d" | permesso) %}
-            <a class="fi-default-elimina fm-button ui-state-default ui-corner-all fm-button-icon-left" id="sData{{nomecontroller}}D">Elimina<span class="ui-icon ui-icon-trash"></span></a>
-            {% endif %}
-    </p>
-    {{ form_end(edit_form) }}
+    {% set vars = {'form': edit_form,"tipo":"edit"} %}
+    {% include 'FiCoreBundle:Standard:form.html.twig' with vars %}
+
+    <div id="bottoni" class="acapo" style="padding-top: 1em">
+        <p>
+            {% if ("u" | permesso) %}
+                <a class="fi-default-salva fm-button ui-state-default ui-corner-all fm-button-icon-left" id="sData{{nomecontroller}}S" onclick="presubmit('formdati{{nomecontroller}}');">Salva<span class="ui-icon ui-icon-disk"></span></a>
+                {% endif %}
+                {% if ("d" | permesso) %}
+                <a class="fm-button ui-state-default ui-corner-all fm-button-icon-left" id="sData" onclick="eliminaDettaglio({'overlayclose': 1, 'tabella': '{{nomecontroller}}', 'id': '{{ entity.id }}'});">Elimina<span class="ui-icon ui-icon-trash"></span></a>
+                {% endif %}
+        </p>
+    </div>
 </div>
 
 <script type="text/javascript">

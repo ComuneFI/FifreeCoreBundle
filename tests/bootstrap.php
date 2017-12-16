@@ -4,14 +4,14 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 
-passthru(sprintf(
-                'php "%s/console" cache:clear --no-debug --env=%s', __DIR__ . '/../bin/', "test"
-));
+clearcache();
+
+require __DIR__ . '/../vendor/autoload.php';
 
 function startTests()
 {
-    removecache();
-    //clearcache();
+    //removecache();
+    clearcache();
     cleanFilesystem();
 }
 
@@ -36,26 +36,9 @@ function removecache()
 
 function clearcache()
 {
-    $vendorDir = dirname(dirname(__FILE__));
-    if (OsFunctions::isWindows()) {
-        $phpPath = OsFunctions::getPHPExecutableFromPath();
-    } else {
-        $phpPath = '/usr/bin/php';
-    }
-    $console = $vendorDir . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'console';
-    if (file_exists($console)) {
-        $command = $phpPath . ' ' . $console . ' cache:clear --no-debug --env=test';
-        $process = new Process($command);
-        $process->setTimeout(60 * 100);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            echo getErrorText($process, $command);
-        } else {
-            echo $process->getOutput();
-        }
-    } else {
-        echo $console . " not found";
-    }
+    passthru(sprintf(
+                    'php "%s/console" cache:clear --no-debug --env=%s', __DIR__ . '/../bin/', "test"
+    ));
 }
 
 function getErrorText($process, $command)
@@ -68,7 +51,7 @@ function getErrorText($process, $command)
 function cleanFilesystem()
 {
     $DELETE = "new Fi\ProvaBundle\FiProvaBundle(),";
-    $vendorDir = dirname(dirname(__FILE__)) . '/';
+    $vendorDir = dirname(dirname(__FILE__) . '/tests');
     $kernelfile = $vendorDir . '/app/AppKernel.php';
     deleteLineFromFile($kernelfile, $DELETE);
     $routingfile = $vendorDir . '/app/config/routing.yml';
@@ -132,4 +115,9 @@ function deleteLineFromFile($file, $DELETE)
     }
     flock($fp, LOCK_UN);
     fclose($fp);
+}
+
+function writestdout($buffer)
+{
+    fwrite(STDOUT, print_r($buffer . "\n", TRUE));
 }

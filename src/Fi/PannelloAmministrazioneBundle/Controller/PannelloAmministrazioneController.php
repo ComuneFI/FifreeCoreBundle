@@ -186,16 +186,19 @@ class PannelloAmministrazioneController extends Controller
             $commands = new Commands($this->container);
             $bundleName = $request->get('bundlename');
             $result = $commands->generateBundle($bundleName);
-            $msg = "Per abilitare il nuovo bundle nel kernel pulire la cache e aggiornare la pagina";
-            echo '<script type="text/javascript">alert("' . $msg . '");location.reload(); </script>';
+            if ($result["errcode"] >= 0) {
+                //$msg = "\nPer abilitare il nuovo bundle nel kernel pulire la cache e aggiornare la pagina";
+                //$alert = '<script type="text/javascript">alert("' . $msg . '");location.reload();</script>';
+                //$result['message'] = $result['message'] . $msg;
+            }
             (new LockSystem($this->container))->lockFile(false);
             //Uso exit perchè la render avendo creato un nuovo bundle schianta perchè non è caricato nel kernel il nuovo bundle ancora
             //exit;
             $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
 
-            $commands->clearcache();
-            $this->container->get('kernel')->shutdown();
-            $this->container->get('kernel')->boot();
+            //$commands->clearcache();
+            //$this->container->get('kernel')->shutdown();
+            //$this->container->get('kernel')->boot();
 
             return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
         }
@@ -228,6 +231,11 @@ class PannelloAmministrazioneController extends Controller
 
     /* CLEAR CACHE */
 
+    /**
+     * Suppress PMD warnings per exit.
+     *
+     * @SuppressWarnings(PHPMD)
+     */
     public function clearCacheAction(Request $request)
     {
         set_time_limit(0);
@@ -236,14 +244,14 @@ class PannelloAmministrazioneController extends Controller
         } else {
             (new LockSystem($this->container))->lockFile(true);
             $commands = new Commands($this->container);
-
             $result = $commands->clearcache();
 
             (new LockSystem($this->container))->lockFile(false);
 
             /* Uso exit perchè new response avendo cancellato la cache schianta non avendo più a disposizione i file */
             //return $commanddev . '<br/>' . $cmdoutputdev . '<br/><br/>' . $commandprod . '<br/>' . $cmdoutputprod;
-            return new Response(nl2br($result));
+            //return new Response(nl2br($result));
+            exit(nl2br($result));
         }
     }
 
@@ -278,6 +286,11 @@ class PannelloAmministrazioneController extends Controller
         }
     }
 
+    /**
+     * Suppress PMD warnings per exit.
+     *
+     * @SuppressWarnings(PHPMD)
+     */
     public function unixCommandAction(Request $request)
     {
         set_time_limit(0);
@@ -303,7 +316,7 @@ class PannelloAmministrazioneController extends Controller
                             str_replace(';', '<br/>', str_replace('&&', '<br/>', $command)) .
                             '</i><br/><i style = "color: red;">' . str_replace("\n", '<br/>', $result['errmsg']) . '</i>';
 
-                    return new Response($responseout);
+                    exit(nl2br($responseout));
                 }
 
                 return new Response('File di lock cancellato');
@@ -324,7 +337,8 @@ class PannelloAmministrazioneController extends Controller
                         str_replace(';', '<br/>', str_replace('&&', '<br/>', $command)) .
                         '</i><br/><i style = "color: red;">' . nl2br($result['errmsg']) . '</i>';
 
-                return new Response($errmsg);
+                //return new Response($errmsg);
+                exit(nl2br($errmsg));
                 //Uso exit perchè new response avendo cancellato la cache schianta non avendo più a disposizione i file
                 //return;
                 /* return new Response('Errore nel comando: <i style = "color: white;">' .
@@ -334,7 +348,8 @@ class PannelloAmministrazioneController extends Controller
                     str_replace(';', '<br/>', str_replace('&&', '<br/>', $command)) . '</i><br/>' .
                     nl2br($result['errmsg']) . '</pre>';
             //Uso exit perchè new response avendo cancellato la cache schianta non avendo più a disposizione i file
-            return new Response($msgok);
+            //return new Response($msgok);
+            exit(nl2br($msgok));
             //return;
             /* return new Response('<pre>Eseguito comando: <i style = "color: white;">' . $command .
              * '</i><br/>' . str_replace("\n", "<br/>", $process->getOutput()) . "</pre>"); */

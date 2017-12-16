@@ -285,31 +285,45 @@ class TabelleController extends FiCoreController
         return new Response(Griglia::datiPerGriglia($paricevuti));
     }
 
-    /**
-     * Creates a new Ffprincipale entity.
-     */
     public function grigliaAction(Request $request)
     {
-        parent::setup($request);
+        $this->setParametriGriglia(array('request' => $request));
+        $paricevuti = self::$parametrigriglia;
+
+        return new Response(Griglia::datiPerGriglia($paricevuti));
+    }
+
+    protected function setParametriGriglia($prepar = array())
+    {
+        self::setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        $nomebundle = $namespace . $bundle . 'Bundle';
-        $em = $this->getDoctrine()->getManager();
+        $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
+        $canRead = ($gestionepermessi->leggere(array('modulo' => $controller)) ? 1 : 0);
+        if (!$canRead) {
+            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
+        }
 
-        $tabellej['operatori_id'] = array('tabella' => 'operatori', 'campi' => array('username', 'operatore'));
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $tabellej = array();
+        $tabellej['operatori_id'] = array('tabella' => 'operatori', 'campi' => array('username'));
+        $escludi = array("operatori"); //'operatori_id'
 
         $paricevuti = array(
-            'request' => $request,
-            'doctrine' => $em,
+            'container' => $this->container,
             'nomebundle' => $nomebundle,
             'nometabella' => $controller,
             'tabellej' => $tabellej,
-            'container' => $this->container,
+            'escludere' => $escludi
         );
 
-        return new Response(Griglia::datiPerGriglia($paricevuti));
+        if ($prepar) {
+            $paricevuti = array_merge($paricevuti, $prepar);
+        }
+
+        self::$parametrigriglia = $paricevuti;
     }
 
     public function listacampitabellaAction(Request $request)
