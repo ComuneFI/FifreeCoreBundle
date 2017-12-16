@@ -102,7 +102,7 @@ after_success:
   - if [[ "$TRAVIS_PHP_VERSION" == "7.2" ]]; then php vendor/satooshi/php-coveralls/bin/coveralls -v; fi
   - rm tests/app/dbtest.sqlite
   - php bin/console server:stop --env=test
-  - pkill java
+  - kill `ps -ef | grep selenium | awk '{ print $2 }'`
 
 after_failure:
   - sudo cat /var/log/apache2/error.log

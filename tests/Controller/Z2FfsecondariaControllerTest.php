@@ -213,12 +213,13 @@ class Z2FfsecondariaControllerTest extends FifreeTest
             }
         }
         parent::ajaxWait($session, 20000);
-        $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
+        $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowidcal);';
+        $session->evaluateScript('function(){ var rowidcal = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
         parent::ajaxWait($session, 20000);
         sleep(1);
-        $selector = '18_ordineindex';
-        $element = $page->find('css', "#" . $selector);
+
+        $selector = 'input[name=ordineindex]';
+        $element = $page->find('css', $selector);
 
         if (empty($element)) {
             echo $page->getHtml();
@@ -231,10 +232,10 @@ class Z2FfsecondariaControllerTest extends FifreeTest
 
         $script = 'function(){$("input").trigger("keydown", {which: 50});}()';
         $session->evaluateScript($script);
-        
+
         $script = 'function(){$("input").trigger("keydown", {which: 50});}()';
         $session->evaluateScript($script);
-        
+
         /**/
         sleep(5);
         $elementcalc = $page->findAll('css', '.ui-icon-calculator');
@@ -249,8 +250,8 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $session->evaluateScript('function(){ var rowid = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
         parent::ajaxWait($session, 20000);
         sleep(1);
-        $selector = '18_ordineindex';
-        $element = $page->find('css', "#" . $selector);
+        $selector = 'input[name=ordineindex]';
+        $element = $page->find('css', $selector);
 
         if (empty($element)) {
             throw new \Exception("No html element found for the selector ('$selector')");
@@ -259,7 +260,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $element->doubleClick();
         $script = 'function(){$("#18_mostraindex").prop("checked", true);}()';
         $session->evaluateScript($script);
-        
+
         $script = 'function(){$("input").trigger("keydown", {which: 50});}()';
         $session->evaluateScript($script);
 
