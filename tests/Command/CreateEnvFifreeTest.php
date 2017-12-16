@@ -32,26 +32,57 @@ class CreateEnvFifreeTest extends WebTestCase
 //        //$this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
 //    }
 //
-    /* public function test10InstallFifree()
-      {
+/*    public function test10InstallFifree()
+    {
 
-      $kernel = $this->createKernel();
-      $kernel->boot();
+        $kernel = $this->createKernel();
+        $kernel->boot();
 
-      $application = new Application($kernel);
-      $application->add(new \Fi\CoreBundle\Command\Fifree2droptablesCommand());
+        $application = new Application($kernel);
+        $application->add(new \Fi\CoreBundle\Command\Fifree2droptablesCommand());
 
-      $command = $application->find('fifree2:droptables');
-      $commandTester = new CommandTester($command);
-      $commandTester->execute(
-      array(
-      '--force' => true,
-      '--no-interaction' => 'true'
-      )
-      );
+        $command = $application->find('fifree2:droptables');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+                array(
+                    '--force' => true,
+                    '--no-interaction' => 'true'
+                )
+        );
 
-      $this->assertRegExp('/.../', $commandTester->getDisplay());
-      } */
+        $this->assertRegExp('/.../', $commandTester->getDisplay());
+
+        $application = new Application($kernel);
+        $application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
+
+        $command = $application->find('fifree2:dropdatabase');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+                array(
+                    '--force' => true,
+                    '--no-interaction' => true
+                )
+        );
+
+        $this->assertRegExp('/.../', $commandTester->getDisplay());
+
+        $application = new Application(static::$kernel);
+        $application->add(new \Fi\CoreBundle\Command\Fifree2installCommand());
+        $application->add(new \Fi\CoreBundle\Command\Fifree2createdatabaseCommand());
+        $application->add(new \Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand());
+
+        $command = $application->find('fifree2:install');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+                array(
+                    'admin' => 'admin',
+                    'adminpass' => 'admin',
+                    'adminemail' => 'admin@admin.it'
+                )
+        );
+
+        $this->assertRegExp('/.../', $commandTester->getDisplay());
+    }*/
 
     public function test20InstallFifree()
     {
@@ -94,17 +125,17 @@ class CreateEnvFifreeTest extends WebTestCase
           );
 
           $this->assertRegExp('/.../', $commandTester->getDisplay()); */
-        $container = $this->getContainer();
+        $container = static::$kernel->getContainer();
         $username4test = $container->getParameter('user4test');
-        $em = $this->getEntityManager();
+        $em = $container->get('doctrine')->getManager();
         $qb2 = $em->createQueryBuilder();
         $qb2->select(array('a'));
         $qb2->from('FiCoreBundle:Operatori', 'a');
-        $qb2->where('a.operatore = :descrizione');
+        $qb2->where('a.username = :descrizione');
         $qb2->setParameter('descrizione', $username4test);
         $record2 = $qb2->getQuery()->getResult();
         $recorddelete = $record2[0];
-        $this->assertEquals($recorddelete->getOperatore(), $username4test);
+        $this->assertEquals($recorddelete->getUsername(), $username4test);
     }
 
     public function test30InstallFifree()
