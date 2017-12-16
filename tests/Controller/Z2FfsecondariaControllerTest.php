@@ -221,6 +221,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $element = $page->find('css', "#" . $selector);
 
         if (empty($element)) {
+            echo $page->getHtml();
             throw new \Exception("No html element found for the selector ('$selector')");
         }
 
