@@ -285,31 +285,39 @@ class TabelleController extends FiCoreController
         return new Response(Griglia::datiPerGriglia($paricevuti));
     }
 
-    /**
-     * Creates a new Ffprincipale entity.
-     */
     public function grigliaAction(Request $request)
     {
-        parent::setup($request);
+        $this->setParametriGriglia(array('request' => $request));
+        $paricevuti = self::$parametrigriglia;
+
+        return new Response(Griglia::datiPerGriglia($paricevuti));
+    }
+
+    protected function setParametriGriglia($prepar = array())
+    {
+        self::setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
+        $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
+        $canRead = ($gestionepermessi->leggere(array('modulo' => $controller)) ? 1 : 0);
+        if (!$canRead) {
+            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
+        }
+
         $nomebundle = $namespace . $bundle . 'Bundle';
-        $em = $this->getDoctrine()->getManager();
+        $tabellej = array();
+        $tabellej['operatori_id'] = array('tabella' => 'operatori', 'campi' => array('username'));
+        $escludi = array("operatori"); //'operatori_id'
 
-        $tabellej['operatori_id'] = array('tabella' => 'operatori', 'campi' => array('username', 'operatore'));
+        $paricevuti = array('container' => $this->container, 'nomebundle' => $nomebundle, 'nometabella' => $controller, 'tabellej' => $tabellej, 'escludere' => $escludi);
 
-        $paricevuti = array(
-            'request' => $request,
-            'doctrine' => $em,
-            'nomebundle' => $nomebundle,
-            'nometabella' => $controller,
-            'tabellej' => $tabellej,
-            'container' => $this->container,
-        );
+        if ($prepar) {
+            $paricevuti = array_merge($paricevuti, $prepar);
+        }
 
-        return new Response(Griglia::datiPerGriglia($paricevuti));
+        self::$parametrigriglia = $paricevuti;
     }
 
     public function listacampitabellaAction(Request $request)
@@ -415,4 +423,5 @@ class TabelleController extends FiCoreController
 
         return $risposta;
     }
+
 }

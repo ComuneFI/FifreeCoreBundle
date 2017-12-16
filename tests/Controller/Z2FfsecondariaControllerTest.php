@@ -81,6 +81,9 @@ class Z2FfsecondariaControllerTest extends FifreeTest
 //$page = $session->getPage();
 
         sleep(1);
+
+        $this->configuratabelleoperation($session, $page);
+
         $this->validationoperation($session, $page);
 
         $this->crudoperation($session, $page);
@@ -194,6 +197,77 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session);
     }
 
+    private function configuratabelleoperation($session, $page)
+    {
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'ffsecondaria_';
+        } else {
+            $fieldprefix = 'fi_corebundle_ffsecondariatype_';
+        }
+        /**/
+        $elementcalc = $page->findAll('css', '.ui-icon-calculator');
+
+        foreach ($elementcalc as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+        $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowid);';
+        $session->evaluateScript('function(){ var rowid = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
+        $selector = '18_ordineindex';
+        $element = $page->find('css', "#" . $selector);
+
+        if (empty($element)) {
+            throw new \Exception("No html element found for the selector ('$selector')");
+        }
+
+        $element->doubleClick();
+        $script = 'function(){$("#18_mostraindex").prop("checked", false);}()';
+        $session->evaluateScript($script);
+
+        $script = 'function(){$("input").trigger("keydown", {which: 50});}()';
+        $session->evaluateScript($script);
+        
+        $script = 'function(){$("input").trigger("keydown", {which: 50});}()';
+        $session->evaluateScript($script);
+        
+        /**/
+        sleep(5);
+        $elementcalc = $page->findAll('css', '.ui-icon-calculator');
+
+        foreach ($elementcalc as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        parent::ajaxWait($session, 20000);
+        $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowid);';
+        $session->evaluateScript('function(){ var rowid = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
+        $selector = '18_ordineindex';
+        $element = $page->find('css', "#" . $selector);
+
+        if (empty($element)) {
+            throw new \Exception("No html element found for the selector ('$selector')");
+        }
+
+        $element->doubleClick();
+        $script = 'function(){$("#18_mostraindex").prop("checked", true);}()';
+        $session->evaluateScript($script);
+        
+        $script = 'function(){$("input").trigger("keydown", {which: 50});}()';
+        $session->evaluateScript($script);
+
+        $selector = '.ui-icon-circle-close';
+        $element = $page->find('css', $selector);
+
+        if (empty($element)) {
+            throw new \Exception("No html element found for the selector ('$selector')");
+        }
+
+        $element->click();
+    }
+
     private function validationoperation($session, $page)
     {
         parent::ajaxWait($session, 20000);
@@ -237,7 +311,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $page->fillField($fieldprefix . 'intero', 2);
         $page->find('css', 'a#sDataFfsecondariaS')->click();
         parent::ajaxWait($session);
-        
+
         /* Cancellazione */
         $jsSetFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
