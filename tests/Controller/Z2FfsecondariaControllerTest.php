@@ -81,6 +81,8 @@ class Z2FfsecondariaControllerTest extends FifreeTest
 //$page = $session->getPage();
 
         sleep(1);
+        $this->validationoperation($session, $page);
+
         $this->crudoperation($session, $page);
 
         $this->searchoperation($session, $page);
@@ -192,6 +194,64 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session);
     }
 
+    private function validationoperation($session, $page)
+    {
+        parent::ajaxWait($session, 20000);
+
+        $elementadd = $page->findAll('css', '.ui-icon-plus');
+
+        foreach ($elementadd as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+
+        parent::ajaxWait($session, 20000);
+        /* Inserimento */
+        $descrizionetest1 = 'Test inserimento descrizione automatico';
+        sleep(1);
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'ffsecondaria_';
+        } else {
+            $fieldprefix = 'fi_corebundle_ffsecondariatype_';
+        }
+        $page->fillField($fieldprefix . 'descsec', $descrizionetest1);
+        $page->selectFieldOption($fieldprefix . 'ffprincipale', 1);
+        $page->selectFieldOption($fieldprefix . 'data_day', (int) date('d'));
+        $page->selectFieldOption($fieldprefix . 'data_month', (int) date('m'));
+        $page->selectFieldOption($fieldprefix . 'data_year', (int) date('Y'));
+        $page->fillField($fieldprefix . 'importo', 1);
+        $page->fillField($fieldprefix . 'intero', 1);
+        $page->fillField($fieldprefix . 'nota', 'Prova la nota validation');
+        $page->fillField($fieldprefix . 'attivo', 0);
+
+        $page->find('css', 'a#sDataFfsecondariaS')->click();
+        parent::ajaxWait($session);
+        $elementvalid = $page->findAll('css', '.error_list');
+
+        foreach ($elementvalid as $e) {
+            $this->assertTrue($e->isVisible());
+        }
+
+        $page->fillField($fieldprefix . 'importo', 2);
+        $page->fillField($fieldprefix . 'intero', 2);
+        $page->find('css', 'a#sDataFfsecondariaS')->click();
+        parent::ajaxWait($session);
+        
+        /* Cancellazione */
+        $jsSetFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
+        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
+        $elementdel = $page->findAll('css', '.ui-icon-trash');
+
+        foreach ($elementdel as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        $page->find('css', 'a#dData')->click();
+        parent::ajaxWait($session);
+    }
+
     private function searchoperation($session, $page)
     {
         parent::ajaxWait($session, 20000);
@@ -287,8 +347,8 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
         $page->find('css', 'a#fbox_list1_reset')->click();
         sleep(1);
-        
-        
+
+
         /* Ricerca 4 */
         $elementsearch4 = $page->findAll('css', '.ui-icon-search');
 
@@ -306,7 +366,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $session->executeScript($javascript5);
         parent::ajaxWait($session, 20000);
         /**/
-        
+
         $page->find('css', 'a#fbox_list1_search')->click();
         parent::ajaxWait($session, 20000);
 
@@ -314,7 +374,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $this->assertEquals(9, $numrowsgrid5);
         parent::ajaxWait($session, 20000);
         sleep(1);
-        
+
         /* Ricerca 5 */
         $elementsearch5 = $page->findAll('css', '.ui-icon-search');
 
@@ -332,7 +392,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $session->executeScript($javascript6);
         parent::ajaxWait($session, 20000);
         /**/
-        
+
         $page->find('css', 'a#fbox_list1_search')->click();
         parent::ajaxWait($session, 20000);
 
@@ -358,7 +418,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $session->executeScript($javascript6);
         parent::ajaxWait($session, 20000);
         /**/
-        
+
         $page->find('css', 'a#fbox_list1_search')->click();
         parent::ajaxWait($session, 20000);
 
@@ -378,8 +438,6 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         parent::ajaxWait($session, 20000);
         $page->find('css', 'a#fbox_list1_reset')->click();
         sleep(1);
-        
-        
     }
 
     private function printoperations($session, $page)
@@ -437,6 +495,7 @@ class Z2FfsecondariaControllerTest extends FifreeTest
         $this->assertEquals(count($ff), 1);
         $this->assertEquals($ff[0]->getValoreprecedente(), $valoreprecedente);
     }
+
 }
 
 /* $client = $this->getClientAutorizzato();

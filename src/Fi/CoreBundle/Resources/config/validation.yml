@@ -5,6 +5,8 @@ Fi\CoreBundle\Entity\Ffprincipale:
             
 Fi\CoreBundle\Entity\Ffsecondaria:
     properties:
+        descsec:
+            - NotBlank: ~
         importo:
             - Range:
                 min: 2

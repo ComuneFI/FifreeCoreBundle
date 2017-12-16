@@ -24,7 +24,7 @@ composer require fi/fifreecorebundle
     composer install
 
     #Preparare il db
-    rm app/dbtest.sqlite
+    rm tests/app/dbtest.sqlite
     php bin/console fifree:install admin admin admin@admin.it --env=test
     rm -rf var/cache/prod
     rm -rf var/cache/dev
