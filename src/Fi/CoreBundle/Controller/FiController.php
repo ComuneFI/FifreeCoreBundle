@@ -128,10 +128,12 @@ class FiController extends Controller
         $formType = $formbundle . 'Type';
 
         $form = $this->createForm(
-                $formType, $entity, array('attr' => array(
+            $formType,
+            $entity,
+            array('attr' => array(
                 'id' => 'formdati' . $controller,
-            ),
-            'action' => $this->generateUrl($controller . '_create'),
+                ),
+                'action' => $this->generateUrl($controller . '_create'),
                 )
         );
 
