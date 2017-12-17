@@ -80,7 +80,7 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
   - composer install
-  # - php bin/console fifree2:install admin admin admin@admin.it --env=test
+  - php bin/console fifree2:install admin admin admin@admin.it --env=test
   # - php bin/console server:start --env=test
   - sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
   - /usr/bin/php -v
