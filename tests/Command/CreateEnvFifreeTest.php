@@ -38,20 +38,20 @@ class CreateEnvFifreeTest extends WebTestCase
         $kernel = $this->createKernel();
         $kernel->boot();
 
-        $application = new Application($kernel);
-        $application->add(new \Fi\CoreBundle\Command\Fifree2droptablesCommand());
+        /* $application = new Application($kernel);
+          $application->add(new \Fi\CoreBundle\Command\Fifree2droptablesCommand());
 
-        $command = $application->find('fifree2:droptables');
-        $commandTester = new CommandTester($command);
-        $commandTester->execute(
-                array(
-                    '--force' => true,
-                    '--no-interaction' => 'true'
-                )
-        );
+          $command = $application->find('fifree2:droptables');
+          $commandTester = new CommandTester($command);
+          $commandTester->execute(
+          array(
+          '--force' => true,
+          '--no-interaction' => 'true'
+          )
+          );
 
-        $this->assertRegExp('/.../', $commandTester->getDisplay());
-
+          $this->assertRegExp('/.../', $commandTester->getDisplay());
+         */
         $application = new Application($kernel);
         $application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
 
