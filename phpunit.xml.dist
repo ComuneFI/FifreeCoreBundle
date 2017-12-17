@@ -38,7 +38,7 @@
     
     <php>
         <server name="KERNEL_CLASS" value="AppKernel" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="47" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="32" />
     </php>
 
     <filter>
@@ -49,6 +49,5 @@
     
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-        <listener class="Symfony\Bridge\PhpUnit\CoverageListener" />
     </listeners>   
 </phpunit>
