@@ -31,7 +31,7 @@ class StoricomodificheRepository extends EntityRepository
     {
         $this->setup();
 
-        $em = $this->getEntityManager();
+        $em = $this->getManager();
 
         $adesso = new \DateTime();
         foreach ($changes as $fieldName => $change) {
@@ -73,7 +73,7 @@ class StoricomodificheRepository extends EntityRepository
         $risposta = false;
         $controllerTabelle = "Tabelle";
 
-        $em = $this->getEntityManager();
+        $em = $this->getManager();
         $entity = $em->getRepository('FiCoreBundle:' . $controllerTabelle)->findOneBy(
             array(
                     'nometabella' => $controller,

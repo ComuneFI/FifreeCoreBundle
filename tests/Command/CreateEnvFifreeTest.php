@@ -82,8 +82,8 @@ class CreateEnvFifreeTest extends WebTestCase
         );
 
         $this->assertRegExp('/.../', $commandTester->getDisplay());
-    }*/
-
+    }
+*/
     public function test20InstallFifree()
     {
         $console = __DIR__ . '/../../bin/console';

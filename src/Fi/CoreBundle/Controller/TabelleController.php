@@ -185,7 +185,7 @@ class TabelleController extends FiCoreController
         $nomebundle = $namespace . $bundle . 'Bundle';
 
         $nometabella = $parametri['tabella'];
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $bundles = $this->get('kernel')->getBundles();
         foreach ($bundles as $bundle) {
@@ -344,7 +344,7 @@ class TabelleController extends FiCoreController
             $escludiid = 0;
         }
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $bundles = $this->get('kernel')->getBundles();
         foreach ($bundles as $bundle) {

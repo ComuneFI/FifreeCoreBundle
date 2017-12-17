@@ -39,7 +39,7 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
                 $newDefinition['sequenceName'] = $this->prefix.'.'.$newDefinition['sequenceName'];
 
                 $classMetadata->setSequenceGeneratorDefinition($newDefinition);
-                $em = $args->getEntityManager();
+                $em = $args->getManager();
                 if (isset($classMetadata->idGenerator)) {
                     $sequncename = $em->getConfiguration()->getQuoteStrategy()
                             ->getSequenceName($newDefinition, $classMetadata, $em->getConnection()->getDatabasePlatform());
