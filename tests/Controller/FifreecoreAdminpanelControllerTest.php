@@ -385,6 +385,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
     protected function tearDown()
     {
         startTests();
+        clearcache();
         parent::tearDown();
     }
 

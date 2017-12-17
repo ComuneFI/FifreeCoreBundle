@@ -11,7 +11,7 @@ require __DIR__ . '/../vendor/autoload.php';
 function startTests()
 {
     //removecache();
-    clearcache();
+    //clearcache();
     cleanFilesystem();
 }
 
