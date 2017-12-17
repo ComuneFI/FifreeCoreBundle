@@ -3,7 +3,7 @@ language: php
 php:
   - 5.6
   - 7.2
-  - hhvm
+  #- hhvm
 
 services:
   - mysql
@@ -11,11 +11,11 @@ services:
   
 matrix:
     allow_failures:
-        - php: hhvm
+       # - php: hhvm
        # - php: 7.2
     exclude:
-    - php: hhvm
-      env: DB=pgsql
+    #- php: hhvm
+    #  env: DB=pgsql
 
 # Configure different DB environments
 env:
