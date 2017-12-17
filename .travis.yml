@@ -98,8 +98,8 @@ script:
   - if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then vendor/bin/phpunit tests/DependencyInjection; fi
 
 after_success:
-  - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then php vendor/satooshi/php-coveralls/bin/coveralls -v; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == "7.2" ]]; then php vendor/satooshi/php-coveralls/bin/coveralls -v; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then php vendor/bin/php-coveralls -v; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == "7.2" ]]; then php vendor/bin/php-coveralls -v; fi
   - rm tests/app/dbtest.sqlite
   - php bin/console server:stop --env=test
   - kill `ps -ef | grep selenium | awk '{ print $2 }'`
