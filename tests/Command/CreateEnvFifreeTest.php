@@ -32,7 +32,7 @@ class CreateEnvFifreeTest extends WebTestCase
 //        //$this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
 //    }
 //
-/*    public function test10InstallFifree()
+    public function test10InstallFifree()
     {
 
         $kernel = $this->createKernel();
@@ -83,7 +83,7 @@ class CreateEnvFifreeTest extends WebTestCase
 
         $this->assertRegExp('/.../', $commandTester->getDisplay());
     }
-*/
+
     public function test20InstallFifree()
     {
         $console = __DIR__ . '/../../bin/console';
