@@ -4,6 +4,8 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 
 require __DIR__ . '/app/autoload.php';
+require __DIR__ . '/Utils/FifreeTestUtil.php';
+require __DIR__ . '/Utils/FifreeUserTestUtil.php';
 
 function removecache()
 {
