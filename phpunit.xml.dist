@@ -49,8 +49,8 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory>./src</directory>
             <exclude>
-             <file>/src/php/FifreeCoreBundle/src/Fi/CoreBundle/DependencyInjection/FifreeTest.php</file>
-             <file>/src/php/FifreeCoreBundle/src/Fi/CoreBundle/DependencyInjection/FifreeUserTest.php</file>
+             <file>./src/php/FifreeCoreBundle/src/Fi/CoreBundle/DependencyInjection/FifreeTest.php</file>
+             <file>./src/php/FifreeCoreBundle/src/Fi/CoreBundle/DependencyInjection/FifreeUserTest.php</file>
             </exclude>
         </whitelist>
     </filter>
