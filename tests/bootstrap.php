@@ -2,18 +2,8 @@
 
 use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
-use Fi\OsBundle\DependencyInjection\OsFunctions;
 
-clearcache();
-
-require __DIR__ . '/../vendor/autoload.php';
-
-function startTests()
-{
-    //removecache();
-    //clearcache();
-    cleanFilesystem();
-}
+require __DIR__ . '/app/autoload.php';
 
 function removecache()
 {

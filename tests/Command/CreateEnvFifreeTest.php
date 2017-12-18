@@ -20,7 +20,7 @@ class CreateEnvFifreeTest extends WebTestCase
 
     public static function setUpBeforeClass()
     {
-        startTests();
+        cleanFilesystem();
     }
 
     /**
@@ -82,49 +82,7 @@ class CreateEnvFifreeTest extends WebTestCase
         );
 
         $this->assertRegExp('/.../', $commandTester->getDisplay());
-    }
 
-    public function test20InstallFifree()
-    {
-        $console = __DIR__ . '/../../bin/console';
-        $cmd = "php " . $console . " fifree2:dropdatabase --force --no-interaction --no-debug --env=test";
-        passthru($cmd);
-        /* $kernel = $this->createKernel();
-          $kernel->boot();
-
-          $application = new Application($kernel);
-          $application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
-
-          $command = $application->find('fifree2:dropdatabase');
-          $commandTester = new CommandTester($command);
-          $commandTester->execute(
-          array(
-          '--force' => true,
-          '--no-interaction' => true
-          )
-          );
-
-          $this->assertRegExp('/.../', $commandTester->getDisplay()); */
-
-        $console = __DIR__ . '/../../bin/console';
-        $cmd = "php " . $console . " fifree2:install admin admin admin@admin.it --no-debug --env=test";
-        passthru($cmd);
-        /* $application = new Application(static::$kernel);
-          $application->add(new \Fi\CoreBundle\Command\Fifree2installCommand());
-          $application->add(new \Fi\CoreBundle\Command\Fifree2createdatabaseCommand());
-          $application->add(new \Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand());
-
-          $command = $application->find('fifree2:install');
-          $commandTester = new CommandTester($command);
-          $commandTester->execute(
-          array(
-          'admin' => 'admin',
-          'adminpass' => 'admin',
-          'adminemail' => 'admin@admin.it'
-          )
-          );
-
-          $this->assertRegExp('/.../', $commandTester->getDisplay()); */
         $container = static::$kernel->getContainer();
         $username4test = $container->getParameter('user4test');
         $em = $container->get('doctrine')->getManager();
@@ -137,6 +95,49 @@ class CreateEnvFifreeTest extends WebTestCase
         $recorddelete = $record2[0];
         $this->assertEquals($recorddelete->getUsername(), $username4test);
     }
+
+//    public function test20InstallFifree()
+//    {
+//        $console = __DIR__ . '/../../bin/console';
+//        $cmd = "php " . $console . " fifree2:dropdatabase --force --no-interaction --no-debug --env=test";
+//        passthru($cmd);
+//        /* $kernel = $this->createKernel();
+//          $kernel->boot();
+//
+//          $application = new Application($kernel);
+//          $application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
+//
+//          $command = $application->find('fifree2:dropdatabase');
+//          $commandTester = new CommandTester($command);
+//          $commandTester->execute(
+//          array(
+//          '--force' => true,
+//          '--no-interaction' => true
+//          )
+//          );
+//
+//          $this->assertRegExp('/.../', $commandTester->getDisplay()); */
+//
+//        $console = __DIR__ . '/../../bin/console';
+//        $cmd = "php " . $console . " fifree2:install admin admin admin@admin.it --no-debug --env=test";
+//        passthru($cmd);
+//        /* $application = new Application(static::$kernel);
+//          $application->add(new \Fi\CoreBundle\Command\Fifree2installCommand());
+//          $application->add(new \Fi\CoreBundle\Command\Fifree2createdatabaseCommand());
+//          $application->add(new \Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand());
+//
+//          $command = $application->find('fifree2:install');
+//          $commandTester = new CommandTester($command);
+//          $commandTester->execute(
+//          array(
+//          'admin' => 'admin',
+//          'adminpass' => 'admin',
+//          'adminemail' => 'admin@admin.it'
+//          )
+//          );
+//
+//          $this->assertRegExp('/.../', $commandTester->getDisplay()); */
+//    }
 
     public function test30InstallFifree()
     {
@@ -157,8 +158,9 @@ class CreateEnvFifreeTest extends WebTestCase
         $checkres = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
                 DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR .
                 "doctrine" . DIRECTORY_SEPARATOR . "Prova.orm.yml";
-
-        /* $command = $application->find('generate:bundle');
+        $application = new Application(static::$kernel);
+        /* $application->add(new \Sensio\Bundle\GeneratorBundle\Command\GenerateBundleCommand);
+          $command = $application->find('generate:bundle');
           $commandTester = new CommandTester($command);
           $commandTester->execute(
           array(
@@ -171,9 +173,7 @@ class CreateEnvFifreeTest extends WebTestCase
           )
           );
           echo $commandTester->getDisplay();
-          $this->assertRegExp('/.../', $commandTester->getDisplay());
-         */
-
+          $this->assertRegExp('/.../', $commandTester->getDisplay()); */
 
 
         echo "Generate bundle\n";
@@ -182,12 +182,14 @@ class CreateEnvFifreeTest extends WebTestCase
         passthru($cmd);
         writestdout("Generated bundle");
 
-        $console = __DIR__ . '/../../bin/console';
-        $cmd = "php " . $console . " pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle --no-debug --env=test";
-        //$cmd = "php " . $console . " pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle --env=test";
-        passthru($cmd);
-        writestdout("Generated yml");
+        /*
 
+          $console = __DIR__ . '/../../bin/console';
+          $cmd = "php " . $console . " pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle --no-debug --env=test";
+          //$cmd = "php " . $console . " pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle --env=test";
+          passthru($cmd);
+          writestdout("Generated yml");
+         */
         /* $console = __DIR__ . '/../../bin/console';
           $cmd = "php " . $console . " cache:clear --no-debug --env=test";
           passthru($cmd);
@@ -198,42 +200,42 @@ class CreateEnvFifreeTest extends WebTestCase
           passthru($cmd);
           writestdout("Clear cache metadata"); */
 
-        $console = __DIR__ . '/../../bin/console';
-        $cmd = "php " . $console . " pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate --no-debug --env=test";
-        //$cmd = "php " . $console . " pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate --env=test";
-        passthru($cmd);
-        writestdout("Generated entities");
+        /* $console = __DIR__ . '/../../bin/console';
+          $cmd = "php " . $console . " pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate --no-debug --env=test";
+          //$cmd = "php " . $console . " pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate --env=test";
+          passthru($cmd);
+          writestdout("Generated entities"); */
 
-        /* $kernel = static::$kernel;
-          $application = new Application($kernel);
-          $application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand());
-          $command = $application->find('pannelloamministrazione:generateymlentities');
-          $commandTester = new CommandTester($command);
-          $commandTester->execute(
-          array(
-          'mwbfile' => 'wbadmintest.mwb',
-          'bundlename' => 'Fi/ProvaBundle'/* ,
-          '--no-debug' => true
-          )
-          );
+        $kernel = static::$kernel;
+        $application = new Application($kernel);
+        $application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand());
+        $command = $application->find('pannelloamministrazione:generateymlentities');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+                array(
+                    'mwbfile' => 'wbadmintest.mwb',
+                    'bundlename' => 'Fi/ProvaBundle',
+                    '--no-debug' => true
+                )
+        );
 
 
-          $this->assertRegExp('/.../', $commandTester->getDisplay());
+        $this->assertRegExp('/.../', $commandTester->getDisplay());
 
-          $application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand());
-          $application->add(new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand());
-          $command = $application->find('pannelloamministrazione:generateentities');
-          $commandTester = new CommandTester($command);
-          $commandTester->execute(
-          array(
-          'bundlename' => 'Fi/ProvaBundle',
-          '--schemaupdate' => true,
-          '--no-debug' => true
-          )
-          );
+        $application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand());
+        $application->add(new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand());
+        $command = $application->find('pannelloamministrazione:generateentities');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+                array(
+                    'bundlename' => 'Fi/ProvaBundle',
+                    '--schemaupdate' => true,
+                    '--no-debug' => true
+                )
+        );
 
-          $this->assertRegExp('/.../', $commandTester->getDisplay()); */
-        echo $checkent;
+        $this->assertRegExp('/.../', $commandTester->getDisplay());
+        //echo $checkent;
         $this->assertTrue(file_exists($checkent));
         $this->assertTrue(file_exists($checkres));
     }
@@ -241,7 +243,7 @@ class CreateEnvFifreeTest extends WebTestCase
     protected function tearDown()
     {
         parent::tearDown();
-        startTests();
+        cleanFilesystem();
     }
 
 }

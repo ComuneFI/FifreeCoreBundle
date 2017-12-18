@@ -9,11 +9,6 @@ use Behat\Mink\Session;
 class GrigliaControllerTest extends FifreeTest
 {
 
-    public static function setUpBeforeClass()
-    {
-        startTests();
-    }
-
     /**
      * @test
      */
@@ -239,5 +234,4 @@ class GrigliaControllerTest extends FifreeTest
 
         $session->stop();
     }
-
 }

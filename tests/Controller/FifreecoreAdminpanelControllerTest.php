@@ -14,7 +14,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
 
     public static function setUpBeforeClass()
     {
-        startTests();
+        cleanFilesystem();
     }
 
     /**
@@ -384,7 +384,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTest
      */
     protected function tearDown()
     {
-        startTests();
+        cleanFilesystem();
         clearcache();
         parent::tearDown();
     }

@@ -12,7 +12,7 @@ class PannelloAmministrazioneTest extends CommandTestCase
 
     public static function setUpBeforeClass()
     {
-        startTests();
+        cleanFilesystem();
     }
 
     /**
@@ -48,7 +48,7 @@ class PannelloAmministrazioneTest extends CommandTestCase
             "pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle",
             "pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate",
         );
-        
+
         $megacommand = "";
         foreach ($listcommands as $cmd) {
             $megacommand = $megacommand . "php " . $console . " " . $cmd . " --no-debug --env=test &&";
@@ -99,8 +99,9 @@ class PannelloAmministrazioneTest extends CommandTestCase
 
     protected function tearDown()
     {
+        cleanFilesystem();
+        clearcache();
         parent::tearDown();
-        startTests();
     }
 
 }
