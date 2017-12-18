@@ -3,22 +3,22 @@
 namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Fi\CoreBundle\DependencyInjection\FifreeTest;
+use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class RuoliControllerTest extends FifreeTest
+class OpzioniTabellaControllerTest extends FifreeTestUtil
 {
 
     /**
      * @test
      */
-    public function testIndexRuoli()
+    public function testIndexOpzioniTabella()
     {
         parent::setUp();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
-        $url = $client->getContainer()->get('router')->generate('Ruoli');
+        $url = $client->getContainer()->get('router')->generate('OpzioniTabella');
         $em = $this->getEntityManager();
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
 
@@ -27,24 +27,24 @@ class RuoliControllerTest extends FifreeTest
         $crawler = new Crawler($client->getResponse()->getContent());
         sleep(1);
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $body = $crawler->filter('div[id="Ruoli"]');
+        $body = $crawler->filter('div[id="OpzioniTabella"]');
         $attributes = $body->extract(array('_text', 'class'));
         $this->assertEquals($attributes[0][1], 'tabella');
 
         $clientnoauth = $this->getClientNonAutorizzato();
-        $urlnoauth = '/Ruoli/';
+        $urlnoauth = '/OpzioniTabella/';
         $clientnoauth->request('GET', $urlnoauth);
 
         $this->assertEquals($this->getClassName(), get_class());
         $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 
-    public function testRuoli()
+    public function testOpzioniTabella()
     {
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';
-        $urlRouting = $this->getContainer()->get('router')->generate('Ruoli');
+        $urlRouting = $this->getContainer()->get('router')->generate('OpzioniTabella');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
@@ -93,28 +93,29 @@ class RuoliControllerTest extends FifreeTest
                 $e->click();
             }
         }
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $fieldprefix = 'ruoli_';
-        } else {
-            $fieldprefix = 'fi_corebundle_ruolitype_';
-        }
         /* Inserimento */
         parent::ajaxWait($session, 20000);
-        $descrizionetest1 = 'testruolo';
-        $page->fillField($fieldprefix . 'ruolo', $descrizionetest1);
-        $page->fillField($fieldprefix . 'is_user', 1);
-        $page->find('css', 'a#sDataRuoliS')->click();
+        $descrizionetest1 = 'testtabella';
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'opzioni_tabella_';
+        } else {
+            $fieldprefix = 'fi_corebundle_opzionitabellatype_';
+        }
+        $page->selectFieldOption($fieldprefix . 'tabelle', 1);
+        $page->fillField($fieldprefix . 'descrizione', $descrizionetest1);
+        $page->find('css', 'a#sDataOpzioniTabellaS')->click();
         parent::ajaxWait($session, 20000);
 
         $em = $this->getEntityManager();
         $qb2 = $em->createQueryBuilder();
         $qb2->select(array('a'));
-        $qb2->from('FiCoreBundle:Ruoli', 'a');
-        $qb2->where('a.ruolo = :descrizione');
+        $qb2->from('FiCoreBundle:OpzioniTabella', 'a');
+        $qb2->where('a.descrizione = :descrizione');
         $qb2->setParameter('descrizione', $descrizionetest1);
         $record2 = $qb2->getQuery()->getResult();
         $recorddelete = $record2[0];
-        $this->assertEquals($recorddelete->getRuolo(), $descrizionetest1);
+        $this->assertEquals($recorddelete->getDescrizione(), $descrizionetest1);
+        
         
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
@@ -128,10 +129,10 @@ class RuoliControllerTest extends FifreeTest
         }
         parent::ajaxWait($session, 20000);
         /* Modifica */
-        $descrizionetest2 = 'testruolo 2';
-        $page->fillField($fieldprefix . 'ruolo', $descrizionetest2);
+        $descrizionetest2 = 'testtabella 2';
+        $page->fillField($fieldprefix . 'descrizione', $descrizionetest2);
 
-        $page->find('css', 'a#sDataRuoliS')->click();
+        $page->find('css', 'a#sDataOpzioniTabellaS')->click();
         parent::ajaxWait($session);
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';

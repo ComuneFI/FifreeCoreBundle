@@ -2,18 +2,10 @@
 
 use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
-use Fi\OsBundle\DependencyInjection\OsFunctions;
 
-clearcache();
-
-require __DIR__ . '/../vendor/autoload.php';
-
-function startTests()
-{
-    //removecache();
-    clearcache();
-    cleanFilesystem();
-}
+require __DIR__ . '/app/autoload.php';
+require __DIR__ . '/Utils/FifreeTestUtil.php';
+require __DIR__ . '/Utils/FifreeUserTestUtil.php';
 
 function removecache()
 {
@@ -74,10 +66,15 @@ function cleanFilesystem()
         $fs->remove($bundledir);
     }
 
-    $bundletestdir = $vendorDir . '/tests/FiProvaBundle';
+    $bundletestdir = $vendorDir . '/tests';
 
     if ($fs->exists($bundletestdir)) {
-        $fs->remove($bundletestdir);
+        $fs->remove($bundletestdir, true);
+    }
+    $bundlesrcdir = $vendorDir . '/src';
+
+    if ($fs->exists($bundlesrcdir)) {
+        $fs->remove($bundlesrcdir, true);
     }
 }
 

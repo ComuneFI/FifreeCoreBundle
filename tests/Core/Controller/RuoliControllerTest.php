@@ -3,22 +3,22 @@
 namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Fi\CoreBundle\DependencyInjection\FifreeTest;
+use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class TabelleControllerTest extends FifreeTest
+class RuoliControllerTest extends FifreeTestUtil
 {
 
     /**
      * @test
      */
-    public function testIndexTabelle()
+    public function testIndexRuoli()
     {
         parent::setUp();
         $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
-        $url = $client->getContainer()->get('router')->generate('Tabelle');
+        $url = $client->getContainer()->get('router')->generate('Ruoli');
         $em = $this->getEntityManager();
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
 
@@ -27,24 +27,24 @@ class TabelleControllerTest extends FifreeTest
         $crawler = new Crawler($client->getResponse()->getContent());
         sleep(1);
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $body = $crawler->filter('div[id="Tabelle"]');
+        $body = $crawler->filter('div[id="Ruoli"]');
         $attributes = $body->extract(array('_text', 'class'));
         $this->assertEquals($attributes[0][1], 'tabella');
 
         $clientnoauth = $this->getClientNonAutorizzato();
-        $urlnoauth = '/Tabelle/';
+        $urlnoauth = '/Ruoli/';
         $clientnoauth->request('GET', $urlnoauth);
 
         $this->assertEquals($this->getClassName(), get_class());
         $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 
-    public function testTabelle()
+    public function testRuoli()
     {
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';
-        $urlRouting = $this->getContainer()->get('router')->generate('Tabelle');
+        $urlRouting = $this->getContainer()->get('router')->generate('Ruoli');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
@@ -93,28 +93,29 @@ class TabelleControllerTest extends FifreeTest
                 $e->click();
             }
         }
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'ruoli_';
+        } else {
+            $fieldprefix = 'fi_corebundle_ruolitype_';
+        }
         /* Inserimento */
         parent::ajaxWait($session, 20000);
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $fieldprefix = 'tabelle_';
-        } else {
-            $fieldprefix = 'fi_corebundle_tabelletype_';
-        }
-        $descrizionetest1 = 'testtabella';
-        $page->fillField($fieldprefix . 'nometabella', $descrizionetest1);
-        $page->find('css', 'a#sDataTabelleS')->click();
+        $descrizionetest1 = 'testruolo';
+        $page->fillField($fieldprefix . 'ruolo', $descrizionetest1);
+        $page->fillField($fieldprefix . 'is_user', 1);
+        $page->find('css', 'a#sDataRuoliS')->click();
         parent::ajaxWait($session, 20000);
 
         $em = $this->getEntityManager();
         $qb2 = $em->createQueryBuilder();
         $qb2->select(array('a'));
-        $qb2->from('FiCoreBundle:Tabelle', 'a');
-        $qb2->where('a.nometabella = :descrizione');
+        $qb2->from('FiCoreBundle:Ruoli', 'a');
+        $qb2->where('a.ruolo = :descrizione');
         $qb2->setParameter('descrizione', $descrizionetest1);
         $record2 = $qb2->getQuery()->getResult();
         $recorddelete = $record2[0];
-        $this->assertEquals($recorddelete->getNometabella(), $descrizionetest1);
-
+        $this->assertEquals($recorddelete->getRuolo(), $descrizionetest1);
+        
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
@@ -127,10 +128,10 @@ class TabelleControllerTest extends FifreeTest
         }
         parent::ajaxWait($session, 20000);
         /* Modifica */
-        $descrizionetest2 = 'testtabella 2';
-        $page->fillField($fieldprefix . 'nometabella', $descrizionetest2);
+        $descrizionetest2 = 'testruolo 2';
+        $page->fillField($fieldprefix . 'ruolo', $descrizionetest2);
 
-        $page->find('css', 'a#sDataTabelleS')->click();
+        $page->find('css', 'a#sDataRuoliS')->click();
         parent::ajaxWait($session);
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';

@@ -5,7 +5,7 @@ namespace Fi\CoreBundle\DependencyInjection;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 
-class FifreeTest extends WebTestCase
+class FifreeTestUtil extends WebTestCase
 {
 
     private $clientNonAutorizzato;

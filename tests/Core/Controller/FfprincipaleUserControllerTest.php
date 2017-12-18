@@ -2,22 +2,32 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Fi\CoreBundle\DependencyInjection\FifreeTest;
-use Behat\Mink\Mink;
+use Symfony\Component\DomCrawler\Crawler;
+use Fi\CoreBundle\DependencyInjection\FifreeUserTestUtil;
 use Behat\Mink\Session;
 
-class GrigliaControllerTest extends FifreeTest
+class Z1FfprincipaleUserControllerTest extends FifreeUserTestUtil
 {
 
-    public static function setUpBeforeClass()
+    public function testIndexFfprincipaleSenzaPrivilegi()
     {
-        startTests();
+        parent::setUp();
+        $this->setClassName(get_class());
+
+        $client = $this->getClientAutorizzato();
+
+        $url = $client->getContainer()->get('router')->generate('Ffprincipale');
+
+        $client->request('GET', $url);
+        sleep(1);
+
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
     /**
      * @test
      */
-    public function testGrigliaMain()
+    public function testGrigliaUserMain()
     {
         parent::setUp();
         $namespace = 'Fi';
@@ -60,7 +70,7 @@ class GrigliaControllerTest extends FifreeTest
         /* @var $loginManager \FOS\UserBundle\Security\LoginManager */
         $loginManager = $container->get('fifree.fos_user.security.login_manager');
         $firewallName = $container->getParameter('fos_user.firewall_name');
-        $username4test = $container->getParameter('user4test');
+        $username4test = $container->getParameter('usernoprivileges4test');
         $user = $userManager->findUserBy(array('username' => $username4test));
         $loginManager->loginUser($firewallName, $user);
 
@@ -147,97 +157,7 @@ class GrigliaControllerTest extends FifreeTest
             '',
         );
         $newrequest = new \Symfony\Component\HttpFoundation\Request($requestarray);
+        $this->expectException(\Symfony\Component\Security\Core\Exception\AccessDeniedException::class);
         $FfsecondariaController->setParametriGriglia(array('request' => $newrequest));
-        $testatagriglia['parametrigriglia'] = json_encode($FfsecondariaController::$parametrigriglia);
-
-        $testatatabellagriglia = $testatagriglia;
-        $testatatabellagriglia = $testatagriglia['tabella'];
-        $testatanomicolonnegriglia = $testatagriglia['nomicolonne'];
-
-        $this->assertEquals($controller, $tabellagriglia);
-        $this->assertEquals(9, count($testatanomicolonnegriglia));
-
-        $grigliareturn = $FfsecondariaController->grigliaAction($newrequest);
-        $datigriglia = json_decode($grigliareturn->getContent());
-        if (is_object($datigriglia)) {
-            $datigriglia = get_object_vars($datigriglia);
-        }
-        $this->assertEquals(9, $datigriglia['total']);
-        $this->assertEquals(9, count($datigriglia['rows']));
-
-        $rows = $datigriglia['rows'];
-        // @var $em \Doctrine\ORM\EntityManager
-        $em = $this->container->get('doctrine')->getManager();
-        foreach ($rows as $idx => $row) {
-            if (is_object($row)) {
-                $row = get_object_vars($row);
-            }
-            if (strpos($modellocolonne[$idx]['name'], '.') > 0) {
-                continue;
-            }
-            $row = $row['cell'];
-            if ($modellocolonne[$idx]['tipocampo'] == 'date') {
-                $row[$idx] = \DateTime::createFromFormat('d/m/Y', $row[$idx])->format('Y-m-d');
-            }
-            if (!isset($modellocolonne[$idx]['search']) || !$modellocolonne[$idx]['search'] === false) {
-                $qu = $em->createQueryBuilder();
-                $qu->select(array('c'))
-                        ->from('FiCoreBundle:Ffsecondaria', 'c')
-                        ->where('c.' . $modellocolonne[$idx]['name'] . ' = :value')
-                        ->setParameter('value', $row[$idx]);
-                $ffrow = $qu->getQuery()->getResult();
-                $ff = $ffrow[0];
-                $colmacro = 'get' . ucfirst($modellocolonne[$idx]['name']);
-                if (!method_exists($ff, $colmacro)) {
-                    $colmacro = 'is' . ucfirst($modellocolonne[$idx]['name']);
-                    if (!method_exists($ff, $colmacro)) {
-                        throw new \Exception("Colonna " . $modellocolonne[$idx]['name'] . " non trovata");
-                    }
-                }
-                if ($modellocolonne[$idx]['tipocampo'] == 'date') {
-                    $datadb = \DateTime::createFromFormat('Y-m-d', $ff->$colmacro()->format('Y-m-d'));
-                    $datagriglia = \DateTime::createFromFormat('Y-m-d', $row[$idx]);
-                    $this->assertEquals($datadb, $datagriglia);
-                } else {
-                    $this->assertEquals($ff->$colmacro(), $row[$idx]);
-                }
-            }
-        }
     }
-
-    /*
-     * @test
-     */
-
-    public function testGrigliaFfsecondaria()
-    {
-        parent::setUp();
-        $this->setClassName(get_class());
-        $browser = 'firefox';
-        $urlruote = $this->getContainer()->get('router')->generate('Ffsecondaria');
-        $url = 'http://127.0.0.1:8000/app_test.php' . $urlruote;
-
-        // Choose a Mink driver. More about it in later chapters.
-        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
-        $session = new Session($driver);
-        // start the session
-        $session->start();
-        $session->visit($url);
-        $page = $session->getPage();
-
-        /* Login */
-        $username4test = $this->getContainer()->getParameter('user4test');
-        $page->fillField('username', $username4test);
-        $page->fillField('password', $username4test);
-        $page->pressButton('_submit');
-        //$page = $session->getPage();
-
-        sleep(1);
-
-        $numrowsgrid = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
-        $this->assertEquals(9, $numrowsgrid);
-
-        $session->stop();
-    }
-
 }
