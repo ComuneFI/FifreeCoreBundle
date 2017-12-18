@@ -14,33 +14,29 @@
     bootstrap                   = "tests/bootstrap.php" >
 
     <testsuites>
-        <testsuite name="Fifree Core Bundle">
-            <testsuite name="Collector">
-                <directory suffix=".php">./tests/Collector</directory>
-            </testsuite>
-            <testsuite name="Command">
-                <directory suffix=".php">./tests/Command</directory>
-            </testsuite>
-            <testsuite name="Controller">
-                <directory suffix=".php">./tests/Controller</directory>
-            </testsuite>
-            <testsuite name="DependencyInjection">
-                <directory suffix=".php">./tests/DependencyInjection</directory>
-            </testsuite>
-            <testsuite name="Entity">
-                <directory suffix=".php">./tests/Entity</directory>
-            </testsuite>
-            <testsuite name="Form">
-                <directory suffix=".php">./tests/Form</directory>
-            </testsuite>
+        <testsuite name="Collector">
+            <directory suffix=".php">./tests/Core/Collector</directory>
         </testsuite>
-        <testsuite name="Pannello amministrazione">
-            <testsuite name="Command">
-                <directory suffix=".php">./tests/PannelloAmministrazione/Command</directory>
-            </testsuite>
-            <testsuite name="Controller">
-                <directory suffix=".php">./tests/PannelloAmministrazione/Controller</directory>
-            </testsuite>
+        <testsuite name="Command">
+            <directory suffix=".php">./tests/Core/Command</directory>
+        </testsuite>
+        <testsuite name="Controller">
+            <directory suffix=".php">./tests/Core/Controller</directory>
+        </testsuite>
+        <testsuite name="DependencyInjection">
+            <directory suffix=".php">./tests/Core/DependencyInjection</directory>
+        </testsuite>
+        <testsuite name="Entity">
+            <directory suffix=".php">./tests/Core/Entity</directory>
+        </testsuite>
+        <testsuite name="Form">
+            <directory suffix=".php">./tests/Core/Form</directory>
+        </testsuite>
+        <testsuite name="Command">
+            <directory suffix=".php">./tests/PannelloAmministrazione/Command</directory>
+        </testsuite>
+        <testsuite name="Controller">
+            <directory suffix=".php">./tests/PannelloAmministrazione/Controller</directory>
         </testsuite>
     </testsuites>
     

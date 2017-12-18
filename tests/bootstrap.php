@@ -64,10 +64,15 @@ function cleanFilesystem()
         $fs->remove($bundledir);
     }
 
-    $bundletestdir = $vendorDir . '/tests/FiProvaBundle';
+    $bundletestdir = $vendorDir . '/tests';
 
     if ($fs->exists($bundletestdir)) {
-        $fs->remove($bundletestdir);
+        $fs->remove($bundletestdir, true);
+    }
+    $bundlesrcdir = $vendorDir . '/src';
+
+    if ($fs->exists($bundlesrcdir)) {
+        $fs->remove($bundlesrcdir, true);
     }
 }
 
