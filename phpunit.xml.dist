@@ -48,10 +48,6 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory>./src</directory>
-            <exclude>
-             <file>./src/Fi/CoreBundle/DependencyInjection/FifreeTest.php</file>
-             <file>./src/Fi/CoreBundle/DependencyInjection/FifreeUserTest.php</file>
-            </exclude>
         </whitelist>
     </filter>
     

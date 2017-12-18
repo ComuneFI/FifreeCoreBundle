@@ -3,11 +3,11 @@
 namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Fi\CoreBundle\DependencyInjection\FifreeTest;
+use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class Z1FfprincipaleControllerTest extends FifreeTest
+class Z1FfprincipaleControllerTest extends FifreeTestUtil
 {
 
     /**

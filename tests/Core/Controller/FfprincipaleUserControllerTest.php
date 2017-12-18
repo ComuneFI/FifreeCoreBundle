@@ -3,10 +3,10 @@
 namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Fi\CoreBundle\DependencyInjection\FifreeUserTest;
+use Fi\CoreBundle\DependencyInjection\FifreeUserTestUtil;
 use Behat\Mink\Session;
 
-class Z1FfprincipaleUserControllerTest extends FifreeUserTest
+class Z1FfprincipaleUserControllerTest extends FifreeUserTestUtil
 {
 
     public function testIndexFfprincipaleSenzaPrivilegi()

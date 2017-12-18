@@ -2,11 +2,11 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Fi\CoreBundle\DependencyInjection\FifreeTest;
+use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class GrigliaControllerTest extends FifreeTest
+class GrigliaControllerTest extends FifreeTestUtil
 {
 
     /**

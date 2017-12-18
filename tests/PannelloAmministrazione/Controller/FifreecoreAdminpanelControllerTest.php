@@ -2,14 +2,14 @@
 
 namespace Fi\PannelloAmministrazioneBundle\Tests\Controller;
 
-use Fi\CoreBundle\DependencyInjection\FifreeTest;
+use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
 
-class FifreecoreAdminpanelControllerTest extends FifreeTest
+class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
 {
 
     public static function setUpBeforeClass()
