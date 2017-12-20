@@ -7,7 +7,7 @@ use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class Z1FfprincipaleControllerTest extends FifreeTestUtil
+class FfprincipaleControllerTest extends FifreeTestUtil
 {
 
     /**

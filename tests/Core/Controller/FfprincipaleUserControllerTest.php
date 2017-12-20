@@ -6,7 +6,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Fi\CoreBundle\DependencyInjection\FifreeUserTestUtil;
 use Behat\Mink\Session;
 
-class Z1FfprincipaleUserControllerTest extends FifreeUserTestUtil
+class FfprincipaleUserControllerTest extends FifreeUserTestUtil
 {
 
     public function testIndexFfprincipaleSenzaPrivilegi()

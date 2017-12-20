@@ -7,9 +7,8 @@ use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class Z2FfsecondariaControllerTest extends FifreeTestUtil
+class FfsecondariaControllerTest extends FifreeTestUtil
 {
-
     /**
      * @test
      */
@@ -56,7 +55,6 @@ class Z2FfsecondariaControllerTest extends FifreeTestUtil
     /*
      * @test
      */
-
     public function testFfsecondaria()
     {
         parent::setUp();
