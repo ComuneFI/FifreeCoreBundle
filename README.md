@@ -40,6 +40,8 @@ composer require fi/fifreecorebundle
     sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
 
     #Lanciare i test
+    ant
+
     vendor/bin/simple-phpunit
 
     #stop server
