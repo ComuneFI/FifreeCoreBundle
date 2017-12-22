@@ -2,7 +2,7 @@
 
 <project name="Fifree2 CoreBundle" default="build">
     <target name="build"
-            depends="prepare,composer-run-install,php-lint-ci,phpmd-ci,phpcs-ci,phpcpd-ci,php-security-checker,phpunit-ci"/>
+            depends="prepare,composer-run-install,php-lint-ci,phpmd-ci,phpcs-ci,phpcpd-ci,php-security-checker,phpunit-ci, phpunit-clover"/>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="build/artifacts/coverage"/>
@@ -129,17 +129,16 @@
         </exec>
     </target>
 
-    <target name="phpunit" description="Run unit tests with PHPUnit">
-        <exec executable="vendor/bin/simple-phpunit" failonerror="true">
-            <arg line="--configuration=${basedir}"/>
-        </exec>
-    </target>
-
     <target name="phpunit-ci" description="Run unit tests with PHPUnit">
         <exec executable="vendor/bin/simple-phpunit" failonerror="true">
             <arg line="--configuration=${basedir}"/>
-            <arg line="--coverage-clover=${basedir}/build/artifacts/coverage/clover.xml"/>
+            <arg line="--coverage-php=${basedir}/build/artifacts/coverage/clover_core.cov"/>
         </exec>
     </target>
 
+    <target name="phpunit-clover" description="Run unit tests with PHPUnit Clover">
+        <exec executable="vendor/bin/phpcov" failonerror="false">
+            <arg line="merge --clover=${basedir}/build/artifacts/coverage/clover.xml ${basedir}/build/artifacts/coverage"/>
+        </exec>
+    </target>
 </project>

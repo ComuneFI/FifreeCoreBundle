@@ -32,10 +32,10 @@
         <testsuite name="Form">
             <directory suffix=".php">./tests/Core/Form</directory>
         </testsuite>
-        <testsuite name="Command">
+        <testsuite name="CommandPA">
             <directory suffix=".php">./tests/PannelloAmministrazione/Command</directory>
         </testsuite>
-        <testsuite name="Controller">
+        <testsuite name="ControllerPA">
             <directory suffix=".php">./tests/PannelloAmministrazione/Controller</directory>
         </testsuite>
     </testsuites>
