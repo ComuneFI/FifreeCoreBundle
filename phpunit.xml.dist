@@ -35,6 +35,9 @@
         <testsuite name="CommandPA">
             <directory suffix=".php">./tests/PannelloAmministrazione/Command</directory>
         </testsuite>
+        <testsuite name="DependencyinjectionPA">
+            <directory suffix=".php">./tests/PannelloAmministrazione/Dependencyinjection</directory>
+        </testsuite>
         <testsuite name="ControllerPA">
             <directory suffix=".php">./tests/PannelloAmministrazione/Controller</directory>
         </testsuite>
@@ -53,5 +56,6 @@
     
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+        <listener class="Symfony\Bridge\PhpUnit\CoverageListener" />
     </listeners>   
 </phpunit>
