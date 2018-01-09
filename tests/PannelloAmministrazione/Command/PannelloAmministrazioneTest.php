@@ -22,6 +22,7 @@ class PannelloAmministrazioneTest extends CommandTestCase
     {
         //self::bootKernel();
         //$this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
+        clearcache()
     }
 
     public function testPannelloGenerateBundle()
@@ -43,8 +44,9 @@ class PannelloAmministrazioneTest extends CommandTestCase
          */
         $listcommands = array(
             "generate:bundle --namespace=Fi/ProvaBundle --dir=src/ --format=yml --no-interaction",
-            "doctrine:cache:clear-metadata --flush ",
-            "cache:clear ",
+            "doctrine:cache:clear-metadata --flush",
+            "cache:clear --no-warmup",
+            "cache:warmup",
             "pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle",
             "pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate",
         );
