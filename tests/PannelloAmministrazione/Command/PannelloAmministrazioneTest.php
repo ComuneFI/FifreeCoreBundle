@@ -13,6 +13,7 @@ class PannelloAmministrazioneTest extends CommandTestCase
     public static function setUpBeforeClass()
     {
         cleanFilesystem();
+        clearcache();
     }
 
     /**
@@ -22,7 +23,6 @@ class PannelloAmministrazioneTest extends CommandTestCase
     {
         //self::bootKernel();
         //$this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
-        clearcache()
     }
 
     public function testPannelloGenerateBundle()
