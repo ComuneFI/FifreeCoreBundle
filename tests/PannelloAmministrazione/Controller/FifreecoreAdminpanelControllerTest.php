@@ -53,7 +53,9 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
         $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
 
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-warmup --no-debug --env=test ");
+        sleep(1);
+        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:warmup --no-debug --env=test ");
         sleep(1);
 
         //url da testare
