@@ -16,9 +16,9 @@ if (isset($_SERVER['HTTP_CLIENT_IP']) || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
 }
 
 require __DIR__ . '/../vendor/autoload.php';
-//Debug::enable();
+Debug::enable();
 
-$kernel = new AppKernel('test', false);
+$kernel = new AppKernel('test', true);
 if (PHP_VERSION_ID < 70000) {
     $kernel->loadClassCache();
 }
