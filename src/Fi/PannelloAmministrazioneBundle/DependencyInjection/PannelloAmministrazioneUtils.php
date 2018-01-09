@@ -31,11 +31,13 @@ class PannelloAmministrazioneUtils
 
         $command = $phpPath . ' ' . $this->apppaths->getConsole() . ' cache:clear '
                 . '--no-debug --env=' . $env;
-        /* if (in_array($env, array('dev', 'test', 'localhost'))) {
-          $command = $command . " ";
-          } else {
-          $command = $command . " --no-debug ";
-          } */
+
+        if (in_array($env, array('dev', 'test', 'localhost'))) {
+            $command = $command . " ";
+        } else {
+            $command = $command . " && " . $phpPath . ' ' . $this->apppaths->getConsole() . ' cache:warmup '
+                    . '--no-debug --env=' . $env;
+        }
 
         return PannelloAmministrazioneUtils::runCommand($command);
     }
