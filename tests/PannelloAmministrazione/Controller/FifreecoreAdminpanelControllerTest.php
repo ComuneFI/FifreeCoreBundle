@@ -15,7 +15,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
     public static function setUpBeforeClass()
     {
         cleanFilesystem();
-        clearcache();
     }
 
     /**
