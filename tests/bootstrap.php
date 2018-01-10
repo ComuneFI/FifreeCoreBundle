@@ -30,10 +30,10 @@ function removecache()
 function clearcache()
 {
     passthru(sprintf(
-                    'php "%s/console" cache:clear --no-warmup --no-debug --env=%s', __DIR__ . '/../bin/', "test"
+                    'php "%s/console" cache:clear --no-warmup --env=%s', __DIR__ . '/../bin/', "test"
     ));
     passthru(sprintf(
-                    'php "%s/console" cache:warmup --no-debug --env=%s', __DIR__ . '/../bin/', "test"
+                    'php "%s/console" cache:warmup --env=%s', __DIR__ . '/../bin/', "test"
     ));
 }
 
