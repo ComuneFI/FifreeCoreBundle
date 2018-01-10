@@ -13,6 +13,11 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 class FiUtilitaTest extends KernelTestCase
 {
 
+    public static function setUpBeforeClass()
+    {
+        clearcache();
+    }
+
     public function setUp()
     {
         self::bootKernel();

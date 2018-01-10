@@ -9,6 +9,10 @@ use Behat\Mink\Session;
 class GrigliaControllerTest extends FifreeTestUtil
 {
 
+    public static function setUpBeforeClass()
+    {
+        clearcache();
+    }
     /**
      * @test
      */

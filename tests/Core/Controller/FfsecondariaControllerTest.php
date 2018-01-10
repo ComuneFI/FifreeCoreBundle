@@ -9,6 +9,12 @@ use Behat\Mink\Session;
 
 class FfsecondariaControllerTest extends FifreeTestUtil
 {
+
+    public static function setUpBeforeClass()
+    {
+        clearcache();
+    }
+
     /**
      * @test
      */
@@ -55,6 +61,7 @@ class FfsecondariaControllerTest extends FifreeTestUtil
     /*
      * @test
      */
+
     public function testFfsecondaria()
     {
         parent::setUp();

@@ -10,6 +10,10 @@ use Behat\Mink\Session;
 class StoricomodificheControllerTest extends FifreeTestUtil
 {
 
+    public static function setUpBeforeClass()
+    {
+        clearcache();
+    }
     /**
      * @test
      */

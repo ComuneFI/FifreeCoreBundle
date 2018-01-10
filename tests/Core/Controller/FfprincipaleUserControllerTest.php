@@ -9,6 +9,11 @@ use Behat\Mink\Session;
 class FfprincipaleUserControllerTest extends FifreeUserTestUtil
 {
 
+    public static function setUpBeforeClass()
+    {
+        clearcache();
+    }
+
     public function testIndexFfprincipaleSenzaPrivilegi()
     {
         parent::setUp();
@@ -160,4 +165,5 @@ class FfprincipaleUserControllerTest extends FifreeUserTestUtil
         $this->expectException(\Symfony\Component\Security\Core\Exception\AccessDeniedException::class);
         $FfsecondariaController->setParametriGriglia(array('request' => $newrequest));
     }
+
 }
