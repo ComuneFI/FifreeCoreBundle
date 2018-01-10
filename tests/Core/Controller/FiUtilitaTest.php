@@ -13,16 +13,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 class FiUtilitaTest extends KernelTestCase
 {
 
-    public static function setUpBeforeClass()
-    {
-        clearcache();
-    }
-
-    public function setUp()
-    {
-        self::bootKernel();
-    }
-
     public function testConfrontoStringe()
     {
         $fiUtilita = new FiUtilita();

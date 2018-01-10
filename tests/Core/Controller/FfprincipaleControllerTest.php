@@ -10,11 +10,6 @@ use Behat\Mink\Session;
 class FfprincipaleControllerTest extends FifreeTestUtil
 {
 
-    public static function setUpBeforeClass()
-    {
-        clearcache();
-    }
-
     /**
      * @test
      */

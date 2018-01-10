@@ -10,10 +10,6 @@ use Behat\Mink\Session;
 class PermessiControllerTest extends FifreeTestUtil
 {
 
-    public static function setUpBeforeClass()
-    {
-        clearcache();
-    }
     /**
      * @test
      */

@@ -36,7 +36,8 @@ class OperatoriCommandTest extends WebTestCase
                 array(
                     'username' => $userprova,
                     'email' => $userprova . '@domain.it',
-                    'password' => 'passwordprova'
+                    'password' => 'passwordprova',
+                    '--env' => 'test'
                 )
         );
         $output = $commandTester->getDisplay();

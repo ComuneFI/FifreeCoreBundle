@@ -9,11 +9,6 @@ use Behat\Mink\Session;
 class FfprincipaleUserControllerTest extends FifreeUserTestUtil
 {
 
-    public static function setUpBeforeClass()
-    {
-        clearcache();
-    }
-
     public function testIndexFfprincipaleSenzaPrivilegi()
     {
         parent::setUp();

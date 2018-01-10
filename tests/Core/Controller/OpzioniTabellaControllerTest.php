@@ -10,10 +10,6 @@ use Behat\Mink\Session;
 class OpzioniTabellaControllerTest extends FifreeTestUtil
 {
 
-    public static function setUpBeforeClass()
-    {
-        clearcache();
-    }
     /**
      * @test
      */
