@@ -35,6 +35,7 @@ function clearcache()
     passthru(sprintf(
                     'php "%s/console" cache:warmup --env=%s', __DIR__ . '/../bin/', "test"
     ));
+    sleep(1);
 }
 
 function getErrorText($process, $command)
