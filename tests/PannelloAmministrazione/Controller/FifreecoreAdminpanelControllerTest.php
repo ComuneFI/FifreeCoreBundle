@@ -14,15 +14,6 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
         cleanFilesystem();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->setClassName(get_class());
-    }
-
     public function test10AdminpanelHomepage()
     {
         //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()

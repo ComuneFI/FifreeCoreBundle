@@ -11,21 +11,6 @@ use Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazione
 
 class PannelloamministrazionedependencyinjectionTest extends FifreeTestUtil
 {
-
-    public static function setUpBeforeClass()
-    {
-        //cleanFilesystem();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->setClassName(get_class());
-    }
-
     /*
      * @test
      */
@@ -41,16 +26,6 @@ class PannelloamministrazionedependencyinjectionTest extends FifreeTestUtil
         $lock->forceCleanLockFile();
         $this->assertFalse($lock->isLockedFile());
         $this->assertContains("running.run", $lock->getFileLock());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown()
-    {
-        cleanFilesystem();
-        clearcache();
-        parent::tearDown();
     }
 
 }

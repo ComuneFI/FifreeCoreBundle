@@ -180,7 +180,8 @@ class CreateEnvFifreeTest extends WebTestCase
 
         echo "Generate bundle\n";
         $console = __DIR__ . '/../../bin/console';
-        $cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --no-debug --format=yml  -n --env=test";
+        //$cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --no-debug --format=yml  -n --env=test";
+        $cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --format=yml  -n --env=test";
         passthru($cmd);
         writestdout("Generated bundle");
 
