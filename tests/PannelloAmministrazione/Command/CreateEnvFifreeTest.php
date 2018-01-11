@@ -60,7 +60,8 @@ class CreateEnvFifreeTest extends WebTestCase
         $commandTester->execute(
                 array(
                     '--force' => true,
-                    '--no-interaction' => true
+                    '--no-interaction' => true,
+                    '--env' => 'test'
                 )
         );
 
@@ -77,7 +78,8 @@ class CreateEnvFifreeTest extends WebTestCase
                 array(
                     'admin' => 'admin',
                     'adminpass' => 'admin',
-                    'adminemail' => 'admin@admin.it'
+                    'adminemail' => 'admin@admin.it',
+                    '--env' => 'test'
                 )
         );
 
@@ -214,8 +216,7 @@ class CreateEnvFifreeTest extends WebTestCase
         $commandTester->execute(
                 array(
                     'mwbfile' => 'wbadmintest.mwb',
-                    'bundlename' => 'Fi/ProvaBundle',
-                    '--no-debug' => true
+                    'bundlename' => 'Fi/ProvaBundle'
                 )
         );
 

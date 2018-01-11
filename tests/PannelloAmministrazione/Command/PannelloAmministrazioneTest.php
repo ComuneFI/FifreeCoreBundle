@@ -2,9 +2,6 @@
 
 namespace Fi\CoreBundle\Tests\Command;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\Common\Persistence\ObjectManager;
-
 class PannelloAmministrazioneTest extends CommandTestCase
 {
 
@@ -13,7 +10,6 @@ class PannelloAmministrazioneTest extends CommandTestCase
     public static function setUpBeforeClass()
     {
         cleanFilesystem();
-        clearcache();
     }
 
     /**
@@ -53,7 +49,8 @@ class PannelloAmministrazioneTest extends CommandTestCase
 
         $megacommand = "";
         foreach ($listcommands as $cmd) {
-            $megacommand = $megacommand . "php " . $console . " " . $cmd . " --no-debug --env=test &&";
+            //$megacommand = $megacommand . "php " . $console . " " . $cmd . " --no-debug --env=test &&";
+            $megacommand = $megacommand . "php " . $console . " " . $cmd . " --env=test &&";
         }
         $megacommand = substr($megacommand, 0, -3);
         passthru($megacommand);
