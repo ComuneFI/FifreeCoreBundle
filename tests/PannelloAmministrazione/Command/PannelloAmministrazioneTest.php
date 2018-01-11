@@ -46,7 +46,7 @@ class PannelloAmministrazioneTest extends CommandTestCase
             "generate:bundle --namespace=Fi/ProvaBundle --dir=src/ --format=yml --no-interaction",
             "doctrine:cache:clear-metadata --flush",
             "cache:clear --no-warmup",
-            "cache:warmup",
+            /*"cache:warmup",*/
             "pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle",
             "pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate",
         );
