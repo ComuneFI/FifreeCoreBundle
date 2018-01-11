@@ -2,7 +2,9 @@
 
 namespace Fi\CoreBundle\Tests\Command;
 
-class PannelloAmministrazioneTest extends CommandTestCase
+use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
+
+class PannelloAmministrazioneTest extends FifreeTestUtil
 {
 
     public static $conn;
@@ -10,20 +12,12 @@ class PannelloAmministrazioneTest extends CommandTestCase
     public static function setUpBeforeClass()
     {
         cleanFilesystem();
+        clearcache();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp()
-    {
-        //self::bootKernel();
-        //$this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
-    }
-
+    
     public function testPannelloGenerateBundle()
     {
-        $client = self::createClient();
+        $client = $this->getClientAutorizzato();
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($client->getContainer());
 
         $checkent = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
