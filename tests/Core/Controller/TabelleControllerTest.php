@@ -54,7 +54,7 @@ class TabelleControllerTest extends FifreeTestUtil
         $this->setClassName(get_class());
         $browser = 'firefox';
         $urlRouting = $this->getContainer()->get('router')->generate('Tabelle');
-        $url = 'http://127.0.0.1:8000/app_test.php' . $urlRouting;
+        $url = $_ENV['HTTP_TEST_URL'] . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);

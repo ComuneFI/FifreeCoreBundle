@@ -8,6 +8,8 @@ require __DIR__ . '/Utils/FifreeTestUtil.php';
 require __DIR__ . '/Utils/FifreeUserTestUtil.php';
 require __DIR__ . '/Utils/CommandTestCase.php';
 
+
+
 function removecache()
 {
     $vendorDir = dirname(dirname(__FILE__));
@@ -32,10 +34,10 @@ function clearcache()
     passthru(sprintf(
                     'php "%s/console" cache:clear --no-warmup --env=%s', __DIR__ . '/../bin/', "test"
     ));
-    passthru(sprintf(
+    /*passthru(sprintf(
                     'php "%s/console" cache:warmup --env=%s', __DIR__ . '/../bin/', "test"
-    ));
-    sleep(1);
+    ));*/
+    #sleep(1);
 }
 
 function getErrorText($process, $command)

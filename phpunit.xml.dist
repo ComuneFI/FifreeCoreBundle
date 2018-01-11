@@ -46,6 +46,8 @@
     <php>
         <server name="KERNEL_CLASS" value="AppKernel" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="63" />
+        <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
+        <env name="HTTP_TEST_URL" value="http://127.0.0.1:8000/app_test.php" />
     </php>
 
     <filter>
