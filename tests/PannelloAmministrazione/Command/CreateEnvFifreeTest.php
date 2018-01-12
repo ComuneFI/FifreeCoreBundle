@@ -9,19 +9,30 @@ use Symfony\Component\Console\Tester\CommandTester;
 class CreateEnvFifreeTest extends KernelTestCase
 {
 
-    static $kernel;
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $em;
+    private $container;
 
     /**
      * @inheritDoc
      */
     protected function setUp()
     {
-        $this->kernel = static::createKernel();
-        $this->kernel->boot();
+        $kernel = static::createKernel();
+        $kernel->boot();
+
+        $this->container = $kernel->getContainer();
+        $this->em = $kernel->getContainer()
+                ->get('doctrine')
+                ->getManager();
     }
 
     public function test10InstallFifree()
     {
+        $kernel = static::createKernel();
+        $kernel->boot();
 
         /* $application = new Application($this->kernel);
           $application->add(new \Fi\CoreBundle\Command\Fifree2droptablesCommand());
@@ -37,7 +48,7 @@ class CreateEnvFifreeTest extends KernelTestCase
 
           $this->assertRegExp('/.../', $commandTester->getDisplay());
          */
-        $application = new Application($this->kernel);
+        $application = new Application($kernel);
         $application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
 
         $command = $application->find('fifree2:dropdatabase');
@@ -52,7 +63,7 @@ class CreateEnvFifreeTest extends KernelTestCase
 
         $this->assertRegExp('/.../', $commandTester->getDisplay());
 
-        $application = new Application($this->kernel);
+        $application = new Application($kernel);
         $application->add(new \Fi\CoreBundle\Command\Fifree2installCommand());
         $application->add(new \Fi\CoreBundle\Command\Fifree2createdatabaseCommand());
         $application->add(new \Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand());
@@ -70,9 +81,9 @@ class CreateEnvFifreeTest extends KernelTestCase
 
         $this->assertRegExp('/.../', $commandTester->getDisplay());
 
-        $container = $this->kernel->getContainer();
+        $container = $kernel->getContainer();
         $username4test = $container->getParameter('user4test');
-        $em = $container->get('doctrine')->getManager();
+        $em = $this->em;
         $qb2 = $em->createQueryBuilder();
         $qb2->select(array('a'));
         $qb2->from('FiCoreBundle:Operatori', 'a');
@@ -94,7 +105,9 @@ class CreateEnvFifreeTest extends KernelTestCase
 //        $console = __DIR__ . '/../../bin/console';
 //        $cmd = "php " . $console . " pannelloamministrazione:generateentities  Fi/ProvaBundle --schemaupdate --env=test";
 //        echo passthru($cmd);
-        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->kernel->getContainer());
+        $kernel = static::createKernel();
+        $kernel->boot();
+        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($kernel->getContainer());
         $checkent = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
                 DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
 
@@ -102,7 +115,7 @@ class CreateEnvFifreeTest extends KernelTestCase
         $checkres = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
                 DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR .
                 "doctrine" . DIRECTORY_SEPARATOR . "Prova.orm.yml";
-        $application = new Application($this->kernel);
+        $application = new Application($kernel);
         /* $application->add(new \Sensio\Bundle\GeneratorBundle\Command\GenerateBundleCommand);
           $command = $application->find('generate:bundle');
           $commandTester = new CommandTester($command);
@@ -151,7 +164,7 @@ class CreateEnvFifreeTest extends KernelTestCase
           passthru($cmd);
           writestdout("Generated entities"); */
 
-        $application = new Application($this->kernel);
+        $application = new Application($kernel);
         $application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand());
         $command = $application->find('pannelloamministrazione:generateymlentities');
         $commandTester = new CommandTester($command);
@@ -164,9 +177,10 @@ class CreateEnvFifreeTest extends KernelTestCase
         );
 
         clearcache();
-        $this->kernel->boot();
+        $kernel = static::createKernel();
+        $kernel->boot();
         $this->assertRegExp('/.../', $commandTester->getDisplay());
-        $application = new Application($this->kernel);
+        $application = new Application($kernel);
 
         $application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand());
         $application->add(new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand());
@@ -190,6 +204,8 @@ class CreateEnvFifreeTest extends KernelTestCase
         cleanFilesystem();
         clearcache();
         parent::tearDown();
+        $this->em->close();
+        $this->em = null; // avoid memory leaks
     }
 
 }
