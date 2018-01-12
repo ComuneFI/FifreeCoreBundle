@@ -33,7 +33,7 @@ class FfprincipaleUserControllerTest extends FifreeUserTestUtil
         $namespace = 'Fi';
         $bundle = 'Core';
         $controller = 'Ffsecondaria';
-        $container = $this->getContainer();
+        $container = $this->getClientAutorizzato()->getContainer();
 
         /* TESTATA */
         $nomebundle = $namespace . $bundle . 'Bundle';

@@ -16,7 +16,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
 
     public function test10AdminpanelHomepage()
     {
-        //.' --env '.$this->getContainer()->get( 'kernel' )->getEnvironment()
+        //.' --env '.$this->getClientAutorizzato()->getContainer()->get( 'kernel' )->getEnvironment()
         //$this->cleanFilesystem();
         //$this->restartKernel();
         $client = $this->getClientAutorizzato();
@@ -37,7 +37,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
     {
         //$this->restartKernel();
         $browser = 'firefox';
-        $urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
+        $urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = $_ENV['HTTP_TEST_URL'] . $urlRouting;
 
         echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-warmup --no-debug --env=test ");
@@ -46,7 +46,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
         sleep(1);
 
         //url da testare
-        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->getContainer());
+        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->getClientAutorizzato()->getContainer());
         $fileprovabundle = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle";
         $checkentityprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
                 DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
@@ -114,7 +114,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
 
         sleep(1);
 
-        //$pammutils = new PannelloAmministrazioneUtils($this->getContainer());
+        //$pammutils = new PannelloAmministrazioneUtils($this->getClientAutorizzato()->getContainer());
         //$ret = $pammutils->clearcache();
         //echo $ret["errmsg"];
         /* $page->pressButton('adminpanelcc');
@@ -131,7 +131,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
           $session->executeScript($scriptclose); */
 
         //***************************************************************************************************************
-        //$urlRouting = $this->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
+        //$urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         //$url = $_ENV['HTTP_TEST_URL'] . $urlRouting;
         //$page->fillField('username', 'admin');
         //$page->fillField('password', 'admin');
@@ -274,7 +274,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
         sleep(1);
         //***************************************************************************************************************
         try {
-            $urlRouting = $this->getContainer()->get('router')->generate('Prova_container');
+            $urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('Prova_container');
         } catch (\Exception $exc) {
             $urlRouting = "/Prova";
         }
@@ -299,7 +299,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
 
     /* public function test100PannelloAmministrazioneMain()
       {
-      $container = $this->getContainer();
+      $container = $this->getClientAutorizzato()->getContainer();
       // @var $userManager \FOS\UserBundle\Doctrine\UserManager
       $userManager = $container->get('fifree.fos_user.user_manager');
       // @var $loginManager \FOS\UserBundle\Security\LoginManager

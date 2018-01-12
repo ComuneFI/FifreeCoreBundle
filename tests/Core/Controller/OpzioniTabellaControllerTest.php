@@ -44,7 +44,7 @@ class OpzioniTabellaControllerTest extends FifreeTestUtil
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';
-        $urlRouting = $this->getContainer()->get('router')->generate('OpzioniTabella');
+        $urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('OpzioniTabella');
         $url = $_ENV['HTTP_TEST_URL'] . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.

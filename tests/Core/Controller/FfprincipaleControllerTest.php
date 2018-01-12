@@ -15,8 +15,6 @@ class FfprincipaleControllerTest extends FifreeTestUtil
      */
     public function testIndexFfprincipale()
     {
-        parent::setUp();
-        $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
         $url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $em = $this->getEntityManager();
@@ -35,7 +33,6 @@ class FfprincipaleControllerTest extends FifreeTestUtil
         $urlnoauth = '/Ffprincipale/';
         $clientnoauth->request('GET', $urlnoauth);
 
-        $this->assertEquals($this->getClassName(), get_class());
         $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
 
         //insert

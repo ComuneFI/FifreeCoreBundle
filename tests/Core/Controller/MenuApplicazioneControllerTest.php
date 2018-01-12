@@ -44,7 +44,7 @@ class MenuApplicazioneControllerTest extends FifreeTestUtil
         parent::__construct();
         $this->setClassName(get_class());
         $browser = 'firefox';
-        $urlRouting = $this->getContainer()->get('router')->generate('MenuApplicazione_container');
+        $urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('MenuApplicazione_container');
         $url = $_ENV['HTTP_TEST_URL'] . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.

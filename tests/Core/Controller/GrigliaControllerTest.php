@@ -18,7 +18,7 @@ class GrigliaControllerTest extends FifreeTestUtil
         $namespace = 'Fi';
         $bundle = 'Core';
         $controller = 'Ffsecondaria';
-        $container = $this->getContainer();
+        $container = $this->getClientAutorizzato()->getContainer();
 
         /* TESTATA */
         $nomebundle = $namespace . $bundle . 'Bundle';
@@ -209,7 +209,7 @@ class GrigliaControllerTest extends FifreeTestUtil
         parent::setUp();
         $this->setClassName(get_class());
         $browser = 'firefox';
-        $urlruote = $this->getContainer()->get('router')->generate('Ffsecondaria');
+        $urlruote = $this->getClientAutorizzato()->getContainer()->get('router')->generate('Ffsecondaria');
         $url = $_ENV['HTTP_TEST_URL'] . $urlruote;
 
         // Choose a Mink driver. More about it in later chapters.
@@ -221,7 +221,7 @@ class GrigliaControllerTest extends FifreeTestUtil
         $page = $session->getPage();
 
         /* Login */
-        $username4test = $this->getContainer()->getParameter('user4test');
+        $username4test = $this->getClientAutorizzato()->getContainer()->getParameter('user4test');
         $page->fillField('username', $username4test);
         $page->fillField('password', $username4test);
         $page->pressButton('_submit');
