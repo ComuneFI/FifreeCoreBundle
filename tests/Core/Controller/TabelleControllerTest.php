@@ -15,8 +15,6 @@ class TabelleControllerTest extends FifreeTestUtil
      */
     public function testIndexTabelle()
     {
-        parent::setUp();
-        $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
         $url = $client->getContainer()->get('router')->generate('Tabelle');
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
@@ -32,16 +30,13 @@ class TabelleControllerTest extends FifreeTestUtil
         $urlnoauth = '/Tabelle/';
         $clientnoauth->request('GET', $urlnoauth);
 
-        $this->assertEquals($this->getClassName(), get_class());
         $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 
     public function testConfiguraTabelle()
     {
-        parent::setUp();
-        $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
-        $url = 'Tabelle/configura/Ffprincipale';
+        $url = $client->getContainer()->get('router')->generate('Tabelle_configura', array("nometabella" => "Ffprincipale"));
 
         $client->request('POST', $url);
         $crawler = new Crawler($client->getResponse()->getContent());
