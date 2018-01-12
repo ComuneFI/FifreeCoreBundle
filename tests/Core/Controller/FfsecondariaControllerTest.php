@@ -63,7 +63,7 @@ class FfsecondariaControllerTest extends FifreeTestUtil
         $this->setClassName(get_class());
         $browser = 'firefox';
         $urlruote = $this->getClientAutorizzato()->getContainer()->get('router')->generate('Ffsecondaria');
-        $url = $_ENV['HTTP_TEST_URL'] . $urlruote;
+        $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlruote;
 
 // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);

@@ -130,7 +130,7 @@ class FfprincipaleControllerTest extends FifreeTestUtil
         $this->setClassName(get_class());
         $browser = 'firefox';
         //$url = $client->getContainer()->get('router')->generate('Categoria_container');
-        $url = $_ENV['HTTP_TEST_URL'];
+        $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'];
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);

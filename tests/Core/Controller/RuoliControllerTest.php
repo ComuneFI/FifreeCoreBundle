@@ -45,7 +45,7 @@ class RuoliControllerTest extends FifreeTestUtil
         $this->setClassName(get_class());
         $browser = 'firefox';
         $urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('Ruoli');
-        $url = $_ENV['HTTP_TEST_URL'] . $urlRouting;
+        $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);

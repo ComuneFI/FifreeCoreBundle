@@ -38,7 +38,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
         //$this->restartKernel();
         $browser = 'firefox';
         $urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        $url = $_ENV['HTTP_TEST_URL'] . $urlRouting;
+        $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;
 
         echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-warmup --no-debug --env=test ");
         sleep(1);
@@ -132,7 +132,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
 
         //***************************************************************************************************************
         //$urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        //$url = $_ENV['HTTP_TEST_URL'] . $urlRouting;
+        //$url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;
         //$page->fillField('username', 'admin');
         //$page->fillField('password', 'admin');
         //$page->pressButton('_submit');
@@ -279,7 +279,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
             $urlRouting = "/Prova";
         }
 
-        $url = $_ENV['HTTP_TEST_URL'] . $urlRouting;
+        $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;
 
 
         $session->visit($url);

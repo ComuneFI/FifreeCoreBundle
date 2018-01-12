@@ -25,6 +25,11 @@ class FifreeTestUtil extends WebTestCase
         $this->em = $this->container->get('doctrine')->getManager();
     }
 
+    protected function getContainer()
+    {
+        return $this->container;
+    }
+
     protected function setClassName($testclassname)
     {
         $this->testclassname = $testclassname;
