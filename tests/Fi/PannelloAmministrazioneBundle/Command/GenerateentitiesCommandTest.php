@@ -11,8 +11,8 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
     public static function setUpBeforeClass()
     {
-        clearcache();
         cleanFilesystem();
+        clearcache();
     }
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -199,9 +199,9 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
     protected function tearDown()
     {
+        parent::tearDown();
         cleanFilesystem();
         clearcache();
-        parent::tearDown();
         $this->em->close();
         $this->em = null; // avoid memory leaks
     }

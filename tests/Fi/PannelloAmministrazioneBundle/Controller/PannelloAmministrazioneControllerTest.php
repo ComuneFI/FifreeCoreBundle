@@ -4,7 +4,7 @@ namespace Fi\PannelloAmministrazioneBundle\Tests\Controller;
 
 use Tests\CoreBundle\Mink\CoreMink;
 
-class FifreecoreAdminpanelControllerTest extends CoreMink
+class PannelloAmministrazioneControllerTest extends CoreMink
 {
 
     public static function setUpBeforeClass()
