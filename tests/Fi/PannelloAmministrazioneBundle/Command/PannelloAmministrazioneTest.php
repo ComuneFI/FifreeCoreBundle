@@ -27,7 +27,7 @@ class PannelloAmministrazioneTest extends FifreeTestUtil
                 DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR .
                 "doctrine" . DIRECTORY_SEPARATOR . "Prova.orm.yml";
 
-        $console = __DIR__ . '/../../bin/console';
+        $console = __DIR__ . '/../../../bin/console';
         /*
           "cache:clear --no-warmup",
           "cache:warmup",
