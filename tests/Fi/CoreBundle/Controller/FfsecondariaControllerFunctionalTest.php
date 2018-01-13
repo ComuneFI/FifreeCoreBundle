@@ -2,18 +2,10 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
+use Tests\CoreBundle\Mink\CoreMink;
 
-class FfsecondariaControllerFunctionalTest extends FifreeTestUtil
+class FfsecondariaControllerFunctionalTest extends CoreMink
 {
-
-    public function setUp()
-    {
-        $this->client = static::createClient();
-        $container = $this->client->getContainer();
-        $this->router = $container->get('router');
-        $this->doctrine = $container->get('doctrine');
-    }
 
     /*
      * @test
@@ -21,11 +13,13 @@ class FfsecondariaControllerFunctionalTest extends FifreeTestUtil
 
     public function testFfsecondaria()
     {
-        $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $this->router->generate('Ffsecondaria');
-        $loginobj = $this->getMinkLoginPage($url);
-        $session = $loginobj["session"];
-        $page = $loginobj["page"];
-
+        //$url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $this->router->generate('Ffsecondaria');
+        $url = "/Ffsecondaria";
+        $this->visit($url);
+        $this->login('admin', 'admin');
+        $session = $this->getSession();
+        $page = $this->getCurrentPage();
+        
         $this->configuratabelleoperation($session, $page);
 
         $this->validationoperation($session, $page);

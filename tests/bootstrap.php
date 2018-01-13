@@ -7,6 +7,7 @@ require __DIR__ . '/app/autoload.php';
 require __DIR__ . '/Utils/FifreeTestUtil.php';
 require __DIR__ . '/Utils/FifreeUserTestUtil.php';
 require __DIR__ . '/Utils/CommandTestCase.php';
+require __DIR__ . '/Utils/CoreMink.php';
 
 function clearcache()
 {

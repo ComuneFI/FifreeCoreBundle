@@ -2,9 +2,9 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
+use Tests\CoreBundle\Mink\CoreMink;
 
-class FfprincipaleControllerFunctionalTest extends FifreeTestUtil
+class FfprincipaleControllerFunctionalTest extends CoreMink
 {
     /*
      * @test
@@ -12,10 +12,12 @@ class FfprincipaleControllerFunctionalTest extends FifreeTestUtil
 
     public function testFfprincipale()
     {
-        $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'];
-        $loginobj = $this->getMinkLoginPage($url);
-        $session = $loginobj["session"];
-        $page = $loginobj["page"];
+        //$url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'];
+        $url = "/Ffprincipale";
+        $this->visit($url);
+        $this->login('admin', 'admin');
+        $session = $this->getSession();
+        $page = $this->getCurrentPage();
         
         $this->crudoperation($session, $page);
 
