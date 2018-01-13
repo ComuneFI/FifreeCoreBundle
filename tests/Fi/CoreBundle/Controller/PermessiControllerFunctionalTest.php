@@ -15,6 +15,7 @@ class PermessiControllerFunctionalTest extends CoreMink
         $this->login('admin', 'admin');
         $session = $this->getSession();
         $page = $this->getCurrentPage();
+        
         $this->crudoperation($session, $page);
 
         $session->stop();

@@ -2,43 +2,27 @@
 
 namespace Fi\PannelloAmministrazioneBundle\Tests\Controller;
 
-use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
-use Behat\Mink\Session;
+use Tests\CoreBundle\Mink\CoreMink;
 
-class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
+class FifreecoreAdminpanelControllerTest extends CoreMink
 {
 
     public static function setUpBeforeClass()
     {
-        clearcache();
         cleanFilesystem();
-    }
-
-    public function test10AdminpanelHomepage()
-    {
-        $client = $this->getClientAutorizzato();
-        $url = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage'/* , array('parms' => 'value') */);
-
-        $client->request('GET', $url);
-        $this->assertTrue(
-                $client->getResponse()->headers->contains('Content-Type', 'text/html; charset=UTF-8')
-        );
+        clearcache();
     }
 
     /*
      * @test
      */
+
     public function test20AdminpanelGenerateBundle()
     {
-        $browser = 'firefox';
-        $urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;
-
-        passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-warmup --env=test ");
-        sleep(2);
-
+        //passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-warmup --env=test ");
+        //sleep(2);
         //url da testare
-        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->getClientAutorizzato()->getContainer());
+        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->container);
         $fileprovabundle = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle";
         $checkentityprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
                 DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
@@ -53,72 +37,42 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
                 DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "Prova" .
                 DIRECTORY_SEPARATOR . "index.html.twig";
 
-        // Choose a Mink driver. More about it in later chapters.
-        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
-        $session = new Session($driver);
-        //$driver->reload();
-        // start the session
-        $session->start();
-        $session->visit($url);
-        $page = $session->getPage();
+        $url = $this->router->generate('fi_pannello_amministrazione_homepage');
+        $this->visit($url);
+        $this->login('admin', 'admin');
+        $session = $this->getSession();
+        $page = $this->getCurrentPage();
+        
         sleep(1);
-        //echo $url;
-        //echo $session->getPage()->getHtml();
-        /* Login */
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
-        $page->pressButton('_submit');
-
-        sleep(1);
-
+        
         $page->fillField('bundlename', 'Fi/ProvaBundle');
 
         $javascript = "window.alert = function() {};";
         $session->executeScript($javascript);
         $page->pressButton('adminpanelgeneratebundle');
-        parent::ajaxWait($session, 60000);
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+        $session->executeScript($scriptrun);
+        parent::ajaxWait($session, 60000);
+        
+        $scriptrun = "function(){ $('button:contains(\"Chiudi\")').click();}()";
         $session->executeScript($scriptrun);
         //parent::ajaxWait($session, 60000);
         //$session->getDriver()->getWebDriverSession()->accept_alert();
         sleep(1);
         //echo $session->getPage()->getHtml();
         /**/
-        $screenshot = $driver->getWebDriverSession()->screenshot();
-        file_put_contents('/tmp/test1.png', base64_decode($screenshot));
+        //$screenshot = $driver->getWebDriverSession()->screenshot();
+        //file_put_contents('/tmp/test1.png', base64_decode($screenshot));
         /**/
         //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
         //$scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         //$session->executeScript($scriptclose);
         //echo passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
-        /*qui*/
+        /* qui */
         //removecache();
-        clearcache();
+        //clearcache();
         //$driver->reload();
-        $session->visit($url);
-        $page = $session->getPage();
-        sleep(1);
-        //echo $session->getPage()->getHtml();
-        /* Login */
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
-        $page->pressButton('_submit');
 
-        sleep(1);
-
-        //$pammutils = new PannelloAmministrazioneUtils($this->getClientAutorizzato()->getContainer());
-        //$ret = $pammutils->clearcache();
-        //echo $ret["errmsg"];
-        /* $page->pressButton('adminpanelcc');
-          $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-          $session->executeScript($scriptrun);
-          parent::ajaxWait($session, 60000);
-          sleep(1);
-          echo $session->getPage()->getHtml(); */
-        /**/
-        //$screenshot = $driver->getWebDriverSession()->screenshot();
-        //file_put_contents('/tmp/test2.png', base64_decode($screenshot));
-        /**/
         /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
           $session->executeScript($scriptclose); */
 
@@ -129,7 +83,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
         //$page->fillField('password', 'admin');
         //$page->pressButton('_submit');
 
-        $session->visit($url);
+        $this->visit($url);
         $checkprovabundle = file_exists($fileprovabundle);
         $this->assertTrue($checkprovabundle, $fileprovabundle);
 
@@ -179,18 +133,11 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
         /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
           $session->executeScript($scriptclose); */
 
-        /*qui*/
+        /* qui */
         //removecache();
-        clearcache();
+        //clearcache();
         //$driver->reload();
-        $session->visit($url);
-        $page = $session->getPage();
-        sleep(1);
-        //echo $session->getPage()->getHtml();
-        /* Login */
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
-        $page->pressButton('_submit');
+        $this->visit($url);
 
         sleep(1);
 
@@ -235,8 +182,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
         $this->assertTrue(file_exists($checkviewsprova));
         $this->assertTrue(file_exists($checkindexprova));
         /**/
-        $screenshot = $driver->getWebDriverSession()->screenshot();
-        file_put_contents('/tmp/test6.png', base64_decode($screenshot));
+        //$screenshot = $driver->getWebDriverSession()->screenshot();
+        //file_put_contents('/tmp/test6.png', base64_decode($screenshot));
         /**/
 
         sleep(1);
@@ -252,31 +199,22 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
           parent::ajaxWait($session, 60000); */
         //echo passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
 
-        /*qui*/
+        /* qui */
         //removecache();
-        clearcache();
+        //clearcache();
         //$driver->reload();
-        $session->visit($url);
-        $page = $session->getPage();
-        sleep(1);
-        //echo $session->getPage()->getHtml();
-        /* Login */
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
-        $page->pressButton('_submit');
-
         sleep(1);
         //***************************************************************************************************************
         try {
-            $urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('Prova_container');
+            $urlRouting = $this->router->generate('Prova_container');
         } catch (\Exception $exc) {
             $urlRouting = "/Prova";
         }
 
-        $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;
+        $url = $urlRouting;
 
 
-        $session->visit($url);
+        $this->visit($url);
         $page = $session->getPage();
 
         //echo $page->getHtml();

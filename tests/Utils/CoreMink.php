@@ -21,6 +21,9 @@ abstract class CoreMink extends WebTestCase
     /** @var Client */
     protected $client;
 
+    /** @var Container */
+    protected $container;
+
     /** @var Router */
     protected $router;
 
@@ -37,6 +40,7 @@ abstract class CoreMink extends WebTestCase
     {
         $this->client = static::createClient();
         $container = $this->client->getContainer();
+        $this->container = $container;
         $this->router = $container->get('router');
         $this->doctrine = $container->get('doctrine');
         $this->em = $container->get('doctrine')->getManager();
