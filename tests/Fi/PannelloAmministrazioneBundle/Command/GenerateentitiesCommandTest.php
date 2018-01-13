@@ -6,14 +6,20 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class CreateEnvFifreeTest extends KernelTestCase
+class GenerateentitiesCommandTest extends KernelTestCase
 {
 
+    public static function setUpBeforeClass()
+    {
+        clearcache();
+        cleanFilesystem();
+    }
     /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $em;
     private $container;
+    private $application;
 
     /**
      * @inheritDoc
@@ -27,12 +33,12 @@ class CreateEnvFifreeTest extends KernelTestCase
         $this->em = $kernel->getContainer()
                 ->get('doctrine')
                 ->getManager();
+        
+        $this->application = new Application($kernel);
     }
 
     public function test10InstallFifree()
     {
-        $kernel = static::createKernel();
-        $kernel->boot();
 
         /* $application = new Application($this->kernel);
           $application->add(new \Fi\CoreBundle\Command\Fifree2droptablesCommand());
@@ -48,10 +54,9 @@ class CreateEnvFifreeTest extends KernelTestCase
 
           $this->assertRegExp('/.../', $commandTester->getDisplay());
          */
-        $application = new Application($kernel);
-        $application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
+        $this->application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
 
-        $command = $application->find('fifree2:dropdatabase');
+        $command = $this->application->find('fifree2:dropdatabase');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
                 array(
@@ -63,12 +68,11 @@ class CreateEnvFifreeTest extends KernelTestCase
 
         $this->assertRegExp('/.../', $commandTester->getDisplay());
 
-        $application = new Application($kernel);
-        $application->add(new \Fi\CoreBundle\Command\Fifree2installCommand());
-        $application->add(new \Fi\CoreBundle\Command\Fifree2createdatabaseCommand());
-        $application->add(new \Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand());
+        $this->application->add(new \Fi\CoreBundle\Command\Fifree2installCommand());
+        $this->application->add(new \Fi\CoreBundle\Command\Fifree2createdatabaseCommand());
+        $this->application->add(new \Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand());
 
-        $command = $application->find('fifree2:install');
+        $command = $this->application->find('fifree2:install');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
                 array(
@@ -81,7 +85,7 @@ class CreateEnvFifreeTest extends KernelTestCase
 
         $this->assertRegExp('/.../', $commandTester->getDisplay());
 
-        $container = $kernel->getContainer();
+        $container = $this->application->getKernel()->getContainer();
         $username4test = $container->getParameter('user4test');
         $em = $this->em;
         $qb2 = $em->createQueryBuilder();
@@ -105,9 +109,8 @@ class CreateEnvFifreeTest extends KernelTestCase
 //        $console = __DIR__ . '/../../../bin/console';
 //        $cmd = "php " . $console . " pannelloamministrazione:generateentities  Fi/ProvaBundle --schemaupdate --env=test";
 //        echo passthru($cmd);
-        $kernel = static::createKernel();
-        $kernel->boot();
-        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($kernel->getContainer());
+        $container = $this->application->getKernel()->getContainer();
+        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($container);
         $checkent = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
                 DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
 
@@ -115,7 +118,6 @@ class CreateEnvFifreeTest extends KernelTestCase
         $checkres = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
                 DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR .
                 "doctrine" . DIRECTORY_SEPARATOR . "Prova.orm.yml";
-        $application = new Application($kernel);
         /* $application->add(new \Sensio\Bundle\GeneratorBundle\Command\GenerateBundleCommand);
           $command = $application->find('generate:bundle');
           $commandTester = new CommandTester($command);
@@ -164,9 +166,8 @@ class CreateEnvFifreeTest extends KernelTestCase
           passthru($cmd);
           writestdout("Generated entities"); */
 
-        $application = new Application($kernel);
-        $application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand());
-        $command = $application->find('pannelloamministrazione:generateymlentities');
+        $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand());
+        $command = $this->application->find('pannelloamministrazione:generateymlentities');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
                 array(
@@ -177,14 +178,11 @@ class CreateEnvFifreeTest extends KernelTestCase
         );
 
         clearcache();
-        $kernel = static::createKernel();
-        $kernel->boot();
         $this->assertRegExp('/.../', $commandTester->getDisplay());
-        $application = new Application($kernel);
-
-        $application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand());
-        $application->add(new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand());
-        $command = $application->find('pannelloamministrazione:generateentities');
+        
+        $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand());
+        $this->application->add(new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand());
+        $command = $this->application->find('pannelloamministrazione:generateentities');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
                 array(
