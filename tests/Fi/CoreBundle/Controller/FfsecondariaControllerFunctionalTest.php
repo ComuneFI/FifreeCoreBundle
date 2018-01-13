@@ -6,13 +6,23 @@ use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
 
 class FfsecondariaControllerFunctionalTest extends FifreeTestUtil
 {
+
+    public function setUp()
+    {
+        $this->client = static::createClient();
+        $container = $this->client->getContainer();
+        $this->router = $container->get('router');
+        $this->doctrine = $container->get('doctrine');
+    }
+
     /*
      * @test
      */
 
     public function testFfsecondaria()
     {
-        $loginobj = $this->getMinkLoginPage();
+        $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $this->router->generate('Ffsecondaria');
+        $loginobj = $this->getMinkLoginPage($url);
         $session = $loginobj["session"];
         $page = $loginobj["page"];
 
@@ -519,9 +529,7 @@ class FfsecondariaControllerFunctionalTest extends FifreeTestUtil
 
     private function searchmodifiche($valoreprecedente)
     {
-        $client = $this->getClientAutorizzato();
-        // @var $em \Doctrine\ORM\EntityManager
-        $em = $client->getContainer()->get('doctrine')->getManager();
+        $em = $this->doctrine->getManager();
 
         $qu = $em->createQueryBuilder();
         $qu->select(array('c'))

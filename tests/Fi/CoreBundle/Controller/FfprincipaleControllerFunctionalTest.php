@@ -12,7 +12,8 @@ class FfprincipaleControllerFunctionalTest extends FifreeTestUtil
 
     public function testFfprincipale()
     {
-        $loginobj = $this->getMinkLoginPage();
+        $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'];
+        $loginobj = $this->getMinkLoginPage($url);
         $session = $loginobj["session"];
         $page = $loginobj["page"];
         

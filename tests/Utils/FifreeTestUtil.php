@@ -32,11 +32,9 @@ class FifreeTestUtil extends WebTestCase
         $this->em = $this->container->get('doctrine')->getManager();
     }
 
-    protected function getMinkLoginPage()
+    protected function getMinkLoginPage($url)
     {
         $browser = 'firefox';
-        //$url = $client->getContainer()->get('router')->generate('Categoria_container');
-        $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'];
 
         // Choose a Mink driver. More about it in later chapters.
         $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
