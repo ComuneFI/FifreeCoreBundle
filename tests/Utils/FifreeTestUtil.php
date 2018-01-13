@@ -4,6 +4,7 @@ namespace Fi\CoreBundle\DependencyInjection;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
+use Behat\Mink\Session;
 
 class FifreeTestUtil extends WebTestCase
 {
@@ -29,6 +30,30 @@ class FifreeTestUtil extends WebTestCase
         $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient());
         $this->container = $this->application->getKernel()->getContainer();
         $this->em = $this->container->get('doctrine')->getManager();
+    }
+
+    protected function getMinkLoginPage()
+    {
+        $browser = 'firefox';
+        //$url = $client->getContainer()->get('router')->generate('Categoria_container');
+        $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'];
+
+        // Choose a Mink driver. More about it in later chapters.
+        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
+        $session = new Session($driver);
+        // start the session
+        $session->start();
+        $session->visit($url);
+        $page = $session->getPage();
+        sleep(1);
+        /* Login */
+        $page->fillField('username', 'admin');
+        $page->fillField('password', 'admin');
+        $page->pressButton('_submit');
+        //$page = $session->getPage();
+
+        sleep(1);
+        return array("session" => $session, "page" => $page);
     }
 
     protected function getContainer()
