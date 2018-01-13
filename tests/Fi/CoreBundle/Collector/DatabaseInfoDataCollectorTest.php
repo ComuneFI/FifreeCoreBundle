@@ -4,7 +4,7 @@ namespace Fi\CoreBundle\Tests\Collector;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DatabaseCollectorTest extends WebTestCase
+class DatabaseInfoDataCollectorTest extends WebTestCase
 {
 
     public function testAction()

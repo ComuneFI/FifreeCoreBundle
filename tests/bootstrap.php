@@ -8,6 +8,16 @@ require __DIR__ . '/Utils/FifreeTestUtil.php';
 require __DIR__ . '/Utils/FifreeUserTestUtil.php';
 require __DIR__ . '/Utils/CommandTestCase.php';
 
+function clearcache()
+{
+    passthru(sprintf(
+                    'php "%s/console" cache:clear --no-warmup --env=%s', __DIR__ . '/../bin/', "test"
+    ));
+    /*passthru(sprintf(
+                    'php "%s/console" cache:warmup --env=%s', __DIR__ . '/../bin/', "test"
+    ));*/
+    #sleep(1);
+}
 
 
 function removecache()
@@ -27,17 +37,6 @@ function removecache()
     } else {
         echo $testcache . " not found";
     }
-}
-
-function clearcache()
-{
-    passthru(sprintf(
-                    'php "%s/console" cache:clear --no-warmup --env=%s', __DIR__ . '/../bin/', "test"
-    ));
-    /*passthru(sprintf(
-                    'php "%s/console" cache:warmup --env=%s', __DIR__ . '/../bin/', "test"
-    ));*/
-    #sleep(1);
 }
 
 function getErrorText($process, $command)

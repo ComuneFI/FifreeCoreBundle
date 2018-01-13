@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class OperatoriCommandTest extends WebTestCase
+class OperatoriCreateCommandTest extends WebTestCase
 {
 
     /**
