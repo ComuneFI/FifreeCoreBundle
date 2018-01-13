@@ -34,7 +34,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
         $urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;
 
-        passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-warmup --env=test ");
+        passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-warmup --env=test ");
         sleep(2);
 
         //url da testare
@@ -90,7 +90,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
         //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
         //$scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         //$session->executeScript($scriptclose);
-        //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        //echo passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
         /*qui*/
         //removecache();
         clearcache();
@@ -207,7 +207,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
-        //passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        //passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
         sleep(1);
         /* $session->visit($url);
           $page = $session->getPage();
@@ -250,7 +250,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
           $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
           $session->executeScript($scriptrun);
           parent::ajaxWait($session, 60000); */
-        //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
+        //echo passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
 
         /*qui*/
         //removecache();

@@ -96,13 +96,13 @@ class CreateEnvFifreeTest extends KernelTestCase
 
     public function test30InstallFifree()
     {
-//        $console = __DIR__ . '/../../bin/console';
+//        $console = __DIR__ . '/../../../bin/console';
 //        $cmd = "php " . $console . " pannelloamministrazione:generateymlentities  wbadmintest.mwb Fi/ProvaBundle --env=test";
 //        echo passthru($cmd);
-//        $console = __DIR__ . '/../../bin/console';
+//        $console = __DIR__ . '/../../../bin/console';
 //        $cmd = "php " . $console . " cache:clear --env=test";
 //        echo passthru($cmd);
-//        $console = __DIR__ . '/../../bin/console';
+//        $console = __DIR__ . '/../../../bin/console';
 //        $cmd = "php " . $console . " pannelloamministrazione:generateentities  Fi/ProvaBundle --schemaupdate --env=test";
 //        echo passthru($cmd);
         $kernel = static::createKernel();
@@ -134,7 +134,7 @@ class CreateEnvFifreeTest extends KernelTestCase
 
 
         echo "Generate bundle\n";
-        $console = __DIR__ . '/../../bin/console';
+        $console = __DIR__ . '/../../../bin/console';
         //$cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --no-debug --format=yml  -n --env=test";
         $cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --format=yml  -n --env=test";
         passthru($cmd);
@@ -142,23 +142,23 @@ class CreateEnvFifreeTest extends KernelTestCase
 
         /*
 
-          $console = __DIR__ . '/../../bin/console';
+          $console = __DIR__ . '/../../../bin/console';
           $cmd = "php " . $console . " pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle --no-debug --env=test";
           //$cmd = "php " . $console . " pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle --env=test";
           passthru($cmd);
           writestdout("Generated yml");
          */
-        /* $console = __DIR__ . '/../../bin/console';
+        /* $console = __DIR__ . '/../../../bin/console';
           $cmd = "php " . $console . " cache:clear --no-debug --env=test";
           passthru($cmd);
           writestdout("Clear cache");
 
-          $console = __DIR__ . '/../../bin/console';
+          $console = __DIR__ . '/../../../bin/console';
           $cmd = "php " . $console . " doctrine:cache:clear-metadata --no-debug --env=test";
           passthru($cmd);
           writestdout("Clear cache metadata"); */
 
-        /* $console = __DIR__ . '/../../bin/console';
+        /* $console = __DIR__ . '/../../../bin/console';
           $cmd = "php " . $console . " pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate --no-debug --env=test";
           //$cmd = "php " . $console . " pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate --env=test";
           passthru($cmd);
