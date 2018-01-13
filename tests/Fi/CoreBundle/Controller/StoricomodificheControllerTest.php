@@ -4,8 +4,6 @@ namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\DomCrawler\Crawler;
 use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
-use Behat\Mink\Mink;
-use Behat\Mink\Session;
 
 class StoricomodificheControllerTest extends FifreeTestUtil
 {

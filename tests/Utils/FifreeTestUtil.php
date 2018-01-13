@@ -21,14 +21,14 @@ class FifreeTestUtil extends WebTestCase
 
     protected function setUp()
     {
-        $kernel = new \AppKernel("test", true);
-        $kernel->boot();
-        $this->application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+        $client = static::createClient();
+        $this->clientNonAutorizzato = $client;
+
+        $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient());
+        $this->application = new \Symfony\Bundle\FrameworkBundle\Console\Application($this->clientAutorizzato->getKernel());
         $this->application->setAutoExit(false);
 
-        $this->clientNonAutorizzato = static::createClient();
-        $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient());
-        $this->container = $this->application->getKernel()->getContainer();
+        $this->container = $this->clientAutorizzato->getKernel()->getContainer();
         $this->em = $this->container->get('doctrine')->getManager();
     }
 

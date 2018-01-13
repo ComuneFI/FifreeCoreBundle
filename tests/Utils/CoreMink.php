@@ -27,6 +27,9 @@ abstract class CoreMink extends WebTestCase
     /** @var doctrine */
     protected $doctrine;
 
+    /** @var doctrine */
+    protected $em;
+
     /** @var  string */
     protected $seleniumDriverType;
 
@@ -36,6 +39,7 @@ abstract class CoreMink extends WebTestCase
         $container = $this->client->getContainer();
         $this->router = $container->get('router');
         $this->doctrine = $container->get('doctrine');
+        $this->em = $container->get('doctrine')->getManager();
         $this->minkBaseUrl = $container->getParameter('mink_url');
         $this->seleniumDriverType = $container->getParameter('selenium_driver_type');
     }
