@@ -15,17 +15,13 @@ class OpzioniTabellaControllerTest extends FifreeTestUtil
      */
     public function testIndexOpzioniTabella()
     {
-        parent::setUp();
-        $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
         $url = $client->getContainer()->get('router')->generate('OpzioniTabella');
         $em = $this->getEntityManager();
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
 
         $client->request('GET', $url);
-        sleep(1);
         $crawler = new Crawler($client->getResponse()->getContent());
-        sleep(1);
         $this->assertTrue($client->getResponse()->isSuccessful());
         $body = $crawler->filter('div[id="OpzioniTabella"]');
         $attributes = $body->extract(array('_text', 'class'));
@@ -35,14 +31,11 @@ class OpzioniTabellaControllerTest extends FifreeTestUtil
         $urlnoauth = '/OpzioniTabella/';
         $clientnoauth->request('GET', $urlnoauth);
 
-        $this->assertEquals($this->getClassName(), get_class());
         $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 
     public function testOpzioniTabella()
     {
-        parent::__construct();
-        $this->setClassName(get_class());
         $browser = 'firefox';
         $urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('OpzioniTabella');
         $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;
@@ -66,22 +59,6 @@ class OpzioniTabellaControllerTest extends FifreeTestUtil
 
         $session->stop();
 
-        /* $client = $this->getClientAutorizzato();
-          // @var $em \Doctrine\ORM\EntityManager
-          $em = $client->getContainer()->get('doctrine')->getManager();
-
-          $qu = $em->createQueryBuilder();
-          $qu->select(array('c'))
-          ->from('FiCoreBundle:Ffprincipale', 'c')
-          ->where('c.descrizione = :descrizione')
-          ->setParameter('descrizione', $descrizionetest);
-          $ff = $qu->getQuery()->getSingleResult();
-          $this->assertEquals($ff->getDescrizione(), $descrizionetest);
-
-          $em->remove($ff);
-          $em->flush();
-          $em->clear();
-          $this->assertTrue(is_null($ff->getId())); */
     }
 
     public function crudoperation($session, $page)

@@ -15,8 +15,6 @@ class StoricomodificheControllerTest extends FifreeTestUtil
      */
     public function testIndexStoricomodifiche()
     {
-        parent::setUp();
-        $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
         $url = $client->getContainer()->get('router')->generate('Storicomodifiche_container');
         $em = $this->getEntityManager();
@@ -35,7 +33,6 @@ class StoricomodificheControllerTest extends FifreeTestUtil
         $urlnoauth = '/Storicomodifiche/';
         $clientnoauth->request('GET', $urlnoauth);
 
-        $this->assertEquals($this->getClassName(), get_class());
         $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 }

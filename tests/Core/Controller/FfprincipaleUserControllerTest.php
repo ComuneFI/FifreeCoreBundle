@@ -2,24 +2,19 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Symfony\Component\DomCrawler\Crawler;
 use Fi\CoreBundle\DependencyInjection\FifreeUserTestUtil;
-use Behat\Mink\Session;
 
 class FfprincipaleUserControllerTest extends FifreeUserTestUtil
 {
 
     public function testIndexFfprincipaleSenzaPrivilegi()
     {
-        parent::setUp();
-        $this->setClassName(get_class());
 
         $client = $this->getClientAutorizzato();
 
         $url = $client->getContainer()->get('router')->generate('Ffprincipale');
 
         $client->request('GET', $url);
-        sleep(1);
 
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
@@ -29,7 +24,6 @@ class FfprincipaleUserControllerTest extends FifreeUserTestUtil
      */
     public function testGrigliaUserMain()
     {
-        parent::setUp();
         $namespace = 'Fi';
         $bundle = 'Core';
         $controller = 'Ffsecondaria';
@@ -64,19 +58,6 @@ class FfprincipaleUserControllerTest extends FifreeUserTestUtil
             'escludere' => $escludi,
             'container' => $container
         );
-
-        /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
-        $userManager = $container->get('fifree.fos_user.user_manager');
-        /* @var $loginManager \FOS\UserBundle\Security\LoginManager */
-        $loginManager = $container->get('fifree.fos_user.security.login_manager');
-        $firewallName = $container->getParameter('fos_user.firewall_name');
-        $username4test = $container->getParameter('usernoprivileges4test');
-        $user = $userManager->findUserBy(array('username' => $username4test));
-        $loginManager->loginUser($firewallName, $user);
-
-        /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
-        $container->get('session')->save();
 
         $testatagriglia = Griglia::testataPerGriglia($paricevuti);
         $modellocolonne = $testatagriglia['modellocolonne'];

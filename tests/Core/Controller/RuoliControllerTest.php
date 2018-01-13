@@ -15,8 +15,6 @@ class RuoliControllerTest extends FifreeTestUtil
      */
     public function testIndexRuoli()
     {
-        parent::setUp();
-        $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
         $url = $client->getContainer()->get('router')->generate('Ruoli');
         $em = $this->getEntityManager();
@@ -35,14 +33,11 @@ class RuoliControllerTest extends FifreeTestUtil
         $urlnoauth = '/Ruoli/';
         $clientnoauth->request('GET', $urlnoauth);
 
-        $this->assertEquals($this->getClassName(), get_class());
         $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 
     public function testRuoli()
     {
-        parent::__construct();
-        $this->setClassName(get_class());
         $browser = 'firefox';
         $urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('Ruoli');
         $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;

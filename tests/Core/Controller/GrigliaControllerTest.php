@@ -3,7 +3,6 @@
 namespace Fi\CoreBundle\Controller;
 
 use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
-use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
 class GrigliaControllerTest extends FifreeTestUtil
@@ -14,7 +13,6 @@ class GrigliaControllerTest extends FifreeTestUtil
      */
     public function testGrigliaMain()
     {
-        parent::setUp();
         $namespace = 'Fi';
         $bundle = 'Core';
         $controller = 'Ffsecondaria';
@@ -49,19 +47,6 @@ class GrigliaControllerTest extends FifreeTestUtil
             'escludere' => $escludi,
             'container' => $container
         );
-
-        /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
-        $userManager = $container->get('fifree.fos_user.user_manager');
-        /* @var $loginManager \FOS\UserBundle\Security\LoginManager */
-        $loginManager = $container->get('fifree.fos_user.security.login_manager');
-        $firewallName = $container->getParameter('fos_user.firewall_name');
-        $username4test = $container->getParameter('user4test');
-        $user = $userManager->findUserBy(array('username' => $username4test));
-        $loginManager->loginUser($firewallName, $user);
-
-        /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
-        $container->get('session')->save();
 
         $testatagriglia = Griglia::testataPerGriglia($paricevuti);
         $modellocolonne = $testatagriglia['modellocolonne'];
@@ -206,8 +191,6 @@ class GrigliaControllerTest extends FifreeTestUtil
 
     public function testGrigliaFfsecondaria()
     {
-        parent::setUp();
-        $this->setClassName(get_class());
         $browser = 'firefox';
         $urlruote = $this->getClientAutorizzato()->getContainer()->get('router')->generate('Ffsecondaria');
         $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlruote;

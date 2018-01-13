@@ -12,16 +12,22 @@ class FifreeTestUtil extends WebTestCase
      * @var \Doctrine\ORM\EntityManager
      */
     protected $em;
+    protected $application;
     protected $container;
-    private $clientNonAutorizzato;
-    private $clientAutorizzato;
+    protected $clientNonAutorizzato;
+    protected $clientAutorizzato;
     private $testclassname;
 
     protected function setUp()
     {
+        $kernel = new \AppKernel("test", true);
+        $kernel->boot();
+        $this->application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+        $this->application->setAutoExit(false);
+
         $this->clientNonAutorizzato = static::createClient();
         $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient());
-        $this->container = $this->clientAutorizzato->getContainer();
+        $this->container = $this->application->getKernel()->getContainer();
         $this->em = $this->container->get('doctrine')->getManager();
     }
 

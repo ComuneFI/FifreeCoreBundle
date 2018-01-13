@@ -15,8 +15,6 @@ class MenuApplicazioneControllerTest extends FifreeTestUtil
      */
     public function testIndexMenuApplicazione()
     {
-        parent::setUp();
-        $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
         $url = $client->getContainer()->get('router')->generate('MenuApplicazione_container');
         $em = $this->getEntityManager();
@@ -35,14 +33,11 @@ class MenuApplicazioneControllerTest extends FifreeTestUtil
         $urlnoauth = '/MenuApplicazione/';
         $clientnoauth->request('GET', $urlnoauth);
 
-        $this->assertEquals($this->getClassName(), get_class());
         $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 
     public function testMenuApplicazione()
     {
-        parent::__construct();
-        $this->setClassName(get_class());
         $browser = 'firefox';
         $urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('MenuApplicazione_container');
         $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;

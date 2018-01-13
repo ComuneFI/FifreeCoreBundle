@@ -15,8 +15,6 @@ class FfsecondariaControllerTest extends FifreeTestUtil
      */
     public function testIndexFfsecondaria()
     {
-        parent::setUp();
-        $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
         $url = $client->getContainer()->get('router')->generate('Ffsecondaria');
         $em = $this->getEntityManager();
@@ -33,7 +31,6 @@ class FfsecondariaControllerTest extends FifreeTestUtil
         $urlnoauth = '/Ffsecondaria/';
         $clientnoauth->request('GET', $urlnoauth);
 
-        $this->assertEquals($this->getClassName(), get_class());
         $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 
@@ -42,8 +39,6 @@ class FfsecondariaControllerTest extends FifreeTestUtil
      */
     public function testExcelFfsecondaria()
     {
-        parent::setUp();
-        $this->setClassName(get_class());
         $client = $this->getClientAutorizzato();
         $url = $client->getContainer()->get('router')->generate('Tabelle_esportaexceltabella', array('nometabella' => 'Ffsecondaria'));
 
@@ -59,8 +54,6 @@ class FfsecondariaControllerTest extends FifreeTestUtil
 
     public function testFfsecondaria()
     {
-        parent::setUp();
-        $this->setClassName(get_class());
         $browser = 'firefox';
         $urlruote = $this->getClientAutorizzato()->getContainer()->get('router')->generate('Ffsecondaria');
         $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlruote;

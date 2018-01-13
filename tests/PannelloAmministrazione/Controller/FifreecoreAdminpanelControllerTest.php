@@ -16,11 +16,7 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
 
     public function test10AdminpanelHomepage()
     {
-        //.' --env '.$this->getClientAutorizzato()->getContainer()->get( 'kernel' )->getEnvironment()
-        //$this->cleanFilesystem();
-        //$this->restartKernel();
         $client = $this->getClientAutorizzato();
-        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $url = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage'/* , array('parms' => 'value') */);
 
         $client->request('GET', $url);
@@ -32,18 +28,14 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
     /*
      * @test
      */
-
     public function test20AdminpanelGenerateBundle()
     {
-        //$this->restartKernel();
         $browser = 'firefox';
         $urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;
 
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-warmup --no-debug --env=test ");
-        sleep(1);
-        echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:warmup --no-debug --env=test ");
-        sleep(1);
+        passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-warmup --env=test ");
+        sleep(2);
 
         //url da testare
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->getClientAutorizzato()->getContainer());
@@ -99,8 +91,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
         //$scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         //$session->executeScript($scriptclose);
         //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
-
-        removecache();
+        /*qui*/
+        //removecache();
         clearcache();
         //$driver->reload();
         $session->visit($url);
@@ -187,7 +179,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
         /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
           $session->executeScript($scriptclose); */
 
-        removecache();
+        /*qui*/
+        //removecache();
         clearcache();
         //$driver->reload();
         $session->visit($url);
@@ -259,7 +252,8 @@ class FifreecoreAdminpanelControllerTest extends FifreeTestUtil
           parent::ajaxWait($session, 60000); */
         //echo passthru("php " . __DIR__ . '/../../bin/console' . " cache:clear --no-debug --env=test ");
 
-        removecache();
+        /*qui*/
+        //removecache();
         clearcache();
         //$driver->reload();
         $session->visit($url);

@@ -45,8 +45,6 @@ class TabelleControllerTest extends FifreeTestUtil
 
     public function testTabelle()
     {
-        parent::__construct();
-        $this->setClassName(get_class());
         $browser = 'firefox';
         $urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('Tabelle');
         $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;
@@ -70,22 +68,6 @@ class TabelleControllerTest extends FifreeTestUtil
 
         $session->stop();
 
-        /* $client = $this->getClientAutorizzato();
-          // @var $em \Doctrine\ORM\EntityManager
-          $em = $client->getContainer()->get('doctrine')->getManager();
-
-          $qu = $em->createQueryBuilder();
-          $qu->select(array('c'))
-          ->from('FiCoreBundle:Ffprincipale', 'c')
-          ->where('c.descrizione = :descrizione')
-          ->setParameter('descrizione', $descrizionetest);
-          $ff = $qu->getQuery()->getSingleResult();
-          $this->assertEquals($ff->getDescrizione(), $descrizionetest);
-
-          $em->remove($ff);
-          $em->flush();
-          $em->clear();
-          $this->assertTrue(is_null($ff->getId())); */
     }
 
     public function crudoperation($session, $page)
