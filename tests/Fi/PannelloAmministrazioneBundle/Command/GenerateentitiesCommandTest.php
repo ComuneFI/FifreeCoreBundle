@@ -19,9 +19,10 @@ class GenerateentitiesCommandTest extends KernelTestCase
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    private $em;
-    private $container;
-    private $application;
+    protected $em;
+    protected $container;
+    protected $logger;
+    protected $application;
 
     /**
      * @inheritDoc
@@ -32,6 +33,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $kernel->boot();
 
         $this->container = $kernel->getContainer();
+        $this->logger = $this->container->get('logger');
         $this->em = $kernel->getContainer()
                 ->get('doctrine')
                 ->getManager();
@@ -137,13 +139,13 @@ class GenerateentitiesCommandTest extends KernelTestCase
           $this->assertRegExp('/.../', $commandTester->getDisplay()); */
 
 
-        echo "Generate bundle\n";
+        $this->logger->info("Generate bundle");
         $console = __DIR__ . '/../../../bin/console';
         //$cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --no-debug --format=yml  -n --env=test";
         $cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --format=yml  -n --env=test";
         passthru($cmd);
-        writestdout("Generated bundle");
-
+        $this->logger->info("Generated bundle");
+        
         /*
 
           $console = __DIR__ . '/../../../bin/console';
@@ -179,7 +181,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
                 )
         );
 
-        writestdout("Generated yml entities");
+        $this->logger->info("Generated yml entities");
         $this->assertRegExp('/.../', $commandTester->getDisplay());
         removecache();
         clearcache();
@@ -195,7 +197,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
                     '--env' => 'test'
                 )
         );
-        writestdout("Generated entities");
+        $this->logger->info("Generated entities");
         $this->assertRegExp('/.../', $commandTester->getDisplay());
         //echo $checkent;
         $this->assertTrue(file_exists($checkent));
@@ -204,13 +206,13 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
     protected function tearDown()
     {
+        $this->logger->info("end GenerateentitiesCommandTest");
         parent::tearDown();
         $this->em->close();
         $this->em = null; // avoid memory leaks
         cleanFilesystem();
         removecache();
         clearcache();
-        writestdout("end GenerateentitiesCommandTest");
     }
 
 }

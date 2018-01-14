@@ -9,7 +9,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 
     public static function setUpBeforeClass()
     {
-        writestdout("start PannelloAmministrazioneControllerTest");
         cleanFilesystem();
         removecache();
         clearcache();
@@ -21,6 +20,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 
     public function test20AdminpanelGenerateBundle()
     {
+        $this->logger->info("start PannelloAmministrazioneControllerTest");
         //passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-warmup --env=test ");
         //sleep(2);
         //url da testare
@@ -54,7 +54,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $page->pressButton('adminpanelgeneratebundle');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 60000);
+        $this->ajaxWait($session);
 
         $scriptrun = "function(){ $('button:contains(\"Chiudi\")').click();}()";
         $session->executeScript($scriptrun);
@@ -85,7 +85,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         //$page->fillField('password', 'admin');
         //$page->pressButton('_submit');
         clearcache();
-        
+
         $this->visit($url);
         $this->login('admin', 'admin');
         $session = $this->getSession();
@@ -105,7 +105,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $page->pressButton('adminpanelgenerateentity');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 120000);
+        $this->ajaxWait($session);
 
         sleep(1);
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
@@ -115,7 +115,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $page->pressButton('adminpanelgenerateclassentity');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 120000);
+        $this->ajaxWait($session);
         sleep(1);
         //echo $session->getPage()->getHtml();
         /**/
@@ -153,7 +153,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $page->pressButton('adminpanelaggiornadatabase');
         $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptdb);
-        parent::ajaxWait($session, 60000);
+        $this->ajaxWait($session);
         /**/
         //$screenshot = $driver->getWebDriverSession()->screenshot();
         //file_put_contents('/tmp/test5.png', base64_decode($screenshot));
@@ -194,7 +194,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $page->pressButton('adminpanelgenerateformcrud');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        parent::ajaxWait($session, 60000);
+        $this->ajaxWait($session);
         sleep(1);
         $this->assertTrue(file_exists($checktypeprova));
         $this->assertTrue(file_exists($checkviewsprova));
@@ -278,7 +278,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
             }
         }
         /* Inserimento */
-        parent::ajaxWait($session, 20000);
+        $this->ajaxWait($session);
         $descrizionetest1 = 'Test inserimento descrizione automatico';
 //        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
 //            $fieldhtml = 'prova_descrizione';
@@ -288,7 +288,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 
         $page->fillField($fieldhtml, $descrizionetest1);
         $page->find('css', 'a#sDataProvaS')->click();
-        parent::ajaxWait($session, 20000);
+        $this->ajaxWait($session);
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
@@ -300,27 +300,27 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
                 $e->click();
             }
         }
-        parent::ajaxWait($session, 20000);
+        $this->ajaxWait($session);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $page->fillField($fieldhtml, $descrizionetest2);
         $page->find('css', 'a#sDataProvaS')->click();
-        parent::ajaxWait($session);
+        $this->ajaxWait($session);
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
-        parent::ajaxWait($session, 20000);
+        $this->ajaxWait($session);
 
         foreach ($elementdel as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
         }
-        parent::ajaxWait($session, 20000);
+        $this->ajaxWait($session);
         $page->find('css', 'a#dData')->click();
-        parent::ajaxWait($session, 20000);
+        $this->ajaxWait($session);
     }
 
     /**

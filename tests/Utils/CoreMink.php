@@ -30,6 +30,9 @@ abstract class CoreMink extends WebTestCase
     /** @var doctrine */
     protected $doctrine;
 
+    /** @var logger*/
+    protected $logger;
+
     /** @var doctrine */
     protected $em;
 
@@ -42,6 +45,7 @@ abstract class CoreMink extends WebTestCase
         $container = $this->client->getContainer();
         $this->container = $container;
         $this->router = $container->get('router');
+        $this->logger = $container->get('logger');
         $this->doctrine = $container->get('doctrine');
         $this->em = $container->get('doctrine')->getManager();
         $this->minkBaseUrl = $container->getParameter('mink_url');
