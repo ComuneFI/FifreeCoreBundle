@@ -16,6 +16,8 @@ class OpzioniTabellaControllerFunctionalTest extends CoreMink
         $session = $this->getSession();
         $page = $this->getCurrentPage();
         
+        sleep(1);
+        
         $this->crudoperation($session, $page);
 
         $session->stop();

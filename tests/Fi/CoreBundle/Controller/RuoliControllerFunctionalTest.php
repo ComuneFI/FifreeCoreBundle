@@ -15,6 +15,8 @@ class RuoliControllerFunctionalTest extends CoreMink
         $this->login('admin', 'admin');
         $session = $this->getSession();
         $page = $this->getCurrentPage();
+        
+        sleep(1);
 
         $this->crudoperation($session, $page);
 
