@@ -9,6 +9,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 
     public static function setUpBeforeClass()
     {
+        writestdout("start PannelloAmministrazioneControllerTest");
         cleanFilesystem();
         removecache();
         clearcache();

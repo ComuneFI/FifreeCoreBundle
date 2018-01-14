@@ -180,8 +180,9 @@ class GenerateentitiesCommandTest extends KernelTestCase
         );
 
         writestdout("Generated yml entities");
-        clearcache();
         $this->assertRegExp('/.../', $commandTester->getDisplay());
+        removecache();
+        clearcache();
 
         $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand());
         $this->application->add(new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand());

@@ -10,7 +10,6 @@ class PannelloAmministrazioneControllerTest extends FifreeTestUtil
 
     public static function setUpBeforeClass()
     {
-        writestdout("start PannelloAmministrazioneControllerTest");
 
         cleanFilesystem();
         removecache();
