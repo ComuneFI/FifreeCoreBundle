@@ -12,6 +12,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
     public static function setUpBeforeClass()
     {
         cleanFilesystem();
+        removecache();
         clearcache();
     }
     /**
@@ -201,6 +202,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
     {
         parent::tearDown();
         cleanFilesystem();
+        removecache();
         clearcache();
         $this->em->close();
         $this->em = null; // avoid memory leaks
