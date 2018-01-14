@@ -33,10 +33,10 @@ function removecache()
         if (!$process->isSuccessful()) {
             echo getErrorText($process, $command);
         } else {
-            echo $process->getOutput();
+            //echo $process->getOutput();
         }
     } else {
-        echo $testcache . " not found";
+        //echo $testcache . " not found";
     }
 }
 

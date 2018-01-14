@@ -15,6 +15,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         removecache();
         clearcache();
     }
+
     /**
      * @var \Doctrine\ORM\EntityManager
      */
@@ -34,7 +35,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $this->em = $kernel->getContainer()
                 ->get('doctrine')
                 ->getManager();
-        
+
         $this->application = new Application($kernel);
     }
 
@@ -178,9 +179,10 @@ class GenerateentitiesCommandTest extends KernelTestCase
                 )
         );
 
+        writestdout("Generated yml entities");
         clearcache();
         $this->assertRegExp('/.../', $commandTester->getDisplay());
-        
+
         $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand());
         $this->application->add(new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand());
         $command = $this->application->find('pannelloamministrazione:generateentities');
@@ -192,6 +194,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
                     '--env' => 'test'
                 )
         );
+        writestdout("Generated entities");
         $this->assertRegExp('/.../', $commandTester->getDisplay());
         //echo $checkent;
         $this->assertTrue(file_exists($checkent));
@@ -201,11 +204,12 @@ class GenerateentitiesCommandTest extends KernelTestCase
     protected function tearDown()
     {
         parent::tearDown();
+        $this->em->close();
+        $this->em = null; // avoid memory leaks
         cleanFilesystem();
         removecache();
         clearcache();
-        $this->em->close();
-        $this->em = null; // avoid memory leaks
+        writestdout("end GenerateentitiesCommandTest");
     }
 
 }

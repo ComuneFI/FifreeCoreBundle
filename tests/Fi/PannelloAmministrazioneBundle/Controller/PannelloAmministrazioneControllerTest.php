@@ -10,6 +10,8 @@ class PannelloAmministrazioneControllerTest extends FifreeTestUtil
 
     public static function setUpBeforeClass()
     {
+        writestdout("start PannelloAmministrazioneControllerTest");
+
         cleanFilesystem();
         removecache();
         clearcache();
@@ -29,7 +31,7 @@ class PannelloAmministrazioneControllerTest extends FifreeTestUtil
         $client->request('GET', $url);
         $crawler = new Crawler($client->getResponse()->getContent());
         $this->assertTrue($client->getResponse()->isSuccessful());
-        
+
         //$body = $crawler->filter('div[id="Ffprincipale"]');
         //$attributes = $body->extract(array('_text', 'class'));
         //$this->assertEquals($attributes[0][1], 'tabella');
