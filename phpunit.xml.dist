@@ -9,39 +9,23 @@
     convertNoticesToExceptions  = "true"
     convertWarningsToExceptions = "true"
     processIsolation            = "false"
-    stopOnFailure               = "false"
+    stopOnFailure               = "true"
     syntaxCheck                 = "false"
     bootstrap                   = "tests/bootstrap.php" >
 
     <testsuites>
-        <testsuite name="Collector">
+        <testsuite name="Corebundle">
             <directory suffix=".php">./tests/Fi/CoreBundle/Collector</directory>
-        </testsuite>
-        <testsuite name="Command">
             <directory suffix=".php">./tests/Fi/CoreBundle/Command</directory>
-        </testsuite>
-        <testsuite name="Controller">
             <directory suffix=".php">./tests/Fi/CoreBundle/Controller</directory>
-        </testsuite>
-        <testsuite name="DependencyInjection">
             <directory suffix=".php">./tests/Fi/CoreBundle/DependencyInjection</directory>
-        </testsuite>
-        <testsuite name="Entity">
             <directory suffix=".php">./tests/Fi/CoreBundle/Entity</directory>
-        </testsuite>
-        <testsuite name="Form">
             <directory suffix=".php">./tests/Fi/CoreBundle/Form</directory>
-        </testsuite>
-        <testsuite name="Utils">
             <directory suffix=".php">./tests/Fi/CoreBundle/Utils</directory>
         </testsuite>
-        <testsuite name="CommandPA">
+        <testsuite name="Pannelloamministrazionebundle">
             <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/Command</directory>
-        </testsuite>
-        <testsuite name="DependencyinjectionPA">
             <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/Dependencyinjection</directory>
-        </testsuite>
-        <testsuite name="ControllerPA">
             <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/Controller</directory>
         </testsuite>
     </testsuites>

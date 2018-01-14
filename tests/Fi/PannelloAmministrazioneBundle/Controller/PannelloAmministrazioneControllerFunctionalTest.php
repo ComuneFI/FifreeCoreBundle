@@ -83,7 +83,14 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         //$page->fillField('username', 'admin');
         //$page->fillField('password', 'admin');
         //$page->pressButton('_submit');
+        clearcache();
+        
+        $this->visit($url);
+        $this->login('admin', 'admin');
+        $session = $this->getSession();
+        $page = $this->getCurrentPage();
 
+        sleep(1);
         $this->visit($url);
         $checkprovabundle = file_exists($fileprovabundle);
         $this->assertTrue($checkprovabundle, $fileprovabundle);
