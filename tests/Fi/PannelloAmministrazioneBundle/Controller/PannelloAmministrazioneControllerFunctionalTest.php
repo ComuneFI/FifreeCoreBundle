@@ -43,9 +43,9 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $this->login('admin', 'admin');
         $session = $this->getSession();
         $page = $this->getCurrentPage();
-        
+
         sleep(1);
-        
+
         $page->fillField('bundlename', 'Fi/ProvaBundle');
 
         $javascript = "window.alert = function() {};";
@@ -54,7 +54,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
         parent::ajaxWait($session, 60000);
-        
+
         $scriptrun = "function(){ $('button:contains(\"Chiudi\")').click();}()";
         $session->executeScript($scriptrun);
         //parent::ajaxWait($session, 60000);
@@ -171,6 +171,15 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
           $page = $session->getPage();
 
           sleep(1); */
+
+        clearcache();
+        $this->visit($url);
+        $this->login('admin', 'admin');
+        $session = $this->getSession();
+        $page = $this->getCurrentPage();
+
+        sleep(1);
+
         $page->fillField('bundlename', 'Fi/ProvaBundle');
         $page->fillField('entityform', 'Prova');
 
@@ -219,7 +228,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $this->login('admin', 'admin');
         $session = $this->getSession();
         $page = $this->getCurrentPage();
-        
+
         sleep(1);
 
         //echo $page->getHtml();
