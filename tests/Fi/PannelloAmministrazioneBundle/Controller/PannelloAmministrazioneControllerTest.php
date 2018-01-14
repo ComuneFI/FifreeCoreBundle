@@ -11,6 +11,7 @@ class PannelloAmministrazioneControllerTest extends FifreeTestUtil
     public static function setUpBeforeClass()
     {
         cleanFilesystem();
+        removecache();
         clearcache();
     }
 
@@ -39,9 +40,10 @@ class PannelloAmministrazioneControllerTest extends FifreeTestUtil
      */
     protected function tearDown()
     {
-        cleanFilesystem();
-        clearcache();
         parent::tearDown();
+        cleanFilesystem();
+        removecache();
+        clearcache();
     }
 
 }

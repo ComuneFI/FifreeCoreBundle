@@ -10,6 +10,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
     public static function setUpBeforeClass()
     {
         cleanFilesystem();
+        removecache();
         clearcache();
     }
 
@@ -215,7 +216,11 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 
 
         $this->visit($url);
-        $page = $session->getPage();
+        $this->login('admin', 'admin');
+        $session = $this->getSession();
+        $page = $this->getCurrentPage();
+        
+        sleep(1);
 
         //echo $page->getHtml();
         sleep(1);
@@ -306,9 +311,10 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
      */
     protected function tearDown()
     {
-        cleanFilesystem();
-        clearcache();
         parent::tearDown();
+        cleanFilesystem();
+        removecache();
+        clearcache();
     }
 
 }
