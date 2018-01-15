@@ -110,6 +110,7 @@ after_failure:
   - sudo cat /var/log/apache2/other_vhosts_access.log
   - sudo cat /var/log/apache2/fifree_error.log
   - sudo cat /var/log/apache2/fifree_access.log
+  - sudo cat $TRAVIS_BUILD_DIR/tests/var/logs/test/test.log
 
 notifications:
   email:
