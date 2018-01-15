@@ -14,6 +14,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         cleanFilesystem();
         removecache();
         clearcache();
+        cachewarmup();
     }
 
     /**
@@ -75,7 +76,12 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $this->application->add(new \Fi\CoreBundle\Command\Fifree2installCommand());
         $this->application->add(new \Fi\CoreBundle\Command\Fifree2createdatabaseCommand());
         $this->application->add(new \Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand());
+        $this->application->add(new \Symfony\Bundle\FrameworkBundle\Command\CacheClearCommand());
+        
 
+        clearcache();
+        cachewarmup();
+        
         $command = $this->application->find('fifree2:install');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
@@ -100,10 +106,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $record2 = $qb2->getQuery()->getResult();
         $recorddelete = $record2[0];
         $this->assertEquals($recorddelete->getUsername(), $username4test);
-    }
 
-    public function test30InstallFifree()
-    {
 //        $console = __DIR__ . '/../../../bin/console';
 //        $cmd = "php " . $console . " pannelloamministrazione:generateymlentities  wbadmintest.mwb Fi/ProvaBundle --env=test";
 //        echo passthru($cmd);
@@ -145,7 +148,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --format=yml  -n --env=test";
         passthru($cmd);
         $this->logger->info("Generated bundle");
-        
+
         /*
 
           $console = __DIR__ . '/../../../bin/console';
@@ -183,8 +186,13 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         $this->logger->info("Generated yml entities");
         $this->assertRegExp('/.../', $commandTester->getDisplay());
-        removecache();
+        //removecache();
+        //clearcache();
+
         clearcache();
+        cachewarmup();
+        
+        $this->assertRegExp('/.../', $commandTester->getDisplay());
 
         $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand());
         $this->application->add(new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand());
@@ -206,13 +214,14 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
     protected function tearDown()
     {
-        $this->logger->info("end GenerateentitiesCommandTest");
+        //$this->logger->info("end GenerateentitiesCommandTest");
         parent::tearDown();
-        $this->em->close();
-        $this->em = null; // avoid memory leaks
+        //$this->em->close();
+        //$this->em = null; // avoid memory leaks
         cleanFilesystem();
         removecache();
         clearcache();
+        cachewarmup();
     }
 
 }

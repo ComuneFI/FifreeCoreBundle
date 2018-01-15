@@ -15,12 +15,15 @@ function clearcache()
     passthru(sprintf(
                     'php "%s/console" cache:clear --no-warmup --env=%s', __DIR__ . '/../bin/', "test"
     ));
-    /*passthru(sprintf(
-                    'php "%s/console" cache:warmup --env=%s', __DIR__ . '/../bin/', "test"
-    ));*/
-    #sleep(1);
 }
 
+function cachewarmup()
+{
+    passthru(sprintf(
+                    'php "%s/console" cache:warmup --env=%s', __DIR__ . '/../bin/', "test"
+    ));
+    #sleep(1);
+}
 
 function removecache()
 {
