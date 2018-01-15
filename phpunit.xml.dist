@@ -22,6 +22,7 @@
             <directory suffix=".php">./tests/Fi/CoreBundle/Entity</directory>
             <directory suffix=".php">./tests/Fi/CoreBundle/Form</directory>
             <directory suffix=".php">./tests/Fi/CoreBundle/Utils</directory>
+            <directory suffix=".php">./tests/Fi/CoreBundle/Functional</directory>
         </testsuite>
         <testsuite name="Pannelloamministrazionebundle">
             <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/Command</directory>

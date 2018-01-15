@@ -37,13 +37,13 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
     private function crudoperation($session, $page)
     {
         $elementadd = $page->findAll('css', '.ui-icon-plus');
-        sleep(1);
+        sleep(2);
         foreach ($elementadd as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
         }
-        sleep(1);
+        sleep(2);
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
