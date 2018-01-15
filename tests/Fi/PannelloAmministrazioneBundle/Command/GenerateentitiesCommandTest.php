@@ -76,8 +76,6 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $this->application->add(new \Fi\CoreBundle\Command\Fifree2installCommand());
         $this->application->add(new \Fi\CoreBundle\Command\Fifree2createdatabaseCommand());
         $this->application->add(new \Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand());
-        $this->application->add(new \Symfony\Bundle\FrameworkBundle\Command\CacheClearCommand());
-        
 
         clearcache();
         cachewarmup();
