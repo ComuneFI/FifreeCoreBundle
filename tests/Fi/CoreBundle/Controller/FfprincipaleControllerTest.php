@@ -3,9 +3,10 @@
 namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
+use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
+use Fi\CoreBundle\DependencyInjection\FifreeTestUnauthorizedClient;
 
-class FfprincipaleControllerTest extends FifreeTestUtil
+class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
 {
 
     /**
@@ -13,7 +14,7 @@ class FfprincipaleControllerTest extends FifreeTestUtil
      */
     public function testIndexFfprincipale()
     {
-        $client = $this->getClientAutorizzato();
+        $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $em = $this->getEntityManager();
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
@@ -25,14 +26,7 @@ class FfprincipaleControllerTest extends FifreeTestUtil
         $attributes = $body->extract(array('_text', 'class'));
         $this->assertEquals($attributes[0][1], 'tabella');
 
-        $clientnoauth = $this->getClientNonAutorizzato();
-        $urlnoauth = '/Ffprincipale/';
-        $clientnoauth->request('GET', $urlnoauth);
-
-        $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
-
         //insert
-        $client = parent::getClientAutorizzato();
         $crawler = $client->request('GET', '/Ffprincipale/new');
         $this->assertTrue($crawler->filter('html:contains("formdatiFfprincipale")')->count() > 0);
         $descrizione = "descrizione";
@@ -103,7 +97,7 @@ class FfprincipaleControllerTest extends FifreeTestUtil
      */
     public function testExcelFfprincipale()
     {
-        $client = $this->getClientAutorizzato();
+        $client = $this->getClient();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $url = $client->getContainer()->get('router')->generate('Tabelle_esportaexceltabella', array('nometabella' => 'Ffprincipale'));
 

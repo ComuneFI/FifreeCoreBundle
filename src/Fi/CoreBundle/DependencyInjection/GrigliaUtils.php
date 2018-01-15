@@ -155,11 +155,11 @@ class GrigliaUtils
 
     public static function getUserCustomTableFields($em, $nometabella, $operatore)
     {
-        $q = $em->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => $operatore['id'], 'nometabella' => $nometabella));
+        $q = $em->getRepository('FiCoreBundle:Tabelle')->findBy(array('operatori_id' => $operatore['id'], 'nometabella' => $nometabella));
 
         if (!$q) {
             unset($q);
-            $q = $em->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
+            $q = $em->getRepository('FiCoreBundle:Tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
         }
 
         return $q;

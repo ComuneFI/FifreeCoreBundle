@@ -6,7 +6,6 @@ use Tests\CoreBundle\Mink\CoreMink;
 
 class FfsecondariaControllerFunctionalTest extends CoreMink
 {
-
     /*
      * @test
      */
@@ -19,9 +18,9 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->login('admin', 'admin');
         $session = $this->getSession();
         $page = $this->getCurrentPage();
-        
+
         sleep(1);
-        
+
         $this->configuratabelleoperation($session, $page);
 
         $this->validationoperation($session, $page);
@@ -37,25 +36,22 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
     private function crudoperation($session, $page)
     {
-        $this->ajaxWait($session);
-
         $elementadd = $page->findAll('css', '.ui-icon-plus');
-
+        sleep(1);
         foreach ($elementadd as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
         }
-
-        $this->ajaxWait($session);
+        sleep(1);
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        sleep(1);
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'ffsecondaria_';
         } else {
             $fieldprefix = 'fi_corebundle_ffsecondariatype_';
         }
+        sleep(1);
         $page->fillField($fieldprefix . 'descsec', $descrizionetest1);
         $page->selectFieldOption($fieldprefix . 'ffprincipale', 1);
         $page->selectFieldOption($fieldprefix . 'data_day', (int) date('d'));
@@ -252,7 +248,6 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->ajaxWait($session);
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        sleep(1);
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'ffsecondaria_';
         } else {
@@ -291,7 +286,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
                 $e->click();
             }
         }
-        
+
         $this->ajaxWait($session);
         $page->find('css', 'a#dData')->click();
         $this->ajaxWait($session);

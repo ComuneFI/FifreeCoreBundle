@@ -3,9 +3,9 @@
 namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
+use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
 
-class PermessiControllerTest extends FifreeTestUtil
+class PermessiControllerTest extends FifreeTestAuthorizedClient
 {
 
     /**
@@ -13,7 +13,7 @@ class PermessiControllerTest extends FifreeTestUtil
      */
     public function testIndexPermessi()
     {
-        $client = $this->getClientAutorizzato();
+        $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('Permessi');
         $em = $this->getEntityManager();
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
@@ -25,11 +25,6 @@ class PermessiControllerTest extends FifreeTestUtil
         $attributes = $body->extract(array('_text', 'class'));
         $this->assertEquals($attributes[0][1], 'tabella');
 
-        $clientnoauth = $this->getClientNonAutorizzato();
-        $urlnoauth = '/Permessi/';
-        $clientnoauth->request('GET', $urlnoauth);
-
-        $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 
 }

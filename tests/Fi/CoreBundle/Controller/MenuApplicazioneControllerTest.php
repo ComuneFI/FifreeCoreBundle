@@ -3,9 +3,9 @@
 namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
+use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
 
-class MenuApplicazioneControllerTest extends FifreeTestUtil
+class MenuApplicazioneControllerTest extends FifreeTestAuthorizedClient
 {
 
     /**
@@ -13,7 +13,7 @@ class MenuApplicazioneControllerTest extends FifreeTestUtil
      */
     public function testIndexMenuApplicazione()
     {
-        $client = $this->getClientAutorizzato();
+        $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('MenuApplicazione');
         $em = $this->getEntityManager();
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
@@ -26,12 +26,6 @@ class MenuApplicazioneControllerTest extends FifreeTestUtil
         $body = $crawler->filter('div[id="MenuApplicazione"]');
         $attributes = $body->extract(array('_text', 'class'));
         $this->assertEquals($attributes[0][1], 'tabella');
-
-        $clientnoauth = $this->getClientNonAutorizzato();
-        $urlnoauth = '/MenuApplicazione/';
-        $clientnoauth->request('GET', $urlnoauth);
-
-        $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 
 }

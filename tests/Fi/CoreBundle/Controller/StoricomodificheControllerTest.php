@@ -3,9 +3,9 @@
 namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
+use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
 
-class StoricomodificheControllerTest extends FifreeTestUtil
+class StoricomodificheControllerTest extends FifreeTestAuthorizedClient
 {
 
     /**
@@ -13,7 +13,7 @@ class StoricomodificheControllerTest extends FifreeTestUtil
      */
     public function testIndexStoricomodifiche()
     {
-        $client = $this->getClientAutorizzato();
+        $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('Storicomodifiche_container');
         $em = $this->getEntityManager();
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
@@ -27,10 +27,5 @@ class StoricomodificheControllerTest extends FifreeTestUtil
         $attributes = $body->extract(array('_text', 'class'));
         $this->assertEquals($attributes[0][1], 'tabella');
 
-        $clientnoauth = $this->getClientNonAutorizzato();
-        $urlnoauth = '/Storicomodifiche/';
-        $clientnoauth->request('GET', $urlnoauth);
-
-        $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 }

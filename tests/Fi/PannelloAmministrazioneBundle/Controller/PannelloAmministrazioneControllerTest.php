@@ -3,9 +3,9 @@
 namespace Fi\PannelloAmministrazioneBundle\Tests\Controller;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
+use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
 
-class PannelloAmministrazioneControllerTest extends FifreeTestUtil
+class PannelloAmministrazioneControllerTest extends FifreeTestAuthorizedClient
 {
 
     public static function setUpBeforeClass()
@@ -22,7 +22,7 @@ class PannelloAmministrazioneControllerTest extends FifreeTestUtil
 
     public function testIndexAdminpanel()
     {
-        $client = $this->getClientAutorizzato();
+        $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         $em = $this->getEntityManager();
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));

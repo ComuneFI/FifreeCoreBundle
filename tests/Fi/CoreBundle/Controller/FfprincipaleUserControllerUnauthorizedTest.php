@@ -2,9 +2,9 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
+use Fi\CoreBundle\DependencyInjection\FifreeTestUnauthorizedClient;
 
-class FfprincipaleUserControllerTest extends FifreeTestAuthorizedClient
+class FfprincipaleUserControllerUnauthorizedTest extends FifreeTestUnauthorizedClient
 {
 
     public function testIndexFfprincipaleSenzaPrivilegi()
@@ -16,7 +16,7 @@ class FfprincipaleUserControllerTest extends FifreeTestAuthorizedClient
 
         $client->request('GET', $url);
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
     }
 
     /**
@@ -126,9 +126,6 @@ class FfprincipaleUserControllerTest extends FifreeTestAuthorizedClient
         $FfsecondariaController = new FfsecondariaController();
         $FfsecondariaController->setContainer($container);
 
-        $crawler = $client->request('GET', '/funzioni/traduzionefiltro', array('filters' => json_encode(array("groupOp" => "AND", "rules" => array(array("field" => "descsec", "op" => "cn", "data" => "secondaria")), array("field" => "attivo", "op" => "eq", "data" => "null")))));
-        $this->assertTrue($crawler->filter('html:contains("Descsec")')->count() > 0);
-
         $requestarray = array(
             'POST',
             '/Ffsecondaria/griglia',
@@ -138,6 +135,7 @@ class FfprincipaleUserControllerTest extends FifreeTestAuthorizedClient
             '',
         );
         $newrequest = new \Symfony\Component\HttpFoundation\Request($requestarray);
+        $this->expectException(\Symfony\Component\Security\Core\Exception\AccessDeniedException::class);
         $FfsecondariaController->setParametriGriglia(array('request' => $newrequest));
     }
 

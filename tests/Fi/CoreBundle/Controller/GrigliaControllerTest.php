@@ -2,10 +2,10 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
+use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
 use Behat\Mink\Session;
 
-class GrigliaControllerTest extends FifreeTestUtil
+class GrigliaControllerTest extends FifreeTestAuthorizedClient
 {
 
     /**
@@ -16,7 +16,8 @@ class GrigliaControllerTest extends FifreeTestUtil
         $namespace = 'Fi';
         $bundle = 'Core';
         $controller = 'Ffsecondaria';
-        $container = $this->getClientAutorizzato()->getContainer();
+        $client = $this->getClient();
+        $container = $client->getContainer();
 
         /* TESTATA */
         $nomebundle = $namespace . $bundle . 'Bundle';
@@ -114,7 +115,6 @@ class GrigliaControllerTest extends FifreeTestUtil
         $FfsecondariaController = new FfsecondariaController();
         $FfsecondariaController->setContainer($container);
 
-        $client = parent::getClientAutorizzato();
         $crawler = $client->request('GET', '/funzioni/traduzionefiltro', array('filters' => json_encode(array("groupOp" => "AND", "rules" => array(array("field" => "descsec", "op" => "cn", "data" => "secondaria")), array("field" => "attivo", "op" => "eq", "data" => "null")))));
         $this->assertTrue($crawler->filter('html:contains("Descsec")')->count() > 0);
 
@@ -185,36 +185,4 @@ class GrigliaControllerTest extends FifreeTestUtil
         }
     }
 
-    /*
-     * @test
-     */
-
-    public function testGrigliaFfsecondaria()
-    {
-        $browser = 'firefox';
-        $urlruote = $this->getClientAutorizzato()->getContainer()->get('router')->generate('Ffsecondaria');
-        $url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlruote;
-
-        // Choose a Mink driver. More about it in later chapters.
-        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
-        $session = new Session($driver);
-        // start the session
-        $session->start();
-        $session->visit($url);
-        $page = $session->getPage();
-
-        /* Login */
-        $username4test = $this->getClientAutorizzato()->getContainer()->getParameter('user4test');
-        $page->fillField('username', $username4test);
-        $page->fillField('password', $username4test);
-        $page->pressButton('_submit');
-        //$page = $session->getPage();
-
-        sleep(1);
-
-        $numrowsgrid = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
-        $this->assertEquals(9, $numrowsgrid);
-
-        $session->stop();
-    }
 }

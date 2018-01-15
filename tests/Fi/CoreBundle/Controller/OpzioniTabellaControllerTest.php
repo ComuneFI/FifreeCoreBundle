@@ -3,9 +3,9 @@
 namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
+use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
 
-class OpzioniTabellaControllerTest extends FifreeTestUtil
+class OpzioniTabellaControllerTest extends FifreeTestAuthorizedClient
 {
 
     /**
@@ -13,7 +13,7 @@ class OpzioniTabellaControllerTest extends FifreeTestUtil
      */
     public function testIndexOpzioniTabella()
     {
-        $client = $this->getClientAutorizzato();
+        $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('OpzioniTabella');
         $em = $this->getEntityManager();
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
@@ -25,11 +25,6 @@ class OpzioniTabellaControllerTest extends FifreeTestUtil
         $attributes = $body->extract(array('_text', 'class'));
         $this->assertEquals($attributes[0][1], 'tabella');
 
-        $clientnoauth = $this->getClientNonAutorizzato();
-        $urlnoauth = '/OpzioniTabella/';
-        $clientnoauth->request('GET', $urlnoauth);
-
-        $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 
 }

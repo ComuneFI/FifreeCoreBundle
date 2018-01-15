@@ -4,7 +4,8 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 
 require __DIR__ . '/app/autoload.php';
-require __DIR__ . '/Utils/FifreeTestUtil.php';
+require __DIR__ . '/Utils/FifreeTestAuthorizedClient.php';
+require __DIR__ . '/Utils/FifreeTestUnauthorizedClient.php';
 require __DIR__ . '/Utils/FifreeUserTestUtil.php';
 require __DIR__ . '/Utils/CommandTestCase.php';
 require __DIR__ . '/Utils/CoreMink.php';

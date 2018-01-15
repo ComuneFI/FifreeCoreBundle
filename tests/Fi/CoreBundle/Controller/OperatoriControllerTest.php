@@ -3,11 +3,11 @@
 namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
+use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 
-class OperatoriControllerTest extends FifreeTestUtil
+class OperatoriControllerTest extends FifreeTestAuthorizedClient
 {
 
     /**
@@ -15,7 +15,7 @@ class OperatoriControllerTest extends FifreeTestUtil
      */
     public function testIndexOperatori()
     {
-        $client = $this->getClientAutorizzato();
+        $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('Operatori');
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
 
@@ -26,10 +26,5 @@ class OperatoriControllerTest extends FifreeTestUtil
         $attributes = $body->extract(array('_text', 'class'));
         $this->assertEquals($attributes[0][1], 'tabella');
 
-        $clientnoauth = $this->getClientNonAutorizzato();
-        $urlnoauth = '/Operatori/';
-        $clientnoauth->request('GET', $urlnoauth);
-
-        $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
     }
 }

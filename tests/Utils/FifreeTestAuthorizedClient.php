@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Behat\Mink\Session;
 
-class FifreeTestUtil extends WebTestCase
+class FifreeTestAuthorizedClient extends WebTestCase
 {
 
     /**
@@ -15,43 +15,18 @@ class FifreeTestUtil extends WebTestCase
     protected $em;
     protected $application;
     protected $container;
-    protected $clientNonAutorizzato;
-    protected $clientAutorizzato;
-    private $testclassname;
+    protected $client;
+    protected $testclassname;
 
     protected function setUp()
     {
         $client = static::createClient();
-        $this->clientNonAutorizzato = $client;
-
-        $this->clientAutorizzato = $this->createAuthorizedClient(static::createClient());
-        $this->application = new \Symfony\Bundle\FrameworkBundle\Console\Application($this->clientAutorizzato->getKernel());
+        $this->client = $this->createAuthorizedClient($client);
+        $this->application = new \Symfony\Bundle\FrameworkBundle\Console\Application($this->client->getKernel());
         $this->application->setAutoExit(false);
 
-        $this->container = $this->clientAutorizzato->getKernel()->getContainer();
+        $this->container = $this->client->getKernel()->getContainer();
         $this->em = $this->container->get('doctrine')->getManager();
-    }
-
-    protected function getMinkLoginPage($url)
-    {
-        $browser = 'firefox';
-
-        // Choose a Mink driver. More about it in later chapters.
-        $driver = new \Behat\Mink\Driver\Selenium2Driver($browser);
-        $session = new Session($driver);
-        // start the session
-        $session->start();
-        $session->visit($url);
-        $page = $session->getPage();
-        sleep(1);
-        /* Login */
-        $page->fillField('username', 'admin');
-        $page->fillField('password', 'admin');
-        $page->pressButton('_submit');
-        //$page = $session->getPage();
-
-        sleep(1);
-        return array("session" => $session, "page" => $page);
     }
 
     protected function getContainer()
@@ -79,14 +54,9 @@ class FifreeTestUtil extends WebTestCase
         return $this->em;
     }
 
-    protected function getClientNonAutorizzato()
+    protected function getClient()
     {
-        return $this->clientNonAutorizzato;
-    }
-
-    protected function getClientAutorizzato()
-    {
-        return $this->clientAutorizzato;
+        return $this->client;
     }
 
     protected function getControllerNameByClassName()
@@ -126,13 +96,13 @@ class FifreeTestUtil extends WebTestCase
      */
     protected function tearDown()
     {
+        parent::tearDown();
         if (isset($this->em)) {
             $this->em->close();
         }
-        parent::tearDown();
     }
 
-    protected function ajaxWait($session, $timeout = 5000)
+    protected function ajaxWait($session, $timeout = 60000)
     {
         $session->wait($timeout, '(0 === jQuery.active)');
         sleep(1);

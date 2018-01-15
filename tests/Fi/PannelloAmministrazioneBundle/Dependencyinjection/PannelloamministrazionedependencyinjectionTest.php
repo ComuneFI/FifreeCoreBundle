@@ -2,9 +2,9 @@
 
 namespace Fi\PannelloAmministrazioneBundle\Tests\Dependencyinjection;
 
-use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
+use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
 
-class PannelloamministrazionedependencyinjectionTest extends FifreeTestUtil
+class PannelloamministrazionedependencyinjectionTest extends FifreeTestAuthorizedClient
 {
     /*
      * @test
@@ -12,7 +12,7 @@ class PannelloamministrazionedependencyinjectionTest extends FifreeTestUtil
 
     public function test10Dependencyinjection()
     {
-        $client = $this->getClientAutorizzato();
+        $client = $this->getClient();
         $container = $client->getContainer();
         $lock = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\LockSystem($container);
         $this->assertFalse($lock->isLockedFile());

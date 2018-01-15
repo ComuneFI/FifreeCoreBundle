@@ -3,9 +3,9 @@
 namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Fi\CoreBundle\DependencyInjection\FifreeTestUtil;
+use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
 
-class FfsecondariaControllerTest extends FifreeTestUtil
+class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
 {
 
     /**
@@ -13,7 +13,7 @@ class FfsecondariaControllerTest extends FifreeTestUtil
      */
     public function testIndexFfsecondaria()
     {
-        $client = $this->getClientAutorizzato();
+        $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('Ffsecondaria');
         $em = $this->getEntityManager();
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
@@ -25,10 +25,10 @@ class FfsecondariaControllerTest extends FifreeTestUtil
         $attributes = $body->extract(array('_text', 'class'));
         $this->assertEquals($attributes[0][1], 'tabella');
 
-        $clientnoauth = $this->getClientNonAutorizzato();
+        $clientnoauth = $this->getClient();
         $urlnoauth = '/Ffsecondaria/';
         $clientnoauth->request('GET', $urlnoauth);
 
-        $this->assertEquals(302, $clientnoauth->getResponse()->getStatusCode());
+        $this->assertEquals(200, $clientnoauth->getResponse()->getStatusCode());
     }
 }
