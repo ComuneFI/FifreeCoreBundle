@@ -35,7 +35,7 @@ class GestionePermessi
     public function leggere($parametri = array())
     {
         if (!$this->container->get('security.token_storage')->getToken()) {
-            return NULL;
+            return null;
         }
         if (isset($parametri['modulo'])) {
             $this->modulo = $parametri['modulo'];
@@ -61,7 +61,7 @@ class GestionePermessi
     public function cancellare($parametri = array())
     {
         if (!$this->container->get('security.token_storage')->getToken()) {
-            return NULL;
+            return null;
         }
         if (isset($parametri['modulo'])) {
             $this->modulo = $parametri['modulo'];
@@ -85,7 +85,7 @@ class GestionePermessi
     public function creare($parametri = array())
     {
         if (!$this->container->get('security.token_storage')->getToken()) {
-            return NULL;
+            return null;
         }
         if (isset($parametri['modulo'])) {
             $this->modulo = $parametri['modulo'];
@@ -109,7 +109,7 @@ class GestionePermessi
     public function aggiornare($parametri = array())
     {
         if (!$this->container->get('security.token_storage')->getToken()) {
-            return NULL;
+            return null;
         }
 
         if (isset($parametri['modulo'])) {
