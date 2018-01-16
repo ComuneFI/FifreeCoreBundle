@@ -20,7 +20,7 @@ class PercentualiStringheTest extends WebTestCase
         $this->parametri[] = array("stringaa" => "manzi", "stringab" => "cicci", "tolleranza" => 100, "percentuale" => 10);
     }
 
-    public function testOrderBy()
+    public function testPercentuali()
     {
         $prcobjarray = new PercentualiStringhe($this->parametri);
         $percs = $prcobjarray->percentualiConfrontoStringheVettore($this->parametri);
