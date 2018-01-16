@@ -85,7 +85,7 @@ class TabelleController extends FiCoreController
 
     public function configuraAction(Request $request, $nometabella)
     {
-        parent::setup($request);
+        $this->setup($request);
         $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
         $operatore = $gestionepermessi->utentecorrente();
         $this->generaDB(array('tabella' => $nometabella), $request);
@@ -174,7 +174,7 @@ class TabelleController extends FiCoreController
 
     public function generaDB($parametri, Request $request)
     {
-        parent::setup($request);
+        $this->setup($request);
         if (!isset($parametri['tabella'])) {
             return false;
         }
@@ -258,7 +258,7 @@ class TabelleController extends FiCoreController
 
     public function grigliapopupAction(Request $request, $chiamante)
     {
-        parent::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -295,7 +295,7 @@ class TabelleController extends FiCoreController
 
     protected function setParametriGriglia($prepar = array())
     {
-        self::setup($prepar['request']);
+        $this->setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -328,7 +328,7 @@ class TabelleController extends FiCoreController
 
     public function listacampitabellaAction(Request $request)
     {
-        parent::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();

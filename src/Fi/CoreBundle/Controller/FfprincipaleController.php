@@ -18,7 +18,7 @@ class FfprincipaleController extends FiCoreController
     /* @var $em \Doctrine\ORM\EntityManager */
     public function indexAction(Request $request)
     {
-        self::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();

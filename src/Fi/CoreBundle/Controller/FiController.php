@@ -31,7 +31,7 @@ class FiController extends Controller
 
     protected function setParametriGriglia($prepar = array())
     {
-        self::setup($prepar['request']);
+        $this->setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -60,7 +60,7 @@ class FiController extends Controller
     public function indexAction(Request $request)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
-        self::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -268,7 +268,7 @@ class FiController extends Controller
     public function updateAction(Request $request, $id)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
-        self::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();

@@ -14,7 +14,7 @@ class FfsecondariaController extends FiCoreController
     public function indexAction(Request $request)
     {
 
-        parent::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -89,7 +89,7 @@ class FfsecondariaController extends FiCoreController
 
     public function setParametriGriglia($prepar = array())
     {
-        self::setup($prepar['request']);
+        $this->setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();

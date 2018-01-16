@@ -19,7 +19,7 @@ class OpzioniTabellaController extends FiCoreController
     public function indexAction(Request $request)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
-        parent::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -88,7 +88,7 @@ class OpzioniTabellaController extends FiCoreController
 
     public function setParametriGriglia($prepar = array())
     {
-        self::setup($prepar['request']);
+        $this->setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();

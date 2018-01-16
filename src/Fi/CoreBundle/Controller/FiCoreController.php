@@ -10,7 +10,7 @@ class FiCoreController extends FiController
 
     public function stampatabellaAction(Request $request)
     {
-        self::setup($request);
+        $this->setup($request);
         $pdf = new StampatabellaController($this->container);
 
         $parametri = $this->prepareOutput($request);
@@ -22,7 +22,7 @@ class FiCoreController extends FiController
 
     public function esportaexcelAction(Request $request)
     {
-        self::setup($request);
+        $this->setup($request);
         $xls = new StampatabellaController($this->container);
 
         $parametri = $this->prepareOutput($request);
@@ -71,7 +71,7 @@ class FiCoreController extends FiController
 
     public function importaexcelAction(Request $request)
     {
-        self::setup($request);
+        $this->setup($request);
         $return = "OK";
         try {
             $em = $this->getDoctrine()->getManager();
