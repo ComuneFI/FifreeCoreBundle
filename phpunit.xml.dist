@@ -33,7 +33,7 @@
     
     <php>
         <server name="KERNEL_CLASS" value="AppKernel" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="42" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="32" />
         <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
         <env name="HTTP_TEST_HOST" value="http://127.0.0.1:8000" />
         <env name="HTTP_TEST_URL" value="/app_test.php" />
