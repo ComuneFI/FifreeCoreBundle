@@ -52,16 +52,14 @@ class Fifree2installCommand extends ContainerAwareCommand
         $inputc = new ArrayInput($argumentsdb);
         $commanddb->run($inputc, $output);
 
-        $commandfos = $this->getApplication()->find('fos:user:create');
-        $argumentsfos = array(
-            'command' => 'fos:user:create',
-            '--super-admin' => true,
-            'username' => $admin,
-            'email' => $adminemail,
-            'password' => $adminpass,
-        );
-        $inputfos = new ArrayInput($argumentsfos);
-        $commandfos->run($inputfos, $output);
+        $userManipulator = $this->getContainer()->get('fifree.fos_user.util.user_manipulator');
+
+        $adminPassword = $adminpass;
+        $adminUsername = $admin;
+        $adminEmail = $adminemail;
+        $isActive = true;
+        $isSuperAdmin = true;
+        $userManipulator->create($adminUsername, $adminPassword, $adminEmail, $isActive, $isSuperAdmin);
 
         $this->loadDefaultValues($admin);
     }
