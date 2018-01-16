@@ -1,5 +1,5 @@
 imports:
-    - { resource: config_dev.yml }
+    - { resource: config.yml }
 
 framework:
     test: ~
@@ -9,6 +9,13 @@ framework:
     profiler:
         collect: false
     
+monolog:
+    handlers:
+        main:
+            type:   stream
+            path:   "%kernel.logs_dir%/%kernel.environment%.log"
+            level:  DEBUG
+
 web_profiler:
     toolbar: false
     intercept_redirects: false
@@ -21,3 +28,4 @@ parameters:
     usernoprivileges4test: user4test
     mink_url: "http://127.0.0.1:8000/app_test.php"
     selenium_driver_type: "firefox"
+    

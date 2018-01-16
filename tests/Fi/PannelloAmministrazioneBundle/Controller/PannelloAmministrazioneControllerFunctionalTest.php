@@ -20,7 +20,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 
     public function test20AdminpanelGenerateBundle()
     {
-        $this->logger->info("start PannelloAmministrazioneControllerTest");
+        dump("start PannelloAmministrazioneControllerTest");
         //passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-warmup --env=test ");
         //sleep(2);
         //url da testare

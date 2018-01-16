@@ -22,7 +22,6 @@ class GenerateentitiesCommandTest extends KernelTestCase
      */
     protected $em;
     protected $container;
-    protected $logger;
     protected $application;
 
     /**
@@ -34,7 +33,6 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $kernel->boot();
 
         $this->container = $kernel->getContainer();
-        $this->logger = $this->container->get('logger');
         $this->em = $kernel->getContainer()
                 ->get('doctrine')
                 ->getManager();
@@ -44,7 +42,6 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
     public function test10InstallFifree()
     {
-
         /* $application = new Application($this->kernel);
           $application->add(new \Fi\CoreBundle\Command\Fifree2droptablesCommand());
 
@@ -67,7 +64,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
                 array(
                     '--force' => true,
                     '--no-interaction' => true,
-                    '--env' => 'test'
+                    '--env' => 'test',
                 )
         );
 
@@ -79,7 +76,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         clearcache();
         cachewarmup();
-        
+
         $command = $this->application->find('fifree2:install');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
@@ -87,7 +84,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
                     'admin' => 'admin',
                     'adminpass' => 'admin',
                     'adminemail' => 'admin@admin.it',
-                    '--env' => 'test'
+                    '--env' => 'test',
                 )
         );
 
@@ -140,12 +137,12 @@ class GenerateentitiesCommandTest extends KernelTestCase
           $this->assertRegExp('/.../', $commandTester->getDisplay()); */
 
 
-        $this->logger->info("Generate bundle");
+        dump("Generate bundle");
         $console = __DIR__ . '/../../../bin/console';
         //$cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --no-debug --format=yml  -n --env=test";
-        $cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --format=yml  -n --env=test";
+        $cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --format=yml  -n --env=test  > /dev/null";
         passthru($cmd);
-        $this->logger->info("Generated bundle");
+        dump("Generated bundle");
 
         /*
 
@@ -178,18 +175,18 @@ class GenerateentitiesCommandTest extends KernelTestCase
                 array(
                     'mwbfile' => 'wbadmintest.mwb',
                     'bundlename' => 'Fi/ProvaBundle',
-                    '--env' => 'test'
+                    '--env' => 'test',
                 )
         );
 
-        $this->logger->info("Generated yml entities");
+        dump("Generated yml entities");
         $this->assertRegExp('/.../', $commandTester->getDisplay());
         //removecache();
         //clearcache();
 
         clearcache();
         cachewarmup();
-        
+
         $this->assertRegExp('/.../', $commandTester->getDisplay());
 
         $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand());
@@ -200,10 +197,11 @@ class GenerateentitiesCommandTest extends KernelTestCase
                 array(
                     'bundlename' => 'Fi/ProvaBundle',
                     '--schemaupdate' => true,
-                    '--env' => 'test'
+                    '--env' => 'test',
+                    '--no-debug' => true,
                 )
         );
-        $this->logger->info("Generated entities");
+        dump("Generated entities");
         $this->assertRegExp('/.../', $commandTester->getDisplay());
         //echo $checkent;
         $this->assertTrue(file_exists($checkent));
@@ -212,7 +210,6 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
     protected function tearDown()
     {
-        //$this->logger->info("end GenerateentitiesCommandTest");
         parent::tearDown();
         //$this->em->close();
         //$this->em = null; // avoid memory leaks
