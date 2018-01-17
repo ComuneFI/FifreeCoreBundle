@@ -132,7 +132,7 @@ class FfsecondariaController extends FiCoreController
             'escludere' => $escludi,
             'precondizioniAvanzate' => $precondizioniAvanzate,);
 
-        if ($prepar) {
+        if (! empty($expr)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 

@@ -47,7 +47,7 @@ class FiController extends Controller
 
         $paricevuti = array('container' => $this->container, 'nomebundle' => $nomebundle, 'nometabella' => $controller, 'escludere' => $escludi);
 
-        if ($prepar) {
+        if (! empty($expr)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 

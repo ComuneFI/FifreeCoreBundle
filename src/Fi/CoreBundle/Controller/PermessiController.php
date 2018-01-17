@@ -85,7 +85,7 @@ class PermessiController extends FiCoreController
             'escludere' => $escludi,
         );
 
-        if ($prepar) {
+        if (! empty($expr)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 

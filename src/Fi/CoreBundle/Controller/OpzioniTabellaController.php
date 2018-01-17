@@ -104,7 +104,7 @@ class OpzioniTabellaController extends FiCoreController
             'nometabella' => $controller,
             'escludere' => $escludi,);
 
-        if ($prepar) {
+        if (! empty($expr)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 
