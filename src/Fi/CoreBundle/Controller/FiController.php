@@ -21,7 +21,7 @@ class FiController extends Controller
         $matches = array();
         $controllo = new \ReflectionClass(get_class($this));
 
-        preg_match('/(.*)\\\(.*)Bundle\\\Controller\\\(.*)Controller/', $controllo->getName(), $matches);
+        preg_match('/(.*)\\\(.*)Bundle\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
 
         self::$namespace = $matches[1];
         self::$bundle = $matches[2];
@@ -414,8 +414,10 @@ class FiController extends Controller
 
     protected function getParametersTestataPerGriglia($request, $container, $em, $paricevuti)
     {
-        if ($request->get('parametritesta')) {
-            $jsonparms = json_decode($request->get('parametritesta'));
+        $parametritestarequest = $request->get('parametritesta');
+        $parametritesta = array();
+        if ($parametritestarequest) {
+            $jsonparms = json_decode($parametritestarequest);
             $parametritesta = get_object_vars($jsonparms);
             $parametritesta['container'] = $container;
             $parametritesta['doctrine'] = $em;
@@ -423,7 +425,7 @@ class FiController extends Controller
             $parametritesta['output'] = 'stampa';
         }
 
-        return $request->get('parametritesta') ? $parametritesta : $paricevuti;
+        return $parametritestarequest ? $parametritesta : $paricevuti;
     }
 
     protected function getParametersDatiPerGriglia($request, $container, $em, $paricevuti)
