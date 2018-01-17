@@ -319,7 +319,7 @@ class TabelleController extends FiCoreController
             'escludere' => $escludi
         );
 
-        if (! empty($expr)) {
+        if (! empty($prepar)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 

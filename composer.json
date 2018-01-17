@@ -78,7 +78,7 @@
         "sebastian/phpcpd": "^2.0",
         "sensiolabs/security-checker": "^4.0",
         "squizlabs/php_codesniffer": "^2.7",
-        "se/selenium-server-standalone": "^2.0|^3.0",
+        "se/selenium-server-standalone": "^2.0",
         "phpunit/phpcov": "^3.0|^4.0"
         
     },

@@ -73,7 +73,7 @@ class OperatoriController extends FiCoreController
             'nometabella' => $controller,
             'escludere' => $escludi,);
 
-        if (! empty($expr)) {
+        if (! empty($prepar)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 

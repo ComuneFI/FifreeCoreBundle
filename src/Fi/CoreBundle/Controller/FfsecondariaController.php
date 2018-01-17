@@ -102,6 +102,8 @@ class FfsecondariaController extends FiCoreController
 
         $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array('nota', 'ffprincipale');
+        $tabellej = array();
+        $precondizioniAvanzate = array();
         $tabellej['ffprincipale_id'] = array('tabella' => 'ffprincipale', 'campi' => array('descrizione'));
 
         $campiextra = array(array('lunghezzanota'), array('attivoToString'));
@@ -132,7 +134,7 @@ class FfsecondariaController extends FiCoreController
             'escludere' => $escludi,
             'precondizioniAvanzate' => $precondizioniAvanzate,);
 
-        if (! empty($expr)) {
+        if (! empty($prepar)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 
