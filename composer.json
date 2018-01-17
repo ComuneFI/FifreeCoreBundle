@@ -78,7 +78,7 @@
         "sebastian/phpcpd": "^2.0",
         "sensiolabs/security-checker": "^4.0",
         "squizlabs/php_codesniffer": "^2.7",
-        "se/selenium-server-standalone": "^2.0",
+        "se/selenium-server-standalone": "^2.0|^3.0",
         "phpunit/phpcov": "^3.0|^4.0"
         
     },
@@ -104,9 +104,9 @@
     "bin": ["check-src"],
     "extra": {
         "symfony-app-dir": "tests/app",
-        "symfony-bin-dir": "bin",
-        "symfony-var-dir": "var",
-        "symfony-web-dir": "web",
+        "symfony-bin-dir": "tests/bin",
+        "symfony-var-dir": "tests/var",
+        "symfony-web-dir": "tests/web",
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {

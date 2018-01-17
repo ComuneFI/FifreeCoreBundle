@@ -13,14 +13,14 @@ require __DIR__ . '/Utils/CoreMink.php';
 function clearcache()
 {
     passthru(sprintf(
-                    'php "%s/console" cache:clear --no-warmup --env=%s  > /dev/null', __DIR__ . '/../bin/', "test"
+                    'php "%s/console" cache:clear --no-warmup --env=%s  > /dev/null', __DIR__ . '/../tests/bin/', "test"
     ));
 }
 
 function cachewarmup()
 {
     passthru(sprintf(
-                    'php "%s/console" cache:warmup --env=%s > /dev/null', __DIR__ . '/../bin/', "test"
+                    'php "%s/console" cache:warmup --env=%s > /dev/null', __DIR__ . '/../tests/bin/', "test"
     ));
     #sleep(1);
 }

@@ -28,15 +28,15 @@ composer require fi/fifreecorebundle
     rm -rf test/var/cache/prod
     rm -rf test/var/cache/dev
     rm -rf test/var/cache/test
-    php bin/console cache:clear --no-warmup --env=test
-    php bin/console fifree:install admin admin admin@admin.it --env=test
+    php tests/bin/console cache:clear --no-warmup --env=test
+    php tests/bin/console fifree:install admin admin admin@admin.it --env=test
 
     #Assets install
-    php bin/console assets:install --env=test
+    php tests/bin/console assets:install tests/web --env=test
 
     #Start server
-    php bin/console server:stop --env=test > /dev/null 2>&1 &
-    php bin/console server:run --env=test 2>&1 &
+    php tests/bin/console server:stop --env=test > /dev/null 2>&1 &
+    php tests/bin/console server:run  --docroot=tests/web --env=test 2>&1 &
     sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
 
     #Lanciare i test
