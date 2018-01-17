@@ -18,7 +18,7 @@ class GrigliaRegoleUtils
         $elencocampi = $doctrine->getClassMetadata($entityName)->getFieldNames();
 
         if (strrpos($regola['field'], '.') == 0) {
-            if (in_array($regola['field'], $elencocampi) == true) {
+            if (in_array($regola['field'], $elencocampi) === true) {
                 $type = $doctrine->getClassMetadata($entityName)->getFieldMapping($regola['field']);
                 $tipo = $type['type'];
 

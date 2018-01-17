@@ -37,7 +37,7 @@ class GrigliaFiltriUtils
             'nu' => ' è vuoto',
             'nn' => ' non è vuoto', );
 
-        if (!isset($filtri) or (!$filtri)) {
+        if (!isset($filtri) || (!$filtri)) {
             return '';
         }
 

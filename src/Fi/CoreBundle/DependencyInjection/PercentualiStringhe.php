@@ -92,7 +92,7 @@ class PercentualiStringhe
         if (!($posizioneinb === false)) {
             if ($posizioneinb == $i) {
                 $partecento += 2;
-            } elseif (($i + $tolleranzauno >= $posizioneinb) and ( $i - $tolleranzauno <= $posizioneinb)) {
+            } elseif (($i + $tolleranzauno >= $posizioneinb) && ( $i - $tolleranzauno <= $posizioneinb)) {
                 $partecento += 1;
             }
         }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Fi\CoreBundle\Tests\Command;
+namespace Fi\CoreBundle\Tests\DependencyInjection;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Fi\CoreBundle\DependencyInjection\JsonResponse;

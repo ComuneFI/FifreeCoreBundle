@@ -4,13 +4,14 @@ namespace Fi\CoreBundle\DependencyInjection;
 
 class GrigliaColonneUtils
 {
+
     public static function getColonne(&$nomicolonne, &$modellocolonne, &$indice, $paricevuti)
     {
         $doctrine = GrigliaParametriUtils::getDoctrineByEm($paricevuti);
 
         $nometabella = $paricevuti['nometabella'];
         $bundle = $paricevuti['nomebundle'];
-        $entityName = $bundle.':'.$nometabella;
+        $entityName = $bundle . ':' . $nometabella;
 
         $colonne = self::getColonneDatabase(array('entityName' => $entityName, 'doctrine' => $doctrine));
 
@@ -43,7 +44,7 @@ class GrigliaColonneUtils
         /* $infocolonne = $doctrine->getClassMetadata($entityName)->getColumnNames(); */
         $infocolonne = $doctrine->getMetadataFactory()->getMetadataFor($entityName);
         /* $infocolonne = get_object_vars($infocolonne); */
-
+        $colonne = array();
         foreach ($infocolonne->fieldMappings as $colonna) {
             /* getFieldMapping */
             /* $ret = $doctrine->getMetadataFactory()->getMetadataFor($entityName)->; */
@@ -145,8 +146,8 @@ class GrigliaColonneUtils
             $widthcampo = $larghezzeutente[$chiave];
         } else {
             $widthcampo = ($colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA > GrigliaUtils::LARGHEZZAMASSIMA ?
-                            GrigliaUtils::LARGHEZZAMASSIMA :
-                            $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA);
+                    GrigliaUtils::LARGHEZZAMASSIMA :
+                    $colonna['length'] * GrigliaUtils::MOLTIPLICATORELARGHEZZA);
         }
 
         $modellocolonne[$indicecolonna] = array('name' => $chiave, 'id' => $chiave, 'width' => $widthcampo, 'tipocampo' => $colonna['type']);

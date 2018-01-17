@@ -286,14 +286,6 @@ class TabelleController extends FiCoreController
         return new Response(Griglia::datiPerGriglia($paricevuti));
     }
 
-    public function grigliaAction(Request $request)
-    {
-        $this->setParametriGriglia(array('request' => $request));
-        $paricevuti = self::$parametrigriglia;
-
-        return new Response(Griglia::datiPerGriglia($paricevuti));
-    }
-
     protected function setParametriGriglia($prepar = array())
     {
         $this->setup($prepar['request']);
@@ -346,7 +338,8 @@ class TabelleController extends FiCoreController
         }
 
         $em = $this->getDoctrine()->getManager();
-
+        $tableClassName = "";
+        $entityClass = "";
         $bundles = $this->get('kernel')->getBundles();
         foreach ($bundles as $bundle) {
             $className = get_class($bundle);
@@ -362,6 +355,10 @@ class TabelleController extends FiCoreController
 
         if (!$tableClassName) {
             throw new \Exception('Entity per la tabella ' . $nometabella . ' non trovata', '-1');
+        }
+
+        if (!$entityClass) {
+            throw new \Exception('Entity class per la tabella ' . $nometabella . ' non trovata', '-1');
         }
 
         $bundleClass = str_replace('\\', '', $entityClass);
