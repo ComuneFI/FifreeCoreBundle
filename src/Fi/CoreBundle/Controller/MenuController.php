@@ -39,6 +39,8 @@ class MenuController extends MenuApplicazioneController
         $risposta = array_merge($risposta, $this->getMenu($menu));
         $webdir = $this->get('kernel')->getRootDir() . '/../web';
         $pathmanuale = '/uploads/manuale.pdf';
+        $username = "";
+        $urlLogout = "";
 
         if (file_exists($webdir . $pathmanuale)) {
             $risposta[] = array('percorso' => $this->getUrlObject('Manuale', $pathmanuale, '_blank'), 'nome' => 'Manuale', 'target' => '_blank');

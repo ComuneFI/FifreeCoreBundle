@@ -23,6 +23,9 @@ class TabelleController extends FiCoreController
 
             $em = $this->getDoctrine()->getManager();
             $tabelle = $em->getRepository('FiCoreBundle:Tabelle')->find($id);
+            if (!$tabelle) {
+                throw new AccessDeniedException("Oggetto non trovato");
+            }
             $tabelle->setOperatoriId($operatore['id']);
             $nometabella = $this->getRequestValue($request, 'nometabella');
             if ($nometabella) {
@@ -175,6 +178,7 @@ class TabelleController extends FiCoreController
 
         $bundles = $this->get('kernel')->getBundles();
         $tableClassName = "";
+        $entityClass = "";
         foreach ($bundles as $bundle) {
             $className = get_class($bundle);
             $entityClass = substr($className, 0, strrpos($className, '\\'));
@@ -189,6 +193,10 @@ class TabelleController extends FiCoreController
 
         if (!$tableClassName) {
             throw new \Exception('Entity per la tabella ' . $nometabella . ' non trovata', '-1');
+        }
+
+        if (!$entityClass) {
+            throw new \Exception('Entity class per la tabella ' . $nometabella . ' non trovata', '-1');
         }
 
         $bundleClass = str_replace('\\', '', $entityClass);
@@ -221,6 +229,9 @@ class TabelleController extends FiCoreController
                 if (isset($parametri['operatore'])) {
                     $arraycreaoperatore = array('id' => $parametri['operatore']);
                     $creaoperatore = $this->getDoctrine()->getRepository($nomebundle . ':Operatori')->findOneBy($arraycreaoperatore);
+                    if (!$creaoperatore) {
+                        continue;
+                    }
                     $crea->setOperatori($creaoperatore);
 
                     unset($vettorericerca['operatori_id']);
@@ -306,7 +317,7 @@ class TabelleController extends FiCoreController
             'escludere' => $escludi
         );
 
-        if (! empty($prepar)) {
+        if (!empty($prepar)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 
@@ -364,12 +375,13 @@ class TabelleController extends FiCoreController
     private function listacampitabelladettagli($escludiid, $colonne, $nomebundle, $controller)
     {
         $risposta = array();
+        $nometabella = $controller;
         if ($escludiid == 1) {
             $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
             $operatore = $gestionepermessi->utentecorrente();
             foreach ($colonne as $colonna) {
                 $nomecampo = trim(strtolower($colonna));
-                if (($nomecampo !== 'id') && (strpos($colonna, '_id') == false)) {
+                if (($nomecampo !== 'id') && (strpos($colonna, '_id') === false)) {
                     $qb = $this->getDoctrine()->getRepository("$nomebundle:$controller")
                             ->createQueryBuilder('t')
                             ->where('LOWER(t.nometabella) = :nometabella')

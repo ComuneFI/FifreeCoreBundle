@@ -7,7 +7,7 @@ class PercentualiStringhe
     /**
      * @param array  $parametri
      * @param string $parametri["elemento"] l'elemento da confrontare
-     * @param array  $parameti["elenco"]    l'elenco degli elementi con cui effettuare il confronto
+     * @param array  $parametri["elenco"]    l'elenco degli elementi con cui effettuare il confronto
      *
      * @return array
      */

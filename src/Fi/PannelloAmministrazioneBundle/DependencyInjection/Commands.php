@@ -28,13 +28,19 @@ class Commands
 
         $sepchr = OsFunctions::getSeparator();
         $projectDir = $this->apppaths->getRootPath();
+        $vcscommand = "";
         if ($fs->exists($projectDir . DIRECTORY_SEPARATOR . '.svn')) {
             $vcscommand = 'svn update';
         }
         if ($fs->exists($projectDir . DIRECTORY_SEPARATOR . '.git')) {
             $vcscommand = 'git pull';
         }
-
+        if (!$vcscommand) {
+            return array("errcode" => -100,
+                "command" => "get vcs sources",
+                "errmsg" => "Vcs non trovato"
+            );
+        }
         $command = 'cd ' . $projectDir . $sepchr . $vcscommand;
         return $this->pammutils->runCommand($command);
     }

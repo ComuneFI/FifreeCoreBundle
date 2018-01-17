@@ -84,22 +84,22 @@ class Griglia extends Controller
      * i dati di risposta sulla base dei parametri passati.
      *
      * @param array  $parametri
-     * @param object $paricevuti[request]        oggetto che contiene il POST passato alla griglia
-     * @param string $paricevuti[nometabella]
-     * @param array  $paricevuti[tabellej]       array contenente tutte le tabelle per le quali richiedere
+     * @param object $paricevuti["request"]        oggetto che contiene il POST passato alla griglia
+     * @param string $paricevuti["nometabella"]
+     * @param array  $paricevuti["tabellej"]       array contenente tutte le tabelle per le quali richiedere
      *                                           la join a partire da $paricevuti[nometabella]
-     * @param array  $paricevuti[escludere]      array contenente tutti i campi che non devono essere restituiti
-     * @param bool   $paricevuti[nospan]         se true non imposta limit e offset
-     * @param array  $paricevuti[parametri_link] array contenente le colonne che devono essere rappresentate
+     * @param array  $paricevuti["escludere"]      array contenente tutti i campi che non devono essere restituiti
+     * @param bool   $paricevuti["nospan"]         se true non imposta limit e offset
+     * @param array  $paricevuti["parametri_link"] array contenente le colonne che devono essere rappresentate
      *                                           come dei link e relativi parametri per comporre l'href.
      *                                           Da non confondere con colonne_link che si passa a
      *                                           testataPerGriglia, perchè QUESTO array genera un
      *                                           tag <href> interno alla colonna per il quale si
      *                                           possono specificare le parti che lo compongono
-     * @param array  $paricevuti[decodifiche]    = array contenente eventuali decodifiche dei valori di
+     * @param array  $paricevuti["decodifiche"]    = array contenente eventuali decodifiche dei valori di
      *                                           una colonna che non può essere tradotta con una join
      *                                           ad una tabella
-     * @param string $paricevuti[output]         : "index" se i dati servono per la griglia dell'index, "stampa" se i dati servono per la stampa
+     * @param string $paricevuti["output"]         : "index" se i dati servono per la griglia dell'index, "stampa" se i dati servono per la stampa
      *
      * @return JSON con i dati richiesti
      */

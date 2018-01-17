@@ -6,6 +6,7 @@ class PermessiTwigExtension extends \Twig_Extension
 {
 
     protected $requeststack;
+    protected $container;
 
     public function __construct($container, $request_stack)
     {
