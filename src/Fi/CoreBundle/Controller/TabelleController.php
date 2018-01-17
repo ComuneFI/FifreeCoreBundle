@@ -5,7 +5,7 @@ namespace Fi\CoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Fi\CoreBundle\Entity\tabelle;
+use Fi\CoreBundle\Entity\Tabelle;
 
 /**
  * Tabelle controller.
@@ -56,20 +56,6 @@ class TabelleController extends FiCoreController
             $em->persist($tabelle);
             $em->flush();
         }
-
-        /* operatori_id int(11)
-          nometabella   varchar(45)
-          nomecampo     varchar(45)
-          mostraindex   tinyint(1)
-          ordineindex   int(11)
-          larghezzaindex        int(11)
-          etichettaindex        varchar(255)
-          mostrastampa  tinyint(1)
-          ordinestampa  int(11)
-          larghezzastampa       int(11)
-          etichettastampa       varchar(255)
-         *
-         */
 
         return new Response('OK');
     }
@@ -188,6 +174,7 @@ class TabelleController extends FiCoreController
         $em = $this->getDoctrine()->getManager();
 
         $bundles = $this->get('kernel')->getBundles();
+        $tableClassName = "";
         foreach ($bundles as $bundle) {
             $className = get_class($bundle);
             $entityClass = substr($className, 0, strrpos($className, '\\'));
@@ -224,23 +211,23 @@ class TabelleController extends FiCoreController
                 $vettorericerca['operatori_id'] = $parametri['operatore'];
             }
 
-            $trovato = $this->getDoctrine()->getRepository($nomebundle . ':tabelle')->findBy($vettorericerca, array());
+            $trovato = $this->getDoctrine()->getRepository($nomebundle . ':Tabelle')->findBy($vettorericerca, array());
 
-            if (!$trovato) {
-                $crea = new tabelle();
+            if (empty($trovato)) {
+                $crea = new Tabelle();
                 $crea->setNometabella($nometabella);
                 $crea->setNomecampo($colonna);
 
                 if (isset($parametri['operatore'])) {
                     $arraycreaoperatore = array('id' => $parametri['operatore']);
-                    $creaoperatore = $this->getDoctrine()->getRepository($nomebundle . ':operatori')->findOneBy($arraycreaoperatore, array());
+                    $creaoperatore = $this->getDoctrine()->getRepository($nomebundle . ':Operatori')->findOneBy($arraycreaoperatore);
                     $crea->setOperatori($creaoperatore);
 
                     unset($vettorericerca['operatori_id']);
                     $vettorericerca['operatori_id'] = null;
-                    $ritrovato = $this->getDoctrine()->getRepository($nomebundle . ':tabelle')->findOneBy($vettorericerca, array());
+                    $ritrovato = $this->getDoctrine()->getRepository($nomebundle . ':Tabelle')->findOneBy($vettorericerca);
 
-                    if ($ritrovato) {
+                    if (!empty($ritrovato)) {
                         $crea->setMostrastampa($ritrovato->hasMostrastampa() ? true : false);
                         $crea->setMostraindex($ritrovato->hasMostraindex() ? true : false);
                     }
@@ -268,7 +255,7 @@ class TabelleController extends FiCoreController
 
         $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
         $operatore = $gestionepermessi->utentecorrente();
-
+        $tabellej = array();
         $tabellej['operatori_id'] = array('tabella' => 'operatori', 'campi' => array('username', 'operatore'));
 
         $paricevuti = array(
