@@ -36,10 +36,7 @@ class Commands
             $vcscommand = 'git pull';
         }
         if (!$vcscommand) {
-            return array("errcode" => -100,
-                "command" => "get vcs sources",
-                "errmsg" => "Vcs non trovato"
-            );
+            throw new \Exception("Vcs non trovato", 100);
         }
         $command = 'cd ' . $projectDir . $sepchr . $vcscommand;
         return $this->pammutils->runCommand($command);
@@ -259,4 +256,5 @@ class Commands
 
         return $result;
     }
+
 }
