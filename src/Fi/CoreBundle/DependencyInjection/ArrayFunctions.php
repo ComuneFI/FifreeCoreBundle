@@ -62,12 +62,12 @@ class ArrayFunctions
             if (array_key_exists($key, $value)) {
                 foreach ($value as $nomecolonna => $colonna) {
                     if ($colonna === $elem && $nomecolonna == $key) {
-                        if ($debug) {
+                        /*if ($debug) {
                             echo "$colonna = $elem quando indice = $indice \n";
                             echo "$nomecolonna = $key quando indice = $indice \n";
                             var_dump($array[$indice]);
                             echo "\n";
-                        }
+                        }*/
 
                         $trovato[] = $indice;
                     }
@@ -106,11 +106,11 @@ class ArrayFunctions
         foreach ($search as $key => $singolaricerca) {
             $trovato = self::inMultiarrayTutti($singolaricerca, $array, $key, $debug);
 
-            if ($debug) {
+            /*if ($debug) {
                 echo $primo ? "<br>\n primo <br>\n" : "<br>\n non primo <br>\n";
                 var_dump($trovato);
                 echo $primo ? "<br>\n fine primo <br>\n" : "<br>\n fine non primo <br>\n";
-            }
+            }*/
 
             if ($trovato === false) {
                 $vettorerisultati = false;
