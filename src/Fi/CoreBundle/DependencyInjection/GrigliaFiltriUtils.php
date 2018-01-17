@@ -10,7 +10,6 @@ class GrigliaFiltriUtils
      * naturale.
      *
      * @param array   $parametri
-     * @param stringa $filtri
      *
      * @return string
      */

@@ -283,8 +283,6 @@ class GrigliaUtils
      * Translates a string with underscores into camel case (e.g. first_name -&gt; firstName).
      *
      * @param array  $parametri
-     * @param string $str            String in underscore format
-     * @param bool   $primamaiuscola If true, capitalise the first char in $str
      *
      * @return string $str translated into camel caps
      */

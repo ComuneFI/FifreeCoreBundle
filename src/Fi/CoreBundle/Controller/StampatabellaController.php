@@ -184,6 +184,7 @@ class StampatabellaController extends FiCoreController
     private function printHeaderXls($modellicolonne, $testata, $sheet)
     {
         $indicecolonnaheader = 0;
+        $letteracolonna = 0;
         foreach ($modellicolonne as $modellocolonna) {
             //Si imposta la larghezza delle colonne
             $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonnaheader);
