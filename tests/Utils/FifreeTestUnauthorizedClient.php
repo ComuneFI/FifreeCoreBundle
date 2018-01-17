@@ -80,9 +80,4 @@ class FifreeTestUnauthorizedClient extends WebTestCase
         parent::tearDown();
     }
 
-    protected function ajaxWait($session, $timeout = 60000)
-    {
-        $session->wait($timeout, '(0 === jQuery.active)');
-    }
-
 }

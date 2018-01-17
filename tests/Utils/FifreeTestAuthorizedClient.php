@@ -102,10 +102,4 @@ class FifreeTestAuthorizedClient extends WebTestCase
         }
     }
 
-    protected function ajaxWait($session, $timeout = 60000)
-    {
-        $session->wait($timeout, '(0 === jQuery.active)');
-        sleep(1);
-    }
-
 }

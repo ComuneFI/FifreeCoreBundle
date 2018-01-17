@@ -1,7 +1,7 @@
 <VirtualHost *:8000>
-    DocumentRoot %TRAVIS_BUILD_DIR%/web
+    DocumentRoot %TRAVIS_BUILD_DIR%/tests/web
 
-    <Directory "%TRAVIS_BUILD_DIR%/web">
+    <Directory "%TRAVIS_BUILD_DIR%/tests/web">
         Options FollowSymLinks ExecCGI
         AllowOverride All
         Require all granted
@@ -17,7 +17,7 @@
     # optionally disable the RewriteEngine for the asset directories
     # which will allow apache to simply reply with a 404 when files are
     # not found instead of passing the request into the full symfony stack
-    <Directory  "%TRAVIS_BUILD_DIR%/web/bundles">
+    <Directory  "%TRAVIS_BUILD_DIR%/tests/web/bundles">
         <IfModule mod_rewrite.c>
             RewriteEngine Off
         </IfModule>
