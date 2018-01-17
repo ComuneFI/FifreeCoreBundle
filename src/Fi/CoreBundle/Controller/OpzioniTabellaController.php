@@ -95,6 +95,7 @@ class OpzioniTabellaController extends FiCoreController
 
         $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array();
+        $tabellej = array();
         $tabellej['tabelle_id'] = array('tabella' => 'tabelle', 'campi' => array('nometabella'));
 
         $paricevuti = array(

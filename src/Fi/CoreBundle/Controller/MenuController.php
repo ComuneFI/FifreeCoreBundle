@@ -19,8 +19,8 @@ class MenuController extends MenuApplicazioneController
     {
         $router = $this->get('router')->match('/')['_route'];
         //$homeurl = $this->generateUrl($router, array(), true);
-
-        $risposta[] = array('percorso' => $this->getUrlObject($this->container->getParameter('appname'), $router, ''),
+        $rispostahome = array();
+        $rispostahome[] = array('percorso' => $this->getUrlObject($this->container->getParameter('appname'), $router, ''),
             'nome' => $this->container->getParameter('appname'),
             'target' => '',
         );
@@ -36,7 +36,7 @@ class MenuController extends MenuApplicazioneController
         $qb->orderBy('a.ordine', 'ASC');
         $menu = $qb->getQuery()->getResult();
 
-        $risposta = array_merge($risposta, $this->getMenu($menu));
+        $risposta = array_merge($rispostahome, $this->getMenu($menu));
         $webdir = $this->get('kernel')->getRootDir() . '/../web';
         $pathmanuale = '/uploads/manuale.pdf';
         $username = "";

@@ -74,6 +74,7 @@ class PermessiController extends FiCoreController
 
         $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array();
+        $tabellej = array();
         $tabellej['operatori_id'] = array('tabella' => 'operatori', 'campi' => array('username', 'operatore'));
         $tabellej['ruoli_id'] = array('tabella' => 'ruoli', 'campi' => array('ruolo'));
 

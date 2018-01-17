@@ -64,6 +64,7 @@ class OperatoriController extends FiCoreController
 
         $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array();
+        $tabellej = array();
         $tabellej['ruoli_id'] = array('tabella' => 'ruoli', 'campi' => array('ruolo'));
 
         $paricevuti = array(

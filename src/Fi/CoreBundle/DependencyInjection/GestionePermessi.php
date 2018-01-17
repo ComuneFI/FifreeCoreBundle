@@ -190,7 +190,7 @@ class GestionePermessi
 
     public function utentecorrente()
     {
-        
+        $utentecorrente  = array();
         
         if (!$this->container->get('security.token_storage')->getToken()) {
             $utentecorrente['nome'] = 'Utente non registrato';
@@ -204,8 +204,6 @@ class GestionePermessi
         $q = $this->container->get('doctrine')
                 ->getRepository('FiCoreBundle:Operatori')
                 ->find($utente);
-
-        $utentecorrente = array();
 
         $utentecorrente['username'] = $utente;
         $utentecorrente['codice'] = $utente;
