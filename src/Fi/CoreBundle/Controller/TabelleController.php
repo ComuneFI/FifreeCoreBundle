@@ -227,8 +227,7 @@ class TabelleController extends FiCoreController
                 $crea->setNomecampo($colonna);
 
                 if (isset($parametri['operatore'])) {
-                    $arraycreaoperatore = array('id' => $parametri['operatore']);
-                    $creaoperatore = $this->getDoctrine()->getRepository($nomebundle . ':Operatori')->findOneBy($arraycreaoperatore);
+                    $creaoperatore = $this->getDoctrine()->getRepository($nomebundle . ':Operatori')->find($parametri['operatore']);
                     if (!$creaoperatore) {
                         continue;
                     }

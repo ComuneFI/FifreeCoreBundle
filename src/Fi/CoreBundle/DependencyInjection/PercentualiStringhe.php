@@ -6,15 +6,15 @@ class PercentualiStringhe
 {
     /**
      * @param array  $parametri
-     * @param string $parametri["elemento"] l'elemento da confrontare
-     * @param array  $parametri["elenco"]    l'elenco degli elementi con cui effettuare il confronto
+     * @param string $parametri['elemento'] l'elemento da confrontare
+     * @param array  $parametri['elenco']    l'elenco degli elementi con cui effettuare il confronto
      *
      * @return array
      */
     public function percentualiConfrontoStringheVettore($parametri = array())
     {
         //parametri obbligatori
-        if (!isset($parametri['elemento']) || !isset($parametri['elenco'])) {
+        if (!isset($parametri['elemento']) || !isset($parametri['elenco']) || empty($parametri['elenco'])) {
             return false;
         }
 
