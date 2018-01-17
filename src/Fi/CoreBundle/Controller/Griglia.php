@@ -19,27 +19,27 @@ class Griglia extends Controller
 {
 
     /**
-     * Questa funzione è compatibile con jqGrid e risponden con un formato JSON
+     * Questa funzione è compatibile con jqGrid e risponde con un formato JSON
      * contenente i dati di testata per la griglia.
      *
      * @param array  $paricevuti
-     * @param object $paricevuti[request]      oggetto che contiene il POST passato alla griglia
-     * @param string $paricevuti[nometabella]
-     * @param array  $paricevuti[dettaglij]    array contenente tutte le tabelle per le quali richiedere
+     * <pre>object $paricevuti[request]      oggetto che contiene il POST passato alla griglia</pre>
+     * <pre>string $paricevuti[nometabella]  Nome della tabella</pre>
+     * <pre>array  $paricevuti[dettaglij]    array contenente tutte le tabelle per le quali richiedere
      *                                         la join a partire da $paricevuti[nometabella]
      *                                         il vettore è composto da
      *                                         array("nomecampodadecodificare"=>array(
      *                                         "descrizione"=>"nometabella.campodecodifica",
      *                                         "lunghezza"=>"40")
-     *                                         )
-     * @param array  $paricevuti[colonne_link] array contenente eventuali colonne che debbano essere
+     *                                         )</pre>
+     * <pre>array  $paricevuti[colonne_link] array contenente eventuali colonne che debbano essere
      *                                         rappresentate da un link. Non è da confondere con i
      *                                         parametri_link di datiPerGriglia, perché QUESTO array
      *                                         si può passare alla testata se si vuole avere una
      *                                         colonna link che prenda in automatico
      *                                         parametro id = al valore dell'id della tabella
-     *                                         principale su cui si sta facendo la griglia
-     * @param string $paricevuti[output]       : "index" se la testata serve per la griglia dell'index, "stampa" se la testata serve per la stampa
+     *                                         principale su cui si sta facendo la griglia</pre>
+     * <pre>string $paricevuti[output]       : "index" se la testata serve per la griglia dell'index, "stampa" se la testata serve per la stampa</pre>
      *
      * @return array contentente i dati di testata per la griglia
      */
@@ -84,22 +84,22 @@ class Griglia extends Controller
      * i dati di risposta sulla base dei parametri passati.
      *
      * @param array  $parametri
-     * @param object $parametri["request"]        oggetto che contiene il POST passato alla griglia
-     * @param string $parametri["nometabella"]
-     * @param array  $parametri["tabellej"]       array contenente tutte le tabelle per le quali richiedere
-     *                                           la join a partire da $paricevuti[nometabella]
-     * @param array  $parametri["escludere"]      array contenente tutti i campi che non devono essere restituiti
-     * @param bool   $parametri["nospan"]         se true non imposta limit e offset
-     * @param array  $parametri["parametri_link"] array contenente le colonne che devono essere rappresentate
+     * <pre>object $parametri["request"]        oggetto che contiene il POST passato alla griglia</pre>
+     * <pre>string $parametri["nometabella"]   Nome della tabella</pre>
+     * <pre>array  $parametri["tabellej"]       array contenente tutte le tabelle per le quali richiedere
+     *                                           la join a partire da $paricevuti[nometabella]</pre>
+     * <pre>array  $parametri["escludere"]      array contenente tutti i campi che non devono essere restituiti</pre>
+     * <pre>bool   $parametri["nospan"]         se true non imposta limit e offset</pre>
+     * <pre>array  $parametri["parametri_link"] array contenente le colonne che devono essere rappresentate
      *                                           come dei link e relativi parametri per comporre l'href.
      *                                           Da non confondere con colonne_link che si passa a
      *                                           testataPerGriglia, perchè QUESTO array genera un
      *                                           tag <href> interno alla colonna per il quale si
-     *                                           possono specificare le parti che lo compongono
-     * @param array  $parametri["decodifiche"]    = array contenente eventuali decodifiche dei valori di
+     *                                           possono specificare le parti che lo compongono</pre>
+     * <pre>array  $parametri["decodifiche"]    = array contenente eventuali decodifiche dei valori di
      *                                           una colonna che non può essere tradotta con una join
-     *                                           ad una tabella
-     * @param string $parametri["output"]         : "index" se i dati servono per la griglia dell'index, "stampa" se i dati servono per la stampa
+     *                                           ad una tabella</pre>
+     * <pre>string $parametri["output"]         : "index" se i dati servono per la griglia dell'index, "stampa" se i dati servono per la stampa</pre>
      *
      * @return JSON con i dati richiesti
      */
