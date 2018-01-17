@@ -46,11 +46,11 @@ class ArrayFunctions
     public static function inMultiarrayTutti($elem, $array, $key, $debug)
     {
 
-        if ($debug) {
+        /*if ($debug) {
             var_dump($elem);
 
             var_dump($key);
-        }
+        }*/
 
 
         $trovato = array();
@@ -92,7 +92,7 @@ class ArrayFunctions
         $primo = true;
         $vettorerisultati = array();
 
-        if ($debug) {
+        /*if ($debug) {
             echo "<br>\n vettore search <br>\n";
             var_dump($search);
             echo "<br>\n fine vettore search  <br>\n";
@@ -100,7 +100,7 @@ class ArrayFunctions
             echo "<br>\n vettorecompleto <br>\n";
             var_dump($array);
             echo "<br>\n fine vettorecompleto <br>\n";
-        }
+        }*/
 
 
         foreach ($search as $key => $singolaricerca) {
@@ -121,11 +121,11 @@ class ArrayFunctions
                 $vettorerisultati = $trovato;
             } else {
                 $vettorerisultati = array_intersect($vettorerisultati, $trovato);
-                if ($debug) {
+                /*if ($debug) {
                     echo "<br>\n vettorerisultati<br>\n";
                     var_dump($vettorerisultati);
                     echo "<br>\n fine vettorerisultati<br>\n";
-                }
+                }*/
             }
 
             $primo = false;

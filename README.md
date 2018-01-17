@@ -45,5 +45,7 @@ composer require fi/fifreecorebundle
     vendor/bin/simple-phpunit
 
     #stop server
+    php tests/bin/console server:stop --env=test > /dev/null 2>&1 &
+    sudo kill `ps -ef | grep selenium | awk '{ print $2 }'`
    
 ```
