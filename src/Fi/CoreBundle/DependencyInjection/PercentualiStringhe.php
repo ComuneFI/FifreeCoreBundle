@@ -4,10 +4,11 @@ namespace Fi\CoreBundle\DependencyInjection;
 
 class PercentualiStringhe
 {
+
     /**
      * @param array  $parametri
-     * @param string $parametri['elemento'] l'elemento da confrontare
-     * @param array  $parametri['elenco']    l'elenco degli elementi con cui effettuare il confronto
+     * <pre>string $parametri['elemento'] l'elemento da confrontare</pre>
+     * <pre>array  $parametri['elenco']    l'elenco degli elementi con cui effettuare il confronto</pre>
      *
      * @return array
      */
@@ -91,14 +92,13 @@ class PercentualiStringhe
         if (!($posizioneinb === false)) {
             if ($posizioneinb == $i) {
                 $partecento += 2;
-            } elseif (($i + $tolleranzauno >= $posizioneinb) and ($i - $tolleranzauno <= $posizioneinb)) {
+            } elseif (($i + $tolleranzauno >= $posizioneinb) and ( $i - $tolleranzauno <= $posizioneinb)) {
                 $partecento += 1;
             }
         }
 
         return $partecento;
     }
-
     /* Fatta da Emidio, sopra Andrea l'ha semplificata ma non sapendo la "tolleranza" lascio il backup qui
       public function percentualiConfrontoStringhe($parametri = array())
       {
@@ -126,8 +126,8 @@ class PercentualiStringhe
       $caratterea = (strlen($stringaa) >= $i ? substr($stringaa, $i, 1) : false);
 
       $posizioneinb =
-     ($caratterea ? strpos(strtolower($stringab), strtolower($caratterea),
-     (($i - $tolleranzauno) >= 0 ? ($i - $tolleranzauno) : 0)) : false);
+      ($caratterea ? strpos(strtolower($stringab), strtolower($caratterea),
+      (($i - $tolleranzauno) >= 0 ? ($i - $tolleranzauno) : 0)) : false);
 
       if (!($posizioneinb === false)) {
       if ($posizioneinb == $i) {

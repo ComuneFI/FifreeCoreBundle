@@ -163,11 +163,11 @@ class TabelleController extends FiCoreController
 
     public function generaDB($parametri, Request $request)
     {
-        $this->setup($request);
         if (!isset($parametri['tabella'])) {
             return false;
         }
 
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
 
@@ -222,35 +222,39 @@ class TabelleController extends FiCoreController
             $trovato = $this->getDoctrine()->getRepository($nomebundle . ':Tabelle')->findBy($vettorericerca, array());
 
             if (empty($trovato)) {
-                $crea = new Tabelle();
-                $crea->setNometabella($nometabella);
-                $crea->setNomecampo($colonna);
-
-                if (isset($parametri['operatore'])) {
-                    $creaoperatore = $this->getDoctrine()->getRepository($nomebundle . ':Operatori')->find($parametri['operatore']);
-                    if (!$creaoperatore) {
-                        continue;
-                    }
-                    $crea->setOperatori($creaoperatore);
-
-                    unset($vettorericerca['operatori_id']);
-                    $vettorericerca['operatori_id'] = null;
-                    $ritrovato = $this->getDoctrine()->getRepository($nomebundle . ':Tabelle')->findOneBy($vettorericerca);
-
-                    if (!empty($ritrovato)) {
-                        $crea->setMostrastampa($ritrovato->hasMostrastampa() ? true : false);
-                        $crea->setMostraindex($ritrovato->hasMostraindex() ? true : false);
-                    }
-                } else {
-                    $crea->setMostrastampa(true);
-                    $crea->setMostraindex(true);
-                }
-
-                $ma = $this->getDoctrine()->getManager();
-                $ma->persist($crea);
-                $ma->flush();
+                $this->creaRecordTabelle($nometabella, $colonna, $vettorericerca, $parametri);
             }
         }
+    }
+
+    private function creaRecordTabelle($nometabella, $colonna, $vettorericerca, $parametri)
+    {
+        $crea = new Tabelle();
+        $crea->setNometabella($nometabella);
+        $crea->setNomecampo($colonna);
+
+        if (isset($parametri['operatore'])) {
+            $idOperatore = $parametri['operatore'];
+            $creaoperatore = $this->getDoctrine()->getRepository('FiCoreBundle:Operatori')->find($idOperatore);
+            if ($creaoperatore instanceof \Fi\CoreBundle\Entity\Operatori) {
+                $crea->setOperatori($creaoperatore);
+            }
+
+            $vettorericerca['operatori_id'] = null;
+            $ritrovato = $this->getDoctrine()->getRepository('FiCoreBundle:Tabelle')->findOneBy($vettorericerca);
+
+            if (!empty($ritrovato)) {
+                $crea->setMostrastampa($ritrovato->hasMostrastampa() ? true : false);
+                $crea->setMostraindex($ritrovato->hasMostraindex() ? true : false);
+            }
+        } else {
+            $crea->setMostrastampa(true);
+            $crea->setMostraindex(true);
+        }
+
+        $ma = $this->getDoctrine()->getManager();
+        $ma->persist($crea);
+        $ma->flush();
     }
 
     public function grigliapopupAction(Request $request, $chiamante)

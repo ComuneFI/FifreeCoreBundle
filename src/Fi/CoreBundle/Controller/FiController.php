@@ -430,8 +430,9 @@ class FiController extends Controller
 
     protected function getParametersDatiPerGriglia($request, $container, $em, $paricevuti)
     {
-        if ($request->get('parametrigriglia')) {
-            $jsonparms = json_decode($request->get('parametrigriglia'));
+        $parametrigriglia = $request->get('parametrigriglia');
+        if ($parametrigriglia) {
+            $jsonparms = json_decode($parametrigriglia);
             $parametrigriglia = get_object_vars($jsonparms);
             $parametrigriglia['container'] = $container;
             $parametrigriglia['doctrine'] = $em;
@@ -439,7 +440,7 @@ class FiController extends Controller
             $parametrigriglia['output'] = 'stampa';
         }
 
-        return $request->get('parametrigriglia') ? $parametrigriglia : $paricevuti;
+        return $parametrigriglia ? $parametrigriglia : $paricevuti;
     }
 
     protected function getNamespace()
