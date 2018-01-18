@@ -11,6 +11,7 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
     /**
      * @test
      * @covers Fi\CoreBundle\Controller\FiController::<public>
+     * @covers Fi\CoreBundle\Entity\OpzioniTabellaRepository::editTestataFormTabelle
      */
     public function testIndexFfprincipale()
     {
