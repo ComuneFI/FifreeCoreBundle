@@ -4,15 +4,14 @@ namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\DomCrawler\Crawler;
 use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
-use Fi\CoreBundle\DependencyInjection\FifreeTestUnauthorizedClient;
 
 class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
 {
 
     /**
      * @test
-     * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
-     * @covers Fi\CoreBundle\Controller\FiController::<public>
+     * //@covers Fi\CoreBundle\Controller\FiController::setParametriGriglia
+     * //@covers Fi\CoreBundle\Controller\FiController::grigliaAction
      */
     public function testIndexFfprincipale()
     {
@@ -96,6 +95,10 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
 
     /**
      * @test
+     * @covers Fi\CoreBundle\Controller\FiCoreController::esportaexcelAction
+     * @covers Fi\CoreBundle\Controller\StampatabellaController::printHeaderXls
+     * @covers Fi\CoreBundle\Controller\StampatabellaController::printBodyXls
+     * 
      */
     public function testExcelFfprincipale()
     {
@@ -111,7 +114,9 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
 
     /**
      * @test
-     * @covers Fi\CoreBundle\Controller\StampatabellaController::<public>
+     * @covers Fi\CoreBundle\Controller\StampatabellaController::stampa
+     * @covers Fi\CoreBundle\Controller\StampatabellaController::stampaTestata
+     * 
      */
     public function testStampaFfprincipale()
     {

@@ -3,7 +3,6 @@
 namespace Fi\PannelloAmministrazioneBundle\Tests\Controller;
 
 use Tests\CoreBundle\Mink\CoreMink;
-
 class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 {
 
@@ -16,11 +15,12 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 
     /*
      * @test
+     * @covers Fi\PannelloAmministrazioneBundle\DependencyInjection\Commands::<public>
+     * @covers Fi\PannelloAmministrazioneBundle\DependencyInjection\LockSystem::getFileLock
+     * @covers Fi\PannelloAmministrazioneBundle\DependencyInjection\LockSystem::isLockedFile
      */
-
     public function test20AdminpanelGenerateBundle()
     {
-        dump("start PannelloAmministrazioneControllerTest");
         //passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-warmup --env=test ");
         //sleep(2);
         //url da testare

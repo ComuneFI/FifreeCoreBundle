@@ -8,8 +8,9 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
 {
     /*
      * @test
+     * @covers Fi\CoreBundle\Controller\FiController::<public>
+     * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
      */
-
     public function testFfprincipale()
     {
         //$url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'];
