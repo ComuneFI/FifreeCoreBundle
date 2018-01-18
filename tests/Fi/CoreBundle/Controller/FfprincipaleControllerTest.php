@@ -10,8 +10,8 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
 
     /**
      * @test
-     * //@covers Fi\CoreBundle\Controller\FiController::setParametriGriglia
-     * //@covers Fi\CoreBundle\Controller\FiController::grigliaAction
+     * //@covers Fi\CoreBundle\Controller\FiController::<public>
+     * //@covers Fi\CoreBundle\Controller\FiCoreController::<public>
      */
     public function testIndexFfprincipale()
     {
