@@ -8,6 +8,9 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 {
     /*
      * @test
+     * @covers Fi\CoreBundle\Controller\StoricomodificheController::<public>
+     * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
+     * @covers Fi\CoreBundle\Controller\FiController::<public>
      */
 
     public function testFfsecondaria()

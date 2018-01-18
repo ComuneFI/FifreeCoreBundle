@@ -11,6 +11,8 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
 
     /**
      * @test
+     * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
+     * @covers Fi\CoreBundle\Controller\FiController::<public>
      */
     public function testIndexFfprincipale()
     {
@@ -104,6 +106,22 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
         $client->request('GET', $url);
         $this->assertTrue(
                 $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
+        );
+    }
+
+    /**
+     * @test
+     * @covers Fi\CoreBundle\Controller\StampatabellaController::<public>
+     */
+    public function testStampaFfprincipale()
+    {
+        $client = $this->getClient();
+        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
+        $url = $client->getContainer()->get('router')->generate('Tabelle_stampatabella', array('nometabella' => 'Ffprincipale'));
+
+        $client->request('GET', $url);
+        $this->assertTrue(
+                $client->getResponse()->getStatusCode() === 200
         );
     }
 
