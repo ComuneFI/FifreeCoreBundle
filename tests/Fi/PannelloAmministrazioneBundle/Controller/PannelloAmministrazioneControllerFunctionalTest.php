@@ -54,7 +54,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $page->pressButton('adminpanelgeneratebundle');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        $this->ajaxWait($session);
+        $this->ajaxWait();
 
         $scriptrun = "function(){ $('button:contains(\"Chiudi\")').click();}()";
         $session->executeScript($scriptrun);
@@ -105,7 +105,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $page->pressButton('adminpanelgenerateentity');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        $this->ajaxWait($session);
+        $this->ajaxWait();
 
         sleep(1);
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
@@ -115,7 +115,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $page->pressButton('adminpanelgenerateclassentity');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        $this->ajaxWait($session);
+        $this->ajaxWait();
         sleep(1);
         //echo $session->getPage()->getHtml();
         /**/
@@ -153,7 +153,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $page->pressButton('adminpanelaggiornadatabase');
         $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptdb);
-        $this->ajaxWait($session);
+        $this->ajaxWait();
         /**/
         //$screenshot = $driver->getWebDriverSession()->screenshot();
         //file_put_contents('/tmp/test5.png', base64_decode($screenshot));
@@ -194,7 +194,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $page->pressButton('adminpanelgenerateformcrud');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
-        $this->ajaxWait($session);
+        $this->ajaxWait();
         sleep(1);
         $this->assertTrue(file_exists($checktypeprova));
         $this->assertTrue(file_exists($checkviewsprova));
@@ -279,7 +279,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         }
         sleep(2);
         /* Inserimento */
-        $this->ajaxWait($session);
+        $this->ajaxWait();
 
         $descrizionetest1 = 'Test inserimento descrizione automatico';
 //        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
@@ -290,7 +290,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 
         $page->fillField($fieldhtml, $descrizionetest1);
         $page->find('css', 'a#sDataProvaS')->click();
-        $this->ajaxWait($session);
+        $this->ajaxWait();
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
@@ -302,33 +302,33 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
                 $e->click();
             }
         }
-        $this->ajaxWait($session);
+        $this->ajaxWait();
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $page->fillField($fieldhtml, $descrizionetest2);
         $page->find('css', 'a#sDataProvaS')->click();
-        $this->ajaxWait($session);
+        $this->ajaxWait();
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
-        $this->ajaxWait($session);
+        $this->ajaxWait();
 
         foreach ($elementdel as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
         }
-        $this->ajaxWait($session);
+        $this->ajaxWait();
         $page->find('css', 'a#dData')->click();
-        $this->ajaxWait($session);
+        $this->ajaxWait();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    public function tearDown()
     {
         parent::tearDown();
         cleanFilesystem();

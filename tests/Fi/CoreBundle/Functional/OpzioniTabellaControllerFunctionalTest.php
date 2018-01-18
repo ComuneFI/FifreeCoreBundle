@@ -34,7 +34,7 @@ class OpzioniTabellaControllerFunctionalTest extends CoreMink
             }
         }
         /* Inserimento */
-        parent::ajaxWait($session, 20000);
+        $this->ajaxWait();
         $descrizionetest1 = 'testtabella';
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'opzioni_tabella_';
@@ -44,7 +44,7 @@ class OpzioniTabellaControllerFunctionalTest extends CoreMink
         $page->selectFieldOption($fieldprefix . 'tabelle', 1);
         $page->fillField($fieldprefix . 'descrizione', $descrizionetest1);
         $page->find('css', 'a#sDataOpzioniTabellaS')->click();
-        parent::ajaxWait($session, 20000);
+        $this->ajaxWait();
 
         $em = $this->em;
         $qb2 = $em->createQueryBuilder();
@@ -67,28 +67,28 @@ class OpzioniTabellaControllerFunctionalTest extends CoreMink
                 $e->click();
             }
         }
-        parent::ajaxWait($session, 20000);
+        $this->ajaxWait();
         /* Modifica */
         $descrizionetest2 = 'testtabella 2';
         $page->fillField($fieldprefix . 'descrizione', $descrizionetest2);
 
         $page->find('css', 'a#sDataOpzioniTabellaS')->click();
-        parent::ajaxWait($session);
+        $this->ajaxWait();
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
-        parent::ajaxWait($session, 20000);
+        $this->ajaxWait();
 
         foreach ($elementdel as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
         }
-        parent::ajaxWait($session, 20000);
+        $this->ajaxWait();
         $page->find('css', 'a#dData')->click();
-        parent::ajaxWait($session, 20000);
+        $this->ajaxWait();
     }
 
 }

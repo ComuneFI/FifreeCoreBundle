@@ -34,7 +34,7 @@ class TabelleControllerFunctionalTest extends CoreMink
             }
         }
         /* Inserimento */
-        parent::ajaxWait($session);
+        $this->ajaxWait();
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'tabelle_';
         } else {
@@ -43,7 +43,7 @@ class TabelleControllerFunctionalTest extends CoreMink
         $descrizionetest1 = 'testtabella';
         $page->fillField($fieldprefix . 'nometabella', $descrizionetest1);
         $page->find('css', 'a#sDataTabelleS')->click();
-        parent::ajaxWait($session);
+        $this->ajaxWait();
 
         $em = $this->em;
         $qb2 = $em->createQueryBuilder();
@@ -65,28 +65,28 @@ class TabelleControllerFunctionalTest extends CoreMink
                 $e->click();
             }
         }
-        parent::ajaxWait($session);
+        $this->ajaxWait();
         /* Modifica */
         $descrizionetest2 = 'testtabella 2';
         $page->fillField($fieldprefix . 'nometabella', $descrizionetest2);
 
         $page->find('css', 'a#sDataTabelleS')->click();
-        parent::ajaxWait($session);
+        $this->ajaxWait();
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
-        parent::ajaxWait($session);
+        $this->ajaxWait();
 
         foreach ($elementdel as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
         }
-        parent::ajaxWait($session);
+        $this->ajaxWait();
         $page->find('css', 'a#dData')->click();
-        parent::ajaxWait($session);
+        $this->ajaxWait();
     }
 
 }

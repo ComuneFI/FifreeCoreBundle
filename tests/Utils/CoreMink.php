@@ -167,9 +167,14 @@ abstract class CoreMink extends WebTestCase
         $page->clickLink('logout');
     }
 
-    protected function ajaxWait($session, $timeout = 60000)
+    public function tearDown()
     {
-        $session->wait($timeout, '(0 === jQuery.active)');
+        parent::tearDown();
+    }
+
+    protected function ajaxWait($timeout = 60000)
+    {
+        $this->getSession()->wait($timeout, '(0 === jQuery.active)');
         //sleep(1);
     }
 

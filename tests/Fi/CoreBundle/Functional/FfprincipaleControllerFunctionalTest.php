@@ -42,12 +42,12 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
             }
         }
         /* Ricerca 1 */
-        $this->ajaxWait($session);
+        $this->ajaxWait();
         $search1 = 'primo';
         sleep(1);
         $page->fillField('jqg1', $search1);
         $page->find('css', 'a#fbox_list1_search')->click();
-        $this->ajaxWait($session);
+        $this->ajaxWait();
 
         $numrowsgrid1 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(0, $numrowsgrid1);
@@ -60,7 +60,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
                 $e->click();
             }
         }
-        $this->ajaxWait($session);
+        $this->ajaxWait();
         $search2 = 'primo';
         sleep(1);
         //$page->selectFieldOption('inizia con', "cn");
@@ -71,7 +71,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $page->fillField('jqg1', $search2);
 
         $page->find('css', 'a#fbox_list1_search')->click();
-        $this->ajaxWait($session);
+        $this->ajaxWait();
 
         $numrowsgrid2 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid2);
@@ -92,11 +92,11 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         } else {
             $fieldprefix = 'fi_corebundle_ffprincipaletype_';
         }
-        $this->ajaxWait($session);
+        $this->ajaxWait();
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         $page->fillField($fieldprefix . 'descrizione', $descrizionetest1);
         $page->find('css', 'a#sDataFfprincipaleS')->click();
-        $this->ajaxWait($session);
+        $this->ajaxWait();
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
@@ -108,27 +108,27 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
                 $e->click();
             }
         }
-        $this->ajaxWait($session);
+        $this->ajaxWait();
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $page->fillField($fieldprefix . 'descrizione', $descrizionetest2);
         $page->find('css', 'a#sDataFfprincipaleS')->click();
-        parent::ajaxWait($session);
+        $this->ajaxWait();
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
         $elementdel = $page->findAll('css', '.ui-icon-trash');
-        $this->ajaxWait($session);
+        $this->ajaxWait();
 
         foreach ($elementdel as $e) {
             if ($e->isVisible()) {
                 $e->click();
             }
         }
-        $this->ajaxWait($session);
+        $this->ajaxWait();
         $page->find('css', 'a#dData')->click();
-        $this->ajaxWait($session);
+        $this->ajaxWait();
     }
 
     private function printoperations($session, $page)
@@ -141,7 +141,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
                 $e->click();
             }
         }
-        $this->ajaxWait($session);
+        $this->ajaxWait();
         $windowNames = $session->getWindowNames();
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
