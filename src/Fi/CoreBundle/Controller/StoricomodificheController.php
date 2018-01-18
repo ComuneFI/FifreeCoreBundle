@@ -17,7 +17,7 @@ class StoricomodificheController extends FiCoreController
         $nomecampo = $request->get("nomecampo");
         $id = (int) $request->get("id");
 
-        self::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();

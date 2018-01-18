@@ -34,6 +34,9 @@ class GestionePermessi
 
     public function leggere($parametri = array())
     {
+        if (!$this->container->get('security.token_storage')->getToken()) {
+            return null;
+        }
         if (isset($parametri['modulo'])) {
             $this->modulo = $parametri['modulo'];
         }
@@ -57,6 +60,9 @@ class GestionePermessi
 
     public function cancellare($parametri = array())
     {
+        if (!$this->container->get('security.token_storage')->getToken()) {
+            return null;
+        }
         if (isset($parametri['modulo'])) {
             $this->modulo = $parametri['modulo'];
         }
@@ -78,6 +84,9 @@ class GestionePermessi
 
     public function creare($parametri = array())
     {
+        if (!$this->container->get('security.token_storage')->getToken()) {
+            return null;
+        }
         if (isset($parametri['modulo'])) {
             $this->modulo = $parametri['modulo'];
         }
@@ -99,6 +108,10 @@ class GestionePermessi
 
     public function aggiornare($parametri = array())
     {
+        if (!$this->container->get('security.token_storage')->getToken()) {
+            return null;
+        }
+
         if (isset($parametri['modulo'])) {
             $this->modulo = $parametri['modulo'];
         }
@@ -177,7 +190,9 @@ class GestionePermessi
 
     public function utentecorrente()
     {
-        if (!$this->container->get('security.token_storage')->getToken()->getUser()) {
+        $utentecorrente  = array();
+        
+        if (!$this->container->get('security.token_storage')->getToken()) {
             $utentecorrente['nome'] = 'Utente non registrato';
             $utentecorrente['id'] = 0;
             $utentecorrente['ruolo_id'] = 0;
@@ -189,8 +204,6 @@ class GestionePermessi
         $q = $this->container->get('doctrine')
                 ->getRepository('FiCoreBundle:Operatori')
                 ->find($utente);
-
-        $utentecorrente = array();
 
         $utentecorrente['username'] = $utente;
         $utentecorrente['codice'] = $utente;

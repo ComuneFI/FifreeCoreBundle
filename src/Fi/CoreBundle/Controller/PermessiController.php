@@ -16,7 +16,7 @@ class PermessiController extends FiCoreController
      */
     public function indexAction(Request $request)
     {
-        parent::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -67,13 +67,14 @@ class PermessiController extends FiCoreController
 
     public function setParametriGriglia($prepar = array())
     {
-        self::setup($prepar['request']);
+        $this->setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
         $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array();
+        $tabellej = array();
         $tabellej['operatori_id'] = array('tabella' => 'operatori', 'campi' => array('username', 'operatore'));
         $tabellej['ruoli_id'] = array('tabella' => 'ruoli', 'campi' => array('ruolo'));
 
@@ -85,7 +86,7 @@ class PermessiController extends FiCoreController
             'escludere' => $escludi,
         );
 
-        if ($prepar) {
+        if (! empty($prepar)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 

@@ -2,6 +2,8 @@ language: php
 
 php:
   - 5.6
+  - 7.0
+  - 7.1
   - 7.2
   #- hhvm
 
@@ -36,15 +38,11 @@ before_script:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi make
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
-  #- if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then echo -e '\nhhvm.libxml.ext_entity_whitelist = "file,http,https"' | sudo tee -a /etc/hhvm/php.ini; fi
-  #- if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then echo -e '\nhhvm.enable_zend_compat=true' | sudo tee -a /etc/hhvm/php.ini; fi
-  #- if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then echo -e '\ndate.timezone = "Europe/Rome"' | sudo tee -a /etc/hhvm/php.ini; fi
-  #- if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then echo -e '\nhhvm.enable_hip_hop_syntax = true' | sudo tee -a /etc/hhvm/php.ini; fi
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo 'date.timezone = "Europe/Rome"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then sudo apt-get install -y --force-yes php5-dev php-pear php5-mysql php5-curl php5-gd php5-json php5-sqlite php5-pgsql; fi
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi
-  #- if [[ $TRAVIS_PHP_VERSION == "7.0" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
-  #- if [[ $TRAVIS_PHP_VERSION == "7.1" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
+  - if [[ $TRAVIS_PHP_VERSION == "7.0" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
+  - if [[ $TRAVIS_PHP_VERSION == "7.1" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
   - sudo a2enmod rewrite actions fastcgi alias
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
@@ -80,7 +78,7 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
   - composer install
-  - php bin/console fifree2:install admin admin admin@admin.it --env=test
+  - php tests/bin/console fifree2:install admin admin admin@admin.it --env=test
   # - php bin/console server:start --env=test
   - sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
   - /usr/bin/php -v
@@ -92,16 +90,16 @@ script:
   - if [[ "$TRAVIS_PHP_VERSION" == "7.0" ]]; then ant; fi
   - if [[ "$TRAVIS_PHP_VERSION" == "7.1" ]]; then ant; fi
   - if [[ "$TRAVIS_PHP_VERSION" == "7.2" ]]; then ant; fi
-  #- if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then vendor/bin/phpunit --filter FiUtilitaTest --filter OperatoriCommandTest --filter PannelloAmministrazioneTest --filter ArrayFunctionsTestCase --filter testAddOperatore; fi
-  #- if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then vendor/bin/phpunit tests/Entity; fi
-  #- if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then vendor/bin/phpunit tests/Form; fi
-  #- if [[ "$TRAVIS_PHP_VERSION" == "hhvm" ]]; then vendor/bin/phpunit tests/DependencyInjection; fi
 
 after_success:
   - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then php vendor/bin/php-coveralls -v; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == "7.0" ]]; then php vendor/bin/php-coveralls -v; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == "7.1" ]]; then php vendor/bin/php-coveralls -v; fi
   - if [[ "$TRAVIS_PHP_VERSION" == "7.2" ]]; then php vendor/bin/php-coveralls -v; fi
+  - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then wget https://scrutinizer-ci.com/ocular.phar -t 3; fi;
+  - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php ocular.phar code-coverage:upload --format=php-clover build/artifacts/coverage/clover.xml; fi;
   - rm tests/app/dbtest.sqlite
-  - php bin/console server:stop --env=test
+  - php tests/bin/console server:stop --env=test
   - kill `ps -ef | grep selenium | awk '{ print $2 }'`
 
 after_failure:
@@ -110,6 +108,7 @@ after_failure:
   - sudo cat /var/log/apache2/other_vhosts_access.log
   - sudo cat /var/log/apache2/fifree_error.log
   - sudo cat /var/log/apache2/fifree_access.log
+  - sudo cat $TRAVIS_BUILD_DIR/tests/var/logs/test/test.log
 
 notifications:
   email:

@@ -4,8 +4,26 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 
 require __DIR__ . '/app/autoload.php';
-require __DIR__ . '/Utils/FifreeTestUtil.php';
+require __DIR__ . '/Utils/FifreeTestAuthorizedClient.php';
+require __DIR__ . '/Utils/FifreeTestUnauthorizedClient.php';
 require __DIR__ . '/Utils/FifreeUserTestUtil.php';
+require __DIR__ . '/Utils/CommandTestCase.php';
+require __DIR__ . '/Utils/CoreMink.php';
+
+function clearcache()
+{
+    passthru(sprintf(
+                    'php "%s/console" cache:clear --no-warmup --env=%s  > /dev/null', __DIR__ . '/../tests/bin/', "test"
+    ));
+}
+
+function cachewarmup()
+{
+    passthru(sprintf(
+                    'php "%s/console" cache:warmup --env=%s > /dev/null', __DIR__ . '/../tests/bin/', "test"
+    ));
+    #sleep(1);
+}
 
 function removecache()
 {
@@ -19,18 +37,11 @@ function removecache()
         if (!$process->isSuccessful()) {
             echo getErrorText($process, $command);
         } else {
-            echo $process->getOutput();
+            //echo $process->getOutput();
         }
     } else {
-        echo $testcache . " not found";
+        //echo $testcache . " not found";
     }
-}
-
-function clearcache()
-{
-    passthru(sprintf(
-                    'php "%s/console" cache:clear --no-debug --env=%s', __DIR__ . '/../bin/', "test"
-    ));
 }
 
 function getErrorText($process, $command)

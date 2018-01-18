@@ -5,7 +5,7 @@ namespace Fi\CoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Fi\CoreBundle\Entity\tabelle;
+use Fi\CoreBundle\Entity\Tabelle;
 
 /**
  * Tabelle controller.
@@ -23,6 +23,9 @@ class TabelleController extends FiCoreController
 
             $em = $this->getDoctrine()->getManager();
             $tabelle = $em->getRepository('FiCoreBundle:Tabelle')->find($id);
+            if (!$tabelle) {
+                throw new AccessDeniedException("Oggetto non trovato");
+            }
             $tabelle->setOperatoriId($operatore['id']);
             $nometabella = $this->getRequestValue($request, 'nometabella');
             if ($nometabella) {
@@ -57,20 +60,6 @@ class TabelleController extends FiCoreController
             $em->flush();
         }
 
-        /* operatori_id int(11)
-          nometabella   varchar(45)
-          nomecampo     varchar(45)
-          mostraindex   tinyint(1)
-          ordineindex   int(11)
-          larghezzaindex        int(11)
-          etichettaindex        varchar(255)
-          mostrastampa  tinyint(1)
-          ordinestampa  int(11)
-          larghezzastampa       int(11)
-          etichettastampa       varchar(255)
-         *
-         */
-
         return new Response('OK');
     }
 
@@ -85,7 +74,7 @@ class TabelleController extends FiCoreController
 
     public function configuraAction(Request $request, $nometabella)
     {
-        parent::setup($request);
+        $this->setup($request);
         $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
         $operatore = $gestionepermessi->utentecorrente();
         $this->generaDB(array('tabella' => $nometabella), $request);
@@ -174,11 +163,11 @@ class TabelleController extends FiCoreController
 
     public function generaDB($parametri, Request $request)
     {
-        parent::setup($request);
         if (!isset($parametri['tabella'])) {
             return false;
         }
 
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
 
@@ -188,6 +177,8 @@ class TabelleController extends FiCoreController
         $em = $this->getDoctrine()->getManager();
 
         $bundles = $this->get('kernel')->getBundles();
+        $tableClassName = "";
+        $entityClass = "";
         foreach ($bundles as $bundle) {
             $className = get_class($bundle);
             $entityClass = substr($className, 0, strrpos($className, '\\'));
@@ -202,6 +193,10 @@ class TabelleController extends FiCoreController
 
         if (!$tableClassName) {
             throw new \Exception('Entity per la tabella ' . $nometabella . ' non trovata', '-1');
+        }
+
+        if (!$entityClass) {
+            throw new \Exception('Entity class per la tabella ' . $nometabella . ' non trovata', '-1');
         }
 
         $bundleClass = str_replace('\\', '', $entityClass);
@@ -224,41 +219,47 @@ class TabelleController extends FiCoreController
                 $vettorericerca['operatori_id'] = $parametri['operatore'];
             }
 
-            $trovato = $this->getDoctrine()->getRepository($nomebundle . ':tabelle')->findBy($vettorericerca, array());
+            $trovato = $this->getDoctrine()->getRepository($nomebundle . ':Tabelle')->findBy($vettorericerca, array());
 
-            if (!$trovato) {
-                $crea = new tabelle();
-                $crea->setNometabella($nometabella);
-                $crea->setNomecampo($colonna);
-
-                if (isset($parametri['operatore'])) {
-                    $arraycreaoperatore = array('id' => $parametri['operatore']);
-                    $creaoperatore = $this->getDoctrine()->getRepository($nomebundle . ':operatori')->findOneBy($arraycreaoperatore, array());
-                    $crea->setOperatori($creaoperatore);
-
-                    unset($vettorericerca['operatori_id']);
-                    $vettorericerca['operatori_id'] = null;
-                    $ritrovato = $this->getDoctrine()->getRepository($nomebundle . ':tabelle')->findOneBy($vettorericerca, array());
-
-                    if ($ritrovato) {
-                        $crea->setMostrastampa($ritrovato->hasMostrastampa() ? true : false);
-                        $crea->setMostraindex($ritrovato->hasMostraindex() ? true : false);
-                    }
-                } else {
-                    $crea->setMostrastampa(true);
-                    $crea->setMostraindex(true);
-                }
-
-                $ma = $this->getDoctrine()->getManager();
-                $ma->persist($crea);
-                $ma->flush();
+            if (empty($trovato)) {
+                $this->creaRecordTabelle($nometabella, $colonna, $vettorericerca, $parametri);
             }
         }
     }
 
+    private function creaRecordTabelle($nometabella, $colonna, $vettorericerca, $parametri)
+    {
+        $crea = new Tabelle();
+        $crea->setNometabella($nometabella);
+        $crea->setNomecampo($colonna);
+
+        if (isset($parametri['operatore'])) {
+            $idOperatore = $parametri['operatore'];
+            $creaoperatore = $this->getDoctrine()->getRepository('FiCoreBundle:Operatori')->find($idOperatore);
+            if ($creaoperatore instanceof \Fi\CoreBundle\Entity\Operatori) {
+                $crea->setOperatori($creaoperatore);
+            }
+
+            $vettorericerca['operatori_id'] = null;
+            $ritrovato = $this->getDoctrine()->getRepository('FiCoreBundle:Tabelle')->findOneBy($vettorericerca);
+
+            if (!empty($ritrovato)) {
+                $crea->setMostrastampa($ritrovato->hasMostrastampa() ? true : false);
+                $crea->setMostraindex($ritrovato->hasMostraindex() ? true : false);
+            }
+        } else {
+            $crea->setMostrastampa(true);
+            $crea->setMostraindex(true);
+        }
+
+        $ma = $this->getDoctrine()->getManager();
+        $ma->persist($crea);
+        $ma->flush();
+    }
+
     public function grigliapopupAction(Request $request, $chiamante)
     {
-        parent::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -268,7 +269,7 @@ class TabelleController extends FiCoreController
 
         $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
         $operatore = $gestionepermessi->utentecorrente();
-
+        $tabellej = array();
         $tabellej['operatori_id'] = array('tabella' => 'operatori', 'campi' => array('username', 'operatore'));
 
         $paricevuti = array(
@@ -285,17 +286,9 @@ class TabelleController extends FiCoreController
         return new Response(Griglia::datiPerGriglia($paricevuti));
     }
 
-    public function grigliaAction(Request $request)
-    {
-        $this->setParametriGriglia(array('request' => $request));
-        $paricevuti = self::$parametrigriglia;
-
-        return new Response(Griglia::datiPerGriglia($paricevuti));
-    }
-
     protected function setParametriGriglia($prepar = array())
     {
-        self::setup($prepar['request']);
+        $this->setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -319,7 +312,7 @@ class TabelleController extends FiCoreController
             'escludere' => $escludi
         );
 
-        if ($prepar) {
+        if (!empty($prepar)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 
@@ -328,7 +321,7 @@ class TabelleController extends FiCoreController
 
     public function listacampitabellaAction(Request $request)
     {
-        parent::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -345,7 +338,8 @@ class TabelleController extends FiCoreController
         }
 
         $em = $this->getDoctrine()->getManager();
-
+        $tableClassName = "";
+        $entityClass = "";
         $bundles = $this->get('kernel')->getBundles();
         foreach ($bundles as $bundle) {
             $className = get_class($bundle);
@@ -363,6 +357,10 @@ class TabelleController extends FiCoreController
             throw new \Exception('Entity per la tabella ' . $nometabella . ' non trovata', '-1');
         }
 
+        if (!$entityClass) {
+            throw new \Exception('Entity class per la tabella ' . $nometabella . ' non trovata', '-1');
+        }
+
         $bundleClass = str_replace('\\', '', $entityClass);
         $c = $em->getClassMetadata($bundleClass . ':' . $nometabella);
         $colonne = $c->getColumnNames();
@@ -377,12 +375,13 @@ class TabelleController extends FiCoreController
     private function listacampitabelladettagli($escludiid, $colonne, $nomebundle, $controller)
     {
         $risposta = array();
+        $nometabella = $controller;
         if ($escludiid == 1) {
             $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
             $operatore = $gestionepermessi->utentecorrente();
             foreach ($colonne as $colonna) {
                 $nomecampo = trim(strtolower($colonna));
-                if (($nomecampo !== 'id') && (strpos($colonna, '_id') == false)) {
+                if (($nomecampo !== 'id') && (strpos($colonna, '_id') === false)) {
                     $qb = $this->getDoctrine()->getRepository("$nomebundle:$controller")
                             ->createQueryBuilder('t')
                             ->where('LOWER(t.nometabella) = :nometabella')

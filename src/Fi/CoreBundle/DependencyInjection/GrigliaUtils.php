@@ -155,11 +155,11 @@ class GrigliaUtils
 
     public static function getUserCustomTableFields($em, $nometabella, $operatore)
     {
-        $q = $em->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => $operatore['id'], 'nometabella' => $nometabella));
+        $q = $em->getRepository('FiCoreBundle:Tabelle')->findBy(array('operatori_id' => $operatore['id'], 'nometabella' => $nometabella));
 
         if (!$q) {
             unset($q);
-            $q = $em->getRepository('FiCoreBundle:tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
+            $q = $em->getRepository('FiCoreBundle:Tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
         }
 
         return $q;
@@ -283,8 +283,6 @@ class GrigliaUtils
      * Translates a string with underscores into camel case (e.g. first_name -&gt; firstName).
      *
      * @param array  $parametri
-     * @param string $str            String in underscore format
-     * @param bool   $primamaiuscola If true, capitalise the first char in $str
      *
      * @return string $str translated into camel caps
      */

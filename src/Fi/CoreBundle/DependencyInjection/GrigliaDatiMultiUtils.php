@@ -124,7 +124,8 @@ class GrigliaDatiMultiUtils
                     /* array */
 
                     self::setOrdineColonneDatiGriglia($ordinecolonne, $nomecampo, $indice, $indicecolonna);
-
+                    
+                    $parametriCampoElencato = array();
                     $parametriCampoElencato['tabellej'] = $tabellej;
                     $parametriCampoElencato['nomecampo'] = $nomecampo;
                     $parametriCampoElencato['campoelencato'] = $campoelencato;

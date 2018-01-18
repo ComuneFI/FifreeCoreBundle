@@ -8,6 +8,7 @@ class LockSystem
 {
 
     private $container;
+    private $apppath;
 
     public function __construct($container)
     {

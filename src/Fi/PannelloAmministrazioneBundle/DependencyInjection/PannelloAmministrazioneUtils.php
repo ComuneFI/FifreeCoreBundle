@@ -29,13 +29,16 @@ class PannelloAmministrazioneUtils
 
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
-        $command = $phpPath . ' ' . $this->apppaths->getConsole() . ' cache:clear '
-                . '--no-debug --env=' . $env;
-        /* if (in_array($env, array('dev', 'test', 'localhost'))) {
-          $command = $command . " ";
-          } else {
-          $command = $command . " --no-debug ";
-          } */
+        if (in_array($env, array('dev', 'test', 'localhost'))) {
+            $command = $phpPath . ' ' . $this->apppaths->getConsole() . ' cache:clear '
+                    . '--no-warmup --env=' . $env;
+        } else {
+            $command = $phpPath . ' ' . $this->apppaths->getConsole() . ' cache:clear '
+                    . '--no-debug --no-warmup --env=' . $env;
+
+            $command = $command . " && " . $phpPath . ' ' . $this->apppaths->getConsole() . ' cache:warmup '
+                    . '--no-debug --env=' . $env;
+        }
 
         return PannelloAmministrazioneUtils::runCommand($command);
     }

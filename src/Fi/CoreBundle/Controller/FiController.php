@@ -21,7 +21,7 @@ class FiController extends Controller
         $matches = array();
         $controllo = new \ReflectionClass(get_class($this));
 
-        preg_match('/(.*)\\\(.*)Bundle\\\Controller\\\(.*)Controller/', $controllo->getName(), $matches);
+        preg_match('/(.*)\\\(.*)Bundle\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
 
         self::$namespace = $matches[1];
         self::$bundle = $matches[2];
@@ -31,7 +31,7 @@ class FiController extends Controller
 
     protected function setParametriGriglia($prepar = array())
     {
-        self::setup($prepar['request']);
+        $this->setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -47,7 +47,7 @@ class FiController extends Controller
 
         $paricevuti = array('container' => $this->container, 'nomebundle' => $nomebundle, 'nometabella' => $controller, 'escludere' => $escludi);
 
-        if ($prepar) {
+        if (! empty($prepar)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 
@@ -60,7 +60,7 @@ class FiController extends Controller
     public function indexAction(Request $request)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
-        self::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -268,7 +268,7 @@ class FiController extends Controller
     public function updateAction(Request $request, $id)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
-        self::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -414,8 +414,10 @@ class FiController extends Controller
 
     protected function getParametersTestataPerGriglia($request, $container, $em, $paricevuti)
     {
-        if ($request->get('parametritesta')) {
-            $jsonparms = json_decode($request->get('parametritesta'));
+        $parametritestarequest = $request->get('parametritesta');
+        $parametritesta = array();
+        if ($parametritestarequest) {
+            $jsonparms = json_decode($parametritestarequest);
             $parametritesta = get_object_vars($jsonparms);
             $parametritesta['container'] = $container;
             $parametritesta['doctrine'] = $em;
@@ -423,13 +425,14 @@ class FiController extends Controller
             $parametritesta['output'] = 'stampa';
         }
 
-        return $request->get('parametritesta') ? $parametritesta : $paricevuti;
+        return $parametritestarequest ? $parametritesta : $paricevuti;
     }
 
     protected function getParametersDatiPerGriglia($request, $container, $em, $paricevuti)
     {
-        if ($request->get('parametrigriglia')) {
-            $jsonparms = json_decode($request->get('parametrigriglia'));
+        $parametrigriglia = $request->get('parametrigriglia');
+        if ($parametrigriglia) {
+            $jsonparms = json_decode($parametrigriglia);
             $parametrigriglia = get_object_vars($jsonparms);
             $parametrigriglia['container'] = $container;
             $parametrigriglia['doctrine'] = $em;
@@ -437,7 +440,7 @@ class FiController extends Controller
             $parametrigriglia['output'] = 'stampa';
         }
 
-        return $request->get('parametrigriglia') ? $parametrigriglia : $paricevuti;
+        return $parametrigriglia ? $parametrigriglia : $paricevuti;
     }
 
     protected function getNamespace()

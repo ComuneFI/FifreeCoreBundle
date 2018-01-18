@@ -149,7 +149,7 @@ class StampatabellaController extends FiCoreController
         $sheet = $objPHPExcel->getActiveSheet();
         $titolosheet = 'Esportazione ' . $testata['tabella'];
         $sheet->setTitle(substr($titolosheet, 0, 30));
-        $sheet->getDefaultStyle()->getFont()->setName('Verdana');
+        $sheet->getParent()->getDefaultStyle()->getFont()->setName('Verdana');
 
         $this->printHeaderXls($modellicolonne, $testata, $sheet);
 
@@ -184,6 +184,7 @@ class StampatabellaController extends FiCoreController
     private function printHeaderXls($modellicolonne, $testata, $sheet)
     {
         $indicecolonnaheader = 0;
+        $letteracolonna = 0;
         foreach ($modellicolonne as $modellocolonna) {
             //Si imposta la larghezza delle colonne
             $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonnaheader);

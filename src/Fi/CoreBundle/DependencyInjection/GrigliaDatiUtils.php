@@ -148,6 +148,7 @@ class GrigliaDatiUtils
 
         if (isset($tabellej[$campoelencato])) {
             foreach ($tabellej[$campoelencato]['campi'] as $campoelencatointerno) {
+                $parametriCampoElencatoInterno = array();
                 $parametriCampoElencatoInterno['tabellej'] = $tabellej;
                 $parametriCampoElencatoInterno['nomecampo'] = $campoelencato;
                 $parametriCampoElencatoInterno['campoelencato'] = $campoelencatointerno;

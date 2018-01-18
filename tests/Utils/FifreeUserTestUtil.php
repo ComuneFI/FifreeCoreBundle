@@ -4,7 +4,7 @@ namespace Fi\CoreBundle\DependencyInjection;
 
 use Symfony\Component\BrowserKit\Cookie;
 
-class FifreeUserTestUtil extends FifreeTestUtil
+class FifreeUserTestUtil extends FifreeTestUnauthorizedClient
 {
 
     protected static function createAuthorizedClient($client)
