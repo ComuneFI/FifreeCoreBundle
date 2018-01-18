@@ -70,8 +70,6 @@ class GenerateentitiesCommand extends ContainerAwareCommand
     {
         /* GENERATE ENTITIES */
         $output->writeln('Creazione entities class per il bundle ' . str_replace('/', '', $bundlename));
-        //$application = new Application($this->getContainer()->get('kernel'));
-        //$application->setAutoExit(false);
 
         $console = $this->apppaths->getConsole();
         $scriptGenerator = $console . ' doctrine:generate:entities';

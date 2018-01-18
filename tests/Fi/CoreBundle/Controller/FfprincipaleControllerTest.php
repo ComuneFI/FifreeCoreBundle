@@ -10,8 +10,7 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
 
     /**
      * @test
-     * //@covers Fi\CoreBundle\Controller\FiController::<public>
-     * //@covers Fi\CoreBundle\Controller\FiCoreController::<public>
+     * @covers Fi\CoreBundle\Controller\FiController::<public>
      */
     public function testIndexFfprincipale()
     {
@@ -95,7 +94,7 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
 
     /**
      * @test
-     * @covers Fi\CoreBundle\Controller\FiCoreController::esportaexcelAction
+     * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
      * @covers Fi\CoreBundle\Controller\StampatabellaController::printHeaderXls
      * @covers Fi\CoreBundle\Controller\StampatabellaController::printBodyXls
      * 
@@ -114,6 +113,8 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
 
     /**
      * @test
+     * 
+     * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
      * @covers Fi\CoreBundle\Controller\StampatabellaController::stampa
      * @covers Fi\CoreBundle\Controller\StampatabellaController::stampaTestata
      * 

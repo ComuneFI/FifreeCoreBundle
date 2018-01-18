@@ -139,34 +139,9 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         dump("Generate bundle");
         $console = __DIR__ . '/../../../bin/console';
-        //$cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --no-debug --format=yml  -n --env=test";
         $cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --format=yml  -n --env=test  > /dev/null";
         passthru($cmd);
         dump("Generated bundle");
-
-        /*
-
-          $console = __DIR__ . '/../../../bin/console';
-          $cmd = "php " . $console . " pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle --no-debug --env=test";
-          //$cmd = "php " . $console . " pannelloamministrazione:generateymlentities wbadmintest.mwb Fi/ProvaBundle --env=test";
-          passthru($cmd);
-          writestdout("Generated yml");
-         */
-        /* $console = __DIR__ . '/../../../bin/console';
-          $cmd = "php " . $console . " cache:clear --no-debug --env=test";
-          passthru($cmd);
-          writestdout("Clear cache");
-
-          $console = __DIR__ . '/../../../bin/console';
-          $cmd = "php " . $console . " doctrine:cache:clear-metadata --no-debug --env=test";
-          passthru($cmd);
-          writestdout("Clear cache metadata"); */
-
-        /* $console = __DIR__ . '/../../../bin/console';
-          $cmd = "php " . $console . " pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate --no-debug --env=test";
-          //$cmd = "php " . $console . " pannelloamministrazione:generateentities Fi/ProvaBundle --schemaupdate --env=test";
-          passthru($cmd);
-          writestdout("Generated entities"); */
 
         $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand());
         $command = $this->application->find('pannelloamministrazione:generateymlentities');
@@ -181,8 +156,6 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         dump("Generated yml entities");
         $this->assertRegExp('/.../', $commandTester->getDisplay());
-        //removecache();
-        //clearcache();
 
         clearcache();
         cachewarmup();
@@ -203,7 +176,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         );
         dump("Generated entities");
         $this->assertRegExp('/.../', $commandTester->getDisplay());
-        //echo $checkent;
+
         $this->assertTrue(file_exists($checkent));
         $this->assertTrue(file_exists($checkres));
     }
@@ -211,8 +184,6 @@ class GenerateentitiesCommandTest extends KernelTestCase
     protected function tearDown()
     {
         parent::tearDown();
-        //$this->em->close();
-        //$this->em = null; // avoid memory leaks
         cleanFilesystem();
         removecache();
         clearcache();
