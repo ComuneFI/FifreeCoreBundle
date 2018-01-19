@@ -55,9 +55,9 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
 
         $valoreffprincipale = "1";
         $campoffprincipale = $fieldprefix . "[ffprincipale]";
-        $valoredatad = (int)date("d");
-        $valoredatam = (int)date("m");
-        $valoredatay = (int)date("Y");
+        $valoredatad = (int) date("d");
+        $valoredatam = (int) date("m");
+        $valoredatay = (int) date("Y");
         $campodatad = $fieldprefix . "[data][day]";
         $campodatam = $fieldprefix . "[data][month]";
         $campodatay = $fieldprefix . "[data][year]";
@@ -89,7 +89,6 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
 
         $crawler = $client->submit($form);
         //echo $crawler->html();exit;
-
         //update
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $em = $this->getEntityManager();
@@ -113,6 +112,13 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
         // submit that form
         $crawler = $client->submit($form);
 
+        $qu = $em->createQueryBuilder();
+        $qu->select(array('c'))
+                ->from('FiCoreBundle:Storicomodifiche', 'c')
+                ->where("c.nometabella= 'Ffsecondaria'")
+                ->andWhere("c.nomecampo = 'descsec'");
+        $ffs = $qu->getQuery()->getResult();
+        $this->assertEquals(count($ffs), 1);
 
         $em->clear();
         $em = $this->getEntityManager();
@@ -135,6 +141,28 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
         //quindi lancio la delete a mano
 
         $crawler = $client->request('GET', '/Ffsecondaria/' . $recorddelete->getId() . '/delete');
+
+        /* $qu = $em->createQueryBuilder();
+          $qu->select(array('c'))
+          ->from('FiCoreBundle:Storicomodifiche', 'c')
+          ->where("c.nometabella= 'Ffsecondaria'")
+          ->andWhere("c.nomecampo = 'descsec'");
+          $ff = $qu->getQuery()->getResult();
+          var_dump(count($ff)); */
+
+        $qu = $em->createQueryBuilder();
+        $qu->delete('FiCoreBundle:Storicomodifiche', "s")
+                ->where("s.nometabella= 'Ffsecondaria'")
+                ->andWhere("s.nomecampo = 'descsec'");
+        $fft = $qu->getQuery()->getResult();
+
+        $qu = $em->createQueryBuilder();
+        $qu->select(array('c'))
+                ->from('FiCoreBundle:Storicomodifiche', 'c')
+                ->where("c.nometabella= 'Ffsecondaria'")
+                ->andWhere("c.nomecampo = 'descsec'");
+        $fftt = $qu->getQuery()->getResult();
+        $this->assertEquals(count($fftt), 0);
     }
 
 }
