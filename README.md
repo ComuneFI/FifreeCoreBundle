@@ -4,6 +4,21 @@ FifreeCoreBundle
 [![Coverage Status](https://coveralls.io/repos/github/ComuneFI/FifreeCoreBundle/badge.svg?branch=master)](https://coveralls.io/github/ComuneFI/FifreeCoreBundle?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ComuneFI/FifreeCoreBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ComuneFI/FifreeCoreBundle/?branch=master)
 
+Intro:
+-------------
+FiFreeCoreBundle è un bundle per symfony (3.4 o superiori) composto da un insieme di framework Open Source (JQuery, JQuery-ui, JQGrid per il backend e Bootstrap per il frontend), costruito in modo da essere un accelleratore di produttività riusabile e ridistribuibile.
+I prodotti creati con FiFree sono facilmente manutenibili, la documentazione dei componenti è ampiamente diffusa on line.
+Le funzioni che servono ripetitivamente (p.e. login, creazione di interfacce per le tabelle, etc.) sono nativamente disponibili in tutti i programmi creati con questo prodotto.
+Utilizzando doctrine si può generare velocemente una base dati su Mysql, Postgresql o sqlite (viene utilizzato per i test)
+FifreeCoreBundle è in grado di convertire uno schema database creato tramite Mysqlworkbench in entity class gestite da symfony tramite doctrine (indipendentemete dal tipo di database scelto).
+FifreeCoreBundle è inoltre dotato di un proprio pannello di amministrazione che permette velocemente di pubblicare aggiornamenti (tramite Git/Svn), di creare nuovi form per la procedura che si intende sviluppare, aggiornare lo schema database partendo dal file generato tramite Mysqlworkbench, pulizia della cache, e lancio di comandi shell (con le limitazione dell'utente con cui è in esecuzione il servizio web) tutto tramite pochi click.
+
+Obiettivi, destinatari e contesto: 
+-------------
+I software sviluppati internamente al Comune di Firenze sono fruiti da due tipi di soggetti: da una parte i colleghi del Comune di Firenze hanno bisogno di accedere a una interfaccia che sia coerente, di semplice utilizzo e pratica. 
+Dall’altra parte i cittadini hanno la necessità di accedere ai servizi che il Comune mette a disposizione in modo semplice e intuitivo. 
+Per esempio, il software di gestione del Patrimonio Immobiliare è composto da molti moduli, sia rivolti a chi si occupa di gestire il patrimonio internamente, sia ai colleghi che si occupano di gestire i Bandi, sia ai cittadini che possono immettere la domanda direttamente attraverso una semplice interfaccia fruibile anche da tablet e smartphone. 
+
 Installazione:
 -------------
 
