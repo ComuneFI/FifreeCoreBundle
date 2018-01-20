@@ -85,26 +85,19 @@ class Commands
 
     public function generateEntity($wbFile, $bundlePath)
     {
-        $console = $this->apppaths->getConsole();
-        $pannellocmd = "pannelloamministrazione:generateymlentities $wbFile $bundlePath ";
 
-        $scriptGenerator = $console . " " . $pannellocmd;
+        $command = new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand();
+        $command->setContainer($this->container);
+        $input = new \Symfony\Component\Console\Input\ArrayInput(array('mwbfile' => $wbFile, 'bundlename' => $bundlePath));
+        $output = new \Symfony\Component\Console\Output\BufferedOutput();
+        $resultCode = $command->run($input, $output);
 
-        $phpPath = OsFunctions::getPHPExecutableFromPath();
-        $sepchr = OsFunctions::getSeparator();
-
-        $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr
-                . $phpPath . ' ' . $scriptGenerator . ' --no-debug --env=' . $this->container->get('kernel')->getEnvironment();
-        $process = new Process($command);
-        $process->setTimeout(60 * 100);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
+        if ($resultCode != 0) {
             return array(
                 'errcode' => -1,
                 'message' => 'Errore nel comando: <i style="color: white;">' .
-                $command . '</i><br/><i style="color: red;">' .
-                str_replace("\n", '<br/>', ($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput())) .
+                $command->getName() . '</i><br/><i style="color: red;">' .
+                str_replace("\n", '<br/>', $output->fetch()) .
                 'in caso di errori eseguire il comando symfony non da web: pannelloamministrazione:generateymlentities ' .
                 $wbFile . ' ' . $bundlePath . '<br/></i>',
             );
@@ -113,32 +106,23 @@ class Commands
         return array(
             'errcode' => 0,
             'message' => '<pre>Eseguito comando: <i style = "color: white;">' .
-            $command . '</i><br/>' . str_replace("\n", '<br/>', $process->getOutput()) . '</pre>',);
+            $command->getName() . '</i><br/>' . str_replace("\n", '<br/>', $output->fetch()) . '</pre>',);
     }
 
     public function generateEntityClass($bundlePath)
     {
-        $console = $this->apppaths->getConsole();
-        $pannellocmd = "pannelloamministrazione:generateentities $bundlePath";
+        $command = new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand();
+        $command->setContainer($this->container);
+        $input = new \Symfony\Component\Console\Input\ArrayInput(array('bundlename' => $bundlePath));
+        $output = new \Symfony\Component\Console\Output\BufferedOutput();
+        $resultCode = $command->run($input, $output);
 
-        $scriptGenerator = $console . " " . $pannellocmd;
-
-        $phpPath = OsFunctions::getPHPExecutableFromPath();
-        $sepchr = OsFunctions::getSeparator();
-
-        $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr
-                . $phpPath . ' ' . $scriptGenerator . ' --env=' . $this->container->get('kernel')->getEnvironment();
-
-        $process = new Process($command);
-        $process->setTimeout(60 * 100);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
+        if ($resultCode != 0) {
             return array(
                 'errcode' => -1,
                 'message' => 'Errore nel comando: <i style="color: white;">' .
-                $command . '</i><br/><i style="color: red;">' .
-                str_replace("\n", '<br/>', ($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput())) .
+                $command->getName() . '</i><br/><i style="color: red;">' .
+                str_replace("\n", '<br/>', $output->fetch()) .
                 'in caso di errori eseguire il comando symfony non da web: pannelloamministrazione:generateentities ' .
                 $bundlePath . '<br/>Opzione --schemaupdate oer aggiornare anche lo schema database</i>',
             );
@@ -147,7 +131,7 @@ class Commands
         return array(
             'errcode' => 0,
             'message' => '<pre>Eseguito comando: <i style = "color: white;">' .
-            $command . '</i><br/>' . str_replace("\n", '<br/>', $process->getOutput()) . '</pre>',);
+            $command->getName() . '</i><br/>' . str_replace("\n", '<br/>', $output->fetch()) . '</pre>',);
     }
 
     public function generateFormCrud($bundlename, $entityform)

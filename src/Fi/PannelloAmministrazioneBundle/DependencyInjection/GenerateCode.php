@@ -106,7 +106,6 @@ use Fi\CoreBundle\Controller\FiController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Fi\CoreBundle\Controller\Griglia;
-use Fi\CoreBundle\Controller\gestionepermessiController;
 use [bundle]\Entity\[tabella];
 use [bundle]\Form\[tabella]Type;
 
