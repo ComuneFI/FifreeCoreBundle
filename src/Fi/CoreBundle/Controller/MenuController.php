@@ -5,7 +5,7 @@ namespace Fi\CoreBundle\Controller;
 /**
  * Menu controller.
  */
-class MenuController extends MenuApplicazioneController
+class MenuController extends FiCoreController
 {
 
     protected function initGestionePermessi()
