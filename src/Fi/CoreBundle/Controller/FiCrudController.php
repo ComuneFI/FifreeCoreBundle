@@ -16,6 +16,18 @@ class FiCrudController extends Controller
     public static $action;
     public static $parametrigriglia;
 
+    protected function setup(Request $request)
+    {
+        $matches = array();
+        $controllo = new \ReflectionClass(get_class($this));
+
+        preg_match('/(.*)\\\(.*)Bundle\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
+
+        self::$namespace = $matches[1];
+        self::$bundle = $matches[2];
+        self::$controller = $matches[3];
+        self::$action = substr($request->attributes->get('_controller'), strrpos($request->attributes->get('_controller'), ':') + 1);
+    }
     /**
      * Lists all tables entities.
      */
