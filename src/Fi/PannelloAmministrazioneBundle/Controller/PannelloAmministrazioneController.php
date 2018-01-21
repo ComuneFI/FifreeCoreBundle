@@ -250,8 +250,8 @@ class PannelloAmministrazioneController extends Controller
 
             /* Uso exit perchè new response avendo cancellato la cache schianta non avendo più a disposizione i file */
             //return $commanddev . '<br/>' . $cmdoutputdev . '<br/><br/>' . $commandprod . '<br/>' . $cmdoutputprod;
-            //return new Response(nl2br($result));
-            exit(nl2br($result));
+            return new Response(nl2br($result));
+            //exit(nl2br($result));
         }
     }
 
@@ -337,8 +337,8 @@ class PannelloAmministrazioneController extends Controller
                         str_replace(';', '<br/>', str_replace('&&', '<br/>', $command)) .
                         '</i><br/><i style = "color: red;">' . nl2br($result['errmsg']) . '</i>';
 
-                //return new Response($errmsg);
-                exit(nl2br($errmsg));
+                return new Response($errmsg);
+                //exit(nl2br($errmsg));
                 //Uso exit perchè new response avendo cancellato la cache schianta non avendo più a disposizione i file
                 //return;
                 /* return new Response('Errore nel comando: <i style = "color: white;">' .
@@ -348,8 +348,8 @@ class PannelloAmministrazioneController extends Controller
                     str_replace(';', '<br/>', str_replace('&&', '<br/>', $command)) . '</i><br/>' .
                     nl2br($result['errmsg']) . '</pre>';
             //Uso exit perchè new response avendo cancellato la cache schianta non avendo più a disposizione i file
-            //return new Response($msgok);
-            exit(nl2br($msgok));
+            return new Response($msgok);
+            //exit(nl2br($msgok));
             //return;
             /* return new Response('<pre>Eseguito comando: <i style = "color: white;">' . $command .
              * '</i><br/>' . str_replace("\n", "<br/>", $process->getOutput()) . "</pre>"); */
