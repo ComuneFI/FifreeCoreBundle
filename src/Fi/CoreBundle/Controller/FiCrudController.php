@@ -363,4 +363,24 @@ class FiCrudController extends Controller
                         ->add('id', get_class(new \Symfony\Component\Form\Extension\Core\Type\HiddenType()))
                         ->getForm();
     }
+    
+    protected function getNamespace()
+    {
+        return self::$namespace;
+    }
+
+    protected function getBundle()
+    {
+        return self::$bundle;
+    }
+
+    protected function getController()
+    {
+        return self::$controller;
+    }
+
+    protected function getAction()
+    {
+        return self::$action;
+    }
 }
