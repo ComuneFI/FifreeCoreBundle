@@ -3,6 +3,7 @@
 namespace Fi\CoreBundle\Tests\Controller;
 
 use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
+use Fi\CoreBundle\Controller\Griglia;
 
 class FfprincipaleUserControllerTest extends FifreeTestAuthorizedClient
 {
