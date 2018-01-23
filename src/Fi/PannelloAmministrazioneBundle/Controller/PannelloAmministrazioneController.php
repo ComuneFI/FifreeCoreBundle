@@ -62,13 +62,11 @@ class PannelloAmministrazioneController extends Controller
 
         if (!OsFunctions::isWindows()) {
             $delcmd = 'rm -rf';
-            $delfoldercmd = 'rm -rf';
             $setfilelock = "touch " .$this->getParameter("maintenanceLockFilePath");
             $remfilelock = "rm " .$this->getParameter("maintenanceLockFilePath");
             $windows = false;
         } else {
             $delcmd = 'del';
-            $delfoldercmd = 'rmdir /s';
             $setfilelock = 'echo $null >> ' .$this->getParameter("maintenanceLockFilePath");
             $remfilelock = "del " .$this->getParameter("maintenanceLockFilePath");
             $windows = true;

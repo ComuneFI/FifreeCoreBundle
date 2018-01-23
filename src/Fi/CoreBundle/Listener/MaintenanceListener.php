@@ -23,7 +23,6 @@ class MaintenanceListener
         if (!file_exists($lockfile)) {
             return;
         }
-        $message = "";
         $contentfilelock = file_get_contents($lockfile);
         if ($contentfilelock) {
             $message = $contentfilelock;
