@@ -1,6 +1,6 @@
 <?php
 
-namespace Fi\CoreBundle\Controller;
+namespace Fi\CoreBundle\Tests\Controller;
 
 use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
 use Behat\Mink\Session;
