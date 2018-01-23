@@ -64,14 +64,14 @@ class GrigliaRegoleUtils
                 $condizioneOR = $regola['field'] . ' ' .
                         GrigliaUtils::$decodificaop[$regola['op']] . ' ' .
                         GrigliaUtils::$precarattere[$regola['op']] .
-                        $regola['data'] .
+                        str_replace("'","''",$regola['data']) .
                         GrigliaUtils::$postcarattere[$regola['op']];
                 $q->orWhere($condizioneOR);
             } else {
                 $condizioneAND = $regola['field'] . ' ' .
                         GrigliaUtils::$decodificaop[$regola['op']] . ' ' .
                         GrigliaUtils::$precarattere[$regola['op']] .
-                        $regola['data'] .
+                        str_replace("'","''",$regola['data']) .
                         GrigliaUtils::$postcarattere[$regola['op']];
                 $q->andWhere($condizioneAND);
             }

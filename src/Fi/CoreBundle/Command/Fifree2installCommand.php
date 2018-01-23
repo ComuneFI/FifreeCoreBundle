@@ -390,7 +390,7 @@ class Fifree2installCommand extends ContainerAwareCommand
         $em->persist($ffsecondariarow7);
         $ffsecondariarow9 = new \Fi\CoreBundle\Entity\Ffsecondaria();
         $ffsecondariarow9->setFfprincipale($ffprincipale);
-        $ffsecondariarow9->setDescsec('9° secondaria legato al 2° record principale');
+        $ffsecondariarow9->setDescsec('9° secondaria legato al 2° "record principale"');
         $ffsecondariarow9->setData(new \DateTime());
         $ffsecondariarow9->setIntero(1000);
         $ffsecondariarow9->setImporto(1000.12);
@@ -400,7 +400,7 @@ class Fifree2installCommand extends ContainerAwareCommand
 
         $ffsecondariarow10 = new \Fi\CoreBundle\Entity\Ffsecondaria();
         $ffsecondariarow10->setFfprincipale($ffprincipale);
-        $ffsecondariarow10->setDescsec('10° secondaria legato al 2° record principale');
+        $ffsecondariarow10->setDescsec("10° secondaria legato al 2° record principale ed è l'ultimo record");
         $ffsecondariarow10->setData(new \DateTime());
         $ffsecondariarow10->setIntero(1100);
         $ffsecondariarow10->setImporto(1100.99);

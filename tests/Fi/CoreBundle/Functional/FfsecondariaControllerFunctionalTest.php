@@ -29,9 +29,9 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
         $this->validationoperation($session, $page);
 
-        $this->crudoperation($session, $page);
-
         $this->searchoperation($session, $page);
+
+        $this->crudoperation($session, $page);
 
         $this->printoperations($session, $page);
 
@@ -298,7 +298,24 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
     private function searchoperation($session, $page)
     {
+        /* Ricerca 0 */
         $this->ajaxWait();
+        $elementsearch = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        $this->ajaxWait();
+        $search0 = "10° secondaria legato al 2° record principale ed è l'";
+        $page->fillField('jqg1', $search0);
+        $page->find('css', 'a#fbox_list1_search')->click();
+        $this->ajaxWait();
+        sleep(1);
+
+        $numrowsgrid0 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(1, $numrowsgrid0);
 
         $elementsearch = $page->findAll('css', '.ui-icon-search');
 
@@ -307,7 +324,44 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
                 $e->click();
             }
         }
+
+        /* Ricerca 0 */
+        
+        /* Ricerca 0 */
+        $this->ajaxWait();
+        $elementsearch = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+        $this->ajaxWait();
+        $search0 = "l'";
+        $var2 = '"cn"';
+        $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
+
+        $session->executeScript($javascript2);
+        $page->fillField('jqg1', $search0);
+        $this->ajaxWait();
+
+        $page->find('css', 'a#fbox_list1_search')->click();
+        $this->ajaxWait();
+
+        $numrowsgrid0 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $this->assertEquals(1, $numrowsgrid0);
+
+        /* Ricerca 0 */
+        
         /* Ricerca 1 */
+        $elementsearch = $page->findAll('css', '.ui-icon-search');
+
+        foreach ($elementsearch as $e) {
+            if ($e->isVisible()) {
+                $e->click();
+            }
+        }
+
         $this->ajaxWait();
         $search1 = '9° secondaria';
         $page->fillField('jqg1', $search1);
