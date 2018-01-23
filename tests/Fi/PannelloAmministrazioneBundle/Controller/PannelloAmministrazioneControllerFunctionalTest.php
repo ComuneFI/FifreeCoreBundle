@@ -6,7 +6,7 @@ use Tests\CoreBundle\Mink\CoreMink;
 class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 {
 
-    public static function setUpBeforeClass()
+   public static function setUpBeforeClass()
     {
         cleanFilesystem();
         removecache();
@@ -15,12 +15,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 
     /*
      * @test
-     * @covers Fi\PannelloAmministrazioneBundle\DependencyInjection\Commands::<public>
-     * @covers Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand::<public>
-     * @covers Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand::<public>
-     * @covers Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils::<public>
-     * @covers Fi\PannelloAmministrazioneBundle\DependencyInjection\LockSystem::getFileLock
-     * @covers Fi\PannelloAmministrazioneBundle\DependencyInjection\LockSystem::isLockedFile
      */
     public function test20AdminpanelGenerateBundle()
     {

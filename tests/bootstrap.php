@@ -9,6 +9,8 @@ require __DIR__ . '/Utils/FifreeTestUnauthorizedClient.php';
 require __DIR__ . '/Utils/FifreeUserTestUtil.php';
 require __DIR__ . '/Utils/CommandTestCase.php';
 require __DIR__ . '/Utils/CoreMink.php';
+require __DIR__ . '/Utils/StartServers.php';
+
 
 function clearcache()
 {
@@ -16,6 +18,8 @@ function clearcache()
                     'php "%s/console" cache:clear --no-warmup --env=%s  > /dev/null', __DIR__ . '/../tests/bin/', "test"
     ));
 }
+
+// More bootstrap code
 
 function cachewarmup()
 {

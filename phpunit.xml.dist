@@ -34,10 +34,11 @@
     
     <php>
         <server name="KERNEL_CLASS" value="AppKernel" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="32" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="31" />
         <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
-        <env name="HTTP_TEST_HOST" value="http://127.0.0.1:8000" />
-        <env name="HTTP_TEST_URL" value="/app_test.php" />
+        <const name="WEB_SERVER_HOST" value="localhost" />
+        <const name="WEB_SERVER_PORT" value="8000" />
+        <const name="WEB_SERVER_DOCROOT" value="./tests/web" />
     </php>
 
     <filter>
