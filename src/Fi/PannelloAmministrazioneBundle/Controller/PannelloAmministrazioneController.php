@@ -63,10 +63,15 @@ class PannelloAmministrazioneController extends Controller
         if (!OsFunctions::isWindows()) {
             $delcmd = 'rm -rf';
             $delfoldercmd = 'rm -rf';
+            $setfilelock = "touch " .$this->getParameter("maintenanceLockFilePath");
+            $remfilelock = "rm " .$this->getParameter("maintenanceLockFilePath");
             $windows = false;
+            
         } else {
             $delcmd = 'del';
             $delfoldercmd = 'rmdir /s';
+            $setfilelock = 'echo $null >> ' .$this->getParameter("maintenanceLockFilePath");
+            $remfilelock = "del " .$this->getParameter("maintenanceLockFilePath");
             $windows = true;
         }
 
@@ -75,6 +80,8 @@ class PannelloAmministrazioneController extends Controller
         $dellogsfiles = $delcmd . ' ' . $this->apppaths->getLogsPath() . DIRECTORY_SEPARATOR . '*';
         $delcacheprodfiles = $delcmd . ' ' . $this->apppaths->getCachePath() . DIRECTORY_SEPARATOR . 'prod' . DIRECTORY_SEPARATOR . '*';
         $delcachedevfiles = $delcmd . ' ' . $this->apppaths->getCachePath() . DIRECTORY_SEPARATOR . 'dev' . DIRECTORY_SEPARATOR . '*';
+        $setmaintenancefile = $setfilelock;
+        $remmaintenancefile = $remfilelock;       
 
         $comandishell = array(
             'lockfile' => $this->fixSlash($dellockfile),
@@ -82,6 +89,8 @@ class PannelloAmministrazioneController extends Controller
             'logsfiles' => $this->fixSlash($dellogsfiles),
             'cacheprodfiles' => $this->fixSlash($delcacheprodfiles),
             'cachedevfiles' => $this->fixSlash($delcachedevfiles),
+            'setmaintenancefile' => $setmaintenancefile,            
+            'remmaintenancefile' => $remmaintenancefile,            
         );
 
         $twigparms = array('svn' => $svn, 'git' => $git, 'bundles' => $bundles, 'mwbs' => $mwbs,
