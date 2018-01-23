@@ -3,6 +3,7 @@
 namespace Fi\CoreBundle\Tests\Controller;
 
 use Fi\CoreBundle\DependencyInjection\FifreeTestUnauthorizedClient;
+use Fi\CoreBundle\Controller\Griglia;
 
 class FfprincipaleUserControllerUnauthorizedTest extends FifreeTestUnauthorizedClient
 {
@@ -123,7 +124,7 @@ class FfprincipaleUserControllerUnauthorizedTest extends FifreeTestUnauthorizedC
         $testatagriglia['showdel'] = 1;
 
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
-        $FfsecondariaController = new FfsecondariaController();
+        $FfsecondariaController = new \Fi\CoreBundle\Controller\FfsecondariaController();
         $FfsecondariaController->setContainer($container);
 
         $requestarray = array(

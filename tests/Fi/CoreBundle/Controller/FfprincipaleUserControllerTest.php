@@ -124,7 +124,7 @@ class FfprincipaleUserControllerTest extends FifreeTestAuthorizedClient
         $testatagriglia['showdel'] = 1;
 
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
-        $FfsecondariaController = new FfsecondariaController();
+        $FfsecondariaController = new \Fi\CoreBundle\Controller\FfsecondariaController();
         $FfsecondariaController->setContainer($container);
 
         $crawler = $client->request('GET', '/funzioni/traduzionefiltro', array('filters' => json_encode(array("groupOp" => "AND", "rules" => array(array("field" => "descsec", "op" => "cn", "data" => "secondaria")), array("field" => "attivo", "op" => "eq", "data" => "null")))));

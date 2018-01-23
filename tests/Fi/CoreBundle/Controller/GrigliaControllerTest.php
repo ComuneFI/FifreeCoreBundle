@@ -3,6 +3,7 @@
 namespace Fi\CoreBundle\Tests\Controller;
 
 use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
+use Fi\CoreBundle\Controller\Griglia;
 use Behat\Mink\Session;
 
 class GrigliaControllerTest extends FifreeTestAuthorizedClient
@@ -112,7 +113,7 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $testatagriglia['showdel'] = 1;
 
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
-        $FfsecondariaController = new FfsecondariaController();
+        $FfsecondariaController = new \Fi\CoreBundle\Controller\FfsecondariaController();
         $FfsecondariaController->setContainer($container);
 
         $crawler = $client->request('GET', '/funzioni/traduzionefiltro', array('filters' => json_encode(array("groupOp" => "AND", "rules" => array(array("field" => "descsec", "op" => "cn", "data" => "secondaria")), array("field" => "attivo", "op" => "eq", "data" => "null")))));

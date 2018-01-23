@@ -20,7 +20,7 @@ class MaintenanceListenerTest extends FifreeTestAuthorizedClient
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
 
         $filelock = $client->getContainer()->getParameter('maintenanceLockFilePath');
-        unlink($filelock);        
+        @unlink($filelock);        
         
         $client->request('GET', $url);
         $crawler = new Crawler($client->getResponse()->getContent());

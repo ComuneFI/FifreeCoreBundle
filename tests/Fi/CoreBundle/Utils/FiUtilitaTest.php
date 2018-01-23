@@ -3,7 +3,7 @@
 namespace Fi\CoreBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-
+use Fi\CoreBundle\Controller\FiUtilita;
 /**
  * Insieme di funzioni utili
  * FiUtilita.
