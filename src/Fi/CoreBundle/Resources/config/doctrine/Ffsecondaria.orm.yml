@@ -12,7 +12,7 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     fields:
         descsec:
             type: string
-            length: 45
+            length: 255
             nullable: true
         ffprincipale_id:
             type: integer
