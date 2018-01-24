@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
-use Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper;
 
 class GenerateentitiesCommand extends ContainerAwareCommand
@@ -35,7 +34,7 @@ class GenerateentitiesCommand extends ContainerAwareCommand
         set_time_limit(0);
         $this->apppaths = new ProjectPath($this->getContainer());
         $this->genhelper = new GeneratorHelper($this->getContainer());
-        $this->pammutils = new PannelloAmministrazioneUtils($this->getContainer());
+        $this->pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
 
         $bundlename = $input->getArgument('bundlename');
         $schemaupdate = false;
@@ -78,7 +77,7 @@ class GenerateentitiesCommand extends ContainerAwareCommand
         $command = $phpPath . ' ' . $scriptGenerator . ' --no-backup ' . str_replace('/', '', $bundlename)
                 . ' --env=' . $this->getContainer()->get('kernel')->getEnvironment();
 
-        $generateentitiesresult = PannelloAmministrazioneUtils::runCommand($command);
+        $generateentitiesresult = $this->pammutils->runCommand($command);
         if ($generateentitiesresult["errcode"] < 0) {
             $output->writeln($generateentitiesresult["errmsg"]);
             return 1;
@@ -106,7 +105,7 @@ class GenerateentitiesCommand extends ContainerAwareCommand
                     . ' --no-debug --env=' . $this->getContainer()->get('kernel')->getEnvironment();
 
 
-            $schemaupdateresult = PannelloAmministrazioneUtils::runCommand($command);
+            $schemaupdateresult = $this->pammutils->runCommand($command);
             if ($schemaupdateresult["errcode"] < 0) {
                 $output->writeln($schemaupdateresult["errmsg"]);
             } else {

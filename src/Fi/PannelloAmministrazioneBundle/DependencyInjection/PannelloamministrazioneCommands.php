@@ -5,7 +5,6 @@ namespace Fi\PannelloAmministrazioneBundle\DependencyInjection;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
-use Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
 
 class PannelloamministrazioneCommands
 {
@@ -18,7 +17,7 @@ class PannelloamministrazioneCommands
     {
         $this->container = $container;
         $this->apppaths = new ProjectPath($container);
-        $this->pammutils = new PannelloAmministrazioneUtils($container);
+        $this->pammutils = $container->get("pannelloamministrazione.utils");
     }
 
     public function getVcs()
@@ -46,8 +45,6 @@ class PannelloamministrazioneCommands
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
         $fs = new Filesystem();
 
-        $command = new PannelloAmministrazioneUtils($this->container);
-
         $srcPath = $this->apppaths->getSrcPath();
 
         $bundlePath = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundleName;
@@ -69,7 +66,7 @@ class PannelloamministrazioneCommands
             '--no-interaction' => true,
             '--no-debug' => true,
         );
-        $result = $command->runSymfonyCommand('generate:bundle', $commandparms);
+        $result = $this->pammutils->runSymfonyCommand('generate:bundle', $commandparms);
         $bundlePath = $srcPath . DIRECTORY_SEPARATOR . $bundleName;
         if ($fs->exists($bundlePath)) {
             $addmessage = 'Per abilitare il nuovo bundle nel kernel controllare che sia presente in app/AppKernel.php, '

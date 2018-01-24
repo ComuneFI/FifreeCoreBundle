@@ -8,7 +8,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
-use Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper;
 
 class GenerateymlentitiesCommand extends ContainerAwareCommand
@@ -34,7 +33,7 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
         set_time_limit(0);
         $this->apppaths = new ProjectPath($this->getContainer());
         $this->genhelper = new GeneratorHelper($this->getContainer());
-        $this->pammutils = new PannelloAmministrazioneUtils($this->getContainer());
+        $this->pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
 
         $bundlename = $input->getArgument('bundlename');
         $mwbfile = $input->getArgument('mwbfile');
@@ -56,7 +55,7 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
 
         $command = $this->getExportJsonCommand($bundlename, $wbFile);
 
-        $schemaupdateresult = PannelloAmministrazioneUtils::runCommand($command);
+        $schemaupdateresult = $this->pammutils->runCommand($command);
         if ($schemaupdateresult["errcode"] < 0) {
             $output->writeln($schemaupdateresult["errmsg"]);
             return 1;

@@ -40,7 +40,7 @@ class PannelloAmministrazioneUtils
                     . '--no-debug --env=' . $env;
         }
 
-        return PannelloAmministrazioneUtils::runCommand($command);
+        return self::runCommand($command);
     }
 
     public static function runCommand($command)
