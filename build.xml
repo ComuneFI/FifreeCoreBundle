@@ -2,7 +2,7 @@
 
 <project name="Fifree2 CoreBundle" default="build">
     <target name="build"
-            depends="prepare,composer-run-install,php-lint-ci,phpmd-ci,phpcs-ci,phpcpd-ci,php-security-checker,phpunit-ci, phpunit-clover"/>
+            depends="prepare,composer-run-install,php-lint-ci,phpmd-ci,phpcs-ci,phpcpd-ci,php-security-checker,phpunit-ci, phpunit-ci-pa, phpunit-clover"/>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="build/artifacts/coverage"/>
@@ -133,6 +133,13 @@
         <exec executable="vendor/bin/phpunit" failonerror="true">
             <arg line="--configuration=${basedir}"/>
             <arg line="--coverage-php=${basedir}/build/artifacts/coverage/clover_core.cov"/>
+        </exec>
+    </target>
+
+    <target name="phpunit-ci-pa" description="Run unit tests with PHPUnit Pannello amministrazione">
+        <exec executable="vendor/bin/phpunit" failonerror="true">
+            <arg line="--configuration=${basedir}/phpunit.pannelloamministrazione.xml"/>
+            <arg line="--coverage-php=${basedir}/build/artifacts/coverage/clover_pa.cov"/>
         </exec>
     </target>
 
