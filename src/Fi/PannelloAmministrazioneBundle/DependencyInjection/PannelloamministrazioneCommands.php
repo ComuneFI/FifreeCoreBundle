@@ -7,7 +7,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
 
-class Commands
+class PannelloamministrazioneCommands
 {
 
     private $container;
@@ -46,7 +46,7 @@ class Commands
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
         $fs = new Filesystem();
 
-        $commands = new PannelloAmministrazioneUtils($this->container);
+        $command = new PannelloAmministrazioneUtils($this->container);
 
         $srcPath = $this->apppaths->getSrcPath();
 
@@ -69,7 +69,7 @@ class Commands
             '--no-interaction' => true,
             '--no-debug' => true,
         );
-        $result = $commands->runSymfonyCommand('generate:bundle', $commandparms);
+        $result = $command->runSymfonyCommand('generate:bundle', $commandparms);
         $bundlePath = $srcPath . DIRECTORY_SEPARATOR . $bundleName;
         if ($fs->exists($bundlePath)) {
             $addmessage = 'Per abilitare il nuovo bundle nel kernel controllare che sia presente in app/AppKernel.php, '

@@ -10,6 +10,11 @@ services:
         arguments:
             ['@service_container']
             
+    pannelloamministrazione.commands:
+        class: Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloamministrazioneCommands
+        arguments:
+            ['@service_container']
+
     pannelloamministrazione.command.generateentities:
         class: Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand
         public: false

@@ -9,7 +9,6 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
-use Fi\PannelloAmministrazioneBundle\DependencyInjection\Commands;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\LockSystem;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
@@ -108,8 +107,8 @@ class PannelloAmministrazioneController extends Controller
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {
             (new LockSystem($this->container))->lockFile(true);
-            $commands = new Commands($this->container);
-            $result = $commands->aggiornaSchemaDatabase();
+            $command = $this->container->get("pannelloamministrazione.commands");
+            $result = $command->aggiornaSchemaDatabase();
 
             (new LockSystem($this->container))->lockFile(false);
             $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
@@ -130,7 +129,7 @@ class PannelloAmministrazioneController extends Controller
 
             (new LockSystem($this->container))->lockFile(true);
 
-            $command = new Commands($this->container);
+            $command = $this->container->get("pannelloamministrazione.commands");
             $ret = $command->generateFormCrud($bundlename, $entityform);
 
             (new LockSystem($this->container))->lockFile(false);
@@ -156,8 +155,8 @@ class PannelloAmministrazioneController extends Controller
             (new LockSystem($this->container))->lockFile(true);
             $wbFile = $request->get('file');
             $bundlePath = $request->get('bundle');
-            $commands = new Commands($this->container);
-            $ret = $commands->generateEntity($wbFile, $bundlePath);
+            $command = $this->container->get("pannelloamministrazione.commands");
+            $ret = $command->generateEntity($wbFile, $bundlePath);
             (new LockSystem($this->container))->lockFile(false);
             return new Response($ret['message']);
         }
@@ -172,8 +171,8 @@ class PannelloAmministrazioneController extends Controller
         } else {
             (new LockSystem($this->container))->lockFile(true);
             $bundlePath = $request->get('bundle');
-            $commands = new Commands($this->container);
-            $ret = $commands->generateEntityClass($bundlePath);
+            $command = $this->container->get("pannelloamministrazione.commands");
+            $ret = $command->generateEntityClass($bundlePath);
             (new LockSystem($this->container))->lockFile(false);
 
             return new Response($ret['message']);
@@ -189,9 +188,9 @@ class PannelloAmministrazioneController extends Controller
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {
             (new LockSystem($this->container))->lockFile(true);
-            $commands = new Commands($this->container);
+            $command = $this->container->get("pannelloamministrazione.commands");
             $bundleName = $request->get('bundlename');
-            $result = $commands->generateBundle($bundleName);
+            $result = $command->generateBundle($bundleName);
             if ($result["errcode"] >= 0) {
                 //$msg = "\nPer abilitare il nuovo bundle nel kernel pulire la cache e aggiornare la pagina";
                 //$alert = '<script type="text/javascript">alert("' . $msg . '");location.reload();</script>';
@@ -201,10 +200,6 @@ class PannelloAmministrazioneController extends Controller
             //Uso exit perchè la render avendo creato un nuovo bundle schianta perchè non è caricato nel kernel il nuovo bundle ancora
             //exit;
             $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
-
-            //$commands->clearcache();
-            //$this->container->get('kernel')->shutdown();
-            //$this->container->get('kernel')->boot();
 
             return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
         }
@@ -220,8 +215,8 @@ class PannelloAmministrazioneController extends Controller
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {
             (new LockSystem($this->container))->lockFile(true);
-            $commands = new Commands($this->container);
-            $result = $commands->getVcs();
+            $command = $this->container->get("pannelloamministrazione.commands");
+            $result = $command->getVcs();
             (new LockSystem($this->container))->lockFile(false);
             if ($result['errcode'] < 0) {
                 $responseout = '<pre>Errore nel comando: <i style = "color: white;">' . $result['command'] . '</i>'
@@ -249,8 +244,8 @@ class PannelloAmministrazioneController extends Controller
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {
             (new LockSystem($this->container))->lockFile(true);
-            $commands = new Commands($this->container);
-            $result = $commands->clearcache();
+            $command = $this->container->get("pannelloamministrazione.commands");
+            $result = $command->clearcache();
 
             (new LockSystem($this->container))->lockFile(false);
 
