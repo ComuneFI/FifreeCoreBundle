@@ -4,7 +4,7 @@ namespace Fi\PannelloAmministrazioneBundle\DependencyInjection;
 
 use Symfony\Component\Filesystem\Filesystem;
 
-class GenerateCode
+class GenerateForm
 {
 
     private $container;

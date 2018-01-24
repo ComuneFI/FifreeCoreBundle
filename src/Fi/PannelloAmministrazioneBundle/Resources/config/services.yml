@@ -5,6 +5,11 @@ services:
 #    fi_pannello_amministrazione.example:
 #        class: %fi_pannello_amministrazione.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+    pannelloamministrazione.generateform:
+        class: Fi\PannelloAmministrazioneBundle\DependencyInjection\GenerateForm
+        arguments:
+            ['@service_container']
+            
     pannelloamministrazione.command.generateentities:
         class: Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand
         public: false

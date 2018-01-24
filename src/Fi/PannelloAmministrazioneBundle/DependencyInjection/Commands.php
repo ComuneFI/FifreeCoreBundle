@@ -173,7 +173,7 @@ class Commands
 
         if ($resultcrud['errcode'] == 0) {
             $fs->remove($viewPathSrc);
-            $generator = new GenerateCode($this->container);
+            $generator = $this->container->get("pannelloamministrazione.generateform");
 
             $retmsggenerateform = $generator->generateFormsTemplates($bundlename, $entityform);
 
