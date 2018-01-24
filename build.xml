@@ -138,7 +138,7 @@
 
     <target name="phpunit-ci-pa" description="Run unit tests with PHPUnit Pannello amministrazione">
         <exec executable="vendor/bin/phpunit" failonerror="true">
-            <arg line="--configuration=${basedir}/phpunit.pannelloamministrazione.xml"/>
+            <arg line="--configuration=${basedir}/phpunit.pannelloamministrazione.xml.dist"/>
             <arg line="--coverage-php=${basedir}/build/artifacts/coverage/clover_pa.cov"/>
         </exec>
     </target>
