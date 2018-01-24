@@ -11,7 +11,6 @@ use Symfony\Component\Process\Process;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\LockSystem;
-use Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
 
 class PannelloAmministrazioneController extends Controller
 {
@@ -22,7 +21,7 @@ class PannelloAmministrazioneController extends Controller
     {
         $finder = new Finder();
         $fs = new Filesystem();
-        $this->apppaths = new ProjectPath($this->container);
+        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
 
         $projectDir = $this->apppaths->getRootPath();
         $bundlelists = $this->container->getParameter('kernel.bundles');
@@ -183,7 +182,7 @@ class PannelloAmministrazioneController extends Controller
 
     public function generateBundleAction(Request $request)
     {
-        $this->apppaths = new ProjectPath($this->container);
+        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
         if ((new LockSystem($this->container))->isLockedFile()) {
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {
@@ -210,7 +209,7 @@ class PannelloAmministrazioneController extends Controller
     public function getVcsAction()
     {
         set_time_limit(0);
-        $this->apppaths = new ProjectPath($this->container);
+        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
         if ((new LockSystem($this->container))->isLockedFile()) {
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {
@@ -266,7 +265,7 @@ class PannelloAmministrazioneController extends Controller
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {
             (new LockSystem($this->container))->lockFile(true);
-            $this->apppaths = new ProjectPath($this->container);
+            $this->apppaths = $this->get("pannelloamministrazione.projectpath");
             $pammutils = new PannelloAmministrazioneUtils($this->container);
             $phpPath = OsFunctions::getPHPExecutableFromPath();
             $result = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' ' . $comando);
@@ -360,7 +359,7 @@ class PannelloAmministrazioneController extends Controller
     public function phpunittestAction(Request $request)
     {
         set_time_limit(0);
-        $this->apppaths = new ProjectPath($this->container);
+        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
         if ((new LockSystem($this->container))->isLockedFile()) {
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {

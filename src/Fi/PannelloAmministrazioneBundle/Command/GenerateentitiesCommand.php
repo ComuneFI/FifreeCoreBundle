@@ -8,7 +8,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
-use Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper;
 
 class GenerateentitiesCommand extends ContainerAwareCommand
@@ -32,7 +31,7 @@ class GenerateentitiesCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
-        $this->apppaths = new ProjectPath($this->getContainer());
+        $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
         $this->genhelper = new GeneratorHelper($this->getContainer());
         $this->pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
 

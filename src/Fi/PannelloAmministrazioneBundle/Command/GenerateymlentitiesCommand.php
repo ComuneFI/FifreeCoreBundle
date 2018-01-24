@@ -31,7 +31,7 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
-        $this->apppaths = new ProjectPath($this->getContainer());
+        $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
         $this->genhelper = new GeneratorHelper($this->getContainer());
         $this->pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
 

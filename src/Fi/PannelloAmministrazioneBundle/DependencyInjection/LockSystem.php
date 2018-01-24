@@ -13,13 +13,12 @@ class LockSystem
     public function __construct($container)
     {
         $this->container = $container;
-        $this->apppath = new ProjectPath($container);
+        $this->apppath = $container->get("pannelloamministrazione.projectpath");
     }
 
     public function getFileLock()
     {
-        $prjpath = new ProjectPath($this->container);
-        $cachedir = $prjpath->getCachePath();
+        $cachedir = $this->apppath->getCachePath();
         return $cachedir . DIRECTORY_SEPARATOR . 'running.run';
     }
 

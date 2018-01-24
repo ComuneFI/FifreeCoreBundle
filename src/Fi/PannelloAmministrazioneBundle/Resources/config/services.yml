@@ -20,6 +20,11 @@ services:
         arguments:
             ['@service_container']
 
+    pannelloamministrazione.projectpath:
+        class: Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath
+        arguments:
+            ['@service_container']
+
     pannelloamministrazione.command.generateentities:
         class: Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand
         public: false

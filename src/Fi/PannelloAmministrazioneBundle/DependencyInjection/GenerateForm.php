@@ -13,7 +13,8 @@ class GenerateForm
     public function __construct($container)
     {
         $this->container = $container;
-        $this->apppath = new ProjectPath($container);
+        $this->apppath = $container->get("pannelloamministrazione.projectpath");
+        
     }
 
     public function generateFormsTemplates($bundlename, $entityform)

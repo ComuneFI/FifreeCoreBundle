@@ -18,7 +18,7 @@ class PannelloAmministrazioneUtils
     public function __construct($container)
     {
         $this->container = $container;
-        $this->apppaths = new ProjectPath($container);
+        $this->apppaths = $container->get("pannelloamministrazione.projectpath");
     }
 
     public function clearcache($env = "")

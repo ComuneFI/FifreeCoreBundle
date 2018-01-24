@@ -16,7 +16,7 @@ class PannelloamministrazioneCommands
     public function __construct($container)
     {
         $this->container = $container;
-        $this->apppaths = new ProjectPath($container);
+        $this->apppaths = $container->get("pannelloamministrazione.projectpath");
         $this->pammutils = $container->get("pannelloamministrazione.utils");
     }
 
