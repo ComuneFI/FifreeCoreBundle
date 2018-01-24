@@ -81,19 +81,15 @@ class PannelloamministrazioneCommands
 
     public function generateEntity($wbFile, $bundlePath)
     {
-
-        $command = new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand();
-        $command->setContainer($this->container);
-        $input = new \Symfony\Component\Console\Input\ArrayInput(array('mwbfile' => $wbFile, 'bundlename' => $bundlePath));
-        $output = new \Symfony\Component\Console\Output\BufferedOutput();
-        $resultCode = $command->run($input, $output);
-
-        if ($resultCode != 0) {
+        $command = "pannelloamministrazione:generateymlentities";
+        $result = $this->pammutils->runSymfonyCommand($command,array('mwbfile' => $wbFile, 'bundlename' => $bundlePath));
+                
+        if ($result["errcode"] != 0) {
             return array(
                 'errcode' => -1,
                 'message' => 'Errore nel comando: <i style="color: white;">' .
-                $command->getName() . '</i><br/><i style="color: red;">' .
-                str_replace("\n", '<br/>', $output->fetch()) .
+                $command . '</i><br/><i style="color: red;">' .
+                str_replace("\n", '<br/>', $result["message"]) .
                 'in caso di errori eseguire il comando symfony non da web: pannelloamministrazione:generateymlentities ' .
                 $wbFile . ' ' . $bundlePath . '<br/></i>',
             );
@@ -102,23 +98,20 @@ class PannelloamministrazioneCommands
         return array(
             'errcode' => 0,
             'message' => '<pre>Eseguito comando: <i style = "color: white;">' .
-            $command->getName() . '</i><br/>' . str_replace("\n", '<br/>', $output->fetch()) . '</pre>',);
+            $command . '</i><br/>' . str_replace("\n", '<br/>', $result["message"]) . '</pre>',);
     }
 
     public function generateEntityClass($bundlePath)
     {
-        $command = new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand();
-        $command->setContainer($this->container);
-        $input = new \Symfony\Component\Console\Input\ArrayInput(array('bundlename' => $bundlePath));
-        $output = new \Symfony\Component\Console\Output\BufferedOutput();
-        $resultCode = $command->run($input, $output);
-
-        if ($resultCode != 0) {
+        $command = "pannelloamministrazione:generateentities";
+        $result = $this->pammutils->runSymfonyCommand($command,array('bundlename' => $bundlePath));
+        
+        if ($result["errcode"] != 0) {
             return array(
                 'errcode' => -1,
                 'message' => 'Errore nel comando: <i style="color: white;">' .
-                $command->getName() . '</i><br/><i style="color: red;">' .
-                str_replace("\n", '<br/>', $output->fetch()) .
+                $command . '</i><br/><i style="color: red;">' .
+                str_replace("\n", '<br/>', $result["message"]) .
                 'in caso di errori eseguire il comando symfony non da web: pannelloamministrazione:generateentities ' .
                 $bundlePath . '<br/>Opzione --schemaupdate oer aggiornare anche lo schema database</i>',
             );
@@ -127,7 +120,7 @@ class PannelloamministrazioneCommands
         return array(
             'errcode' => 0,
             'message' => '<pre>Eseguito comando: <i style = "color: white;">' .
-            $command->getName() . '</i><br/>' . str_replace("\n", '<br/>', $output->fetch()) . '</pre>',);
+            $command . '</i><br/>' . str_replace("\n", '<br/>', $result["message"]) . '</pre>',);
     }
 
     public function generateFormCrud($bundlename, $entityform)
