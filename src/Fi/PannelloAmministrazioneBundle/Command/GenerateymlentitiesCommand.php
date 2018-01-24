@@ -7,8 +7,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
-use Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
-use Fi\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper;
 
 class GenerateymlentitiesCommand extends ContainerAwareCommand
 {
@@ -32,7 +30,7 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
     {
         set_time_limit(0);
         $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
-        $this->genhelper = new GeneratorHelper($this->getContainer());
+        $this->genhelper = $this->getContainer()->get("pannelloamministrazione.generatorhelper");
         $this->pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
 
         $bundlename = $input->getArgument('bundlename');
@@ -89,7 +87,7 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
         $destinationPathEscaped = str_replace('/', "\/", str_replace('\\', '/', $this->genhelper->getDestinationEntityYmlPath($bundlePath)));
         $bundlePathEscaped = str_replace('\\', '\\\\', str_replace('/', '\\', $bundlePath));
 
-        $exportjsonfile = GeneratorHelper::getJsonMwbGenerator();
+        $exportjsonfile = $this->genhelper->getJsonMwbGenerator();
 
         $bundlejson = str_replace('[bundle]', str_replace('/', '', $bundlePathEscaped), $exportjsonfile);
         $exportjsonreplaced = str_replace('[dir]', $destinationPathEscaped, $bundlejson);

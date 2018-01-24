@@ -25,6 +25,11 @@ services:
         arguments:
             ['@service_container']
 
+    pannelloamministrazione.generatorhelper:
+        class: Fi\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper
+        arguments:
+            ['@service_container']
+
     pannelloamministrazione.command.generateentities:
         class: Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand
         public: false

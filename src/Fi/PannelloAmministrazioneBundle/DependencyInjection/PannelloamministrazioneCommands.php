@@ -82,7 +82,7 @@ class PannelloamministrazioneCommands
     public function generateEntity($wbFile, $bundlePath)
     {
         $command = "pannelloamministrazione:generateymlentities";
-        $result = $this->pammutils->runSymfonyCommand($command,array('mwbfile' => $wbFile, 'bundlename' => $bundlePath));
+        $result = $this->pammutils->runSymfonyCommand($command, array('mwbfile' => $wbFile, 'bundlename' => $bundlePath));
                 
         if ($result["errcode"] != 0) {
             return array(
@@ -104,7 +104,7 @@ class PannelloamministrazioneCommands
     public function generateEntityClass($bundlePath)
     {
         $command = "pannelloamministrazione:generateentities";
-        $result = $this->pammutils->runSymfonyCommand($command,array('bundlename' => $bundlePath));
+        $result = $this->pammutils->runSymfonyCommand($command, array('bundlename' => $bundlePath));
         
         if ($result["errcode"] != 0) {
             return array(

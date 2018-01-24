@@ -14,7 +14,6 @@ class GenerateForm
     {
         $this->container = $container;
         $this->apppath = $container->get("pannelloamministrazione.projectpath");
-        
     }
 
     public function generateFormsTemplates($bundlename, $entityform)
