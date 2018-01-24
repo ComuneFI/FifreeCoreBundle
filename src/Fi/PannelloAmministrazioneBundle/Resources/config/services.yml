@@ -31,6 +31,7 @@ services:
 
     pannelloamministrazione.generatorhelper:
         class: Fi\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper
+        public: true
         arguments:
             ['@service_container']
 
