@@ -7,21 +7,25 @@ services:
 #        arguments: [@service_id, "plain_value", %parameter%]
     pannelloamministrazione.generateform:
         class: Fi\PannelloAmministrazioneBundle\DependencyInjection\GenerateForm
+        public: true
         arguments:
             ['@service_container']
             
     pannelloamministrazione.commands:
         class: Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloamministrazioneCommands
+        public: true
         arguments:
             ['@service_container']
 
     pannelloamministrazione.utils:
         class: Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils
+        public: true
         arguments:
             ['@service_container']
 
     pannelloamministrazione.projectpath:
         class: Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath
+        public: true
         arguments:
             ['@service_container']
 
