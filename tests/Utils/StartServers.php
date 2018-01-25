@@ -3,8 +3,11 @@
 //ws
 // Command that starts the built-in web server
 $commandws = sprintf(
-        'php -S %s:%d -t %s >/dev/null 2>&1 & echo $!', WEB_SERVER_HOST, WEB_SERVER_PORT, WEB_SERVER_DOCROOT
+        'php -S %s:%d -t %s > %s 2>&1 & echo $!', WEB_SERVER_HOST, WEB_SERVER_PORT, WEB_SERVER_DOCROOT, __DIR__ . '/../../build/artifacts/logs/webserver.log'
 );
+
+echo $commandws . "\n";
+
 // Execute the command and store the process ID
 $outputws = array();
 exec($commandws, $outputws);
@@ -18,9 +21,11 @@ echo sprintf(
 //Selenium
 // Command that starts the built-in web server
 $commandse = sprintf(
-        'sh %s > /dev/null 2>&1 & echo $!', __DIR__ . '/../../vendor/bin/selenium-server-standalone'
+        'sh %s > %s 2>&1 & echo $!', __DIR__ . '/../../vendor/bin/selenium-server-standalone', __DIR__ . '/../../build/artifacts/logs/selenium2.log'
 );
-//echo $commandse;
+
+echo $commandse . "\n";
+
 // Execute the command and store the process ID
 $outputse = array();
 exec($commandse, $outputse);
