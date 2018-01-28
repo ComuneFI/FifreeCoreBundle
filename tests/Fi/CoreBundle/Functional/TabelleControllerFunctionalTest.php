@@ -63,8 +63,7 @@ class TabelleControllerFunctionalTest extends CoreMink
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
         $this->clickElement('#buttondel_list1');
-        $page->find('css', 'a#dData')->click();
-        $this->ajaxWait();
+        $this->clickElement('a#dData');
     }
 
 }
