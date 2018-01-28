@@ -18,12 +18,15 @@ matrix:
     exclude:
     #- php: hhvm
     #  env: DB=pgsql
+    env: BROWSER=chrome
 
 # Configure different DB environments
 env:
   - DB=mysql
   - DB=pgsql
   - DB=sqlite3
+  - BROWSER=firefox
+  - BROWSER=chrome
   
 #sudo: required
 #dist: trusty
@@ -33,6 +36,11 @@ cache:
     
 addons:
   firefox: "45.8.0esr"
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
   
 before_script:
   - sudo apt-get update
@@ -54,7 +62,8 @@ before_script:
   - sudo sed -i 's/Listen 80/Listen 8000/' /etc/apache2/ports.conf
   - sudo sed -i 's/NameVirtualHost \*:80/NameVirtualHost \*:8000/' /etc/apache2/ports.conf
   - sudo service apache2 restart
-
+  - if [[ "BROWSER" != "chrome" ]]; then sudo sed -i 's/firefox/chrome 8000/' ./tests/app/config/config_test.yml; fi
+  
   - if [[ "$DB" == "pgsql" ]]; then echo "PROVISIONING WITH PostgreSQL"; fi
   - if [[ "$DB" == "pgsql" ]]; then cp -f ./tests/build/parameters.pgsql.yml $TRAVIS_BUILD_DIR/tests/app/config/parameters.yml; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c 'create database unittest;' -U postgres; fi
