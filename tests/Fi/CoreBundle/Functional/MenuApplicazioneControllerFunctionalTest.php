@@ -42,6 +42,7 @@ class MenuApplicazioneControllerFunctionalTest extends CoreMink
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
+        sleep(1);
         $this->clickElement('#buttonedit_list1');
         sleep(1);
         /* Modifica */
