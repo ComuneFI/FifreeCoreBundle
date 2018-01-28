@@ -14,14 +14,14 @@ services:
 matrix:
     allow_failures:
        # - php: hhvm
-       - php: 5.6
-         env: BROWSER=chrome
-       - php: 7.0
-         env: BROWSER=chrome
-       - php: 7.1
-         env: BROWSER=chrome
-       - php: 7.2
-         env: BROWSER=chrome
+       # - php: 5.6
+       #   env: BROWSER=chrome
+       # - php: 7.0
+       #   env: BROWSER=chrome
+       # - php: 7.1
+       #   env: BROWSER=chrome
+       # - php: 7.2
+       #   env: BROWSER=chrome
     exclude:
     #- php: hhvm
     #  env: DB=pgsql
@@ -88,7 +88,6 @@ before_script:
   - if [[ "$BROWSER" == "chrome" ]]; then sudo sed -i 's/firefox/chrome/' $TRAVIS_BUILD_DIR/tests/app/config/config_test.yml; fi
   - if [[ "$BROWSER" == "chrome" ]]; then sudo cat $TRAVIS_BUILD_DIR/tests/app/config/config_test.yml; fi
   - if [[ "$BROWSER" == "chrome" ]]; then wget https://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip && unzip chromedriver_linux64.zip && sudo mv chromedriver /usr/local/bin; fi
-  - if [[ "$BROWSER" == "chrome" ]]; then echo "export PATH=$PATH:$HOME/bin" >> $HOME/.bash_profile; fi
   
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
