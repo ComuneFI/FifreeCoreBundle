@@ -14,11 +14,17 @@ services:
 matrix:
     allow_failures:
        # - php: hhvm
-       # - php: 7.2
+       - php: 5.6
+         env: BROWSER=chrome
+       - php: 7.0
+         env: BROWSER=chrome
+       - php: 7.1
+         env: BROWSER=chrome
+       - php: 7.2
+         env: BROWSER=chrome
     exclude:
     #- php: hhvm
     #  env: DB=pgsql
-    env: BROWSER=chrome
 
 # Configure different DB environments
 env:
