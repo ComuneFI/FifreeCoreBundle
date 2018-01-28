@@ -36,6 +36,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
 
     private function searchoperation($session, $page)
     {
+        sleep(1);
         $this->clickElement('#search_list1');
         /* Ricerca 1 */
         $search1 = 'primo';
