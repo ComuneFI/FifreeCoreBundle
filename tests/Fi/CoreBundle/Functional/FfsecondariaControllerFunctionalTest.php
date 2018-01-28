@@ -232,6 +232,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         /* Cancellazione */
         $jsSetFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
+        sleep(1);
         $this->clickElement('#buttondel_list1');
         sleep(1);
         $this->clickElement('a#dData');
