@@ -35,15 +35,8 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
 
     private function searchoperation($session, $page)
     {
-        $elementsearch = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
+        $this->clickElement('#search_list1');
         /* Ricerca 1 */
-        $this->ajaxWait();
         $search1 = 'primo';
         sleep(1);
         $page->fillField('jqg1', $search1);
@@ -54,14 +47,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $this->assertEquals(0, $numrowsgrid1);
 
         /* Ricerca 1 */
-        $elementsearch2 = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch2 as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#search_list1');
         $search2 = 'primo';
         sleep(1);
         //$page->selectFieldOption('inizia con', "cn");
@@ -80,13 +66,8 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
 
     private function crudoperation($session, $page)
     {
-        $elementadd = $page->findAll('css', '.ui-icon-plus');
-
-        foreach ($elementadd as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
+        $this->clickElement('#buttonadd_list1');
+        
         /* Inserimento */
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'ffprincipale_';
@@ -102,14 +83,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
-        $elementmod = $page->findAll('css', '.ui-icon-pencil');
-
-        foreach ($elementmod as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#buttonedit_list1');
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $page->fillField($fieldprefix . 'descrizione', $descrizionetest2);
@@ -119,14 +93,8 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
-        $elementdel = $page->findAll('css', '.ui-icon-trash');
-        $this->ajaxWait();
-
-        foreach ($elementdel as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
+        $this->clickElement('#buttondel_list1');
+        
         $this->ajaxWait();
         $page->find('css', 'a#dData')->click();
         $this->ajaxWait();
@@ -134,15 +102,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
 
     private function printoperations($session, $page)
     {
-        /* Print pdf */
-        $element = $page->findAll('css', '.ui-icon-print');
-
-        foreach ($element as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#buttonprint_list1');
         $windowNames = $session->getWindowNames();
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);

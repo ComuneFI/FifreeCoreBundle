@@ -53,6 +53,7 @@ abstract class CoreMink extends WebTestCase
      */
     public function setupMinkSession()
     {
+        //$driver = new \Behat\Mink\Driver\ZombieDriver(new \Behat\Mink\Driver\NodeJS\Server\ZombieServer());
         $driver = new Selenium2Driver($this->seleniumDriverType);
         $this->minkSession = new Session($driver);
         $this->minkSession->start();
@@ -145,13 +146,30 @@ abstract class CoreMink extends WebTestCase
         }
     }
 
+    public function clickElement($selector)
+    {
+        $this->ajaxWait();
+        $page = $this->getCurrentPage();
+        $element = $page->find('css', $selector);
+
+        if (empty($element)) {
+            throw new Exception("No html element found for the selector ('$selector')");
+        }
+
+        $element->click();
+        $this->ajaxWait();
+    }
+
     public function screenShot()
     {
         $driver = $this->minkSession->getDriver();
         if (!($driver instanceof Selenium2Driver)) {
-            $this->minkSession->getDriver()->getScreenshot();
-
-            return;
+            if ($driver instanceof \Behat\Mink\Driver\ZombieDriver) {
+                return;
+            } else {
+                $this->minkSession->getDriver()->getScreenshot();
+                return;
+            }
         } else {
             $screenShot = base64_decode($driver->getWebDriverSession()->screenshot());
         }
