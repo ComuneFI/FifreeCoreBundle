@@ -64,7 +64,9 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->ajaxWait();
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
+        sleep(1);
         $this->clickElement('#buttonedit_list1');
+        sleep(1);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $page->fillField($fieldprefix . 'descsec', $descrizionetest2);

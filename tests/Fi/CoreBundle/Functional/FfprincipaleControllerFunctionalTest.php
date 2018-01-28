@@ -49,6 +49,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $this->assertEquals(0, $numrowsgrid1);
 
         /* Ricerca 1 */
+        sleep(1);
         $this->clickElement('#search_list1');
         $search2 = 'primo';
         sleep(1);
