@@ -11,6 +11,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
      * @covers Fi\CoreBundle\Controller\FiController::<public>
      * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
      */
+
     public function testFfprincipale()
     {
         //$url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'];
@@ -19,9 +20,9 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $this->login('admin', 'admin');
         $session = $this->getSession();
         $page = $this->getCurrentPage();
-        
+
         sleep(1);
-        
+
         $this->crudoperation($session, $page);
 
         sleep(1);
@@ -67,7 +68,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
     private function crudoperation($session, $page)
     {
         $this->clickElement('#buttonadd_list1');
-        
+
         /* Inserimento */
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'ffprincipale_';
@@ -94,7 +95,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
         $this->clickElement('#buttondel_list1');
-        
+
         $this->ajaxWait();
         $page->find('css', 'a#dData')->click();
         $this->ajaxWait();
@@ -111,12 +112,17 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
             $element = $page->find('css', '.textLayer');
 
             if (empty($element)) {
-                echo $page->getHtml();
-                throw new \Exception("No html element found for the selector 'textLayer'");
+                if (strpos($page->getHtml(), "application/pdf") >= 0) {
+                    $this->assertContains("application/pdf", $page->getHtml());
+                } else {
+                    echo $page->getHtml();
+                    throw new \Exception("No html element found for the selector 'textLayer'");
+                }
+            } else {
+                $this->assertContains('FiFree2', $element->getText());
+                $this->assertContains('Ffprincipale', $element->getText());
+                $this->assertContains('Descrizione primo record', $element->getText());
             }
-            $this->assertContains('FiFree2', $element->getText());
-            $this->assertContains('Ffprincipale', $element->getText());
-            $this->assertContains('Descrizione primo record', $element->getText());
 
             $session->executeScript('window.close()');
             $mainwindow = $windowNames[0];

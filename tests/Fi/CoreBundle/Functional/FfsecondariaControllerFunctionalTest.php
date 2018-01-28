@@ -40,13 +40,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
     private function crudoperation($session, $page)
     {
-        $elementadd = $page->findAll('css', '.ui-icon-plus');
-        sleep(2);
-        foreach ($elementadd as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
+        $this->clickElement('#buttonadd_list1');
         sleep(2);
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
@@ -70,14 +64,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->ajaxWait();
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
-        $elementmod = $page->findAll('css', '.ui-icon-pencil');
-
-        foreach ($elementmod as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#buttonedit_list1');
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $page->fillField($fieldprefix . 'descsec', $descrizionetest2);
@@ -86,14 +73,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
-        $elementmod = $page->findAll('css', '.ui-icon-pencil');
-
-        foreach ($elementmod as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#buttonedit_list1');
 
         $selector = $fieldprefix . 'descsec';
         $element = $page->find('css', "#" . $selector);
@@ -126,13 +106,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         /* Cancellazione */
         $jsSetFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
-        $elementdel = $page->findAll('css', '.ui-icon-trash');
-
-        foreach ($elementdel as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
+        $this->clickElement('#buttondel_list1');
         $page->find('css', 'a#dData')->click();
         $this->ajaxWait();
     }
@@ -145,14 +119,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
             $fieldprefix = 'fi_corebundle_ffsecondariatype_';
         }
         /**/
-        $elementcalc = $page->findAll('css', '.ui-icon-calculator');
-
-        foreach ($elementcalc as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#buttonconfig_list1');
         $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowidcal);';
         $session->evaluateScript('function(){ var rowidcal = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
         $this->ajaxWait();
@@ -192,14 +159,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
         /**/
         sleep(1);
-        $elementcalc = $page->findAll('css', '.ui-icon-calculator');
-
-        foreach ($elementcalc as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#buttonconfig_list1');
         $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
         $this->ajaxWait();
@@ -239,17 +199,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
     private function validationoperation($session, $page)
     {
-        $this->ajaxWait();
-
-        $elementadd = $page->findAll('css', '.ui-icon-plus');
-
-        foreach ($elementadd as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-
-        $this->ajaxWait();
+        $this->clickElement('#buttonadd_list1');
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
@@ -283,15 +233,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         /* Cancellazione */
         $jsSetFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
-        $elementdel = $page->findAll('css', '.ui-icon-trash');
-
-        foreach ($elementdel as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-
-        $this->ajaxWait();
+        $this->clickElement('#buttondel_list1');
         $page->find('css', 'a#dData')->click();
         $this->ajaxWait();
     }
@@ -299,15 +241,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
     private function searchoperation($session, $page)
     {
         /* Ricerca 0 */
-        $this->ajaxWait();
-        $elementsearch = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#search_list1');
         $search0 = "10° secondaria legato al 2° record principale ed è l'";
         $page->fillField('jqg1', $search0);
         $page->find('css', 'a#fbox_list1_search')->click();
@@ -316,27 +250,9 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
         $numrowsgrid0 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid0);
-
-        $elementsearch = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-
         /* Ricerca 0 */
         
-        /* Ricerca 0 */
-        $this->ajaxWait();
-        $elementsearch = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#search_list1');
         $search0 = "l'";
         $var2 = '"cn"';
         $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
@@ -352,17 +268,9 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->assertEquals(1, $numrowsgrid0);
 
         /* Ricerca 0 */
-        
+
         /* Ricerca 1 */
-        $elementsearch = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-
-        $this->ajaxWait();
+        $this->clickElement('#search_list1');
         $search1 = '9° secondaria';
         $page->fillField('jqg1', $search1);
         $page->find('css', 'a#fbox_list1_search')->click();
@@ -373,14 +281,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->assertEquals(1, $numrowsgrid1);
 
         /* Ricerca 1 */
-        $elementsearch2 = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch2 as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#search_list1');
         $search2 = '1°';
         //$page->selectFieldOption('inizia con', "cn");
         $var2 = '"cn"';
@@ -399,14 +300,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         sleep(1);
 
         /* doppia condizione */
-        $elementsearch3 = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch3 as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#search_list1');
         $search3 = 100;
         $addrulejs = "$('.ui-add').click();";
         $this->ajaxWait();
@@ -435,27 +329,13 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->assertEquals(1, $numrowsgrid3);
 
         //reset filtri
-        $elementsearch4 = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch4 as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#search_list1');
         $page->find('css', 'a#fbox_list1_reset')->click();
         sleep(1);
 
 
         /* Ricerca 4 */
-        $elementsearch4 = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch4 as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#search_list1');
         /**/
         $var5 = '"attivo"';
         $selector5 = '#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first';
@@ -474,14 +354,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         sleep(1);
 
         /* Ricerca 5 */
-        $elementsearch5 = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch4 as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#search_list1');
         /**/
         $var6 = '"true"';
         $selector6 = '.input-elm';
@@ -500,15 +373,8 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         sleep(1);
 
         /* Ricerca 6 */
-        $elementsearch6 = $page->findAll('css', '.ui-icon-search');
+        $this->clickElement('#search_list1');
 
-        foreach ($elementsearch6 as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
-        /**/
         $var6 = '"false"';
         $selector6 = '.input-elm';
         $javascript6 = "$('" . $selector6 . ' option[value=' . $var6 . "]').attr('selected', 'selected').change();";
@@ -526,14 +392,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         sleep(1);
 
         //reset filtri
-        $elementsearch6 = $page->findAll('css', '.ui-icon-search');
-
-        foreach ($elementsearch6 as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#search_list1');
         $page->find('css', 'a#fbox_list1_reset')->click();
         sleep(1);
     }
@@ -544,29 +403,24 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->ajaxWait();
 
         /* Print pdf */
-        $element = $page->findAll('css', '.ui-icon-print');
-
-        foreach ($element as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#buttonprint_list1');
         $windowNames = $session->getWindowNames();
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
             $page = $session->getPage();
-            sleep(1);
-            $element = $page->find('css', '.textLayer');
-
             if (empty($element)) {
-                echo $page->getHtml();
-                throw new \Exception("No html element found for the selector 'textLayer'");
+                if (strpos($page->getHtml(), "application/pdf") >= 0) {
+                    $this->assertContains("application/pdf", $page->getHtml());
+                } else {
+                    echo $page->getHtml();
+                    throw new \Exception("No html element found for the selector 'textLayer'");
+                }
+            } else {
+                $this->assertContains('FiFree2', $element->getText());
+                $this->assertContains('Ffsecondaria', $element->getText());
+                $this->assertContains('Descrizione secondo record', $element->getText());
             }
-            sleep(1);
-            $this->assertContains('FiFree2', $element->getText());
-            $this->assertContains('Ffsecondaria', $element->getText());
-            $this->assertContains('Descrizione secondo record', $element->getText());
+
 
             sleep(1);
             $session->executeScript('window.close()');

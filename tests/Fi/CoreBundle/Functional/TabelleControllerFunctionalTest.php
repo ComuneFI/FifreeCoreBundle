@@ -26,15 +26,8 @@ class TabelleControllerFunctionalTest extends CoreMink
 
     public function crudoperation($session, $page)
     {
-        $elementadd = $page->findAll('css', '.ui-icon-plus');
-
-        foreach ($elementadd as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
+        $this->clickElement('#buttonadd_list1');
         /* Inserimento */
-        $this->ajaxWait();
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'tabelle_';
         } else {
@@ -58,14 +51,7 @@ class TabelleControllerFunctionalTest extends CoreMink
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
-        $elementmod = $page->findAll('css', '.ui-icon-pencil');
-
-        foreach ($elementmod as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#buttonedit_list1');
         /* Modifica */
         $descrizionetest2 = 'testtabella 2';
         $page->fillField($fieldprefix . 'nometabella', $descrizionetest2);
@@ -76,15 +62,7 @@ class TabelleControllerFunctionalTest extends CoreMink
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
-        $elementdel = $page->findAll('css', '.ui-icon-trash');
-        $this->ajaxWait();
-
-        foreach ($elementdel as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        $this->clickElement('#buttondel_list1');
         $page->find('css', 'a#dData')->click();
         $this->ajaxWait();
     }
