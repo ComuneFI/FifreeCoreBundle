@@ -43,6 +43,7 @@ class MenuApplicazioneControllerFunctionalTest extends CoreMink
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
         $this->clickElement('#buttonedit_list1');
+        sleep(1);
         /* Modifica */
         $descrizionetest2 = 'testmenu 2';
         $page->fillField($fieldprefix . '_nome', $descrizionetest2);

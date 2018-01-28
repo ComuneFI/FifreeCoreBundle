@@ -398,11 +398,9 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
     private function printoperations($session, $page)
     {
-
-        $this->ajaxWait();
-
         /* Print pdf */
         $this->clickElement('#buttonprint_list1');
+        sleep(1);
         $windowNames = $session->getWindowNames();
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
