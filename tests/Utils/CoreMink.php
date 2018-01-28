@@ -153,7 +153,7 @@ abstract class CoreMink extends WebTestCase
         $element = $page->find('css', $selector);
 
         if (empty($element)) {
-            throw new Exception("No html element found for the selector ('$selector')");
+            throw new \Exception("No html element found for the selector ('$selector')");
         }
 
         $element->click();
