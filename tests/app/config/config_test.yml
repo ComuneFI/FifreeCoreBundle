@@ -27,5 +27,5 @@ parameters:
     user4test: admin
     usernoprivileges4test: user4test
     mink_url: "http://127.0.0.1:8000/app_test.php"
-    selenium_driver_type: "firefox"
+    selenium_driver_type: "%browser4test%"
     
