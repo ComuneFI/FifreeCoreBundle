@@ -1,7 +1,5 @@
 <?php
 
-namespace Fi\CoreBundle\Tests\Listener;
-
 use Symfony\Component\DomCrawler\Crawler;
 use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
 

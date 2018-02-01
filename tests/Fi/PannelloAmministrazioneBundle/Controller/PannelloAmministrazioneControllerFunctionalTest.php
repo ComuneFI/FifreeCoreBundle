@@ -1,7 +1,5 @@
 <?php
 
-namespace Fi\PannelloAmministrazioneBundle\Tests\Controller;
-
 use Tests\CoreBundle\Mink\CoreMink;
 class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 {

@@ -1,11 +1,7 @@
 <?php
 
-namespace Fi\CoreBundle\Tests\Controller;
-
 use Symfony\Component\DomCrawler\Crawler;
 use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
-use Behat\Mink\Mink;
-use Behat\Mink\Session;
 
 class OperatoriControllerTest extends FifreeTestAuthorizedClient
 {

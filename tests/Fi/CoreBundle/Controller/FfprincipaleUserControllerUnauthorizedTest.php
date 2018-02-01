@@ -1,7 +1,5 @@
 <?php
 
-namespace Fi\CoreBundle\Tests\Controller;
-
 use Fi\CoreBundle\DependencyInjection\FifreeTestUnauthorizedClient;
 use Fi\CoreBundle\Controller\Griglia;
 

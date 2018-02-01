@@ -1,7 +1,5 @@
 <?php
 
-namespace Fi\CoreBundle\Tests\Collector;
-
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DatabaseInfoDataCollectorTest extends WebTestCase

@@ -1,7 +1,5 @@
 <?php
 
-namespace Fi\CoreBundle\Tests\Controller;
-
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Fi\CoreBundle\Controller\FiUtilita;
 /**

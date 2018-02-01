@@ -1,7 +1,5 @@
 <?php
 
-namespace Fi\CoreBundle\Tests\Form\Type;
-
 use Symfony\Component\Form\Test\TypeTestCase;
 use Fi\CoreBundle\Entity\MenuApplicazione;
 use Fi\CoreBundle\Form\MenuApplicazioneType;

@@ -1,7 +1,5 @@
 <?php
 
-namespace Fi\CoreBundle\Tests\Controller;
-
 use Tests\CoreBundle\Mink\CoreMink;
 
 class FfprincipaleControllerFunctionalTest extends CoreMink
