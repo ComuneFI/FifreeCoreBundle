@@ -28,6 +28,7 @@ class FiCrudController extends Controller
         self::$controller = $matches[3];
         self::$action = substr($request->attributes->get('_controller'), strrpos($request->attributes->get('_controller'), ':') + 1);
     }
+
     /**
      * Lists all tables entities.
      */
@@ -42,6 +43,9 @@ class FiCrudController extends Controller
 
         $gestionepermessi = $this->get('ficorebundle.gestionepermessi');
         $canRead = ($gestionepermessi->leggere(array('modulo' => $controller)) ? 1 : 0);
+        $canDelete = ($gestionepermessi->cancellare(array('modulo' => $controller)) ? 1 : 0);
+        $canCreare = ($gestionepermessi->creare(array('modulo' => $controller)) ? 1 : 0);
+        $canAggiornare = ($gestionepermessi->aggiornare(array('modulo' => $controller)) ? 1 : 0);
         if (!$canRead) {
             throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
         }
@@ -58,6 +62,11 @@ class FiCrudController extends Controller
         $testatagriglia['multisearch'] = 1;
         $testatagriglia['showconfig'] = 1;
         $testatagriglia['overlayopen'] = 1;
+        $testatagriglia['showadd'] = $canCreare;
+        $testatagriglia['showedit'] = $canAggiornare;
+        $testatagriglia['showdel'] = $canDelete;
+        $testatagriglia["filterToolbar_searchOnEnter"] = true;
+        $testatagriglia["filterToolbar_searchOperators"] = true;
 
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
 
@@ -363,7 +372,7 @@ class FiCrudController extends Controller
                         ->add('id', get_class(new \Symfony\Component\Form\Extension\Core\Type\HiddenType()))
                         ->getForm();
     }
-    
+
     protected function getNamespace()
     {
         return self::$namespace;
