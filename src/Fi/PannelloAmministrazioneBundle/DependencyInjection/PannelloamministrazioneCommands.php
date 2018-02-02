@@ -83,7 +83,7 @@ class PannelloamministrazioneCommands
     {
         $command = "pannelloamministrazione:generateymlentities";
         $result = $this->pammutils->runSymfonyCommand($command, array('mwbfile' => $wbFile, 'bundlename' => $bundlePath));
-                
+
         if ($result["errcode"] != 0) {
             return array(
                 'errcode' => -1,
@@ -105,7 +105,7 @@ class PannelloamministrazioneCommands
     {
         $command = "pannelloamministrazione:generateentities";
         $result = $this->pammutils->runSymfonyCommand($command, array('bundlename' => $bundlePath));
-        
+
         if ($result["errcode"] != 0) {
             return array(
                 'errcode' => -1,
@@ -154,10 +154,14 @@ class PannelloamministrazioneCommands
         }
 
         $crudparms = array(
-            '--entity' => str_replace('/', '', $bundlename) . ':' . $entityform,
+            'entity' => str_replace('/', '', $bundlename) . ':' . $entityform,
             '--route-prefix' => $entityform,
             "--env" => $this->container->get('kernel')->getEnvironment(),
-            '--with-write' => true, '--format' => 'yml', '--overwrite' => false, '--no-interaction' => true,);
+            '--with-write' => true,
+            '--format' => 'yml',
+            '--overwrite' => false,
+            '--no-interaction' => true,
+            '--no-debug' => true);
 
         $resultcrud = $this->pammutils->runSymfonyCommand('doctrine:generate:crud', $crudparms);
 

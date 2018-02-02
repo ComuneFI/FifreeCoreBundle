@@ -77,6 +77,6 @@ class PannelloAmministrazioneUtils
         $returncode = $application->run(new ArrayInput($cmdoptions), $outputbuf);
         $output = $outputbuf->fetch();
 
-        return array('errcode' => ($returncode == 0 ? false : true), 'command' => $cmdoptions['command'], 'message' => $output);
+        return array('errcode' => ($returncode == 0 ? 0 : 1), 'command' => $cmdoptions['command'], 'message' => $output);
     }
 }
