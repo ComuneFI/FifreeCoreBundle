@@ -1,7 +1,5 @@
 <?php
 
-namespace Fi\CoreBundle\Tests\Command;
-
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -63,8 +61,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $commandTester->execute(
                 array(
                     '--force' => true,
-                    '--no-interaction' => true,
-                    '--env' => 'test',
+                    '--no-interaction' => true
                 )
         );
 
@@ -83,8 +80,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
                 array(
                     'admin' => 'admin',
                     'adminpass' => 'admin',
-                    'adminemail' => 'admin@admin.it',
-                    '--env' => 'test',
+                    'adminemail' => 'admin@admin.it'
                 )
         );
 
@@ -149,8 +145,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $commandTester->execute(
                 array(
                     'mwbfile' => 'wbadmintest.mwb',
-                    'bundlename' => 'Fi/ProvaBundle',
-                    '--env' => 'test',
+                    'bundlename' => 'Fi/ProvaBundle'
                 )
         );
 
@@ -169,9 +164,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $commandTester->execute(
                 array(
                     'bundlename' => 'Fi/ProvaBundle',
-                    '--schemaupdate' => true,
-                    '--env' => 'test',
-                    '--no-debug' => true,
+                    '--schemaupdate' => true
                 )
         );
         dump("Generated entities");

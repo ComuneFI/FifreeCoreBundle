@@ -1,7 +1,5 @@
 <?php
 
-namespace Fi\CoreBundle\Tests\Repository;
-
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class TabelleRepositoryFunctionalTest extends KernelTestCase

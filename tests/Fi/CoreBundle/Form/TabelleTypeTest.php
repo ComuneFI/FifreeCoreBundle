@@ -1,7 +1,5 @@
 <?php
 
-namespace Fi\CoreBundle\Tests\Form\Type;
-
 use Symfony\Component\Form\Test\TypeTestCase;
 use Fi\CoreBundle\Form\TabelleType;
 use Fi\CoreBundle\Entity\Tabelle;

@@ -1,7 +1,5 @@
 <?php
 
-namespace Fi\PannelloAmministrazioneBundle\Tests\Dependencyinjection;
-
 use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
 
 class PannelloamministrazionedependencyinjectionTest extends FifreeTestAuthorizedClient

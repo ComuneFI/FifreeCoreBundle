@@ -1,7 +1,5 @@
 <?php
 
-namespace Fi\CoreBundle\Tests\Command;
-
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Fi\CoreBundle\DependencyInjection\ArrayFunctions;
 
