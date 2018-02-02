@@ -14,4 +14,4 @@ parameters:
     locale: it
     secret: ThisTokenIsNotSoSecretChangeIt
     temascelto: sunny
-    browser4test: chrome
+    browser4test: firefox
