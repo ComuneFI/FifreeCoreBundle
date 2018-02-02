@@ -149,6 +149,7 @@ abstract class CoreMink extends WebTestCase
     public function clickElement($selector)
     {
         $this->ajaxWait();
+        sleep(1);
         $page = $this->getCurrentPage();
         $element = $page->find('css', $selector);
 
@@ -158,6 +159,7 @@ abstract class CoreMink extends WebTestCase
 
         $element->click();
         $this->ajaxWait();
+        sleep(1);
     }
 
     public function screenShot()
