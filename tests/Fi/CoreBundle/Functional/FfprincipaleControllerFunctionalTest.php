@@ -87,11 +87,12 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
-        sleep(2);
+        sleep(1);
         $this->clickElement('#buttonedit_list1');
-        sleep(2);
+        sleep(1);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
+        echo $page->getHtml();
         $page->fillField($fieldprefix . 'descrizione', $descrizionetest2);
         sleep(1);
         $this->clickElement('#sDataFfprincipaleS');
