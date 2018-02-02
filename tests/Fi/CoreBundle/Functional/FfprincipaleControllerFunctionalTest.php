@@ -68,6 +68,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
     private function crudoperation($session, $page)
     {
         $this->clickElement('#buttonadd_list1');
+        sleep(2);
 
         /* Inserimento */
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
@@ -78,7 +79,9 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $this->ajaxWait();
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         $page->fillField($fieldprefix . 'descrizione', $descrizionetest1);
-        $page->find('css', 'a#sDataFfprincipaleS')->click();
+        sleep(1);
+        $this->clickElement('a#sDataFfprincipaleS');
+        sleep(1);
         $this->ajaxWait();
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
