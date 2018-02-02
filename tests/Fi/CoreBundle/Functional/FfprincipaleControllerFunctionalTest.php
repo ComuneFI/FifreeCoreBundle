@@ -90,7 +90,9 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $page->fillField($fieldprefix . 'descrizione', $descrizionetest2);
-        $page->find('css', 'a#sDataFfprincipaleS')->click();
+        sleep(1);
+        $this->clickElement('#sDataFfprincipaleS');
+        sleep(1);
         $this->ajaxWait();
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
