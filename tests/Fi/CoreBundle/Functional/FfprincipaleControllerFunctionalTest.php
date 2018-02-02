@@ -92,7 +92,6 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         sleep(1);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
-        echo $page->getHtml();
         $page->fillField($fieldprefix . 'descrizione', $descrizionetest2);
         sleep(1);
         $this->clickElement('#sDataFfprincipaleS');
