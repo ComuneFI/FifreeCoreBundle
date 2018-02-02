@@ -32,7 +32,9 @@ class GenerateForm
         $this->generateFormWiew($bundlename, $entityform, 'edit');
         $this->generateFormWiew($bundlename, $entityform, 'index');
         $this->generateFormWiew($bundlename, $entityform, 'new');
-
+        $tmpfiles = $this->apppath->getAppPath() . DIRECTORY_SEPARATOR . 'Resources' .
+                DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . strtolower($entityform);
+        $fs->remove($tmpfiles);
         return $retmsg;
     }
 
