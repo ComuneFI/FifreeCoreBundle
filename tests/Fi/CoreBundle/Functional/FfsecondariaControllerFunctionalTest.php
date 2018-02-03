@@ -201,6 +201,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
     private function validationoperation($session, $page)
     {
         $this->clickElement('#buttonadd_list1');
+        sleep(1);
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
@@ -218,8 +219,9 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $page->fillField($fieldprefix . 'nota', 'Prova la nota validation');
         $page->fillField($fieldprefix . 'attivo', 0);
 
-        $page->find('css', 'a#sDataFfsecondariaS')->click();
-        $this->ajaxWait();
+        sleep(1);
+        $this->clickElement('a#sDataFfsecondariaS');
+        sleep(1);
         $elementvalid = $page->findAll('css', '.error_list');
 
         foreach ($elementvalid as $e) {
@@ -228,8 +230,9 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
         $page->fillField($fieldprefix . 'importo', 2);
         $page->fillField($fieldprefix . 'intero', 2);
-        $page->find('css', 'a#sDataFfsecondariaS')->click();
-        $this->ajaxWait();
+        sleep(1);
+        $this->clickElement('a#sDataFfsecondariaS');
+        sleep(1);
 
         /* Cancellazione */
         $jsSetFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
@@ -247,15 +250,17 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         sleep(1);
         $search0 = "10° secondaria legato al 2° record principale ed è l'";
         $page->fillField('jqg1', $search0);
-        $page->find('css', 'a#fbox_list1_search')->click();
-        $this->ajaxWait();
+        sleep(1);
+        $this->clickElement('a#fbox_list1_search');
         sleep(1);
 
         $numrowsgrid0 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid0);
         /* Ricerca 0 */
-        
+
+        sleep(1);
         $this->clickElement('#search_list1');
+        sleep(1);
         $search0 = "l'";
         $var2 = '"cn"';
         $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
@@ -264,8 +269,9 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $page->fillField('jqg1', $search0);
         $this->ajaxWait();
 
-        $page->find('css', 'a#fbox_list1_search')->click();
-        $this->ajaxWait();
+        sleep(1);
+        $this->clickElement('a#fbox_list1_search');
+        sleep(1);
 
         $numrowsgrid0 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid0);
@@ -273,18 +279,22 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         /* Ricerca 0 */
 
         /* Ricerca 1 */
+        sleep(1);
         $this->clickElement('#search_list1');
+        sleep(1);
         $search1 = '9° secondaria';
         $page->fillField('jqg1', $search1);
-        $page->find('css', 'a#fbox_list1_search')->click();
-        $this->ajaxWait();
+        sleep(1);
+        $this->clickElement('a#fbox_list1_search');
         sleep(1);
 
         $numrowsgrid1 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid1);
 
         /* Ricerca 1 */
+        sleep(1);
         $this->clickElement('#search_list1');
+        sleep(1);
         $search2 = '1°';
         //$page->selectFieldOption('inizia con', "cn");
         $var2 = '"cn"';
@@ -294,8 +304,9 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $page->fillField('jqg1', $search2);
         $this->ajaxWait();
 
-        $page->find('css', 'a#fbox_list1_search')->click();
-        $this->ajaxWait();
+        sleep(1);
+        $this->clickElement('a#fbox_list1_search');
+        sleep(1);
 
         $numrowsgrid2 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(5, $numrowsgrid2);
@@ -325,15 +336,18 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $search5 = '6°';
         $page->fillField('jqg3', $search5);
 
-        $page->find('css', 'a#fbox_list1_search')->click();
-        $this->ajaxWait();
+        sleep(1);
+        $this->clickElement('a#fbox_list1_search');
+        sleep(1);
 
         $numrowsgrid3 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
         $this->assertEquals(1, $numrowsgrid3);
 
         //reset filtri
+        sleep(1);
         $this->clickElement('#search_list1');
-        $page->find('css', 'a#fbox_list1_reset')->click();
+        sleep(1);
+        $this->clickElement('a#fbox_list1_reset');
         sleep(1);
 
 
