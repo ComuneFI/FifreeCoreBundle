@@ -246,6 +246,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
     private function searchoperation($session, $page)
     {
         /* Ricerca 0 */
+        sleep(1);
         $this->clickElement('#search_list1');
         sleep(1);
         $search0 = "10° secondaria legato al 2° record principale ed è l'";
