@@ -66,8 +66,7 @@ class GenerateForm
         fwrite($fh, $routingContext);
         fclose($fh);
         $retmsg = 'Routing ' . $dest . " generato automaticamente da pannelloammonistrazionebundle\n\n* * * * CLEAR CACHE * * * *\n";
-        file_put_contents("/tmp/generator.log", $retmsg);
-
+        
         return $retmsg;
     }
 
