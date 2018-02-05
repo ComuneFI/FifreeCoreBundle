@@ -169,11 +169,9 @@ class PannelloamministrazioneCommands
             if ($fs->exists($viewPathSrc)) {
                 $fs->remove($viewPathSrc);
             }
-            $generator = $this->container->get("pannelloamministrazione.generateform");
+            $formcrudparms = array("bundlename" => $bundlename, "entityform" => $entityform);
 
-            $retmsggenerateform = $generator->generateFormsTemplates($bundlename, $entityform);
-
-            $generator->generateFormsDefaultTableValues($entityform);
+            $retmsggenerateform = $this->pammutils->runSymfonyCommand('pannelloamministrazione:generateformcrud', $formcrudparms);
 
             $appviews = $appPath . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views';
             $this->cleanTemplatePath($appviews);
@@ -184,7 +182,7 @@ class PannelloamministrazioneCommands
             $retmsg = array(
                 'errcode' => 0,
                 'command' => $resultcrud['command'],
-                'message' => $resultcrud['message'] . $retmsggenerateform,
+                'message' => $resultcrud['message'] . $retmsggenerateform['message'],
             );
         } else {
             $retmsg = array(

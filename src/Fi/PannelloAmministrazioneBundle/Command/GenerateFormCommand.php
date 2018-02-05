@@ -1,26 +1,40 @@
 <?php
 
-namespace Fi\PannelloAmministrazioneBundle\DependencyInjection;
+namespace Fi\PannelloAmministrazioneBundle\Command;
 
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class GenerateForm
+class GenerateFormCommand extends ContainerAwareCommand
 {
 
-    private $container;
-    private $apppath;
+    protected $apppaths;
+    protected $genhelper;
+    protected $pammutils;
 
-    public function __construct($container)
+    protected function configure()
     {
-        $this->container = $container;
-        $this->apppath = $container->get("pannelloamministrazione.projectpath");
+        $this
+                ->setName('pannelloamministrazione:generateformcrud')
+                ->setDescription('Genera le views per il crud')
+                ->setHelp('Genera le views per il crud, <br/>fifree.mwb Fi/CoreBundle default [--schemaupdate]<br/>')
+                ->addArgument('bundlename', InputArgument::REQUIRED, 'Nome del bundle, Fi/CoreBundle')
+                ->addArgument('entityform', InputArgument::REQUIRED, 'Il nome entity del form da creare');
     }
 
-    public function generateFormsTemplates($bundlename, $entityform)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
+        set_time_limit(0);
+        $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
+
+        $bundlename = $input->getArgument('bundlename');
+        $entityform = $input->getArgument('entityform');
         $fs = new Filesystem();
         //Controller
-        $controlleFile = $this->apppath->getSrcPath() . DIRECTORY_SEPARATOR .
+        $controlleFile = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR .
                 $bundlename . DIRECTORY_SEPARATOR . 'Controller' . DIRECTORY_SEPARATOR .
                 $entityform . 'Controller.php';
         $code = $this->getControllerCode(str_replace('/', '\\', $bundlename), $entityform);
@@ -32,11 +46,13 @@ class GenerateForm
         $this->generateFormWiew($bundlename, $entityform, 'edit');
         $this->generateFormWiew($bundlename, $entityform, 'index');
         $this->generateFormWiew($bundlename, $entityform, 'new');
-        $tmpfiles = $this->apppath->getAppPath() . DIRECTORY_SEPARATOR . 'Resources' .
+        $tmpfiles = $this->apppaths->getAppPath() . DIRECTORY_SEPARATOR . 'Resources' .
                 DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . strtolower($entityform);
-        
+
         $fs->remove($tmpfiles);
-        
+
+        $this->generateFormsDefaultTableValues($entityform);
+
         return $retmsg;
     }
 
@@ -44,7 +60,7 @@ class GenerateForm
     {
         //Routing del form
         $fs = new Filesystem();
-        $routingFile = $this->apppath->getSrcPath() . DIRECTORY_SEPARATOR . $bundlename .
+        $routingFile = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundlename .
                 DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'config' .
                 DIRECTORY_SEPARATOR . 'routing' . DIRECTORY_SEPARATOR . strtolower($entityform) . '.yml';
 
@@ -54,7 +70,7 @@ class GenerateForm
         //Fixed: Adesso questa parte la fa da solo symfony (05/2015)
         //Refixed dalla versione 2.8 non lo fa più (04/2016)
 
-        $dest = $this->apppath->getSrcPath() . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
+        $dest = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
                 'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'routing.yml';
 
         $routingContext = "\n" . str_replace('/', '', $bundlename) . '_' . $entityform . ': ' . "\n" .
@@ -66,14 +82,14 @@ class GenerateForm
         fwrite($fh, $routingContext);
         fclose($fh);
         $retmsg = 'Routing ' . $dest . " generato automaticamente da pannelloammonistrazionebundle\n\n* * * * CLEAR CACHE * * * *\n";
-        
+
         return $retmsg;
     }
 
     private function generateFormWiew($bundlename, $entityform, $view)
     {
         $fs = new Filesystem();
-        $folderview = $this->apppath->getSrcPath() . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
+        $folderview = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
                 'Resources' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR .
                 $entityform . DIRECTORY_SEPARATOR;
         $dest = $folderview . $view . '.html.twig';
@@ -81,10 +97,10 @@ class GenerateForm
         file_put_contents($dest, "{% include 'FiCoreBundle:Standard:" . $view . ".html.twig' %}");
     }
 
-    public function generateFormsDefaultTableValues($entityform)
+    private function generateFormsDefaultTableValues($entityform)
     {
         //Si inserisce il record di default nella tabella permessi
-        $em = $this->container->get('doctrine')->getManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         $ruoloAmm = $em->getRepository('FiCoreBundle:Ruoli')->findOneBy(array('is_superadmin' => true)); //SuperAdmin
 
         $newPermesso = new \Fi\CoreBundle\Entity\Permessi();
