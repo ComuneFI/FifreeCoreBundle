@@ -166,7 +166,9 @@ class PannelloamministrazioneCommands
         $resultcrud = $this->pammutils->runSymfonyCommand('doctrine:generate:crud', $crudparms);
 
         if ($resultcrud['errcode'] == 0) {
-            $fs->remove($viewPathSrc);
+            if ($fs->exists($viewPathSrc)) {
+                $fs->remove($viewPathSrc);
+            }
             $generator = $this->container->get("pannelloamministrazione.generateform");
 
             $retmsggenerateform = $generator->generateFormsTemplates($bundlename, $entityform);

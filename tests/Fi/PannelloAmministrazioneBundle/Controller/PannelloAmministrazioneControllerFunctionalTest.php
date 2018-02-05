@@ -1,10 +1,11 @@
 <?php
 
 use Tests\CoreBundle\Mink\CoreMink;
+
 class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 {
 
-   public static function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         cleanFilesystem();
         removecache();
@@ -14,6 +15,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
     /*
      * @test
      */
+
     public function test20AdminpanelGenerateBundle()
     {
         //passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-warmup --env=test ");
@@ -139,10 +141,15 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 
         /* qui */
         //removecache();
-        //clearcache();
+        clearcache();
         //$driver->reload();
         $this->visit($url);
+        $this->login('admin', 'admin');
+        $session = $this->getSession();
+        $page = $this->getCurrentPage();
 
+        sleep(1);
+        $this->visit($url);
         sleep(1);
 
         $page->pressButton('adminpanelaggiornadatabase');
@@ -265,17 +272,9 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 
     private function crudoperation($session, $page)
     {
-        $elementadd = $page->findAll('css', '.ui-icon-plus');
-        sleep(2);
-        foreach ($elementadd as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
+        $this->clickElement('#buttonadd_list1');
         sleep(2);
         /* Inserimento */
-        $this->ajaxWait();
-
         $descrizionetest1 = 'Test inserimento descrizione automatico';
 //        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
 //            $fieldhtml = 'prova_descrizione';
@@ -284,40 +283,32 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 //        }
 
         $page->fillField($fieldhtml, $descrizionetest1);
-        $page->find('css', 'a#sDataProvaS')->click();
-        $this->ajaxWait();
+        sleep(1);
+        $this->clickElement('a#sDataProvaS');
+        sleep(1);
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
-        $elementmod = $page->findAll('css', '.ui-icon-pencil');
-
-        foreach ($elementmod as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
+        sleep(1);
+        $this->clickElement('#buttonedit_list1');
+        sleep(1);
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $page->fillField($fieldhtml, $descrizionetest2);
-        $page->find('css', 'a#sDataProvaS')->click();
+        sleep(1);
+        $this->clickElement('a#sDataProvaS');
+        sleep(1);
         $this->ajaxWait();
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
-
-        $elementdel = $page->findAll('css', '.ui-icon-trash');
         $this->ajaxWait();
 
-        foreach ($elementdel as $e) {
-            if ($e->isVisible()) {
-                $e->click();
-            }
-        }
-        $this->ajaxWait();
-        $page->find('css', 'a#dData')->click();
-        $this->ajaxWait();
+        sleep(1);
+        $this->clickElement('#buttondel_list1');
+        sleep(1);
+        $this->clickElement('a#dData');
     }
 
     /**

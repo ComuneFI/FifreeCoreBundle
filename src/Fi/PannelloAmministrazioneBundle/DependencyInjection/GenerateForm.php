@@ -34,11 +34,13 @@ class GenerateForm
         $this->generateFormWiew($bundlename, $entityform, 'new');
         $tmpfiles = $this->apppath->getAppPath() . DIRECTORY_SEPARATOR . 'Resources' .
                 DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . strtolower($entityform);
+        
         $fs->remove($tmpfiles);
+        
         return $retmsg;
     }
 
-    public function generateFormRouting($bundlename, $entityform)
+    private function generateFormRouting($bundlename, $entityform)
     {
         //Routing del form
         $fs = new Filesystem();
@@ -64,11 +66,12 @@ class GenerateForm
         fwrite($fh, $routingContext);
         fclose($fh);
         $retmsg = 'Routing ' . $dest . " generato automaticamente da pannelloammonistrazionebundle\n\n* * * * CLEAR CACHE * * * *\n";
+        file_put_contents("/tmp/generator.log", $retmsg);
 
         return $retmsg;
     }
 
-    public function generateFormWiew($bundlename, $entityform, $view)
+    private function generateFormWiew($bundlename, $entityform, $view)
     {
         $fs = new Filesystem();
         $folderview = $this->apppath->getSrcPath() . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
@@ -83,7 +86,7 @@ class GenerateForm
     {
         //Si inserisce il record di default nella tabella permessi
         $em = $this->container->get('doctrine')->getManager();
-        $ruoloAmm = $em->getRepository('FiCoreBundle:ruoli')->findOneBy(array('is_superadmin' => true)); //SuperAdmin
+        $ruoloAmm = $em->getRepository('FiCoreBundle:Ruoli')->findOneBy(array('is_superadmin' => true)); //SuperAdmin
 
         $newPermesso = new \Fi\CoreBundle\Entity\Permessi();
         $newPermesso->setCrud('crud');
@@ -98,7 +101,7 @@ class GenerateForm
         $em->flush();
     }
 
-    public function getControllerCode($bundlename, $tabella)
+    private function getControllerCode($bundlename, $tabella)
     {
         $codeTemplate = <<<EOF
 <?php
@@ -127,7 +130,7 @@ EOF;
         return $code;
     }
 
-    public function getRoutingCode($bundlename, $tabella)
+    private function getRoutingCode($bundlename, $tabella)
     {
         $codeTemplate = <<<'EOF'
 [tabella]_container:
