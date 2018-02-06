@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class GenerateFormCommand extends ContainerAwareCommand
 {
@@ -46,10 +47,11 @@ class GenerateFormCommand extends ContainerAwareCommand
         $this->generateFormWiew($bundlename, $entityform, 'edit');
         $this->generateFormWiew($bundlename, $entityform, 'index');
         $this->generateFormWiew($bundlename, $entityform, 'new');
-        $tmpfiles = $this->apppaths->getAppPath() . DIRECTORY_SEPARATOR . 'Resources' .
-                DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . strtolower($entityform);
+        $appviews = $this->apppaths->getAppPath() . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views';
+        $this->cleanTemplatePath($appviews);
 
-        $fs->remove($tmpfiles);
+        $resourcesviews = $this->apppaths->getAppPath() . DIRECTORY_SEPARATOR . 'Resources';
+        $this->cleanTemplatePath($resourcesviews);
 
         $this->generateFormsDefaultTableValues($entityform);
 
@@ -194,5 +196,18 @@ EOF;
         $code = str_replace('[tabella]', $tabella, $codebundle);
 
         return $code;
+    }
+
+    private function cleanTemplatePath($path)
+    {
+        $fs = new Filesystem();
+        $ret = 0;
+        if ($fs->exists($path)) {
+            $finder = new Finder();
+            $ret = $finder->files()->in($path);
+            if (count($ret) == 0) {
+                $fs->remove($path);
+            }
+        }
     }
 }

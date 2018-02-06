@@ -2,7 +2,6 @@
 
 namespace Fi\PannelloAmministrazioneBundle\DependencyInjection;
 
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 
@@ -127,6 +126,51 @@ class PannelloamministrazioneCommands
     {
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
         $fs = new Filesystem();
+        $resultchk = $this->checkFormCrud($bundlename, $entityform);
+
+        if ($resultchk["errcode"] != 0) {
+            return $resultchk;
+        }
+        $crudparms = array(
+            'entity' => str_replace('/', '', $bundlename) . ':' . $entityform,
+            '--route-prefix' => $entityform,
+            "--env" => $this->container->get('kernel')->getEnvironment(),
+            '--with-write' => true,
+            '--format' => 'yml',
+            '--overwrite' => false,
+            '--no-interaction' => true,
+            '--no-debug' => true);
+
+        $resultcrud = $this->pammutils->runSymfonyCommand('doctrine:generate:crud', $crudparms);
+
+        if ($resultcrud['errcode'] == 0) {
+            if ($fs->exists($viewPathSrc)) {
+                $fs->remove($viewPathSrc);
+            }
+            $formcrudparms = array("bundlename" => $bundlename, "entityform" => $entityform);
+
+            $retmsggenerateform = $this->pammutils->runSymfonyCommand('pannelloamministrazione:generateformcrud', $formcrudparms);
+
+            $retmsg = array(
+                'errcode' => 0,
+                'command' => $resultcrud['command'],
+                'message' => $resultcrud['message'] . $retmsggenerateform['message'],
+            );
+        } else {
+            $retmsg = array(
+                'errcode' => $resultcrud['errcode'],
+                'command' => $resultcrud['command'],
+                'message' => $resultcrud['message'],
+            );
+        }
+
+        return $retmsg;
+    }
+
+    public function checkFormCrud($bundlename, $entityform)
+    {
+        /* @var $fs \Symfony\Component\Filesystem\Filesystem */
+        $fs = new Filesystem();
         $srcPath = $this->apppaths->getSrcPath();
         $appPath = $this->apppaths->getAppPath();
         if (!is_writable($appPath)) {
@@ -153,59 +197,7 @@ class PannelloamministrazioneCommands
             return array('errcode' => -1, 'message' => $viewPathSrc . ' esistente');
         }
 
-        $crudparms = array(
-            'entity' => str_replace('/', '', $bundlename) . ':' . $entityform,
-            '--route-prefix' => $entityform,
-            "--env" => $this->container->get('kernel')->getEnvironment(),
-            '--with-write' => true,
-            '--format' => 'yml',
-            '--overwrite' => false,
-            '--no-interaction' => true,
-            '--no-debug' => true);
-
-        $resultcrud = $this->pammutils->runSymfonyCommand('doctrine:generate:crud', $crudparms);
-
-        if ($resultcrud['errcode'] == 0) {
-            if ($fs->exists($viewPathSrc)) {
-                $fs->remove($viewPathSrc);
-            }
-            $formcrudparms = array("bundlename" => $bundlename, "entityform" => $entityform);
-
-            $retmsggenerateform = $this->pammutils->runSymfonyCommand('pannelloamministrazione:generateformcrud', $formcrudparms);
-
-            $appviews = $appPath . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views';
-            $this->cleanTemplatePath($appviews);
-
-            $resourcesviews = $appPath . DIRECTORY_SEPARATOR . 'Resources';
-            $this->cleanTemplatePath($resourcesviews);
-
-            $retmsg = array(
-                'errcode' => 0,
-                'command' => $resultcrud['command'],
-                'message' => $resultcrud['message'] . $retmsggenerateform['message'],
-            );
-        } else {
-            $retmsg = array(
-                'errcode' => $resultcrud['errcode'],
-                'command' => $resultcrud['command'],
-                'message' => $resultcrud['message'],
-            );
-        }
-
-        return $retmsg;
-    }
-
-    private function cleanTemplatePath($path)
-    {
-        $fs = new Filesystem();
-        $ret = 0;
-        if ($fs->exists($path)) {
-            $finder = new Finder();
-            $ret = $finder->files()->in($path);
-            if (count($ret) == 0) {
-                $fs->remove($path);
-            }
-        }
+        return array('errcode' => 0, 'message' => 'OK');
     }
 
     public function clearcache()
