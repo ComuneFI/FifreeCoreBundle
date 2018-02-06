@@ -83,25 +83,16 @@ class GenerateentitiesCommand extends ContainerAwareCommand
             $output->writeln($generateentitiesresult["errmsg"]);
         }
 
-        /* $command = $this->getApplication()->find('doctrine:generate:entities');
-          $inputdge = new ArrayInput(array('--no-backup' => true, 'name' => str_replace('/', '', $bundlename)));
-          $command->run($inputdge, $output); */
-
         $output->writeln('<info>Entities class create</info>');
 
         if ($schemaupdate) {
             $output->writeln('Aggiornamento database...');
-
-            /* $command = $this->getApplication()->find('doctrine:schema:update');
-              $inputdsu = new ArrayInput(array('--force' => true, '--em' => $emdest));
-              $result = $command->run($inputdsu, $output); */
 
             $scriptGenerator = $console . ' doctrine:schema:update';
 
             $phpPath = OsFunctions::getPHPExecutableFromPath();
             $command = $phpPath . ' ' . $scriptGenerator . ' --force --em=' . $emdest
                     . ' --no-debug --env=' . $this->getContainer()->get('kernel')->getEnvironment();
-
 
             $schemaupdateresult = $this->pammutils->runCommand($command);
             if ($schemaupdateresult["errcode"] < 0) {

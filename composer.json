@@ -29,13 +29,13 @@
     "autoload": {
         "psr-4": {
             "Fi\\CoreBundle\\": "src/Fi/CoreBundle",
-            "Fi\\PannelloAmministrazioneBundle\\": "src/Fi/PannelloAmministrazioneBundle",
-            "Fi\\ProvaBundle\\": "tests/src/Fi/ProvaBundle"
+            "Fi\\PannelloAmministrazioneBundle\\": "src/Fi/PannelloAmministrazioneBundle"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "Fi\\ProvaBundle\\": "tests/src/Fi/ProvaBundle"
         },
         "classmap": [
             "tests/app/AppKernel.php",

@@ -97,47 +97,26 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $record2 = $qb2->getQuery()->getResult();
         $recorddelete = $record2[0];
         $this->assertEquals($recorddelete->getUsername(), $username4test);
+    }
 
-//        $console = __DIR__ . '/../../../bin/console';
-//        $cmd = "php " . $console . " pannelloamministrazione:generateymlentities  wbadmintest.mwb Fi/ProvaBundle --env=test";
-//        echo passthru($cmd);
-//        $console = __DIR__ . '/../../../bin/console';
-//        $cmd = "php " . $console . " cache:clear --env=test";
-//        echo passthru($cmd);
-//        $console = __DIR__ . '/../../../bin/console';
-//        $cmd = "php " . $console . " pannelloamministrazione:generateentities  Fi/ProvaBundle --schemaupdate --env=test";
-//        echo passthru($cmd);
+    public function test20GenerateEntity()
+    {
+
         $container = $this->application->getKernel()->getContainer();
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($container);
+
         $checkent = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
                 DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
-
 
         $checkres = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
                 DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR .
                 "doctrine" . DIRECTORY_SEPARATOR . "Prova.orm.yml";
-        /* $application->add(new \Sensio\Bundle\GeneratorBundle\Command\GenerateBundleCommand);
-          $command = $application->find('generate:bundle');
-          $commandTester = new CommandTester($command);
-          $commandTester->execute(
-          array(
-          '--namespace' => 'Fi',
-          '--bundle-name' => 'ProvaBundle',
-          '--dir' => 'src/',
-          '--format' => 'yml',
-          '--no-interaction' => true,
-          '--env' => 'test'
-          )
-          );
-          echo $commandTester->getDisplay();
-          $this->assertRegExp('/.../', $commandTester->getDisplay()); */
 
-
-        dump("Generate bundle");
+        //dump("Generate bundle");
         $console = __DIR__ . '/../../../bin/console';
-        $cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --format=yml  -n --env=test  > /dev/null";
+        $cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --format=yml  -n --env=test --no-debug > /dev/null";
         passthru($cmd);
-        dump("Generated bundle");
+        //dump("Generated bundle");
 
         $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand());
         $command = $this->application->find('pannelloamministrazione:generateymlentities');
@@ -145,33 +124,77 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $commandTester->execute(
                 array(
                     'mwbfile' => 'wbadmintest.mwb',
-                    'bundlename' => 'Fi/ProvaBundle'
+                    'bundlename' => 'Fi/ProvaBundle',
+                    '--env' => 'test',
+                    '--no-debug'
                 )
         );
 
-        dump("Generated yml entities");
+        //dump("Generated yml entities");
         $this->assertRegExp('/.../', $commandTester->getDisplay());
+        //dump($commandTester->getDisplay());
 
         clearcache();
         cachewarmup();
 
-        $this->assertRegExp('/.../', $commandTester->getDisplay());
-
         $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand());
         $this->application->add(new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand());
+        $this->application->add(new Doctrine\Bundle\DoctrineBundle\Command\Proxy\UpdateSchemaDoctrineCommand());
         $command = $this->application->find('pannelloamministrazione:generateentities');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
                 array(
                     'bundlename' => 'Fi/ProvaBundle',
-                    '--schemaupdate' => true
+                    '--schemaupdate' => true,
+                    '--env' => 'test',
+                    '--no-debug'
                 )
         );
-        dump("Generated entities");
+
+        /* $cmd = "php " . $console . " doctrine:cache:clear-metadata --env=test --no-debug >> /tmp/generate.log";
+          passthru($cmd);
+          $cmd = "php " . $console . " doctrine:cache:clear-metadata --flush --env=test --no-debug >> /tmp/generate.log";
+          passthru($cmd);
+          $cmd = "php " . $console . " doctrine:cache:clear-entity-region Fi\Prova --env=test --no-debug >> /tmp/generate.log";
+          passthru($cmd);
+          $cmd = "php " . $console . " doctrine:schema:update --force --env=test --no-debug >> /tmp/generate.log";
+          passthru($cmd); */
+
+        //dump("Generated entities");
         $this->assertRegExp('/.../', $commandTester->getDisplay());
+        //dump($commandTester->getDisplay());
+
+        clearcache();
+        cachewarmup();
 
         $this->assertTrue(file_exists($checkent));
         $this->assertTrue(file_exists($checkres));
+        /* Genera form */
+        
+        $bundlename = "Fi/ProvaBundle";
+        $entityform = "Prova";
+        
+        $container = $this->application->getKernel()->getContainer();
+        $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($container);
+        $checkform = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Form" . DIRECTORY_SEPARATOR . "ProvaType.php";
+
+        $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateFormCommand());
+        $command = $this->application->find('pannelloamministrazione:generateformcrud');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+                array(
+                    'bundlename' => $bundlename,
+                    'entityform' => $entityform,
+                    '--env' => 'test',
+                    '--no-debug'
+                )
+        );
+        //dump($commandTester->getDisplay());
+        //dump("Generated entities");
+        $this->assertRegExp('/.../', $commandTester->getDisplay());
+
+        $this->assertTrue(file_exists($checkform));
     }
 
     protected function tearDown()

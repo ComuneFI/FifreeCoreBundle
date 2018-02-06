@@ -125,44 +125,20 @@ class PannelloamministrazioneCommands
     public function generateFormCrud($bundlename, $entityform)
     {
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
-        $fs = new Filesystem();
         $resultchk = $this->checkFormCrud($bundlename, $entityform);
 
         if ($resultchk["errcode"] != 0) {
             return $resultchk;
         }
-        $crudparms = array(
-            'entity' => str_replace('/', '', $bundlename) . ':' . $entityform,
-            '--route-prefix' => $entityform,
-            "--env" => $this->container->get('kernel')->getEnvironment(),
-            '--with-write' => true,
-            '--format' => 'yml',
-            '--overwrite' => false,
-            '--no-interaction' => true,
-            '--no-debug' => true);
+        $formcrudparms = array("bundlename" => $bundlename, "entityform" => $entityform);
 
-        $resultcrud = $this->pammutils->runSymfonyCommand('doctrine:generate:crud', $crudparms);
+        $retmsggenerateform = $this->pammutils->runSymfonyCommand('pannelloamministrazione:generateformcrud', $formcrudparms);
 
-        if ($resultcrud['errcode'] == 0) {
-            if ($fs->exists($viewPathSrc)) {
-                $fs->remove($viewPathSrc);
-            }
-            $formcrudparms = array("bundlename" => $bundlename, "entityform" => $entityform);
-
-            $retmsggenerateform = $this->pammutils->runSymfonyCommand('pannelloamministrazione:generateformcrud', $formcrudparms);
-
-            $retmsg = array(
-                'errcode' => 0,
-                'command' => $resultcrud['command'],
-                'message' => $resultcrud['message'] . $retmsggenerateform['message'],
-            );
-        } else {
-            $retmsg = array(
-                'errcode' => $resultcrud['errcode'],
-                'command' => $resultcrud['command'],
-                'message' => $resultcrud['message'],
-            );
-        }
+        $retmsg = array(
+            'errcode' => 0,
+            'command' => $resultcrud['command'],
+            'message' => $resultcrud['message'] . $retmsggenerateform['message'],
+        );
 
         return $retmsg;
     }

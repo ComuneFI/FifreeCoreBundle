@@ -30,30 +30,58 @@ class GenerateFormCommand extends ContainerAwareCommand
     {
         set_time_limit(0);
         $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
+        $pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
 
         $bundlename = $input->getArgument('bundlename');
         $entityform = $input->getArgument('entityform');
-        $fs = new Filesystem();
-        //Controller
-        $controlleFile = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR .
-                $bundlename . DIRECTORY_SEPARATOR . 'Controller' . DIRECTORY_SEPARATOR .
-                $entityform . 'Controller.php';
-        $code = $this->getControllerCode(str_replace('/', '\\', $bundlename), $entityform);
-        $fs->dumpFile($controlleFile, $code);
 
-        //Routing
-        $retmsg = $this->generateFormRouting($bundlename, $entityform);
-        //Twig template (Crea i template per new edit show)
-        $this->generateFormWiew($bundlename, $entityform, 'edit');
-        $this->generateFormWiew($bundlename, $entityform, 'index');
-        $this->generateFormWiew($bundlename, $entityform, 'new');
-        $appviews = $this->apppaths->getAppPath() . DIRECTORY_SEPARATOR . 'Resources'
-                . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . strtolower($entityform);
-        $fs->remove($appviews);
+        /* $crudparms = array(
+          'entity' => str_replace('/', '', $bundlename) . ':' . $entityform,
+          '--route-prefix' => $entityform,
+          "--env" => $this->getContainer()->get('kernel')->getEnvironment(),
+          '--with-write' => true,
+          '--format' => 'yml',
+          '--overwrite' => false,
+          '--no-interaction' => true,
+          '--no-debug' => true);
 
-        $this->generateFormsDefaultTableValues($entityform);
+          $resultcrud = $pammutils->runSymfonyCommand('doctrine:generate:crud', $crudparms); */
 
-        return $retmsg;
+        $crudparms = str_replace('/', '', $bundlename) . ':' . $entityform . ' --route-prefix=' . $entityform
+                . ' --env=' . $this->getContainer()->get('kernel')->getEnvironment()
+                . ' --with-write --format=yml --no-interaction --no-debug';
+
+        $resultcrud = $pammutils->runCommand($this->apppaths->getConsole() . ' doctrine:generate:crud ' . $crudparms);
+
+        if ($resultcrud['errcode'] == 0) {
+            $fs = new Filesystem();
+            //Controller
+            $controlleFile = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR .
+                    $bundlename . DIRECTORY_SEPARATOR . 'Controller' . DIRECTORY_SEPARATOR .
+                    $entityform . 'Controller.php';
+            $code = $this->getControllerCode(str_replace('/', '\\', $bundlename), $entityform);
+            $fs->dumpFile($controlleFile, $code);
+            $output->writeln("<info>Creato " . $controlleFile . "</info>");
+
+            //Routing
+            $retmsg = $this->generateFormRouting($bundlename, $entityform);
+            //Twig template (Crea i template per new edit show)
+            $this->generateFormWiew($bundlename, $entityform, 'edit');
+            $this->generateFormWiew($bundlename, $entityform, 'index');
+            $this->generateFormWiew($bundlename, $entityform, 'new');
+            $appviews = $this->apppaths->getAppPath() . DIRECTORY_SEPARATOR . 'Resources'
+                    . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . strtolower($entityform);
+
+            $fs->remove($appviews);
+            $output->writeln("<info>Rimosso " . $appviews . "</info>");
+
+            $this->generateFormsDefaultTableValues($entityform);
+            $output->writeln("<info>" . $retmsg . "</info>");
+            return 0;
+        } else {
+            $output->writeln("<error>" . $resultcrud['errmsg'] . "</error>");
+            return 1;
+        }
     }
 
     private function generateFormRouting($bundlename, $entityform)
