@@ -77,11 +77,9 @@ class FiCoreController extends FiController
             $em = $this->getDoctrine()->getManager();
             $file = $request->files->get('file');
             $tablenamefile = preg_replace('/\\.[^.\\s]{3,4}$/', '', $file->getClientOriginalName());
-            //$namespace = $this->getNamespace();
             $parametri = json_decode($request->get("parametrigriglia"));
             $bundle = $parametri->nomebundle;
             $controller = $parametri->nometabella;
-            //$nomebundle = $namespace . $bundle . 'Bundle';
             $repo = $em->getRepository($bundle . ":" . $tablenamefile);
             $className = $repo->getClassName();
 
@@ -95,7 +93,6 @@ class FiCoreController extends FiController
                 $entitycolumns = $em->getClassMetadata($bundle . ":" . $tablenamefile);
                 $objPHPExcel = \PHPExcel_IOFactory::load($file);
                 foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
-                    //$worksheetTitle = $worksheet->getTitle();
                     $highestRow = $worksheet->getHighestRow();
                     $highestColumn = $worksheet->getHighestColumn();
                     $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);

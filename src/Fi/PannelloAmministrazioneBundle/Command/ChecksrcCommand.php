@@ -68,7 +68,6 @@ class ChecksrcCommand extends ContainerAwareCommand
         $process = new Process($cmd);
         $process->setTimeout(60 * 100);
         $process->run();
-        $out = "";
         if ($process->isSuccessful()) {
             $out = $process->getOutput();
         } else {

@@ -18,7 +18,6 @@ class MenuController extends FiCoreController
     public function generamenuAction()
     {
         $router = $this->get('router')->match('/')['_route'];
-        //$homeurl = $this->generateUrl($router, array(), true);
         $rispostahome = array();
         $rispostahome[] = array('percorso' => $this->getUrlObject($this->container->getParameter('appname'), $router, ''),
             'nome' => $this->container->getParameter('appname'),

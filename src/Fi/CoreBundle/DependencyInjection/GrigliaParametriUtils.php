@@ -88,7 +88,6 @@ class GrigliaParametriUtils
         $container = $parametri['container'];
         $doctrine = $container->get('doctrine');
 
-        //$bundle = $parametri["nomebundle"];
         //Fisso il CoreBundle perchè si passa sempre da questo bundle per le esclusioni
         $bundle = "FiCoreBundle";
         $gestionepermessi = $container->get("ficorebundle.gestionepermessi");

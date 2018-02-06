@@ -34,10 +34,6 @@ class FiUtilita
         if (!isset($parametri['minuti'])) {
             return false;
         }
-        $restotminuti = array();
-        $resminuti = 0;
-        $resore = 0;
-
         $minuti = $parametri['minuti'];
 
         $totminuti = array_sum($minuti);
@@ -51,7 +47,7 @@ class FiUtilita
 
     /**
      * @param array  $parametri
-     * @param string $parametri["tipo"]
+     * string $parametri["tipo"]
      *
      * @return Array("segnouno"=>"xx", "segnodue"=>"yy") dove segnodue non obbligatorio
      */
@@ -160,10 +156,10 @@ class FiUtilita
 
     /**
      * @param array  $parametri
-     * @param string $parametri["nomecodice"]      default = "codice"
-     * @param string $parametri["nomedescrizione"] default = "descrizione"
-     * @param array  $parametri["elementi"]        Array([0]=>("codice"=>1, "descrizione"=>"blaa"), [1]=>...)
-     * @param string $parametri["selezionato"]     opzionale
+     * string $parametri["nomecodice"]      default = "codice"
+     * string $parametri["nomedescrizione"] default = "descrizione"
+     * array  $parametri["elementi"]        Array([0]=>("codice"=>1, "descrizione"=>"blaa"), [1]=>...)
+     * string $parametri["selezionato"]     opzionale
      *
      * @return string
      */

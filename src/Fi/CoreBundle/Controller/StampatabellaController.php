@@ -71,7 +71,6 @@ class StampatabellaController extends FiCoreController
                     }
                     // get the number of lines
                     $arr_heights[] = $pdf->MultiCell($width, 0, $valore, $border, $align, $fill, 0, '', '', true, 0, false, true, 0);
-                    //$arr_heights[] = $pdf->getNumLines($valore, $width);
                 }
             }
             // restore previous object
@@ -166,7 +165,6 @@ class StampatabellaController extends FiCoreController
         $objWriter = new \PHPExcel_Writer_Excel5($objPHPExcel);
         $todaydate = date('d-m-y');
 
-        //$todaydate = $todaydate . '-' . date("H-i-s");
         $filename = 'Exportazione_' . $testata['tabella'];
         $filename = $filename . '-' . $todaydate . '-' . strtoupper(md5(uniqid(rand(), true)));
         $filename = $filename . '.xls';
@@ -222,9 +220,9 @@ class StampatabellaController extends FiCoreController
         $valore = null;
         switch ($tipocampo) {
             case 'date':
-                $d = substr($vettorecella, 0, 2);
-                $m = substr($vettorecella, 3, 2);
-                $y = substr($vettorecella, 6, 4);
+                $d = (int)substr($vettorecella, 0, 2);
+                $m = (int)substr($vettorecella, 3, 2);
+                $y = (int)substr($vettorecella, 6, 4);
                 $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
                 $valore = $t_date;
                 break;
@@ -322,7 +320,6 @@ class StampatabellaController extends FiCoreController
             }
             // get the number of lines
             $arr_heights[] = $pdf->MultiCell($width, 0, $nomecolonna, $border, $align, $fill, 0, '', '', true, 0, false, true, 0);
-            //$arr_heights[] = $pdf->getNumLines($nomecolonna, $width, FALSE, TRUE, '', 1);
         }
         // restore previous object
         $pdf->rollbackTransaction(true);

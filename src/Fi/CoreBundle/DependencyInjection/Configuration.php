@@ -21,7 +21,6 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('fi_core');
 
         $rootNode = $treeBuilder->root('fi_core')->children()
-                        /* ->variableNode('testroutes')->defaultValue("Y-m-d\TH:i:s\Z")->end() */
             ->booleanNode('testroutes')->defaultTrue()->end()
             ->booleanNode('testdb')->defaultTrue()->end();
         // Here you should define the parameters that are allowed to

@@ -54,8 +54,7 @@ class GrigliaDatiMultiUtils
         /* Dall'oggetto querybuilder si ottiene la query da eseguire */
         $query_paginata = $q->getQuery();
 
-        /* Object */
-        /* $q = $query_paginata->getResult(); */
+        /* Object -> $q = $query_paginata->getResult(); */
         /* Array */
         /* Si ottiene un array con tutti i records */
         $q = $query_paginata->getArrayResult();
@@ -117,10 +116,8 @@ class GrigliaDatiMultiUtils
                 self::tabellejNomecampoNormalizzato($tabellej, $nomecampo);
                 /* Per ogni campo si cattura il valore dall'array che torna doctrine */
                 foreach ($tabellej[$nomecampo]['campi'] as $campoelencato) {
-                    /* Object */
-                    /* $fields = $singolo->get($tabellej[$nomecampo]["tabella"]) ?
-                      $singolo->get($tabellej[$nomecampo]["tabella"])->get($campoelencato)
-                      : ""; */
+                    /* Object -> $fields = $singolo->get($tabellej[$nomecampo]["tabella"]) ?
+                      $singolo->get($tabellej[$nomecampo]["tabella"])->get($campoelencato): ""; */
                     /* array */
 
                     self::setOrdineColonneDatiGriglia($ordinecolonne, $nomecampo, $indice, $indicecolonna);

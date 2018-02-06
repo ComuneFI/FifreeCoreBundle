@@ -189,7 +189,7 @@ class FiCrudController extends Controller
         $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
         $formType = $formbundle . 'Type';
 
-        $elencomodifiche = $this->elencoModifiche($nomebundle, $controller, $id);
+        $elencomodifiche = $this->elencoModifiche($controller, $id);
 
         $em = $this->getDoctrine()->getManager();
 
@@ -336,9 +336,6 @@ class FiCrudController extends Controller
 
         $nomebundle = $namespace . $bundle . 'Bundle';
 
-        //if (!$request->isXmlHttpRequest()) {
-        //    $request->checkCSRFProtection();
-        //}
         try {
             $em = $this->getDoctrine()->getManager();
             $qb = $em->createQueryBuilder();

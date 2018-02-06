@@ -14,14 +14,14 @@ class GrigliaUtils
 
     public static function init()
     {
-        // i possibili operatori di ciascuna ricerca sono questi:
-        //['eq','ne','lt','le','gt','ge','bw','bn','in','ni','ew','en','cn','nc', 'nu', 'nn']
+        // i possibili operatori di ciascuna ricerca sono 
+        //questi: ['eq','ne','lt','le','gt','ge','bw','bn','in','ni','ew','en','cn','nc', 'nu', 'nn']
         //significano questo
         //['equal','not equal', 'less', 'less or equal','greater','greater or equal',
         //'begins with','does not begin with','is in','is not in','ends with','does not end with',
         //'contains','does not contain', 'is null', 'is not null']
-        // sulla base dell'operatore impostato per la singola ricerca si impostano tre vettori
-        // il promo contiene l'operatore da usare in query
+        //sulla base dell'operatore impostato per la singola ricerca si impostano tre vettori
+        //il promo contiene l'operatore da usare in query
 
         self::$decodificaop = array(
             'eq' => '=',

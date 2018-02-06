@@ -61,11 +61,9 @@ class FfsecondariaController extends FiCoreController
         $testatagriglia['showexcel'] = 1;
         $testatagriglia['showimportexcel'] = 1;
 
-        //$testatagriglia["filterToolbar_stringResult"] = false;
         $testatagriglia["filterToolbar_searchOnEnter"] = true;
         $testatagriglia["filterToolbar_searchOperators"] = true;
-        //$testatagriglia["filterToolbar_clearSearch"] = false;
-
+        
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
         $this->setParametriGriglia(array('request' => $request));
         $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
@@ -107,8 +105,6 @@ class FfsecondariaController extends FiCoreController
         $tabellej['ffprincipale_id'] = array('tabella' => 'ffprincipale', 'campi' => array('descrizione'));
 
         $campiextra = array(array('lunghezzanota'), array('attivoToString'));
-        //$campiextra = array(array("lunghezzanota"));
-        //$campiextra = array("lunghezzanota");
 
         $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
             'nomecampo' => 'intero',
@@ -119,12 +115,6 @@ class FfsecondariaController extends FiCoreController
             'operatore' => '<=',
             'valorecampo' => date('Y-m-d'),
             'operatorelogico' => 'AND',);
-
-        /* $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
-          'nomecampo' => 'attivo',
-          'operatore' => '=',
-          'valorecampo' => true,
-          'operatorelogico' => 'AND',); */
 
         $paricevuti = array('container' => $this->container,
             'nomebundle' => $nomebundle,

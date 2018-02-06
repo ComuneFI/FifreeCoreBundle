@@ -41,21 +41,11 @@ class GrigliaColonneUtils
         /* @var $doctrine \Doctrine\ORM\EntityManager */
         $doctrine = $parametri['doctrine'];
 
-        /* $infocolonne = $doctrine->getClassMetadata($entityName)->getColumnNames(); */
         $infocolonne = $doctrine->getMetadataFactory()->getMetadataFor($entityName);
-        /* $infocolonne = get_object_vars($infocolonne); */
+
         $colonne = array();
         foreach ($infocolonne->fieldMappings as $colonna) {
-            /* getFieldMapping */
-            /* $ret = $doctrine->getMetadataFactory()->getMetadataFor($entityName)->; */
             $colonne[$colonna['fieldName']] = $colonna;
-
-            /* $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getTypeOfField($colonna);
-              $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getColumnName($colonna);
-              $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getFieldForColumn($colonna);
-              $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getTypeOfColumn($colonna);
-              $colonne[$colonna] = $doctrine->getClassMetadata($entityName)->getColumnNames();
-             */
             if ($colonne[$colonna['fieldName']]['type'] == 'integer' || !(isset($colonne[$colonna['fieldName']]['length']))) {
                 $colonne[$colonna['fieldName']]['length'] = 11;
             }

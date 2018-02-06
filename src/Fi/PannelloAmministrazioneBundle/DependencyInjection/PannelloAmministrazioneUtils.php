@@ -46,7 +46,6 @@ class PannelloAmministrazioneUtils
     public static function runCommand($command)
     {
         /* @var $process \Symfony\Component\Process\Process */
-        $return = array();
         $process = new Process($command);
         $process->setTimeout(60 * 100);
         $process->run();

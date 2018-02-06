@@ -115,7 +115,7 @@ class Griglia extends Controller
         $precondizioni = GrigliaDatiUtils::getDatiPrecondizioni($parametri);
 
         $precondizioniAvanzate = GrigliaDatiUtils::getDatiPrecondizioniAvanzate($parametri);
-        /* $parametri_link = (isset($paricevuti['parametri_link']) ? $paricevuti['parametri_link'] : null); //$paricevuti["parametri_link"]; */
+
         $campiextra = GrigliaDatiUtils::getDatiCampiExtra($parametri);
         /* inserisco i filtri passati in un vettore */
 

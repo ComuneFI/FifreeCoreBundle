@@ -23,7 +23,6 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
                 ->setHelp('Genera i ifle yml per le entities partendo da un modello workbeanch mwb, <br/>fifree.mwb Fi/CoreBundle default<br/>')
                 ->addArgument('mwbfile', InputArgument::REQUIRED, 'Nome file mwb, fifree.mwb')
                 ->addArgument('bundlename', InputArgument::REQUIRED, 'Nome del bundle, Fi/CoreBundle')
-                ->addArgument('em', InputArgument::OPTIONAL, 'Entity manager, default = default');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -35,12 +34,6 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
 
         $bundlename = $input->getArgument('bundlename');
         $mwbfile = $input->getArgument('mwbfile');
-
-        if (!$input->getArgument('em')) {
-            $emdest = 'default';
-        } else {
-            $emdest = $input->getArgument('em');
-        }
 
         $wbFile = $this->apppaths->getDocPath() . DIRECTORY_SEPARATOR . $mwbfile;
         $checkprerequisiti = $this->genhelper->checkprerequisiti($bundlename, $mwbfile, $output);

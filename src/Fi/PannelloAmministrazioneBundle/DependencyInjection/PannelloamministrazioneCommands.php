@@ -48,8 +48,6 @@ class PannelloamministrazioneCommands
 
         $bundlePath = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundleName;
 
-        $addmessage = '';
-
         if ($fs->exists($bundlePath)) {
             return array('errcode' => -1, 'command' => 'generate:bundle', 'message' => "Il bundle esiste gia' in $bundlePath");
         }

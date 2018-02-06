@@ -47,7 +47,6 @@ class Fifree2mysqldropforeignkeysCommand extends ContainerAwareCommand
             $conn->exec($sqlalter);
         }
 
-        //var_dump($sql);exit;
         $fine = microtime(true);
         $tempo = gmdate('H:i:s', $fine - $inizio);
 

@@ -43,15 +43,8 @@ class ArrayFunctions
      * @param $key Nome della chiave nella quale cercare $elem
      * @return Mixed False se non trovato l'elemento, altrimenti il vettore con tutti gli indici
      */
-    public static function inMultiarrayTutti($elem, $array, $key, $debug)
+    public static function inMultiarrayTutti($elem, $array, $key)
     {
-
-        /*if ($debug) {
-            var_dump($elem);
-
-            var_dump($key);
-        }*/
-
 
         $trovato = array();
 
@@ -62,13 +55,6 @@ class ArrayFunctions
             if (array_key_exists($key, $value)) {
                 foreach ($value as $nomecolonna => $colonna) {
                     if ($colonna === $elem && $nomecolonna == $key) {
-                        /*if ($debug) {
-                            echo "$colonna = $elem quando indice = $indice \n";
-                            echo "$nomecolonna = $key quando indice = $indice \n";
-                            var_dump($array[$indice]);
-                            echo "\n";
-                        }*/
-
                         $trovato[] = $indice;
                     }
                 }
@@ -92,25 +78,8 @@ class ArrayFunctions
         $primo = true;
         $vettorerisultati = array();
 
-        /*if ($debug) {
-            echo "<br>\n vettore search <br>\n";
-            var_dump($search);
-            echo "<br>\n fine vettore search  <br>\n";
-
-            echo "<br>\n vettorecompleto <br>\n";
-            var_dump($array);
-            echo "<br>\n fine vettorecompleto <br>\n";
-        }*/
-
-
         foreach ($search as $key => $singolaricerca) {
             $trovato = self::inMultiarrayTutti($singolaricerca, $array, $key, $debug);
-
-            /*if ($debug) {
-                echo $primo ? "<br>\n primo <br>\n" : "<br>\n non primo <br>\n";
-                var_dump($trovato);
-                echo $primo ? "<br>\n fine primo <br>\n" : "<br>\n fine non primo <br>\n";
-            }*/
 
             if ($trovato === false) {
                 $vettorerisultati = false;
@@ -121,11 +90,6 @@ class ArrayFunctions
                 $vettorerisultati = $trovato;
             } else {
                 $vettorerisultati = array_intersect($vettorerisultati, $trovato);
-                /*if ($debug) {
-                    echo "<br>\n vettorerisultati<br>\n";
-                    var_dump($vettorerisultati);
-                    echo "<br>\n fine vettorerisultati<br>\n";
-                }*/
             }
 
             $primo = false;

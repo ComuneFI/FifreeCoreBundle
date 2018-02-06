@@ -41,7 +41,7 @@ class FiController extends FiCrudController
         return new Response(Griglia::datiPerGriglia($paricevuti));
     }
 
-    protected function elencoModifiche($nomebundle, $controller, $id)
+    protected function elencoModifiche($controller, $id)
     {
         $controllerStorico = 'Storicomodifiche';
         $em = $this->getDoctrine()->getManager();
