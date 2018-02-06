@@ -198,6 +198,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $session->executeScript($scriptrun);
         $this->ajaxWait();
         sleep(1);
+        echo $page->getHtml();
         $this->assertTrue(file_exists($checktypeprova));
         $this->assertTrue(file_exists($checkviewsprova));
         $this->assertTrue(file_exists($checkindexprova));
