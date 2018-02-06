@@ -14,7 +14,7 @@ class GrigliaUtils
 
     public static function init()
     {
-        // i possibili operatori di ciascuna ricerca sono 
+        // i possibili operatori di ciascuna ricerca sono
         //questi: ['eq','ne','lt','le','gt','ge','bw','bn','in','ni','ew','en','cn','nc', 'nu', 'nn']
         //significano questo
         //['equal','not equal', 'less', 'less or equal','greater','greater or equal',
