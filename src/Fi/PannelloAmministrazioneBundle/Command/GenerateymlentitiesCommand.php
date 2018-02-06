@@ -22,7 +22,7 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
                 ->setDescription('Genera le entities partendo da un modello workbeanch mwb')
                 ->setHelp('Genera i ifle yml per le entities partendo da un modello workbeanch mwb, <br/>fifree.mwb Fi/CoreBundle default<br/>')
                 ->addArgument('mwbfile', InputArgument::REQUIRED, 'Nome file mwb, fifree.mwb')
-                ->addArgument('bundlename', InputArgument::REQUIRED, 'Nome del bundle, Fi/CoreBundle')
+                ->addArgument('bundlename', InputArgument::REQUIRED, 'Nome del bundle, Fi/CoreBundle');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
