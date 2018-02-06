@@ -135,9 +135,9 @@ class PannelloamministrazioneCommands
         $retmsggenerateform = $this->pammutils->runSymfonyCommand('pannelloamministrazione:generateformcrud', $formcrudparms);
 
         $retmsg = array(
-            'errcode' => 0,
-            'command' => $resultcrud['command'],
-            'message' => $resultcrud['message'] . $retmsggenerateform['message'],
+            'errcode' => $retmsggenerateform['errcode'],
+            'command' => $retmsggenerateform['command'],
+            'message' => $retmsggenerateform['message'],
         );
 
         return $retmsg;
@@ -201,4 +201,5 @@ class PannelloamministrazioneCommands
 
         return $result;
     }
+
 }
