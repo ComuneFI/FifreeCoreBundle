@@ -47,11 +47,9 @@ class GenerateFormCommand extends ContainerAwareCommand
         $this->generateFormWiew($bundlename, $entityform, 'edit');
         $this->generateFormWiew($bundlename, $entityform, 'index');
         $this->generateFormWiew($bundlename, $entityform, 'new');
-        $appviews = $this->apppaths->getAppPath() . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views';
-        $this->cleanTemplatePath($appviews);
-
-        $resourcesviews = $this->apppaths->getAppPath() . DIRECTORY_SEPARATOR . 'Resources';
-        $this->cleanTemplatePath($resourcesviews);
+        $appviews = $this->apppaths->getAppPath() . DIRECTORY_SEPARATOR . 'Resources'
+                . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . strtolower($entityform);
+        $fs->remove($appviews);
 
         $this->generateFormsDefaultTableValues($entityform);
 
@@ -196,18 +194,5 @@ EOF;
         $code = str_replace('[tabella]', $tabella, $codebundle);
 
         return $code;
-    }
-
-    private function cleanTemplatePath($path)
-    {
-        $fs = new Filesystem();
-        $ret = 0;
-        if ($fs->exists($path)) {
-            $finder = new Finder();
-            $ret = $finder->files()->in($path);
-            if (count($ret) == 0) {
-                $fs->remove($path);
-            }
-        }
     }
 }
