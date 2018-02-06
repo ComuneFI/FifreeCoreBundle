@@ -35,18 +35,6 @@ class GenerateFormCommand extends ContainerAwareCommand
         $bundlename = $input->getArgument('bundlename');
         $entityform = $input->getArgument('entityform');
 
-        /* $crudparms = array(
-          'entity' => str_replace('/', '', $bundlename) . ':' . $entityform,
-          '--route-prefix' => $entityform,
-          "--env" => $this->getContainer()->get('kernel')->getEnvironment(),
-          '--with-write' => true,
-          '--format' => 'yml',
-          '--overwrite' => false,
-          '--no-interaction' => true,
-          '--no-debug' => true);
-
-          $resultcrud = $pammutils->runSymfonyCommand('doctrine:generate:crud', $crudparms); */
-
         $crudparms = str_replace('/', '', $bundlename) . ':' . $entityform . ' --route-prefix=' . $entityform
                 . ' --env=' . $this->getContainer()->get('kernel')->getEnvironment()
                 . ' --with-write --format=yml --no-interaction --no-debug';
