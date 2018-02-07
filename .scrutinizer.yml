@@ -6,7 +6,6 @@ filter:
 tools:
     external_code_coverage:
         timeout: 3600    # Timeout in seconds.
-    #php_code_coverage: true
     php_code_sniffer:
         enabled: true
         config:
@@ -37,3 +36,11 @@ tools:
         filter:
             paths: ["src/*", "tests/*"]
     sensiolabs_security_checker: true
+    
+build:
+    nodes:
+        analysis:
+            project_setup:
+                override: true
+            tests:
+                override: [php-scrutinizer-run]    
