@@ -36,7 +36,7 @@ echo sprintf(
         'Selenium server started with PID %d', $pidse
 ) . PHP_EOL;
 
-
+sleep(2);
 // Kill the web server when the process ends
 register_shutdown_function(function() use ($pidws) {
     echo sprintf('%s - Killing process with ID %d', date('r'), $pidws) . PHP_EOL;

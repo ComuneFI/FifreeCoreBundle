@@ -36,7 +36,10 @@ abstract class CoreMink extends WebTestCase
     /** @var  string */
     protected $seleniumDriverType;
 
-    public function setUp()
+    /**
+     * @before
+     */
+    public function setupMinkSession()
     {
         $this->client = static::createClient();
         $container = $this->client->getContainer();
@@ -46,13 +49,7 @@ abstract class CoreMink extends WebTestCase
         $this->em = $container->get('doctrine')->getManager();
         $this->minkBaseUrl = $container->getParameter('mink_url');
         $this->seleniumDriverType = $container->getParameter('selenium_driver_type');
-    }
-
-    /**
-     * @before
-     */
-    public function setupMinkSession()
-    {
+        
         //$driver = new \Behat\Mink\Driver\ZombieDriver(new \Behat\Mink\Driver\NodeJS\Server\ZombieServer());
         $driver = new Selenium2Driver($this->seleniumDriverType);
         $this->minkSession = new Session($driver);
