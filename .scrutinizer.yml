@@ -6,9 +6,9 @@ build:
         override:
             - composer install --no-interaction --prefer-dist
     nodes:
-    analysis:
-      tests:
-        override: [php-scrutinizer-run]
+        analysis:
+          tests:
+            override: [php-scrutinizer-run]
         
 filter:
     excluded_paths:
