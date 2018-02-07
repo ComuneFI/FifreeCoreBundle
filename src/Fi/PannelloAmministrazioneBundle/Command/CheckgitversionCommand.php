@@ -21,21 +21,13 @@ class CheckgitversionCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /* $rootdir = $this->getContainer()->get('kernel')->getRootDir().'/..';
-          $appdir = $this->getContainer()->get('kernel')->getRootDir();
-          $webdir = $rootdir.DIRECTORY_SEPARATOR.'/web';
-          $cachedir = $appdir.DIRECTORY_SEPARATOR.'cache';
-          $logdir = $appdir.DIRECTORY_SEPARATOR.'logs';
-          $tmpdir = $appdir.DIRECTORY_SEPARATOR.'/tmp';
-          $srcdir = $rootdir.DIRECTORY_SEPARATOR.'/src';
-          $uploaddir = $webdir.DIRECTORY_SEPARATOR.'/uploads'; */
-        $projectDir = substr($this->getContainer()->get('kernel')->getRootDir(), 0, -4);
-
         if (self::isWindows()) {
             $output->writeln('<info>Non previsto in ambiente windows</info>');
 
             return 0;
         }
+
+        $projectDir = substr($this->getContainer()->get('kernel')->getRootDir(), 0, -4);
 
         $composerbundles = array();
         $composerbundlespath = $projectDir.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'fi';
