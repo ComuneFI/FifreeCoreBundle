@@ -2,6 +2,8 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
+use Fi\CoreBundle\Controller\FiUtilita;
+
 class GrigliaDatiPrecondizioniUtils
 {
     public static function setPrecondizioni(&$q, &$primo, $parametri = array())
@@ -93,7 +95,7 @@ class GrigliaDatiPrecondizioniUtils
         if ($tipo && ($tipo == 'date' || $tipo == 'datetime')) {
             GrigliaUtils::setVettoriPerData();
             foreach ($valuepre as $chiave => $valore) {
-                $valuepre[$chiave] = fiUtilita::data2db($valore);
+                $valuepre[$chiave] = FiUtilita::data2db($valore);
             }
             return implode(', ', $valuepre);
         } elseif ($tipo && $tipo == 'string') {

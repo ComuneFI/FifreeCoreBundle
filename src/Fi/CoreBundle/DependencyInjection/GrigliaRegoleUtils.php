@@ -2,7 +2,6 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-use Fi\CoreBundle\Controller\GestionepermessiController;
 use Fi\CoreBundle\Controller\FiUtilita;
 
 class GrigliaRegoleUtils
