@@ -2,9 +2,10 @@ checks:
     php: true
     
 build:
-    dependencies:
-        override:
-            - php -dmemory_limit=2G composer install --no-interaction --prefer-dist
+    environment:
+        php:
+            ini:
+                'memory_limit': '4G'
     nodes:
         analysis:
           tests:
