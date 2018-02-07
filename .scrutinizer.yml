@@ -4,7 +4,7 @@ checks:
 build:
     dependencies:
         override:
-            - composer install --no-interaction --prefer-dist
+            - php -dmemory_limit=2G composer install --no-interaction --prefer-dist
     nodes:
         analysis:
           tests:
