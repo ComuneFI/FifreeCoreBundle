@@ -38,8 +38,10 @@ class GenerateFormCommand extends ContainerAwareCommand
         $crudparms = str_replace('/', '', $bundlename) . ':' . $entityform . ' --route-prefix=' . $entityform
                 . ' --env=' . $this->getContainer()->get('kernel')->getEnvironment()
                 . ' --with-write --format=yml --no-interaction'; // --no-debug
+        
+        $phpPath = OsFunctions::getPHPExecutableFromPath();
 
-        $resultcrud = $pammutils->runCommand($this->apppaths->getConsole() . ' doctrine:generate:crud ' . $crudparms);
+        $resultcrud = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' doctrine:generate:crud ' . $crudparms);
 
         if ($resultcrud['errcode'] == 0) {
             $fs = new Filesystem();
