@@ -105,4 +105,105 @@ class TabelleUtility
         asort($risposta, SORT_NATURAL | SORT_FLAG_CASE);
         return $risposta;
     }
+    
+    public function generaDB($parametri)
+    {
+        if (!isset($parametri['tabella'])) {
+            return false;
+        }
+        if (!isset($parametri['namespace'])) {
+            return false;
+        }
+        if (!isset($parametri['bundle'])) {
+            return false;
+        }
+
+        $namespace = $parametri['namespace'];
+        $bundle = $parametri['bundle'];
+
+        $nomebundle = $namespace . $bundle . 'Bundle';
+
+        $nometabella = $parametri['tabella'];
+        $em = $this->container->get("doctrine")->getManager();
+
+        $bundles = $this->container->get('kernel')->getBundles();
+        $tableClassName = "";
+        $entityClass = "";
+        foreach ($bundles as $bundle) {
+            $className = get_class($bundle);
+            $entityClass = substr($className, 0, strrpos($className, '\\'));
+            $tableClassName = '\\' . $entityClass . '\\Entity\\' . $nometabella;
+            if (!class_exists($tableClassName)) {
+                $tableClassName = '';
+                continue;
+            } else {
+                break;
+            }
+        }
+
+        if (!$tableClassName) {
+            throw new \Exception('Entity per la tabella ' . $nometabella . ' non trovata', '-1');
+        }
+
+        if (!$entityClass) {
+            throw new \Exception('Entity class per la tabella ' . $nometabella . ' non trovata', '-1');
+        }
+
+        $bundleClass = str_replace('\\', '', $entityClass);
+
+        $c = $em->getClassMetadata($bundleClass . ':' . $nometabella);
+
+        $colonne = $c->getColumnNames();
+        $this->scriviDB($colonne, $nometabella, $nomebundle, $parametri);
+    }
+
+    private function scriviDB($colonne, $nometabella, $nomebundle, $parametri)
+    {
+        foreach ($colonne as $colonna) {
+            $vettorericerca = array(
+                'nometabella' => $nometabella,
+                'nomecampo' => $colonna,
+            );
+
+            if (isset($parametri['operatore'])) {
+                $vettorericerca['operatori_id'] = $parametri['operatore'];
+            }
+
+            $trovato = $this->container->get("doctrine")->getRepository('FiCoreBundle:Tabelle')->findBy($vettorericerca, array());
+
+            if (empty($trovato)) {
+                $this->creaRecordTabelle($nometabella, $colonna, $vettorericerca, $parametri);
+            }
+        }
+    }
+
+    private function creaRecordTabelle($nometabella, $colonna, $vettorericerca, $parametri)
+    {
+        $crea = new \Fi\CoreBundle\Entity\Tabelle();
+        $crea->setNometabella($nometabella);
+        $crea->setNomecampo($colonna);
+
+        if (isset($parametri['operatore'])) {
+            $idOperatore = $parametri['operatore'];
+            $creaoperatore = $this->container->get("doctrine")->getRepository('FiCoreBundle:Operatori')->find($idOperatore);
+            if ($creaoperatore instanceof \Fi\CoreBundle\Entity\Operatori) {
+                $crea->setOperatori($creaoperatore);
+            }
+
+            $vettorericerca['operatori_id'] = null;
+            $ritrovato = $this->container->get("doctrine")->getRepository('FiCoreBundle:Tabelle')->findOneBy($vettorericerca);
+
+            if (!empty($ritrovato)) {
+                $crea->setMostrastampa($ritrovato->hasMostrastampa() ? true : false);
+                $crea->setMostraindex($ritrovato->hasMostraindex() ? true : false);
+            }
+        } else {
+            $crea->setMostrastampa(true);
+            $crea->setMostraindex(true);
+        }
+
+        $ma = $this->container->get("doctrine")->getManager();
+        $ma->persist($crea);
+        $ma->flush();
+    }
 }
