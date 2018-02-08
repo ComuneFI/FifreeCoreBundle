@@ -130,14 +130,14 @@
     </target>
 
     <target name="phpunit-ci" description="Run unit tests with PHPUnit">
-        <exec executable="vendor/bin/simple-phpunit" failonerror="true">
+        <exec executable="vendor/bin/phpunit" failonerror="true">
             <arg line="--configuration=${basedir}"/>
             <arg line="--coverage-php=${basedir}/build/artifacts/coverage/clover_core.cov"/>
         </exec>
     </target>
 
     <target name="phpunit-ci-pa" description="Run unit tests with PHPUnit Pannello amministrazione">
-        <exec executable="vendor/bin/simple-phpunit" failonerror="true">
+        <exec executable="vendor/bin/phpunit" failonerror="true">
             <arg line="--configuration=${basedir}/phpunit.pannelloamministrazione.xml.dist"/>
             <arg line="--coverage-php=${basedir}/build/artifacts/coverage/clover_pa.cov"/>
         </exec>
