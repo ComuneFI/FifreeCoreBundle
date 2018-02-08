@@ -21,6 +21,26 @@ class FfsecondariaController extends FiCoreController
         $container = $this->container;
 
         $nomebundle = $namespace . $bundle . 'Bundle';
+        $ffprincipaleSelect = array();
+        //Imposta il filtro a TUTTI come default
+        $ffprincipaleSelect[] = array("valore" => "", "descrizione" => "Tutti", "default" => true);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $q = $em->createQueryBuilder();
+
+        $ffprincipales = $q->select('f')
+                ->from($nomebundle . ':Ffprincipale', 'f')
+                ->orderBy('f.descrizione')
+                ->getQuery()
+                ->getResult();
+
+        foreach ($ffprincipales as $ffprincipale) {
+            $ffprincipaleSelect[] = array(
+                "valore" => $ffprincipale->getDescrizione(),
+                "descrizione" => $ffprincipale->getDescrizione(),
+                "default" => false);
+        }
 
         $dettaglij = array(
             'descsec' => array(
@@ -32,7 +52,9 @@ class FfsecondariaController extends FiCoreController
                 array('nomecampo' => 'ffprincipale.descrizione',
                     'lunghezza' => '400',
                     'descrizione' => 'Descrizione record principale',
-                    'tipo' => 'text',),
+                    'tipo' => 'select',
+                    'valoricombo' => $ffprincipaleSelect
+                ),
             ),
         );
         $escludi = array('nota');
@@ -63,7 +85,7 @@ class FfsecondariaController extends FiCoreController
 
         $testatagriglia["filterToolbar_searchOnEnter"] = true;
         $testatagriglia["filterToolbar_searchOperators"] = true;
-        
+
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
         $this->setParametriGriglia(array('request' => $request));
         $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
@@ -124,7 +146,7 @@ class FfsecondariaController extends FiCoreController
             'escludere' => $escludi,
             'precondizioniAvanzate' => $precondizioniAvanzate,);
 
-        if (! empty($prepar)) {
+        if (!empty($prepar)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 
