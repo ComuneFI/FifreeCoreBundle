@@ -5,7 +5,6 @@ namespace Fi\CoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Fi\CoreBundle\Entity\Tabelle;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -98,8 +97,6 @@ class TabelleController extends FiCoreController
         $utilitytabelle->generaDB($parametritabella);
         $utilitytabelle->generaDB($parametritabellaoperatore);
 
-        $namespace = $this->getNamespace();
-        $bundle = $this->getBundle();
         $controller = $this->getController();
         $container = $this->container;
 
@@ -258,5 +255,4 @@ class TabelleController extends FiCoreController
         $risposta = $utilitytabelle->getListacampitabella($parametri);
         return new JsonResponse($risposta);
     }
-
 }
