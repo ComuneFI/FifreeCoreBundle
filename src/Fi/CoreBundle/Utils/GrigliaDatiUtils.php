@@ -26,8 +26,11 @@ class GrigliaDatiUtils
             }
             /* Serve per far venire nella getArrayResult() anche i campi della tabella il leftjoin
               altrimenti mostra solo quelli della tabella con alias a */
-            $q->addSelect(array($tabellaj['tabella']));
-            $q = $q->leftJoin((isset($tabellaj['padre']) ? $tabellaj['padre'] : $nometabella) . '.' . $tabellaj['tabella'], $tabellaj['tabella']);
+            $parametrotabella = array($tabellaj['tabella']);
+            $tabellajoin = (isset($tabellaj['padre']) ? $tabellaj['padre'] : $nometabella) . '.' . $tabellaj['tabella'];
+            $aliasjoin = $tabellaj['tabella'];
+            $q->addSelect($parametrotabella);
+            $q = $q->leftJoin($tabellajoin, $aliasjoin);
         }
     }
 
@@ -69,30 +72,39 @@ class GrigliaDatiUtils
     public static function getDatiOrdinamento(&$sidx, $nometabella)
     {
         /* se non è passato nessun campo (ipotesi peregrina) usa id */
+
         if (!$sidx) {
             $sidx = $nometabella . '.id';
         } elseif (strrpos($sidx, '.') == 0) {
             if (strrpos($sidx, ',') == 0) {
-                $sidx = $nometabella . '.' . $sidx; // un solo campo
-            } else { // più campi, passati separati da virgole
-                $parti = explode(',', $sidx);
-                $sidx = '';
-                foreach ($parti as $parte) {
-                    if (trim($sidx) != '') {
-                        $sidx = $sidx . ',';
-                    }
-                    $sidx = $sidx . $nometabella . '.' . trim($parte);
-                }
-            }
+                // un solo campo
+                $sidx = $nometabella . '.' . $sidx;
+            }/* else {
+              // NON FUNZIONA
+              // più campi, passati separati da virgole
+              $sidx = self::splitFiledOrderBy($nometabella);
+              } */
         }
     }
+
+    /* public static function splitFiledOrderBy($nometabella)
+      {
+      $sidx = "";
+      $parti = explode(',', $sidx);
+      foreach ($parti as $parte) {
+      if (trim($sidx) != '') {
+      $sidx = $sidx . ',';
+      }
+      $sidx = $sidx . $nometabella . '.' . trim($parte);
+      }
+      return $sidx;
+      } */
 
     public static function valorizzaVettore(&$vettoreriga, $parametri)
     {
         $tabella = $parametri['tabella'];
         $nomecampo = $parametri['nomecampo'];
         $doctrine = $parametri['doctrine'];
-        $ordinecampo = $parametri['ordinecampo'];
         $decodifiche = $parametri['decodifiche'];
 
         $vettoreparcampi = $doctrine->getMetadataFactory()->getMetadataFor($tabella)->fieldMappings;
@@ -107,24 +119,32 @@ class GrigliaDatiUtils
             $vettoreriga[] = $decodifiche[$nomecampo][$singolocampo];
         } else {
             $vettoretype = isset($vettoreparcampi[$nomecampo]['type']) ? $vettoreparcampi[$nomecampo]['type'] : null;
-            if (isset($vettoretype) && ($vettoretype == 'date' || $vettoretype == 'datetime') && $singolocampo) {
-                if (isset($ordinecampo)) {
-                    $vettoreriga[$ordinecampo] = $singolocampo->format('d/m/Y');
-                } else {
-                    $vettoreriga[] = $singolocampo->format('d/m/Y');
-                }
-            } elseif (isset($vettoretype) && ($vettoreparcampi[$nomecampo]['type'] == 'time') && $singolocampo) {
-                if (isset($ordinecampo)) {
-                    $vettoreriga[$ordinecampo] = $singolocampo->format('H:i');
-                } else {
-                    $vettoreriga[] = $singolocampo->format('H:i');
-                }
+            self::valorizzaVettoreType($vettoreparcampi, $vettoreriga, $vettoretype, $parametri);
+        }
+    }
+
+    public static function valorizzaVettoreType(&$vettoreparcampi, &$vettoreriga, $vettoretype, $parametri)
+    {
+        $nomecampo = $parametri['nomecampo'];
+        $ordinecampo = $parametri['ordinecampo'];
+        $singolocampo = $parametri['singolocampo'];
+        if (isset($vettoretype) && ($vettoretype == 'date' || $vettoretype == 'datetime') && $singolocampo) {
+            if (isset($ordinecampo)) {
+                $vettoreriga[$ordinecampo] = $singolocampo->format('d/m/Y');
             } else {
-                if (isset($ordinecampo)) {
-                    $vettoreriga[$ordinecampo] = $singolocampo;
-                } else {
-                    $vettoreriga[] = $singolocampo;
-                }
+                $vettoreriga[] = $singolocampo->format('d/m/Y');
+            }
+        } elseif (isset($vettoretype) && ($vettoreparcampi[$nomecampo]['type'] == 'time') && $singolocampo) {
+            if (isset($ordinecampo)) {
+                $vettoreriga[$ordinecampo] = $singolocampo->format('H:i');
+            } else {
+                $vettoreriga[] = $singolocampo->format('H:i');
+            }
+        } else {
+            if (isset($ordinecampo)) {
+                $vettoreriga[$ordinecampo] = $singolocampo;
+            } else {
+                $vettoreriga[] = $singolocampo;
             }
         }
     }
