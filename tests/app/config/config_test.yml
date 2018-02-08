@@ -6,7 +6,6 @@ framework:
     session:
         #storage_id: session.storage.native
         storage_id: session.storage.mock_file
-        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
     profiler:
         collect: false
     
