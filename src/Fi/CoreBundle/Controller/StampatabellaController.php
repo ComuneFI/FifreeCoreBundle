@@ -2,7 +2,7 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Fi\CoreBundle\DependencyInjection\GrigliaFiltriUtils;
+use Fi\CoreBundle\Utils\GrigliaFiltriUtils;
 use TCPDF;
 
 class StampatabellaController extends FiCoreController

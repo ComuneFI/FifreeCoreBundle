@@ -1,16 +1,13 @@
 <?php
 
-namespace Fi\CoreBundle\DependencyInjection;
-
-use Fi\CoreBundle\DependencyInjection\JqgridDati;
-use Fi\CoreBundle\DependencyInjection\JqgridTestata;
+namespace Fi\CoreBundle\Utils;
 
 /**
  * Description of Jqgrid.
  *
  * @author manzolo
  */
-class GridTestata
+class GridDati
 {
 
     private $grid;
@@ -22,7 +19,7 @@ class GridTestata
         } else {
             $gridtype = 'Jqgrid';
         }
-        $class = '\\Fi\\CoreBundle\\DependencyInjection\\' . $gridtype . "Testata";
+        $class = '\\Fi\\CoreBundle\\Utils\\' . $gridtype . "Dati";
         $this->grid = new $class($testata);
     }
 

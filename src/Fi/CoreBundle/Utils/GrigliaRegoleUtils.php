@@ -1,6 +1,6 @@
 <?php
 
-namespace Fi\CoreBundle\DependencyInjection;
+namespace Fi\CoreBundle\Utils;
 
 use Fi\CoreBundle\Controller\FiUtilita;
 

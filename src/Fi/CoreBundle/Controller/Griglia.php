@@ -2,17 +2,17 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Fi\CoreBundle\DependencyInjection\GridDati;
-use Fi\CoreBundle\DependencyInjection\GridTestata;
-use Fi\CoreBundle\DependencyInjection\GrigliaParametriUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaRegoleUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaCampiExtraUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaColonneUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaDatiUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaDatiPrecondizioniUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaExtraFunzioniUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaDatiMultiUtils;
+use Fi\CoreBundle\Utils\GridDati;
+use Fi\CoreBundle\Utils\GridTestata;
+use Fi\CoreBundle\Utils\GrigliaParametriUtils;
+use Fi\CoreBundle\Utils\GrigliaUtils;
+use Fi\CoreBundle\Utils\GrigliaRegoleUtils;
+use Fi\CoreBundle\Utils\GrigliaCampiExtraUtils;
+use Fi\CoreBundle\Utils\GrigliaColonneUtils;
+use Fi\CoreBundle\Utils\GrigliaDatiUtils;
+use Fi\CoreBundle\Utils\GrigliaDatiPrecondizioniUtils;
+use Fi\CoreBundle\Utils\GrigliaExtraFunzioniUtils;
+use Fi\CoreBundle\Utils\GrigliaDatiMultiUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class Griglia extends Controller

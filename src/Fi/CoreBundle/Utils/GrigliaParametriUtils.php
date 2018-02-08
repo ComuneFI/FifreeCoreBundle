@@ -1,8 +1,8 @@
 <?php
 
-namespace Fi\CoreBundle\DependencyInjection;
+namespace Fi\CoreBundle\Utils;
 
-use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
+use Fi\CoreBundle\Utils\GrigliaUtils;
 
 class GrigliaParametriUtils
 {
