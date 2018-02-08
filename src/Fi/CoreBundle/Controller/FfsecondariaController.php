@@ -21,26 +21,8 @@ class FfsecondariaController extends FiCoreController
         $container = $this->container;
 
         $nomebundle = $namespace . $bundle . 'Bundle';
-        $ffprincipaleSelect = array();
-        //Imposta il filtro a TUTTI come default
-        $ffprincipaleSelect[] = array("valore" => "", "descrizione" => "Tutti", "default" => true);
 
-        $em = $this->getDoctrine()->getManager();
-
-        $q = $em->createQueryBuilder();
-
-        $ffprincipales = $q->select('f')
-                ->from($nomebundle . ':Ffprincipale', 'f')
-                ->orderBy('f.descrizione')
-                ->getQuery()
-                ->getResult();
-
-        foreach ($ffprincipales as $ffprincipale) {
-            $ffprincipaleSelect[] = array(
-                "valore" => $ffprincipale->getDescrizione(),
-                "descrizione" => $ffprincipale->getDescrizione(),
-                "default" => false);
-        }
+        $ffprincipaleSelect = $this->getComboSelectFfprincipale();
 
         $dettaglij = array(
             'descsec' => array(
@@ -105,6 +87,30 @@ class FfsecondariaController extends FiCoreController
         } else {
             return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
         }
+    }
+
+    private function getComboSelectFfprincipale()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $ffprincipaleSelect = array();
+        //Imposta il filtro a TUTTI come default
+        $ffprincipaleSelect[] = array("valore" => "", "descrizione" => "Tutti", "default" => true);
+
+        $q = $em->createQueryBuilder();
+
+        $ffprincipales = $q->select('f')
+                ->from('FiCoreBundle:Ffprincipale', 'f')
+                ->orderBy('f.descrizione')
+                ->getQuery()
+                ->getResult();
+
+        foreach ($ffprincipales as $ffprincipale) {
+            $ffprincipaleSelect[] = array(
+                "valore" => $ffprincipale->getDescrizione(),
+                "descrizione" => $ffprincipale->getDescrizione(),
+                "default" => false);
+        }
+        return $ffprincipaleSelect;
     }
 
     public function setParametriGriglia($prepar = array())
