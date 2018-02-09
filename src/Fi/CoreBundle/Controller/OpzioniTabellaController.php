@@ -19,7 +19,7 @@ class OpzioniTabellaController extends FiCoreController
     public function indexAction(Request $request)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
-        parent::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -88,13 +88,14 @@ class OpzioniTabellaController extends FiCoreController
 
     public function setParametriGriglia($prepar = array())
     {
-        self::setup($prepar['request']);
+        $this->setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
         $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array();
+        $tabellej = array();
         $tabellej['tabelle_id'] = array('tabella' => 'tabelle', 'campi' => array('nometabella'));
 
         $paricevuti = array(
@@ -104,7 +105,7 @@ class OpzioniTabellaController extends FiCoreController
             'nometabella' => $controller,
             'escludere' => $escludi,);
 
-        if ($prepar) {
+        if (! empty($prepar)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 

@@ -57,7 +57,6 @@ class Fifree2mysqlconvertdbengineCommand extends ContainerAwareCommand
             $conn->exec($sqlalter);
         }
 
-        //var_dump($sql);exit;
         $fine = microtime(true);
         $tempo = gmdate('H:i:s', $fine - $inizio);
 

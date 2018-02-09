@@ -1,37 +1,37 @@
 # Cache and logs (Symfony2)
-/app/cache/*
-/app/logs/*
-!app/cache/.gitkeep
-!app/logs/.gitkeep
+/tests/app/cache/*
+/tests/app/logs/*
+!tests/app/cache/.gitkeep
+!tests/app/logs/.gitkeep
 
 # Email spool folder
-/app/spool/*
+/tests/app/spool/*
 
 # Cache, session files and logs (Symfony3)
-/var/cache/*
-/var/logs/*
-/var/sessions/*
-!var/cache/.gitkeep
-!var/logs/.gitkeep
-!var/sessions/.gitkeep
+/tests/var/cache/*
+/tests/var/logs/*
+/tests/var/sessions/*
+!tests/var/cache/.gitkeep
+!tests/var/logs/.gitkeep
+!tests/var/sessions/.gitkeep
 
 # Parameters
-/app/config/parameters.yml
-/app/config/parameters.ini
+/tests/app/config/parameters.yml
+/tests/app/config/parameters.ini
 
 # Managed by Composer
-/app/bootstrap.php.cache
-/var/bootstrap.php.cache
-/bin/*
-!bin/console
-!bin/symfony_requirements
+/tests/app/bootstrap.php.cache
+/tests/var/bootstrap.php.cache
+/tests/bin/*
+!tests/bin/console
+!tests/bin/symfony_requirements
 
 # Assets and user uploads
-/web/bundles/
-/web/uploads/
+/tests/web/bundles/
+/tests/web/uploads/
 
 # PHPUnit
-/app/phpunit.xml
+/tests/app/phpunit.xml
 /phpunit.xml
 
 # Build data
@@ -44,10 +44,5 @@
 /.web-server-pid
 
 /vendor/
-app/dbtest.sqlite
+/tests/app/dbtest.sqlite
 composer.lock
-
-tests/var/cache/*
-tests/var/logs/*
-tests/app/dbtest.sqlite
-tests/app/bootstrap.php.cache

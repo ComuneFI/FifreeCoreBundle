@@ -8,9 +8,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
-use Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
-use Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
-use Fi\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper;
 
 class GenerateentitiesCommand extends ContainerAwareCommand
 {
@@ -33,9 +30,9 @@ class GenerateentitiesCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
-        $this->apppaths = new ProjectPath($this->getContainer());
-        $this->genhelper = new GeneratorHelper($this->getContainer());
-        $this->pammutils = new PannelloAmministrazioneUtils($this->getContainer());
+        $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
+        $this->genhelper = $this->getContainer()->get("pannelloamministrazione.generatorhelper");
+        $this->pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
 
         $bundlename = $input->getArgument('bundlename');
         $schemaupdate = false;
@@ -70,8 +67,6 @@ class GenerateentitiesCommand extends ContainerAwareCommand
     {
         /* GENERATE ENTITIES */
         $output->writeln('Creazione entities class per il bundle ' . str_replace('/', '', $bundlename));
-        //$application = new Application($this->getContainer()->get('kernel'));
-        //$application->setAutoExit(false);
 
         $console = $this->apppaths->getConsole();
         $scriptGenerator = $console . ' doctrine:generate:entities';
@@ -80,7 +75,7 @@ class GenerateentitiesCommand extends ContainerAwareCommand
         $command = $phpPath . ' ' . $scriptGenerator . ' --no-backup ' . str_replace('/', '', $bundlename)
                 . ' --env=' . $this->getContainer()->get('kernel')->getEnvironment();
 
-        $generateentitiesresult = PannelloAmministrazioneUtils::runCommand($command);
+        $generateentitiesresult = $this->pammutils->runCommand($command);
         if ($generateentitiesresult["errcode"] < 0) {
             $output->writeln($generateentitiesresult["errmsg"]);
             return 1;
@@ -88,18 +83,10 @@ class GenerateentitiesCommand extends ContainerAwareCommand
             $output->writeln($generateentitiesresult["errmsg"]);
         }
 
-        /* $command = $this->getApplication()->find('doctrine:generate:entities');
-          $inputdge = new ArrayInput(array('--no-backup' => true, 'name' => str_replace('/', '', $bundlename)));
-          $command->run($inputdge, $output); */
-
         $output->writeln('<info>Entities class create</info>');
 
         if ($schemaupdate) {
             $output->writeln('Aggiornamento database...');
-
-            /* $command = $this->getApplication()->find('doctrine:schema:update');
-              $inputdsu = new ArrayInput(array('--force' => true, '--em' => $emdest));
-              $result = $command->run($inputdsu, $output); */
 
             $scriptGenerator = $console . ' doctrine:schema:update';
 
@@ -107,8 +94,7 @@ class GenerateentitiesCommand extends ContainerAwareCommand
             $command = $phpPath . ' ' . $scriptGenerator . ' --force --em=' . $emdest
                     . ' --no-debug --env=' . $this->getContainer()->get('kernel')->getEnvironment();
 
-
-            $schemaupdateresult = PannelloAmministrazioneUtils::runCommand($command);
+            $schemaupdateresult = $this->pammutils->runCommand($command);
             if ($schemaupdateresult["errcode"] < 0) {
                 $output->writeln($schemaupdateresult["errmsg"]);
             } else {

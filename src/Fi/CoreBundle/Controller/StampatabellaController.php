@@ -2,7 +2,7 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Fi\CoreBundle\DependencyInjection\GrigliaFiltriUtils;
+use Fi\CoreBundle\Utils\GrigliaFiltriUtils;
 use TCPDF;
 
 class StampatabellaController extends FiCoreController
@@ -18,17 +18,13 @@ class StampatabellaController extends FiCoreController
     public function stampa($parametri = array())
     {
         $testata = $parametri['testata'];
-        $rispostaj = $parametri['griglia'];
         $request = $parametri['request'];
-        $nomicolonne = $testata['nomicolonne'];
-
-        $modellicolonne = $testata['modellocolonne'];
-        $larghezzaform = 900;
+        $nometabella = $request->get('nometabella');
 
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         //echo PDF_HEADER_LOGO;
-        $pdftitle = isset($testata['titolo']) && ($testata['titolo'] != '') ? $testata['titolo'] : 'Elenco ' . $request->get('nometabella');
+        $pdftitle = isset($testata['titolo']) && ($testata['titolo'] != '') ? $testata['titolo'] : 'Elenco ' . $nometabella;
         $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'FiFree2', $pdftitle, array(0, 0, 0), array(0, 0, 0));
         $pdf->setFooterData(array(0, 0, 0), array(0, 0, 0));
 
@@ -41,65 +37,19 @@ class StampatabellaController extends FiCoreController
         $pdf->SetFillColor(220, 220, 220);
 
         $pdf->AddPage('L');
-        $h = 6;
-        $border = 1;
-        $ln = 0;
-        $align = 'L';
-        $fill = 0;
+        $arraystampaparm = array(
+            "larghezzaform" => 900,
+            "h" => 6,
+            "border" => 1,
+            "align" => 'L',
+            "fill" => 0,
+            "ln" => 0
+        );
+        $parametristampa = array_merge($parametri, $arraystampaparm);
 
-        $dimensions = $pdf->getPageDimensions();
+        $this->stampaTestata($pdf, $parametristampa);
 
-        $this->stampaTestata($pdf, $nomicolonne, $modellicolonne, $larghezzaform, $h, $border, $align, $fill, $ln);
-
-        // Dati
-        $risposta = json_decode($rispostaj);
-        $righe = $risposta->rows;
-        $pdf->SetFont('helvetica', '', 9);
-        foreach ($righe as $riga) {
-            $fill = !$fill;
-            $vettorecelle = $riga->cell;
-
-            $arr_heights = array();
-            // store current object
-            $pdf->startTransaction();
-            foreach ($vettorecelle as $posizione => $valore) {
-                if (!is_object($valore)) {
-                    if (isset($modellicolonne[$posizione])) {
-                        $width = ((297 * $modellicolonne[$posizione]['width']) / $larghezzaform) / 2;
-                    } else {
-                        $width = ((297 * 100) / $larghezzaform) / 2;
-                    }
-                    // get the number of lines
-                    $arr_heights[] = $pdf->MultiCell($width, 0, $valore, $border, $align, $fill, 0, '', '', true, 0, false, true, 0);
-                    //$arr_heights[] = $pdf->getNumLines($valore, $width);
-                }
-            }
-            // restore previous object
-            $pdf->rollbackTransaction(true);
-            //work out the number of lines required
-            $rowcount = max($arr_heights);
-            $startY = $pdf->GetY();
-            if (($startY + $rowcount * $h) + $dimensions['bm'] > ($dimensions['hk'])) {
-                // page break
-                $pdf->AddPage('L');
-                // stampa testata
-                $this->stampaTestata($pdf, $nomicolonne, $modellicolonne, $larghezzaform, $h, $border, $align, $fill, $ln);
-            }
-            //now draw it
-            foreach ($vettorecelle as $posizione => $valore) {
-                if (!is_object($valore)) {
-                    if (isset($modellicolonne[$posizione])) {
-                        $width = ((297 * $modellicolonne[$posizione]['width']) / $larghezzaform) / 2;
-                    } else {
-                        $width = ((297 * 100) / $larghezzaform) / 2;
-                    }
-                    $pdf->MultiCell($width, $rowcount * $h, $valore, $border, $align, $fill, $ln);
-                }
-            }
-            $pdf->Ln();
-        }
-
-        $pdf->Cell(0, 10, GrigliaFiltriUtils::traduciFiltri(array('filtri' => $risposta->filtri)), 0, false, 'L', 0, '', 0, false, 'T', 'M');
+        $this->stampaDettaglio($pdf, $parametristampa);
 
         /*
           I: send the file inline to the browser (default). The plug-in is used if available.
@@ -149,7 +99,7 @@ class StampatabellaController extends FiCoreController
         $sheet = $objPHPExcel->getActiveSheet();
         $titolosheet = 'Esportazione ' . $testata['tabella'];
         $sheet->setTitle(substr($titolosheet, 0, 30));
-        $sheet->getDefaultStyle()->getFont()->setName('Verdana');
+        $sheet->getParent()->getDefaultStyle()->getFont()->setName('Verdana');
 
         $this->printHeaderXls($modellicolonne, $testata, $sheet);
 
@@ -166,7 +116,6 @@ class StampatabellaController extends FiCoreController
         $objWriter = new \PHPExcel_Writer_Excel5($objPHPExcel);
         $todaydate = date('d-m-y');
 
-        //$todaydate = $todaydate . '-' . date("H-i-s");
         $filename = 'Exportazione_' . $testata['tabella'];
         $filename = $filename . '-' . $todaydate . '-' . strtoupper(md5(uniqid(rand(), true)));
         $filename = $filename . '.xls';
@@ -184,6 +133,7 @@ class StampatabellaController extends FiCoreController
     private function printHeaderXls($modellicolonne, $testata, $sheet)
     {
         $indicecolonnaheader = 0;
+        $letteracolonna = 0;
         foreach ($modellicolonne as $modellocolonna) {
             //Si imposta la larghezza delle colonne
             $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonnaheader);
@@ -221,9 +171,9 @@ class StampatabellaController extends FiCoreController
         $valore = null;
         switch ($tipocampo) {
             case 'date':
-                $d = substr($vettorecella, 0, 2);
-                $m = substr($vettorecella, 3, 2);
-                $y = substr($vettorecella, 6, 4);
+                $d = (int) substr($vettorecella, 0, 2);
+                $m = (int) substr($vettorecella, 3, 2);
+                $y = (int) substr($vettorecella, 6, 4);
                 $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
                 $valore = $t_date;
                 break;
@@ -306,22 +256,27 @@ class StampatabellaController extends FiCoreController
         }
     }
 
-    private function stampaTestata($pdf, $nomicolonne, $modellicolonne, $larghezzaform, $h, $border, $align, $fill, $ln)
+    private function stampaTestata($pdf, $parametri)
     {
+        $ln = $parametri['ln'];
+        $fill = $parametri['fill'];
+        $align = $parametri['align'];
+        $border = $parametri['border'];
+        $h = $parametri['h'];
+        $larghezzaform = $parametri['larghezzaform'];
+        $testata = $parametri['testata'];
+        $nomicolonne = $testata['nomicolonne'];
+        $modellicolonne = $testata['modellocolonne'];
+
         // Testata
         $pdf->SetFont('helvetica', 'B', 9);
         $arr_heights = array();
         // store current object
         $pdf->startTransaction();
         foreach ($nomicolonne as $posizione => $nomecolonna) {
-            if (isset($modellicolonne[$posizione])) {
-                $width = ((297 * $modellicolonne[$posizione]['width']) / $larghezzaform) / 2;
-            } else {
-                $width = ((297 * 100) / $larghezzaform) / 2;
-            }
+            $width = $this->getWidthColumn($modellicolonne, $posizione, $larghezzaform);
             // get the number of lines
             $arr_heights[] = $pdf->MultiCell($width, 0, $nomecolonna, $border, $align, $fill, 0, '', '', true, 0, false, true, 0);
-            //$arr_heights[] = $pdf->getNumLines($nomecolonna, $width, FALSE, TRUE, '', 1);
         }
         // restore previous object
         $pdf->rollbackTransaction(true);
@@ -329,14 +284,75 @@ class StampatabellaController extends FiCoreController
         $rowcount = max($arr_heights);
         //now draw it
         foreach ($nomicolonne as $posizione => $nomecolonna) {
-            if (isset($modellicolonne[$posizione])) {
-                $width = ((297 * $modellicolonne[$posizione]['width']) / $larghezzaform) / 2;
-            } else {
-                $width = ((297 * 100) / $larghezzaform) / 2;
-            }
+            $width = $this->getWidthColumn($modellicolonne, $posizione, $larghezzaform);
             $pdf->MultiCell($width, $rowcount * $h, $nomecolonna, $border, $align, $fill, $ln);
         }
         $pdf->SetFont('helvetica', '', 9);
         $pdf->Ln();
+    }
+
+    private function stampaDettaglio($pdf, $parametri)
+    {
+
+        $ln = $parametri['ln'];
+        $fill = $parametri['fill'];
+        $align = $parametri['align'];
+        $border = $parametri['border'];
+        $h = $parametri['h'];
+        $larghezzaform = $parametri['larghezzaform'];
+        $testata = $parametri['testata'];
+        $modellicolonne = $testata['modellocolonne'];
+
+        $rispostaj = $parametri['griglia'];
+        // Dati
+        $risposta = json_decode($rispostaj);
+        $dimensions = $pdf->getPageDimensions();
+        $righe = $risposta->rows;
+        $pdf->SetFont('helvetica', '', 9);
+        foreach ($righe as $riga) {
+            $fill = !$fill;
+            $vettorecelle = $riga->cell;
+
+            $arr_heights = array();
+            // store current object
+            $pdf->startTransaction();
+            foreach ($vettorecelle as $posizione => $valore) {
+                if (!is_object($valore)) {
+                    $width = $this->getWidthColumn($modellicolonne, $posizione, $larghezzaform);
+                    // get the number of lines
+                    $arr_heights[] = $pdf->MultiCell($width, 0, $valore, $border, $align, $fill, 0, '', '', true, 0, false, true, 0);
+                }
+            }
+            // restore previous object
+            $pdf->rollbackTransaction(true);
+            //work out the number of lines required
+            $rowcount = max($arr_heights);
+            $startY = $pdf->GetY();
+            if (($startY + $rowcount * $h) + $dimensions['bm'] > ($dimensions['hk'])) {
+                // page break
+                $pdf->AddPage('L');
+                // stampa testata
+                $this->stampaTestata($pdf, $parametri);
+            }
+            //now draw it
+            foreach ($vettorecelle as $posizione => $valore) {
+                if (!is_object($valore)) {
+                    $width = $this->getWidthColumn($modellicolonne, $posizione, $larghezzaform);
+                    $pdf->MultiCell($width, $rowcount * $h, $valore, $border, $align, $fill, $ln);
+                }
+            }
+            $pdf->Ln();
+        }
+        $pdf->Cell(0, 10, GrigliaFiltriUtils::traduciFiltri(array('filtri' => $risposta->filtri)), 0, false, 'L', 0, '', 0, false, 'T', 'M');
+    }
+
+    private function getWidthColumn($modellicolonne, $posizione, $larghezzaform)
+    {
+        if (isset($modellicolonne[$posizione])) {
+            $width = ((297 * $modellicolonne[$posizione]['width']) / $larghezzaform) / 2;
+        } else {
+            $width = ((297 * 100) / $larghezzaform) / 2;
+        }
+        return $width;
     }
 }

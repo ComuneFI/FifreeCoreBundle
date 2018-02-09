@@ -2,6 +2,10 @@ MenuApplicazione_container:
     path:  /
     defaults: { _controller: "FiCoreBundle:MenuApplicazione:index" }
 
+MenuApplicazione:
+    path:  /
+    defaults: { _controller: "FiCoreBundle:MenuApplicazione:index" }
+
 MenuApplicazione_new:
     path:  /new
     defaults: { _controller: "FiCoreBundle:MenuApplicazione:new" }

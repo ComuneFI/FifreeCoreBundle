@@ -4,7 +4,7 @@ namespace Fi\CoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Fi\CoreBundle\DependencyInjection\GrigliaFiltriUtils;
+use Fi\CoreBundle\Utils\GrigliaFiltriUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class FunzioniController extends Controller

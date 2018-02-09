@@ -5,6 +5,31 @@ services:
 #    fi_pannello_amministrazione.example:
 #        class: %fi_pannello_amministrazione.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+            
+    pannelloamministrazione.commands:
+        class: Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloamministrazioneCommands
+        public: true
+        arguments:
+            ['@service_container']
+
+    pannelloamministrazione.utils:
+        class: Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils
+        public: true
+        arguments:
+            ['@service_container']
+
+    pannelloamministrazione.projectpath:
+        class: Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath
+        public: true
+        arguments:
+            ['@service_container']
+
+    pannelloamministrazione.generatorhelper:
+        class: Fi\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper
+        public: true
+        arguments:
+            ['@service_container']
+
     pannelloamministrazione.command.generateentities:
         class: Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand
         public: false
@@ -17,6 +42,12 @@ services:
         tags:
             -  { name: console.command }
             
+    pannelloamministrazione.command.generateform:
+        class: Fi\PannelloAmministrazioneBundle\Command\GenerateFormCommand
+        public: false
+        tags:
+            -  { name: console.command }            
+
     pannelloamministrazione.command.checkgitversion:
         class: Fi\PannelloAmministrazioneBundle\Command\CheckgitversionCommand
         public: false

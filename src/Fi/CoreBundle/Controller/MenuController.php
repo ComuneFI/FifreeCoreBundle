@@ -5,7 +5,7 @@ namespace Fi\CoreBundle\Controller;
 /**
  * Menu controller.
  */
-class MenuController extends MenuApplicazioneController
+class MenuController extends FiCoreController
 {
 
     protected function initGestionePermessi()
@@ -18,9 +18,8 @@ class MenuController extends MenuApplicazioneController
     public function generamenuAction()
     {
         $router = $this->get('router')->match('/')['_route'];
-        //$homeurl = $this->generateUrl($router, array(), true);
-
-        $risposta[] = array('percorso' => $this->getUrlObject($this->container->getParameter('appname'), $router, ''),
+        $rispostahome = array();
+        $rispostahome[] = array('percorso' => $this->getUrlObject($this->container->getParameter('appname'), $router, ''),
             'nome' => $this->container->getParameter('appname'),
             'target' => '',
         );
@@ -36,9 +35,11 @@ class MenuController extends MenuApplicazioneController
         $qb->orderBy('a.ordine', 'ASC');
         $menu = $qb->getQuery()->getResult();
 
-        $risposta = array_merge($risposta, $this->getMenu($menu));
+        $risposta = array_merge($rispostahome, $this->getMenu($menu));
         $webdir = $this->get('kernel')->getRootDir() . '/../web';
         $pathmanuale = '/uploads/manuale.pdf';
+        $username = "";
+        $urlLogout = "";
 
         if (file_exists($webdir . $pathmanuale)) {
             $risposta[] = array('percorso' => $this->getUrlObject('Manuale', $pathmanuale, '_blank'), 'nome' => 'Manuale', 'target' => '_blank');

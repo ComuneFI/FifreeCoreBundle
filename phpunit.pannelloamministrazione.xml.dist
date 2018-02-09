@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit
+    backupGlobals               = "false"
+    backupStaticAttributes      = "false"
+    colors                      = "true"
+    convertErrorsToExceptions   = "true"
+    convertNoticesToExceptions  = "true"
+    convertWarningsToExceptions = "true"
+    processIsolation            = "false"
+    stopOnFailure               = "true"
+    syntaxCheck                 = "false"
+    bootstrap                   = "tests/bootstrap.php" >
+
+    <testsuites>
+        <testsuite name="Pannelloamministrazionebundle">
+            <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/Command</directory>
+            <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/Dependencyinjection</directory>
+            <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/Controller</directory>
+        </testsuite>
+    </testsuites>
+    
+    <php>
+        <server name="KERNEL_CLASS" value="AppKernel" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="30" />
+        <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
+        <const name="WEB_SERVER_HOST" value="localhost" />
+        <const name="WEB_SERVER_PORT" value="8000" />
+        <const name="WEB_SERVER_DOCROOT" value="./tests/web" />
+    </php>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory>./src</directory>
+        </whitelist>
+    </filter>
+    
+    <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+        <listener class="Symfony\Bridge\PhpUnit\CoverageListener" />
+    </listeners>   
+</phpunit>

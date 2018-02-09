@@ -9,40 +9,31 @@
     convertNoticesToExceptions  = "true"
     convertWarningsToExceptions = "true"
     processIsolation            = "false"
-    stopOnFailure               = "false"
+    stopOnFailure               = "true"
     syntaxCheck                 = "false"
     bootstrap                   = "tests/bootstrap.php" >
 
     <testsuites>
-        <testsuite name="Collector">
-            <directory suffix=".php">./tests/Core/Collector</directory>
-        </testsuite>
-        <testsuite name="Command">
-            <directory suffix=".php">./tests/Core/Command</directory>
-        </testsuite>
-        <testsuite name="Controller">
-            <directory suffix=".php">./tests/Core/Controller</directory>
-        </testsuite>
-        <testsuite name="DependencyInjection">
-            <directory suffix=".php">./tests/Core/DependencyInjection</directory>
-        </testsuite>
-        <testsuite name="Entity">
-            <directory suffix=".php">./tests/Core/Entity</directory>
-        </testsuite>
-        <testsuite name="Form">
-            <directory suffix=".php">./tests/Core/Form</directory>
-        </testsuite>
-        <testsuite name="Command">
-            <directory suffix=".php">./tests/PannelloAmministrazione/Command</directory>
-        </testsuite>
-        <testsuite name="Controller">
-            <directory suffix=".php">./tests/PannelloAmministrazione/Controller</directory>
+        <testsuite name="Corebundle">
+            <directory suffix=".php">./tests/Fi/CoreBundle/Collector</directory>
+            <directory suffix=".php">./tests/Fi/CoreBundle/Command</directory>
+            <directory suffix=".php">./tests/Fi/CoreBundle/Controller</directory>
+            <directory suffix=".php">./tests/Fi/CoreBundle/DependencyInjection</directory>
+            <directory suffix=".php">./tests/Fi/CoreBundle/Entity</directory>
+            <directory suffix=".php">./tests/Fi/CoreBundle/Form</directory>
+            <directory suffix=".php">./tests/Fi/CoreBundle/Utils</directory>
+            <directory suffix=".php">./tests/Fi/CoreBundle/Functional</directory>
+            <directory suffix=".php">./tests/Fi/CoreBundle/Listener</directory>
         </testsuite>
     </testsuites>
     
     <php>
         <server name="KERNEL_CLASS" value="AppKernel" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="63" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="16" />
+        <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
+        <const name="WEB_SERVER_HOST" value="localhost" />
+        <const name="WEB_SERVER_PORT" value="8000" />
+        <const name="WEB_SERVER_DOCROOT" value="./tests/web" />
     </php>
 
     <filter>
@@ -53,5 +44,6 @@
     
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+        <listener class="Symfony\Bridge\PhpUnit\CoverageListener" />
     </listeners>   
 </phpunit>

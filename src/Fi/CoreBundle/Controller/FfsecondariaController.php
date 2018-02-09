@@ -14,13 +14,15 @@ class FfsecondariaController extends FiCoreController
     public function indexAction(Request $request)
     {
 
-        parent::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
         $container = $this->container;
 
         $nomebundle = $namespace . $bundle . 'Bundle';
+
+        $ffprincipaleSelect = $this->getComboSelectFfprincipale();
 
         $dettaglij = array(
             'descsec' => array(
@@ -32,7 +34,9 @@ class FfsecondariaController extends FiCoreController
                 array('nomecampo' => 'ffprincipale.descrizione',
                     'lunghezza' => '400',
                     'descrizione' => 'Descrizione record principale',
-                    'tipo' => 'text',),
+                    'tipo' => 'select',
+                    'valoricombo' => $ffprincipaleSelect
+                ),
             ),
         );
         $escludi = array('nota');
@@ -61,10 +65,8 @@ class FfsecondariaController extends FiCoreController
         $testatagriglia['showexcel'] = 1;
         $testatagriglia['showimportexcel'] = 1;
 
-        //$testatagriglia["filterToolbar_stringResult"] = false;
         $testatagriglia["filterToolbar_searchOnEnter"] = true;
         $testatagriglia["filterToolbar_searchOperators"] = true;
-        //$testatagriglia["filterToolbar_clearSearch"] = false;
 
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
         $this->setParametriGriglia(array('request' => $request));
@@ -87,9 +89,33 @@ class FfsecondariaController extends FiCoreController
         }
     }
 
+    private function getComboSelectFfprincipale()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $ffprincipaleSelect = array();
+        //Imposta il filtro a TUTTI come default
+        $ffprincipaleSelect[] = array("valore" => "", "descrizione" => "Tutti", "default" => true);
+
+        $q = $em->createQueryBuilder();
+
+        $ffprincipales = $q->select('f')
+                ->from('FiCoreBundle:Ffprincipale', 'f')
+                ->orderBy('f.descrizione')
+                ->getQuery()
+                ->getResult();
+
+        foreach ($ffprincipales as $ffprincipale) {
+            $ffprincipaleSelect[] = array(
+                "valore" => $ffprincipale->getDescrizione(),
+                "descrizione" => $ffprincipale->getDescrizione(),
+                "default" => false);
+        }
+        return $ffprincipaleSelect;
+    }
+
     public function setParametriGriglia($prepar = array())
     {
-        self::setup($prepar['request']);
+        $this->setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -102,11 +128,11 @@ class FfsecondariaController extends FiCoreController
 
         $nomebundle = $namespace . $bundle . 'Bundle';
         $escludi = array('nota', 'ffprincipale');
+        $tabellej = array();
+        $precondizioniAvanzate = array();
         $tabellej['ffprincipale_id'] = array('tabella' => 'ffprincipale', 'campi' => array('descrizione'));
 
         $campiextra = array(array('lunghezzanota'), array('attivoToString'));
-        //$campiextra = array(array("lunghezzanota"));
-        //$campiextra = array("lunghezzanota");
 
         $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
             'nomecampo' => 'intero',
@@ -118,12 +144,6 @@ class FfsecondariaController extends FiCoreController
             'valorecampo' => date('Y-m-d'),
             'operatorelogico' => 'AND',);
 
-        /* $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
-          'nomecampo' => 'attivo',
-          'operatore' => '=',
-          'valorecampo' => true,
-          'operatorelogico' => 'AND',); */
-
         $paricevuti = array('container' => $this->container,
             'nomebundle' => $nomebundle,
             'tabellej' => $tabellej,
@@ -132,7 +152,7 @@ class FfsecondariaController extends FiCoreController
             'escludere' => $escludi,
             'precondizioniAvanzate' => $precondizioniAvanzate,);
 
-        if ($prepar) {
+        if (!empty($prepar)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 

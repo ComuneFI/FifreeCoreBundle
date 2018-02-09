@@ -9,10 +9,8 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
-use Fi\PannelloAmministrazioneBundle\DependencyInjection\Commands;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
 use Fi\PannelloAmministrazioneBundle\DependencyInjection\LockSystem;
-use Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
 
 class PannelloAmministrazioneController extends Controller
 {
@@ -23,7 +21,7 @@ class PannelloAmministrazioneController extends Controller
     {
         $finder = new Finder();
         $fs = new Filesystem();
-        $this->apppaths = new ProjectPath($this->container);
+        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
 
         $projectDir = $this->apppaths->getRootPath();
         $bundlelists = $this->container->getParameter('kernel.bundles');
@@ -62,11 +60,13 @@ class PannelloAmministrazioneController extends Controller
 
         if (!OsFunctions::isWindows()) {
             $delcmd = 'rm -rf';
-            $delfoldercmd = 'rm -rf';
+            $setfilelock = "touch " .$this->getParameter("maintenanceLockFilePath");
+            $remfilelock = "rm " .$this->getParameter("maintenanceLockFilePath");
             $windows = false;
         } else {
             $delcmd = 'del';
-            $delfoldercmd = 'rmdir /s';
+            $setfilelock = 'echo $null >> ' .$this->getParameter("maintenanceLockFilePath");
+            $remfilelock = "del " .$this->getParameter("maintenanceLockFilePath");
             $windows = true;
         }
 
@@ -75,6 +75,8 @@ class PannelloAmministrazioneController extends Controller
         $dellogsfiles = $delcmd . ' ' . $this->apppaths->getLogsPath() . DIRECTORY_SEPARATOR . '*';
         $delcacheprodfiles = $delcmd . ' ' . $this->apppaths->getCachePath() . DIRECTORY_SEPARATOR . 'prod' . DIRECTORY_SEPARATOR . '*';
         $delcachedevfiles = $delcmd . ' ' . $this->apppaths->getCachePath() . DIRECTORY_SEPARATOR . 'dev' . DIRECTORY_SEPARATOR . '*';
+        $setmaintenancefile = $setfilelock;
+        $remmaintenancefile = $remfilelock;
 
         $comandishell = array(
             'lockfile' => $this->fixSlash($dellockfile),
@@ -82,6 +84,8 @@ class PannelloAmministrazioneController extends Controller
             'logsfiles' => $this->fixSlash($dellogsfiles),
             'cacheprodfiles' => $this->fixSlash($delcacheprodfiles),
             'cachedevfiles' => $this->fixSlash($delcachedevfiles),
+            'setmaintenancefile' => $setmaintenancefile,
+            'remmaintenancefile' => $remmaintenancefile,
         );
 
         $twigparms = array('svn' => $svn, 'git' => $git, 'bundles' => $bundles, 'mwbs' => $mwbs,
@@ -102,8 +106,8 @@ class PannelloAmministrazioneController extends Controller
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {
             (new LockSystem($this->container))->lockFile(true);
-            $commands = new Commands($this->container);
-            $result = $commands->aggiornaSchemaDatabase();
+            $command = $this->container->get("pannelloamministrazione.commands");
+            $result = $command->aggiornaSchemaDatabase();
 
             (new LockSystem($this->container))->lockFile(false);
             $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
@@ -124,7 +128,7 @@ class PannelloAmministrazioneController extends Controller
 
             (new LockSystem($this->container))->lockFile(true);
 
-            $command = new Commands($this->container);
+            $command = $this->container->get("pannelloamministrazione.commands");
             $ret = $command->generateFormCrud($bundlename, $entityform);
 
             (new LockSystem($this->container))->lockFile(false);
@@ -150,8 +154,8 @@ class PannelloAmministrazioneController extends Controller
             (new LockSystem($this->container))->lockFile(true);
             $wbFile = $request->get('file');
             $bundlePath = $request->get('bundle');
-            $commands = new Commands($this->container);
-            $ret = $commands->generateEntity($wbFile, $bundlePath);
+            $command = $this->container->get("pannelloamministrazione.commands");
+            $ret = $command->generateEntity($wbFile, $bundlePath);
             (new LockSystem($this->container))->lockFile(false);
             return new Response($ret['message']);
         }
@@ -166,8 +170,8 @@ class PannelloAmministrazioneController extends Controller
         } else {
             (new LockSystem($this->container))->lockFile(true);
             $bundlePath = $request->get('bundle');
-            $commands = new Commands($this->container);
-            $ret = $commands->generateEntityClass($bundlePath);
+            $command = $this->container->get("pannelloamministrazione.commands");
+            $ret = $command->generateEntityClass($bundlePath);
             (new LockSystem($this->container))->lockFile(false);
 
             return new Response($ret['message']);
@@ -178,14 +182,14 @@ class PannelloAmministrazioneController extends Controller
 
     public function generateBundleAction(Request $request)
     {
-        $this->apppaths = new ProjectPath($this->container);
+        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
         if ((new LockSystem($this->container))->isLockedFile()) {
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {
             (new LockSystem($this->container))->lockFile(true);
-            $commands = new Commands($this->container);
+            $command = $this->container->get("pannelloamministrazione.commands");
             $bundleName = $request->get('bundlename');
-            $result = $commands->generateBundle($bundleName);
+            $result = $command->generateBundle($bundleName);
             if ($result["errcode"] >= 0) {
                 //$msg = "\nPer abilitare il nuovo bundle nel kernel pulire la cache e aggiornare la pagina";
                 //$alert = '<script type="text/javascript">alert("' . $msg . '");location.reload();</script>';
@@ -196,10 +200,6 @@ class PannelloAmministrazioneController extends Controller
             //exit;
             $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
 
-            //$commands->clearcache();
-            //$this->container->get('kernel')->shutdown();
-            //$this->container->get('kernel')->boot();
-
             return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
         }
     }
@@ -209,13 +209,13 @@ class PannelloAmministrazioneController extends Controller
     public function getVcsAction()
     {
         set_time_limit(0);
-        $this->apppaths = new ProjectPath($this->container);
+        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
         if ((new LockSystem($this->container))->isLockedFile()) {
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {
             (new LockSystem($this->container))->lockFile(true);
-            $commands = new Commands($this->container);
-            $result = $commands->getVcs();
+            $command = $this->container->get("pannelloamministrazione.commands");
+            $result = $command->getVcs();
             (new LockSystem($this->container))->lockFile(false);
             if ($result['errcode'] < 0) {
                 $responseout = '<pre>Errore nel comando: <i style = "color: white;">' . $result['command'] . '</i>'
@@ -243,8 +243,8 @@ class PannelloAmministrazioneController extends Controller
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {
             (new LockSystem($this->container))->lockFile(true);
-            $commands = new Commands($this->container);
-            $result = $commands->clearcache();
+            $command = $this->container->get("pannelloamministrazione.commands");
+            $result = $command->clearcache();
 
             (new LockSystem($this->container))->lockFile(false);
 
@@ -265,7 +265,7 @@ class PannelloAmministrazioneController extends Controller
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {
             (new LockSystem($this->container))->lockFile(true);
-            $this->apppaths = new ProjectPath($this->container);
+            $this->apppaths = $this->get("pannelloamministrazione.projectpath");
             $pammutils = new PannelloAmministrazioneUtils($this->container);
             $phpPath = OsFunctions::getPHPExecutableFromPath();
             $result = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' ' . $comando);
@@ -359,7 +359,7 @@ class PannelloAmministrazioneController extends Controller
     public function phpunittestAction(Request $request)
     {
         set_time_limit(0);
-        $this->apppaths = new ProjectPath($this->container);
+        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
         if ((new LockSystem($this->container))->isLockedFile()) {
             return (new LockSystem($this->container))->lockedFunctionMessage();
         } else {

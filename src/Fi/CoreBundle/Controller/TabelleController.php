@@ -5,7 +5,7 @@ namespace Fi\CoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Fi\CoreBundle\Entity\tabelle;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Tabelle controller.
@@ -23,6 +23,9 @@ class TabelleController extends FiCoreController
 
             $em = $this->getDoctrine()->getManager();
             $tabelle = $em->getRepository('FiCoreBundle:Tabelle')->find($id);
+            if (!$tabelle) {
+                throw new AccessDeniedException("Oggetto non trovato");
+            }
             $tabelle->setOperatoriId($operatore['id']);
             $nometabella = $this->getRequestValue($request, 'nometabella');
             if ($nometabella) {
@@ -57,20 +60,6 @@ class TabelleController extends FiCoreController
             $em->flush();
         }
 
-        /* operatori_id int(11)
-          nometabella   varchar(45)
-          nomecampo     varchar(45)
-          mostraindex   tinyint(1)
-          ordineindex   int(11)
-          larghezzaindex        int(11)
-          etichettaindex        varchar(255)
-          mostrastampa  tinyint(1)
-          ordinestampa  int(11)
-          larghezzastampa       int(11)
-          etichettastampa       varchar(255)
-         *
-         */
-
         return new Response('OK');
     }
 
@@ -85,14 +74,29 @@ class TabelleController extends FiCoreController
 
     public function configuraAction(Request $request, $nometabella)
     {
-        parent::setup($request);
-        $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
-        $operatore = $gestionepermessi->utentecorrente();
-        $this->generaDB(array('tabella' => $nometabella), $request);
-        $this->generaDB(array('tabella' => $nometabella, 'operatore' => $operatore['id']), $request);
-
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
+        $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
+        $operatore = $gestionepermessi->utentecorrente();
+
+        $utilitytabelle = $this->get("ficorebundle.tabelle.utility");
+
+        $parametritabella = array(
+            'tabella' => $nometabella,
+            "namespace" => $namespace,
+            "bundle" => $bundle
+        );
+        $parametritabellaoperatore = array(
+            'tabella' => $nometabella,
+            "namespace" => $namespace,
+            "bundle" => $bundle,
+            'operatore' => $operatore['id']
+        );
+
+        $utilitytabelle->generaDB($parametritabella);
+        $utilitytabelle->generaDB($parametritabellaoperatore);
+
         $controller = $this->getController();
         $container = $this->container;
 
@@ -172,93 +176,9 @@ class TabelleController extends FiCoreController
         return $this->render($nomebundle . ':' . $controller . ':configura.html.twig', $twigparm);
     }
 
-    public function generaDB($parametri, Request $request)
-    {
-        parent::setup($request);
-        if (!isset($parametri['tabella'])) {
-            return false;
-        }
-
-        $namespace = $this->getNamespace();
-        $bundle = $this->getBundle();
-
-        $nomebundle = $namespace . $bundle . 'Bundle';
-
-        $nometabella = $parametri['tabella'];
-        $em = $this->getDoctrine()->getManager();
-
-        $bundles = $this->get('kernel')->getBundles();
-        foreach ($bundles as $bundle) {
-            $className = get_class($bundle);
-            $entityClass = substr($className, 0, strrpos($className, '\\'));
-            $tableClassName = '\\' . $entityClass . '\\Entity\\' . $nometabella;
-            if (!class_exists($tableClassName)) {
-                $tableClassName = '';
-                continue;
-            } else {
-                break;
-            }
-        }
-
-        if (!$tableClassName) {
-            throw new \Exception('Entity per la tabella ' . $nometabella . ' non trovata', '-1');
-        }
-
-        $bundleClass = str_replace('\\', '', $entityClass);
-
-        $c = $em->getClassMetadata($bundleClass . ':' . $nometabella);
-
-        $colonne = $c->getColumnNames();
-        $this->scriviDB($colonne, $nometabella, $nomebundle, $parametri);
-    }
-
-    private function scriviDB($colonne, $nometabella, $nomebundle, $parametri)
-    {
-        foreach ($colonne as $colonna) {
-            $vettorericerca = array(
-                'nometabella' => $nometabella,
-                'nomecampo' => $colonna,
-            );
-
-            if (isset($parametri['operatore'])) {
-                $vettorericerca['operatori_id'] = $parametri['operatore'];
-            }
-
-            $trovato = $this->getDoctrine()->getRepository($nomebundle . ':tabelle')->findBy($vettorericerca, array());
-
-            if (!$trovato) {
-                $crea = new tabelle();
-                $crea->setNometabella($nometabella);
-                $crea->setNomecampo($colonna);
-
-                if (isset($parametri['operatore'])) {
-                    $arraycreaoperatore = array('id' => $parametri['operatore']);
-                    $creaoperatore = $this->getDoctrine()->getRepository($nomebundle . ':operatori')->findOneBy($arraycreaoperatore, array());
-                    $crea->setOperatori($creaoperatore);
-
-                    unset($vettorericerca['operatori_id']);
-                    $vettorericerca['operatori_id'] = null;
-                    $ritrovato = $this->getDoctrine()->getRepository($nomebundle . ':tabelle')->findOneBy($vettorericerca, array());
-
-                    if ($ritrovato) {
-                        $crea->setMostrastampa($ritrovato->hasMostrastampa() ? true : false);
-                        $crea->setMostraindex($ritrovato->hasMostraindex() ? true : false);
-                    }
-                } else {
-                    $crea->setMostrastampa(true);
-                    $crea->setMostraindex(true);
-                }
-
-                $ma = $this->getDoctrine()->getManager();
-                $ma->persist($crea);
-                $ma->flush();
-            }
-        }
-    }
-
     public function grigliapopupAction(Request $request, $chiamante)
     {
-        parent::setup($request);
+        $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -268,7 +188,7 @@ class TabelleController extends FiCoreController
 
         $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
         $operatore = $gestionepermessi->utentecorrente();
-
+        $tabellej = array();
         $tabellej['operatori_id'] = array('tabella' => 'operatori', 'campi' => array('username', 'operatore'));
 
         $paricevuti = array(
@@ -285,17 +205,9 @@ class TabelleController extends FiCoreController
         return new Response(Griglia::datiPerGriglia($paricevuti));
     }
 
-    public function grigliaAction(Request $request)
-    {
-        $this->setParametriGriglia(array('request' => $request));
-        $paricevuti = self::$parametrigriglia;
-
-        return new Response(Griglia::datiPerGriglia($paricevuti));
-    }
-
     protected function setParametriGriglia($prepar = array())
     {
-        self::setup($prepar['request']);
+        $this->setup($prepar['request']);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -319,7 +231,7 @@ class TabelleController extends FiCoreController
             'escludere' => $escludi
         );
 
-        if ($prepar) {
+        if (!empty($prepar)) {
             $paricevuti = array_merge($paricevuti, $prepar);
         }
 
@@ -328,12 +240,6 @@ class TabelleController extends FiCoreController
 
     public function listacampitabellaAction(Request $request)
     {
-        parent::setup($request);
-        $namespace = $this->getNamespace();
-        $bundle = $this->getBundle();
-        $controller = $this->getController();
-        $nomebundle = $namespace . $bundle . 'Bundle';
-
         $nometabella = trim($request->get('tabella'));
         if (!isset($nometabella)) {
             return false;
@@ -343,90 +249,10 @@ class TabelleController extends FiCoreController
         if (!isset($escludiid)) {
             $escludiid = 0;
         }
+        $parametri = array("nometabella" => $nometabella, "escludiid" => $escludiid);
 
-        $em = $this->getDoctrine()->getManager();
-
-        $bundles = $this->get('kernel')->getBundles();
-        foreach ($bundles as $bundle) {
-            $className = get_class($bundle);
-            $entityClass = substr($className, 0, strrpos($className, '\\'));
-            $tableClassName = '\\' . $entityClass . '\\Entity\\' . $nometabella;
-            if (!class_exists($tableClassName)) {
-                $tableClassName = '';
-                continue;
-            } else {
-                break;
-            }
-        }
-
-        if (!$tableClassName) {
-            throw new \Exception('Entity per la tabella ' . $nometabella . ' non trovata', '-1');
-        }
-
-        $bundleClass = str_replace('\\', '', $entityClass);
-        $c = $em->getClassMetadata($bundleClass . ':' . $nometabella);
-        $colonne = $c->getColumnNames();
-
-        $risposta = $this->listacampitabelladettagli($escludiid, $colonne, $nomebundle, $controller);
-        //natcasesort($risposta);
-        asort($risposta, SORT_NATURAL | SORT_FLAG_CASE);
-
+        $utilitytabelle = $this->container->get("ficorebundle.tabelle.utility");
+        $risposta = $utilitytabelle->getListacampitabella($parametri);
         return new JsonResponse($risposta);
-    }
-
-    private function listacampitabelladettagli($escludiid, $colonne, $nomebundle, $controller)
-    {
-        $risposta = array();
-        if ($escludiid == 1) {
-            $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
-            $operatore = $gestionepermessi->utentecorrente();
-            foreach ($colonne as $colonna) {
-                $nomecampo = trim(strtolower($colonna));
-                if (($nomecampo !== 'id') && (strpos($colonna, '_id') == false)) {
-                    $qb = $this->getDoctrine()->getRepository("$nomebundle:$controller")
-                            ->createQueryBuilder('t')
-                            ->where('LOWER(t.nometabella) = :nometabella')
-                            ->andWhere('LOWER(t.nomecampo) = :nomecampo')
-                            ->andWhere('t.operatori_id = :operatori_id')
-                            ->setParameter('nometabella', $nometabella)
-                            ->setParameter('nomecampo', $nomecampo)
-                            ->setParameter('operatori_id', $operatore['id'])
-                            ->getQuery();
-                    $labeltrovata = $qb->getResult();
-                    if (!$labeltrovata) {
-                        $qb = $this->getDoctrine()->getRepository("$nomebundle:$controller")
-                                ->createQueryBuilder('t')
-                                ->where('LOWER(t.nometabella) = :nometabella')
-                                ->andWhere('LOWER(t.nomecampo) = :nomecampo')
-                                ->andWhere('t.operatori_id IS NULL')
-                                ->setParameter('nometabella', $nometabella)
-                                ->setParameter('nomecampo', $nomecampo)
-                                ->getQuery();
-                        $labeltrovata = $qb->getResult();
-                        if (!$labeltrovata) {
-                            $risposta[$colonna] = $colonna;
-                        } else {
-                            if (($labeltrovata[0]->getEtichettaindex()) && ($labeltrovata[0]->getEtichettaindex() != '')) {
-                                $risposta[$colonna] = trim($labeltrovata[0]->getEtichettaindex());
-                            } else {
-                                $risposta[$colonna] = $colonna;
-                            }
-                        }
-                    } else {
-                        if (($labeltrovata[0]->getEtichettaindex()) && ($labeltrovata[0]->getEtichettaindex() != '')) {
-                            $risposta[$colonna] = trim($labeltrovata[0]->getEtichettaindex());
-                        } else {
-                            $risposta[$colonna] = $colonna;
-                        }
-                    }
-                }
-            }
-        } else {
-            foreach ($colonne as $colonna) {
-                $risposta[$colonna] = $colonna;
-            }
-        }
-
-        return $risposta;
     }
 }

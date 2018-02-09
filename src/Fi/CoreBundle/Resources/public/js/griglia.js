@@ -417,6 +417,7 @@ function caricaGriglia(parametrijs) {
     //Se si hanno i diritti di aggiungere un record si imposta il pulsante e la funizonalità
     if (showadd) {
         jQuery(nomelist).jqGrid('navButtonAdd', nomepager, {
+            id: "buttonadd_" + nomelist.substr(1),
             caption: captionadd,
             buttonicon: ((captionadd == "") ? "ui-icon-plus" : "none"),
             onClickButton: function () {
@@ -506,10 +507,9 @@ function caricaGriglia(parametrijs) {
 
     //Se si hanno i diritti di cancellare un record si imposta il pulsante e la funizonalità
     if (showdel) {
-
         var s;
-
         jQuery(nomelist).jqGrid('navButtonAdd', nomepager, {
+            id: "buttondel_" + nomelist.substr(1),
             caption: captiondel,
             buttonicon: ((captiondel === "") ? "ui-icon-trash" : "none"),
             onClickButton: function () {
@@ -558,6 +558,7 @@ function caricaGriglia(parametrijs) {
     //Se si hanno i diritti per stampare si imposta il pulsante e la funizonalità
     if (showprint) {
         jQuery(nomelist).navGrid(nomepager).navButtonAdd(nomepager, {
+            id: "buttonprint_" + nomelist.substr(1),
             caption: captionprint,
             buttonicon: ((captionprint === "") ? "ui-icon-print" : "none"),
             onClickButton: function () {
@@ -573,6 +574,7 @@ function caricaGriglia(parametrijs) {
     //Se si hanno i diritti per stampare si imposta il pulsante e la funizonalità
     if (showexcel) {
         jQuery(nomelist).navGrid(nomepager).navButtonAdd(nomepager, {
+            id: "buttonexportexcel_" + nomelist.substr(1),
             caption: captionexcel,
             buttonicon: ((captionexcel === "") ? "ui-icon-circle-arrow-s" : "none"),
             onClickButton: function () {
@@ -588,6 +590,7 @@ function caricaGriglia(parametrijs) {
     //Se si hanno i diritti per stampare si imposta il pulsante e la funizonalità
     if (showimportexcel) {
         jQuery(nomelist).navGrid(nomepager).navButtonAdd(nomepager, {
+            id: "buttonimportexcel_" + nomelist.substr(1),
             caption: captionexcel,
             buttonicon: ((captionexcel === "") ? "ui-icon-circle-arrow-n" : "none"),
             onClickButton: function () {
@@ -603,6 +606,7 @@ function caricaGriglia(parametrijs) {
     //Se si hanno i diritti per modificare la configurazioen della griglia si imposta il pulsante e la funizonalità
     if (showconfig) {
         jQuery(nomelist).navGrid(nomepager).navButtonAdd(nomepager, {
+            id: "buttonconfig_" + nomelist.substr(1),
             caption: captionconfig,
             buttonicon: ((captionconfig === "") ? "ui-icon-calculator" : "none"),
             onClickButton: function () {

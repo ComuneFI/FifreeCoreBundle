@@ -2,6 +2,7 @@ parameters:
 #    fi_core.example.class: Fi\CoreBundle\Example 
   ficorebundle.db.table_schema: 
   ficorebundle.db.table_prefix: __corebundle_
+  maintenanceLockFilePath: "%kernel.cache_dir%/maintenance.lock"  
   
 services:
     request:
@@ -43,6 +44,12 @@ services:
         class: Fi\CoreBundle\DependencyInjection\GestionePermessi
         public: true
         arguments: [ '@service_container', '@security.token_storage', '@doctrine.orm.entity_manager' ]
+            
+    #Utility tabelle
+    ficorebundle.tabelle.utility:
+        class: Fi\CoreBundle\DependencyInjection\TabelleUtility
+        public: true
+        arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
             
     ficorebundle.tblprefix_subscriber:
         class: Fi\CoreBundle\Subscriber\TablePrefixSubscriber
@@ -139,5 +146,12 @@ services:
             
     kernel.listener.response_listener:
         class: Fi\CoreBundle\Listener\ResponseListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+            
+    fifree.maintenance_listener.response_listener:
+        class: Fi\CoreBundle\Listener\MaintenanceListener
+        arguments: 
+            - "%maintenanceLockFilePath%"
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }

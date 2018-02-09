@@ -41,7 +41,6 @@ class Fifree2droptablesCommand extends ContainerAwareCommand
             $addcascade = " CASCADE";
         }
 
-        //$this->dbh->query(sprintf('SET FOREIGN_KEY_CHECKS = 0;'));
         //Truncate tabelle
         $tables = $em->getConnection()->getSchemaManager()->listTables();
         foreach ($tables as $table) {

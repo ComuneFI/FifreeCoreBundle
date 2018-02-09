@@ -21,7 +21,7 @@ class ChecksrcCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $container = $this->getContainer();
-        $prjpath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($container);
+        $prjpath = $container->get("pannelloamministrazione.projectpath");
         $vendorBin = $prjpath->getVendorBinPath() . "/";
         $srcPath = $prjpath->getSrcPath();
         $rootPath = $prjpath->getRootPath();
@@ -68,7 +68,6 @@ class ChecksrcCommand extends ContainerAwareCommand
         $process = new Process($cmd);
         $process->setTimeout(60 * 100);
         $process->run();
-        $out = "";
         if ($process->isSuccessful()) {
             $out = $process->getOutput();
         } else {

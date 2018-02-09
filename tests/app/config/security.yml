@@ -47,16 +47,16 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/Operatori/, role: ROLE_ADMIN }
-        - { path: ^/Ruoli/, role: ROLE_ADMIN }
-        - { path: ^/Permessi/, role: ROLE_ADMIN }
-        - { path: ^/MenuApplicazione/, role: ROLE_ADMIN }
-        - { path: ^/OpzioniTabella/, role: ROLE_ADMIN }
-        - { path: ^/Tabelle/aggiorna, role: ROLE_ADMIN }
-        - { path: ^/Tabelle/edit, role: ROLE_ADMIN }
-        - { path: ^/Tabelle/new, role: ROLE_ADMIN }
-        - { path: ^/Tabelle/delete, role: ROLE_ADMIN }
-        - { path: ^/adminpanel, role: [ROLE_ADMIN] }
+        - { path: ^/Operatori/, role: ROLE_SUPER_ADMIN }
+        - { path: ^/Ruoli/, role: ROLE_SUPER_ADMIN }
+        - { path: ^/Permessi/, role: ROLE_SUPER_ADMIN }
+        - { path: ^/MenuApplicazione/, role: ROLE_SUPER_ADMIN }
+        - { path: ^/OpzioniTabella/, role: ROLE_SUPER_ADMIN }
+        - { path: ^/Tabelle/aggiorna, role: ROLE_SUPER_ADMIN }
+        - { path: ^/Tabelle/edit, role: ROLE_SUPER_ADMIN }
+        - { path: ^/Tabelle/new, role: ROLE_SUPER_ADMIN }
+        - { path: ^/Tabelle/delete, role: ROLE_SUPER_ADMIN }
+        - { path: ^/adminpanel, role: [ROLE_SUPER_ADMIN] }
         
         #Con questa configurazione se l'utente non è censito in SSO oppure non ha ruoli in FOS VIENE BLOCCATO CON Error 403
         #- { path: ^/, role: [ROLE_USER] }

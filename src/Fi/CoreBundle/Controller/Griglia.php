@@ -2,44 +2,44 @@
 
 namespace Fi\CoreBundle\Controller;
 
-use Fi\CoreBundle\DependencyInjection\GridDati;
-use Fi\CoreBundle\DependencyInjection\GridTestata;
-use Fi\CoreBundle\DependencyInjection\GrigliaParametriUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaRegoleUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaCampiExtraUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaColonneUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaDatiUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaDatiPrecondizioniUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaExtraFunzioniUtils;
-use Fi\CoreBundle\DependencyInjection\GrigliaDatiMultiUtils;
+use Fi\CoreBundle\Utils\GridDati;
+use Fi\CoreBundle\Utils\GridTestata;
+use Fi\CoreBundle\Utils\GrigliaParametriUtils;
+use Fi\CoreBundle\Utils\GrigliaUtils;
+use Fi\CoreBundle\Utils\GrigliaRegoleUtils;
+use Fi\CoreBundle\Utils\GrigliaCampiExtraUtils;
+use Fi\CoreBundle\Utils\GrigliaColonneUtils;
+use Fi\CoreBundle\Utils\GrigliaDatiUtils;
+use Fi\CoreBundle\Utils\GrigliaDatiPrecondizioniUtils;
+use Fi\CoreBundle\Utils\GrigliaExtraFunzioniUtils;
+use Fi\CoreBundle\Utils\GrigliaDatiMultiUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class Griglia extends Controller
 {
 
     /**
-     * Questa funzione è compatibile con jqGrid e risponden con un formato JSON
+     * Questa funzione è compatibile con jqGrid e risponde con un formato JSON
      * contenente i dati di testata per la griglia.
      *
      * @param array  $paricevuti
-     * @param object $paricevuti[request]      oggetto che contiene il POST passato alla griglia
-     * @param string $paricevuti[nometabella]
-     * @param array  $paricevuti[dettaglij]    array contenente tutte le tabelle per le quali richiedere
+     * <pre>object $paricevuti[request]      oggetto che contiene il POST passato alla griglia</pre>
+     * <pre>string $paricevuti[nometabella]  Nome della tabella</pre>
+     * <pre>array  $paricevuti[dettaglij]    array contenente tutte le tabelle per le quali richiedere
      *                                         la join a partire da $paricevuti[nometabella]
      *                                         il vettore è composto da
      *                                         array("nomecampodadecodificare"=>array(
      *                                         "descrizione"=>"nometabella.campodecodifica",
      *                                         "lunghezza"=>"40")
-     *                                         )
-     * @param array  $paricevuti[colonne_link] array contenente eventuali colonne che debbano essere
+     *                                         )</pre>
+     * <pre>array  $paricevuti[colonne_link] array contenente eventuali colonne che debbano essere
      *                                         rappresentate da un link. Non è da confondere con i
      *                                         parametri_link di datiPerGriglia, perché QUESTO array
      *                                         si può passare alla testata se si vuole avere una
      *                                         colonna link che prenda in automatico
      *                                         parametro id = al valore dell'id della tabella
-     *                                         principale su cui si sta facendo la griglia
-     * @param string $paricevuti[output]       : "index" se la testata serve per la griglia dell'index, "stampa" se la testata serve per la stampa
+     *                                         principale su cui si sta facendo la griglia</pre>
+     * <pre>string $paricevuti[output]       : "index" se la testata serve per la griglia dell'index, "stampa" se la testata serve per la stampa</pre>
      *
      * @return array contentente i dati di testata per la griglia
      */
@@ -84,24 +84,24 @@ class Griglia extends Controller
      * i dati di risposta sulla base dei parametri passati.
      *
      * @param array  $parametri
-     * @param object $paricevuti[request]        oggetto che contiene il POST passato alla griglia
-     * @param string $paricevuti[nometabella]
-     * @param array  $paricevuti[tabellej]       array contenente tutte le tabelle per le quali richiedere
-     *                                           la join a partire da $paricevuti[nometabella]
-     * @param array  $paricevuti[escludere]      array contenente tutti i campi che non devono essere restituiti
-     * @param bool   $paricevuti[nospan]         se true non imposta limit e offset
-     * @param array  $paricevuti[parametri_link] array contenente le colonne che devono essere rappresentate
+     * <pre>object $parametri["request"]        oggetto che contiene il POST passato alla griglia</pre>
+     * <pre>string $parametri["nometabella"]   Nome della tabella</pre>
+     * <pre>array  $parametri["tabellej"]       array contenente tutte le tabelle per le quali richiedere
+     *                                           la join a partire da $paricevuti[nometabella]</pre>
+     * <pre>array  $parametri["escludere"]      array contenente tutti i campi che non devono essere restituiti</pre>
+     * <pre>bool   $parametri["nospan"]         se true non imposta limit e offset</pre>
+     * <pre>array  $parametri["parametri_link"] array contenente le colonne che devono essere rappresentate
      *                                           come dei link e relativi parametri per comporre l'href.
      *                                           Da non confondere con colonne_link che si passa a
      *                                           testataPerGriglia, perchè QUESTO array genera un
      *                                           tag <href> interno alla colonna per il quale si
-     *                                           possono specificare le parti che lo compongono
-     * @param array  $paricevuti[decodifiche]    = array contenente eventuali decodifiche dei valori di
+     *                                           possono specificare le parti che lo compongono</pre>
+     * <pre>array  $parametri["decodifiche"]    = array contenente eventuali decodifiche dei valori di
      *                                           una colonna che non può essere tradotta con una join
-     *                                           ad una tabella
-     * @param string $paricevuti[output]         : "index" se i dati servono per la griglia dell'index, "stampa" se i dati servono per la stampa
+     *                                           ad una tabella</pre>
+     * <pre>string $parametri["output"]         : "index" se i dati servono per la griglia dell'index, "stampa" se i dati servono per la stampa</pre>
      *
-     * @return JSON con i dati richiesti
+     * @return Response in formato JSON con i dati richiesti
      */
     public static function datiPerGriglia($parametri = array())
     {
@@ -115,7 +115,7 @@ class Griglia extends Controller
         $precondizioni = GrigliaDatiUtils::getDatiPrecondizioni($parametri);
 
         $precondizioniAvanzate = GrigliaDatiUtils::getDatiPrecondizioniAvanzate($parametri);
-        /* $parametri_link = (isset($paricevuti['parametri_link']) ? $paricevuti['parametri_link'] : null); //$paricevuti["parametri_link"]; */
+
         $campiextra = GrigliaDatiUtils::getDatiCampiExtra($parametri);
         /* inserisco i filtri passati in un vettore */
 

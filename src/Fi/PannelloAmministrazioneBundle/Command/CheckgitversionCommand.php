@@ -21,21 +21,13 @@ class CheckgitversionCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /* $rootdir = $this->getContainer()->get('kernel')->getRootDir().'/..';
-          $appdir = $this->getContainer()->get('kernel')->getRootDir();
-          $webdir = $rootdir.DIRECTORY_SEPARATOR.'/web';
-          $cachedir = $appdir.DIRECTORY_SEPARATOR.'cache';
-          $logdir = $appdir.DIRECTORY_SEPARATOR.'logs';
-          $tmpdir = $appdir.DIRECTORY_SEPARATOR.'/tmp';
-          $srcdir = $rootdir.DIRECTORY_SEPARATOR.'/src';
-          $uploaddir = $webdir.DIRECTORY_SEPARATOR.'/uploads'; */
-        $projectDir = substr($this->getContainer()->get('kernel')->getRootDir(), 0, -4);
-
         if (self::isWindows()) {
             $output->writeln('<info>Non previsto in ambiente windows</info>');
 
             return 0;
         }
+
+        $projectDir = substr($this->getContainer()->get('kernel')->getRootDir(), 0, -4);
 
         $composerbundles = array();
         $composerbundlespath = $projectDir.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'fi';
@@ -71,45 +63,62 @@ class CheckgitversionCommand extends ContainerAwareCommand
 
         if ($remote) {
             //Remote
-            $cmd = 'cd '.$path;
-            $remotetag = $cmd.";git ls-remote -t | awk '{print $2}' | cut -d '/' -f 3 | cut -d '^' -f 1 | sort --version-sort | tail -1";
+            $cmd = 'cd ' . $path;
+            $remotetagscmd = "git ls-remote -t | awk '{print $2}' | cut -d '/' -f 3 | cut -d '^' -f 1 | sort --version-sort | tail -1";
+            $remotetag = $cmd . ";" . $remotetagscmd;
             $process = new Process($remotetag);
             $process->setTimeout(60 * 100);
             $process->run();
             if ($process->isSuccessful()) {
-                $version = trim($process->getOutput());
-                if (preg_match('/\d+(?:\.\d+)+/', $version, $matches)) {
-                    return $matches[0]; //returning the first match
-                }
+                $versions = trim($process->getOutput());
+                return $this->getRemoteVersionString($versions);
             }
-
             return '?';
         } else {
             //Local
-            $cmd = 'cd '.$path;
-            $process = new Process($cmd.';git branch | '."grep ' * '");
+            $cmd = 'cd ' . $path;
+            $process = new Process($cmd . ';git branch | ' . "grep ' * '");
             $process->setTimeout(60 * 100);
             $process->run();
             if ($process->isSuccessful()) {
-                $out = explode(chr(10), $process->getOutput());
-                foreach ($out as $line) {
-                    if (strpos($line, '* ') !== false) {
-                        $version = trim(strtolower(str_replace('* ', '', $line)));
-                        if ($version == 'master') {
-                            return $version;
-                        } else {
-                            if (preg_match('/\d+(?:\.\d+)+/', $version, $matches)) {
-                                return $matches[0]; //returning the first match
-                            }
-                        }
-                    }
-                }
+                $versions = explode(chr(10), $process->getOutput());
+                return $this->getLocalVersionString($versions);
             } else {
                 //echo $process->getErrorOutput();
+                return '?';
             }
-
-            return '?';
         }
+    }
+
+    private function getLocalVersionString($versions)
+    {
+        foreach ($versions as $line) {
+            if (strpos($line, '* ') !== false) {
+                $version = trim(strtolower(str_replace('* ', '', $line)));
+                return $this->getLocalVersionStringDetail($version);
+            }
+        }
+        return '?';
+    }
+
+    private function getLocalVersionStringDetail($versions)
+    {
+        if ($versions == 'master') {
+            return $versions;
+        } else {
+            if (preg_match('/\d+(?:\.\d+)+/', $versions, $matches)) {
+                return $matches[0]; //returning the first match
+            }
+        }
+        return '?';
+    }
+
+    private function getRemoteVersionString($versions)
+    {
+        if (preg_match('/\d+(?:\.\d+)+/', $versions, $matches)) {
+            return $matches[0]; //returning the first match
+        }
+        return '?';
     }
 
     public static function isWindows()

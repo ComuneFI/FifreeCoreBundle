@@ -20,10 +20,10 @@ class Fifree2pubblicamanualeCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->copiaManuale($input);
+        $this->copiaManuale();
     }
 
-    protected function copiaManuale($input)
+    protected function copiaManuale()
     {
         $filesystem = $this->getContainer()->get('filesystem');
 
