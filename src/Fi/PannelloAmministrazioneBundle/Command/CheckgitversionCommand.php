@@ -110,6 +110,7 @@ class CheckgitversionCommand extends ContainerAwareCommand
                 return $matches[0]; //returning the first match
             }
         }
+        return '?';
     }
 
     private function getRemoteVersionString($versions)
