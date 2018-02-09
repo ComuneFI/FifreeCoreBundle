@@ -43,19 +43,7 @@ class GestionePermessi
 
         $this->setCrud();
 
-        $utente = $this->container->get('security.token_storage')->getToken()->getUser()->getId();
-        $q = $this->container->get('doctrine')
-                ->getRepository('FiCoreBundle:Operatori')
-                ->find($utente);
-
-        $isSuperAdmin = false;
-        if ($q) {
-            if ($q->getRuoli()) {
-                $isSuperAdmin = $q->getRuoli()->isSuperadmin();
-            }
-        }
-
-        return $this->presente('R') || ($isSuperAdmin); //SuperAdmin
+        return $this->presente('R') || ($this->isSuperAdmin()); //SuperAdmin
     }
 
     public function cancellare($parametri = array())
@@ -67,19 +55,8 @@ class GestionePermessi
             $this->modulo = $parametri['modulo'];
         }
         $this->setCrud();
-        $utente = $this->container->get('security.token_storage')->getToken()->getUser()->getId();
-        $q = $this->container->get('doctrine')
-                ->getRepository('FiCoreBundle:Operatori')
-                ->find($utente);
 
-        $isSuperAdmin = false;
-        if ($q) {
-            if ($q->getRuoli()) {
-                $isSuperAdmin = $q->getRuoli()->isSuperadmin();
-            }
-        }
-
-        return $this->presente('D') || ($isSuperAdmin); //SuperAdmin
+        return $this->presente('D') || ($this->isSuperAdmin()); //SuperAdmin
     }
 
     public function creare($parametri = array())
@@ -91,19 +68,8 @@ class GestionePermessi
             $this->modulo = $parametri['modulo'];
         }
         $this->setCrud();
-        $utente = $this->container->get('security.token_storage')->getToken()->getUser()->getId();
-        $q = $this->container->get('doctrine')
-                ->getRepository('FiCoreBundle:Operatori')
-                ->find($utente);
 
-        $isSuperAdmin = false;
-        if ($q) {
-            if ($q->getRuoli()) {
-                $isSuperAdmin = $q->getRuoli()->isSuperadmin();
-            }
-        }
-
-        return $this->presente('C') || ($isSuperAdmin); //SuperAdmin
+        return $this->presente('C') || ($this->isSuperAdmin()); //SuperAdmin
     }
 
     public function aggiornare($parametri = array())
@@ -116,6 +82,12 @@ class GestionePermessi
             $this->modulo = $parametri['modulo'];
         }
         $this->setCrud();
+
+        return $this->presente('U') || ($this->isSuperAdmin()); //SuperAdmin
+    }
+
+    private function isSuperAdmin()
+    {
         $utente = $this->container->get('security.token_storage')->getToken()->getUser()->getId();
         $q = $this->container->get('doctrine')
                 ->getRepository('FiCoreBundle:Operatori')
@@ -127,8 +99,7 @@ class GestionePermessi
                 $isSuperAdmin = $q->getRuoli()->isSuperadmin();
             }
         }
-
-        return $this->presente('U') || ($isSuperAdmin); //SuperAdmin
+        return $isSuperAdmin;
     }
 
     public function sulmenu($parametri = array())
@@ -162,7 +133,6 @@ class GestionePermessi
 
         if ($q) {
             $this->crud = $q->getCrud();
-
             return;
         }
 
@@ -172,7 +142,6 @@ class GestionePermessi
 
         if ($q) {
             $this->crud = $q->getCrud();
-
             return;
         }
 
@@ -190,8 +159,8 @@ class GestionePermessi
 
     public function utentecorrente()
     {
-        $utentecorrente  = array();
-        
+        $utentecorrente = array();
+
         if (!$this->container->get('security.token_storage')->getToken()) {
             $utentecorrente['nome'] = 'Utente non registrato';
             $utentecorrente['id'] = 0;
