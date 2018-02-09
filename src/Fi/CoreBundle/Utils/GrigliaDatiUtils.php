@@ -128,13 +128,14 @@ class GrigliaDatiUtils
         $nomecampo = $parametri['nomecampo'];
         $ordinecampo = $parametri['ordinecampo'];
         $singolocampo = $parametri['singolocampo'];
-        if (isset($vettoretype) && ($vettoretype == 'date' || $vettoretype == 'datetime') && $singolocampo) {
+
+        if (self::isDateType($vettoretype, $singolocampo)) {
             if (isset($ordinecampo)) {
                 $vettoreriga[$ordinecampo] = $singolocampo->format('d/m/Y');
             } else {
                 $vettoreriga[] = $singolocampo->format('d/m/Y');
             }
-        } elseif (isset($vettoretype) && ($vettoreparcampi[$nomecampo]['type'] == 'time') && $singolocampo) {
+        } elseif (self::isTimeType($vettoreparcampi, $vettoretype, $nomecampo, $singolocampo)) {
             if (isset($ordinecampo)) {
                 $vettoreriga[$ordinecampo] = $singolocampo->format('H:i');
             } else {
@@ -147,6 +148,16 @@ class GrigliaDatiUtils
                 $vettoreriga[] = $singolocampo;
             }
         }
+    }
+
+    public static function isDateType($vettoretype, $singolocampo)
+    {
+        return isset($vettoretype) && ($vettoretype == 'date' || $vettoretype == 'datetime') && $singolocampo;
+    }
+
+    public static function isTimeType($vettoreparcampi, $vettoretype, $nomecampo, $singolocampo)
+    {
+        return isset($vettoretype) && ($vettoreparcampi[$nomecampo]['type'] == 'time') && $singolocampo;
     }
 
     public static function campoElencato($parametriCampoElencato)
