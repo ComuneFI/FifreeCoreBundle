@@ -122,13 +122,13 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
     {
 
         foreach ($record as $key => $value) {
-            if ($key !== 'id' /*&& $value !== null*/) {
+            if ($key !== 'id' /* && $value !== null */) {
                 //if ($key=='is_user' && $value !== true){var_dump($value);exit;}
                 $propertyEntity = $this->getFieldNameForEntity($key, $objrecord);
                 $getfieldname = $propertyEntity["get"];
                 $setfieldname = $propertyEntity["set"];
-                $cambiato = ($objrecord->$getfieldname() === $value);
-                if ($cambiato) {
+                $cambiato = $this->isRecordChanged($entityclass, $key, $objrecord->$getfieldname(), $value);
+                if (!$cambiato) {
                     if ($this->verboso) {
                         $msginfo = "<info>" . $entityclass . " con id " . $record["id"]
                                 . " per campo " . $key . " non modificato perchè già "
@@ -137,6 +137,20 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                     }
                 } else {
                     try {
+                        $fieldtype = $this->getFieldType($objrecord, $key);
+                        if ($fieldtype === 'datetime') {
+                            $date = new \DateTime();
+                            $date->setTimestamp($value);
+                            $msgok = "<info>" . $entityclass . " con id " . $record["id"]
+                                    . " per campo " . $key . " cambio valore da "
+                                    //. (!is_null($objrecord->$getfieldname())) ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "(null)"
+                                    . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "")
+                                    . " a " . $date->format("Y-m-d H:i:s") . "</info>";
+                            $this->output->writeln($msgok);
+
+                            $objrecord->$setfieldname($date);
+                            continue;
+                        }
                         if (is_array($value)) {
                             $msgarray = "<info>" . $entityclass . " con id " . $record["id"]
                                     . " per campo " . $key . " cambio valore da "
@@ -144,13 +158,13 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                                     . json_encode($value) . " in formato array" . "</info>";
                             $this->output->writeln($msgarray);
                             $objrecord->$setfieldname($value);
-                        } else {
-                            $msgok = "<info>" . $entityclass . " con id " . $record["id"]
-                                    . " per campo " . $key . " cambio valore da " . print_r($objrecord->$getfieldname(), true)
-                                    . " a " . print_r($value, true) . "</info>";
-                            $this->output->writeln($msgok);
-                            $objrecord->$setfieldname($value);
+                            continue;
                         }
+                        $msgok = "<info>" . $entityclass . " con id " . $record["id"]
+                                . " per campo " . $key . " cambio valore da " . print_r($objrecord->$getfieldname(), true)
+                                . " a " . print_r($value, true) . "</info>";
+                        $this->output->writeln($msgok);
+                        $objrecord->$setfieldname($value);
                     } catch (\Exception $exc) {
                         $msgerr = "<error>" . $entityclass . " con id " . $record["id"]
                                 . " per campo " . $key . ", ERRORE: " . $exc->getMessage()
@@ -184,5 +198,52 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         $setfieldname = "set" . \Fi\CoreBundle\Utils\GrigliaUtils::toCamelCase($parametri);
 
         return array("get" => $getfieldname, "set" => $setfieldname);
+    }
+
+    private function isRecordChanged($entity, $fieldname, $oldvalue, $newvalue)
+    {
+        $fieldtype = $this->getFieldType(new $entity(), $fieldname);
+        if ($fieldtype === 'datetime') {
+            return $this->isDateChanged($oldvalue, $newvalue);
+        }
+        if (is_array($oldvalue)) {
+            return $this->isArrayChanged($oldvalue, $newvalue);
+        }
+
+        return ($oldvalue !== $newvalue);
+    }
+
+    private function isDateChanged($oldvalue, $newvalue)
+    {
+        $datenewvalue = new \DateTime();
+        $datenewvalue->setTimestamp($newvalue);
+        if (!$oldvalue && !$newvalue) {
+            return false;
+        }
+        if ((!$oldvalue && $newvalue) || ($oldvalue && !$newvalue)) {
+            return true;
+        }
+        return ($oldvalue != $datenewvalue);
+    }
+
+    private function isArrayChanged($oldvalue, $newvalue)
+    {
+        if (!$oldvalue && !$newvalue) {
+            return false;
+        }
+        if ((!$oldvalue && $newvalue) || ($oldvalue && !$newvalue)) {
+            return true;
+        }
+        return count(array_diff($oldvalue, $newvalue) > 0);
+    }
+
+    private function getFieldType($entity, $field)
+    {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $metadata = $em->getClassMetadata(get_class($entity));
+        $fieldMetadata = $metadata->fieldMappings[$field];
+
+        $fieldType = $fieldMetadata['type'];
+        return $fieldType;
     }
 }
