@@ -132,6 +132,18 @@ services:
         tags:
             -  { name: console.command }
             
+    fifree.command.configuratorimport:
+        class: Fi\CoreBundle\Command\Fifree2configuratorimportCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    fifree.command.configuratorexport:
+        class: Fi\CoreBundle\Command\Fifree2configuratorexportCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
     fifree.fos_user.security.login_manager:
         alias: fos_user.security.login_manager
         public: true

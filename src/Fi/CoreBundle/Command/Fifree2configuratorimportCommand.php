@@ -27,7 +27,6 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->em = $this->getContainer()->get("doctrine")->getManager();
         $this->output = $output;
         $this->forceupdate = $input->getOption('forceupdate');
         $this->verboso = $input->getOption('verboso');
@@ -59,6 +58,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         $msg = "<info>Trovati " . count($fixture) . " record per l'entity " . $entityclass . "</info>";
         $this->output->writeln($msg);
         foreach ($fixture as $record) {
+            $this->em = $this->getContainer()->get("doctrine")->getManager();
             $objrecord = $this->em->getRepository($entityclass)->find($record["id"]);
             if (count($objrecord) > 0) {
                 if ($this->forceupdate) {
@@ -94,7 +94,6 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         }
         /* @var $em \Doctrine\ORM\EntityManager */
         $this->em->persist($objrecord);
-        
         $this->em->flush();
         $this->em->clear();
         $infomsg = "<info>" . $entityclass . " con id " . $objrecord->getId() . " aggiunta</info>";
@@ -123,11 +122,12 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
     {
 
         foreach ($record as $key => $value) {
-            if ($key !== 'id' && $value) {
+            if ($key !== 'id' && $value !== null) {
+                //if ($key=='is_user' && $value !== true){var_dump($value);exit;}
                 $propertyEntity = $this->getFieldNameForEntity($key, $objrecord);
                 $getfieldname = $propertyEntity["get"];
                 $setfieldname = $propertyEntity["set"];
-                $cambiato = ($objrecord->$getfieldname() == $value);
+                $cambiato = ($objrecord->$getfieldname() === $value);
                 if ($cambiato) {
                     if ($this->verboso) {
                         $msginfo = "<info>" . $entityclass . " con id " . $record["id"]
@@ -164,6 +164,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
         $this->em->persist($objrecord);
         $this->em->flush();
+        $this->em->clear();
         return 0;
     }
 
@@ -184,4 +185,5 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
         return array("get" => $getfieldname, "set" => $setfieldname);
     }
+
 }
