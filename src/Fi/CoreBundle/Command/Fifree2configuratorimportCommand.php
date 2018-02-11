@@ -122,7 +122,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
     {
 
         foreach ($record as $key => $value) {
-            if ($key !== 'id' && $value !== null) {
+            if ($key !== 'id' /*&& $value !== null*/) {
                 //if ($key=='is_user' && $value !== true){var_dump($value);exit;}
                 $propertyEntity = $this->getFieldNameForEntity($key, $objrecord);
                 $getfieldname = $propertyEntity["get"];
@@ -146,8 +146,8 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                             $objrecord->$setfieldname($value);
                         } else {
                             $msgok = "<info>" . $entityclass . " con id " . $record["id"]
-                                    . " per campo " . $key . " cambio valore da " . $objrecord->$getfieldname()
-                                    . " a " . $value . "</info>";
+                                    . " per campo " . $key . " cambio valore da " . print_r($objrecord->$getfieldname(), true)
+                                    . " a " . print_r($value, true) . "</info>";
                             $this->output->writeln($msgok);
                             $objrecord->$setfieldname($value);
                         }
@@ -185,5 +185,4 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
         return array("get" => $getfieldname, "set" => $setfieldname);
     }
-
 }

@@ -42,7 +42,7 @@ class Fifree2configuratorexportCommand extends ContainerAwareCommand
             }
             return $this->export($fixturefile, $entity);
         } catch (\Exception $exc) {
-            echo $exc->getTraceAsString();
+            echo $exc->getMessage() . " at line " . $exc->getLine();
         }
     }
 
@@ -72,7 +72,7 @@ class Fifree2configuratorexportCommand extends ContainerAwareCommand
                 $entityCollegata = $this->entityJoinTables($entityclass);
                 foreach ($entityCollegata as $key => $tabella) {
                     $this->entities[] = $key;
-                    $this->output->writeln("<info>Prima esporto " . $key . " per " . $tabella . "</info>");
+                    $this->output->writeln("<info>Prima esporto " . $key . " -> " . $tabella["entity"]["fieldName"] . "</info>");
                     $this->exportEntity($fixturefile, $key);
                 }
             }
