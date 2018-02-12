@@ -87,7 +87,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
         foreach ($record as $key => $value) {
             if ($key !== 'id' && $value) {
-                $propertyEntity = $this->getFieldNameForEntity($key, $objrecord);
+                $propertyEntity = $this->getEntityProperties($key, $objrecord);
                 $setfieldname = $propertyEntity["set"];
                 $objrecord->$setfieldname($value);
             }
@@ -124,10 +124,10 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         foreach ($record as $key => $value) {
             if ($key !== 'id' /* && $value !== null */) {
                 //if ($key=='is_user' && $value !== true){var_dump($value);exit;}
-                $propertyEntity = $this->getFieldNameForEntity($key, $objrecord);
+                $propertyEntity = $dbutility->getEntityProperties($key, $objrecord);
                 $getfieldname = $propertyEntity["get"];
                 $setfieldname = $propertyEntity["set"];
-                $cambiato = $this->isRecordChanged($entityclass, $key, $objrecord->$getfieldname(), $value);
+                $cambiato = $dbutility->isRecordChanged($entityclass, $key, $objrecord->$getfieldname(), $value);
                 if (!$cambiato) {
                     if ($this->verboso) {
                         $msginfo = "<info>" . $entityclass . " con id " . $record["id"]
@@ -180,61 +180,5 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         $this->em->flush();
         $this->em->clear();
         return 0;
-    }
-
-    private function getFieldNameForEntity($fieldname, $objrecord)
-    {
-        $parametri = array('str' => $fieldname, 'primamaiuscola' => true);
-        $getfieldname = \Fi\CoreBundle\Utils\GrigliaUtils::toCamelCase($parametri);
-        if (!method_exists($objrecord, $getfieldname)) {
-            $getfieldname = "has" . \Fi\CoreBundle\Utils\GrigliaUtils::toCamelCase($parametri);
-            if (!method_exists($objrecord, $getfieldname)) {
-                $getfieldname = "is" . \Fi\CoreBundle\Utils\GrigliaUtils::toCamelCase($parametri);
-                if (!method_exists($objrecord, $getfieldname)) {
-                    $getfieldname = "get" . \Fi\CoreBundle\Utils\GrigliaUtils::toCamelCase($parametri);
-                }
-            }
-        }
-        $setfieldname = "set" . \Fi\CoreBundle\Utils\GrigliaUtils::toCamelCase($parametri);
-
-        return array("get" => $getfieldname, "set" => $setfieldname);
-    }
-
-    private function isRecordChanged($entity, $fieldname, $oldvalue, $newvalue)
-    {
-        $dbutility = $this->getContainer()->get("ficorebundle.database.utility");
-        $fieldtype = $dbutility->getFieldType(new $entity(), $fieldname);
-        if ($fieldtype === 'datetime') {
-            return $this->isDateChanged($oldvalue, $newvalue);
-        }
-        if (is_array($oldvalue)) {
-            return $this->isArrayChanged($oldvalue, $newvalue);
-        }
-
-        return ($oldvalue !== $newvalue);
-    }
-
-    private function isDateChanged($oldvalue, $newvalue)
-    {
-        $datenewvalue = new \DateTime();
-        $datenewvalue->setTimestamp($newvalue);
-        if (!$oldvalue && !$newvalue) {
-            return false;
-        }
-        if ((!$oldvalue && $newvalue) || ($oldvalue && !$newvalue)) {
-            return true;
-        }
-        return ($oldvalue != $datenewvalue);
-    }
-
-    private function isArrayChanged($oldvalue, $newvalue)
-    {
-        if (!$oldvalue && !$newvalue) {
-            return false;
-        }
-        if ((!$oldvalue && $newvalue) || ($oldvalue && !$newvalue)) {
-            return true;
-        }
-        return count(array_diff($oldvalue, $newvalue)) > 0;
     }
 }

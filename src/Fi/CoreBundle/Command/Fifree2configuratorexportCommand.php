@@ -63,13 +63,13 @@ class Fifree2configuratorexportCommand extends ContainerAwareCommand
 
     private function exportEntity($fixturefile, $entityclass)
     {
-
+        $dbutility = $this->getContainer()->get("ficorebundle.database.utility");
         $this->output->writeln("<info>Export Entity: " . $entityclass . "</info>");
-        if ($this->entityExists($entityclass)) {
-            $hasEntityCollegate = $this->hasJoinTables($entityclass);
+        if ($dbutility->entityExists($entityclass)) {
+            $hasEntityCollegate = $dbutility->entityHasJoinTables($entityclass);
             if ($hasEntityCollegate) {
                 $this->output->writeln("<info>Entity " . $entityclass . " ha tabelle in join</info>");
-                $entityCollegata = $this->entityJoinTables($entityclass);
+                $entityCollegata = $dbutility->getEntityJoinTables($entityclass);
                 foreach ($entityCollegata as $key => $tabella) {
                     $this->entities[] = $key;
                     $this->output->writeln("<info>Prima esporto " . $key . " -> " . $tabella["entity"]["fieldName"] . "</info>");
@@ -103,34 +103,5 @@ class Fifree2configuratorexportCommand extends ContainerAwareCommand
         }
         $yml = Yaml::dump($entityDump);
         file_put_contents($fixturefile, $yml, FILE_APPEND);
-    }
-
-    private function entityExists($className)
-    {
-
-        if (is_object($className)) {
-            $className = ($className instanceof Proxy) ? get_parent_class($className) : get_class($className);
-        }
-
-        return !$this->em->getMetadataFactory()->isTransient($className);
-    }
-
-    private function entityJoinTables($entityclass)
-    {
-        $jointables = array();
-        $metadata = $this->em->getClassMetadata($entityclass);
-        $fielsassoc = $metadata->associationMappings;
-        foreach ($fielsassoc as $tableassoc) {
-            if ($tableassoc["inversedBy"]) {
-                $jointables[$tableassoc["targetEntity"]] = array("entity" => $tableassoc);
-            }
-        }
-        return $jointables;
-    }
-
-    private function hasJoinTables($entityclass)
-    {
-        $jointables = $this->entityJoinTables($entityclass);
-        return count($jointables) > 0 ? true : false;
     }
 }
