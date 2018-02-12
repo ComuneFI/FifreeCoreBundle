@@ -36,7 +36,7 @@ class Fifree2configuratorexportCommand extends ContainerAwareCommand
 
         try {
             //$fixturefile = $this->getContainer()->get('kernel')->locateResource('@FiCoreBundle/Resources/config/fixtures.yml');
-            $fixturefile = dirname($this->getContainer()->get('kernel')->getRootDir()) . "/doc" . DIRECTORY_SEPARATOR . "fixtures.yml";
+            $fixturefile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "fixtures.yml";
             if (!$append) {
                 $fs->remove($fixturefile);
             }

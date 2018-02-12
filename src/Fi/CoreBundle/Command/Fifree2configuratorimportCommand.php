@@ -31,13 +31,8 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         $this->forceupdate = $input->getOption('forceupdate');
         $this->verboso = $input->getOption('verboso');
 
-        try {
-            //$fixturefile = $this->getContainer()->get('kernel')->locateResource('@FiCoreBundle/Resources/config/fixtures.yml');
-            $fixturefile = dirname($this->getContainer()->get('kernel')->getRootDir()) . "/doc" . DIRECTORY_SEPARATOR . "fixtures.yml";
-            return $this->import($fixturefile);
-        } catch (\Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
+        $fixturefile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "fixtures.yml";
+        return $this->import($fixturefile);
     }
 
     protected function import($fixturefile)
@@ -50,6 +45,11 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
             foreach ($fixtures as $entityclass => $fixture) {
                 $this->executeImport($entityclass, $fixture);
             }
+            return 0;
+        } else {
+            $msgerr = "<error>Non trovato file " . $fixturefile . "</error>";
+            $this->output->writeln($msgerr);
+            return 1;
         }
     }
 
