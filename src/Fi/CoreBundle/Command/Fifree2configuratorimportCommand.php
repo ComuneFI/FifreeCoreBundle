@@ -14,6 +14,9 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
     private $forceupdate = false;
     private $verboso = false;
+    private $dbutility;
+    /* @var $em \Doctrine\ORM\EntityManager */
+    private $em;
 
     protected function configure()
     {
@@ -30,6 +33,8 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         $this->output = $output;
         $this->forceupdate = $input->getOption('forceupdate');
         $this->verboso = $input->getOption('verboso');
+        $this->dbutility = $this->getContainer()->get("ficorebundle.database.utility");
+        $this->em = $this->getContainer()->get("doctrine")->getManager();
 
         $fixturefile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "fixtures.yml";
         return $this->import($fixturefile);
@@ -58,7 +63,6 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         $msg = "<info>Trovati " . count($fixture) . " record per l'entity " . $entityclass . "</info>";
         $this->output->writeln($msg);
         foreach ($fixture as $record) {
-            $this->em = $this->getContainer()->get("doctrine")->getManager();
             $objrecord = $this->em->getRepository($entityclass)->find($record["id"]);
             if ($objrecord) {
                 if ($this->forceupdate) {
@@ -87,12 +91,11 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
         foreach ($record as $key => $value) {
             if ($key !== 'id' && $value) {
-                $propertyEntity = $this->getEntityProperties($key, $objrecord);
+                $propertyEntity = $this->dbutility->getEntityProperties($key, $objrecord);
                 $setfieldname = $propertyEntity["set"];
                 $objrecord->$setfieldname($value);
             }
         }
-        /* @var $em \Doctrine\ORM\EntityManager */
         $this->em->persist($objrecord);
         $this->em->flush();
         $this->em->clear();
@@ -120,14 +123,13 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
     private function executeUpdate($entityclass, $record, $objrecord)
     {
-        $dbutility = $this->getContainer()->get("ficorebundle.database.utility");
         foreach ($record as $key => $value) {
             if ($key !== 'id' /* && $value !== null */) {
                 //if ($key=='is_user' && $value !== true){var_dump($value);exit;}
-                $propertyEntity = $dbutility->getEntityProperties($key, $objrecord);
+                $propertyEntity = $this->dbutility->getEntityProperties($key, $objrecord);
                 $getfieldname = $propertyEntity["get"];
                 $setfieldname = $propertyEntity["set"];
-                $cambiato = $dbutility->isRecordChanged($entityclass, $key, $objrecord->$getfieldname(), $value);
+                $cambiato = $this->dbutility->isRecordChanged($entityclass, $key, $objrecord->$getfieldname(), $value);
                 if (!$cambiato) {
                     if ($this->verboso) {
                         $msginfo = "<info>" . $entityclass . " con id " . $record["id"]
@@ -137,7 +139,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                     }
                 } else {
                     try {
-                        $fieldtype = $dbutility->getFieldType($objrecord, $key);
+                        $fieldtype = $this->dbutility->getFieldType($objrecord, $key);
                         if ($fieldtype === 'datetime') {
                             $date = new \DateTime();
                             $date->setTimestamp($value);
