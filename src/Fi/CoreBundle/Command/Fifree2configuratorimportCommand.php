@@ -120,7 +120,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
     private function executeUpdate($entityclass, $record, $objrecord)
     {
-
+        $dbutility = $this->getContainer()->get("ficorebundle.database.utility");
         foreach ($record as $key => $value) {
             if ($key !== 'id' /* && $value !== null */) {
                 //if ($key=='is_user' && $value !== true){var_dump($value);exit;}
@@ -137,7 +137,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                     }
                 } else {
                     try {
-                        $fieldtype = $this->getFieldType($objrecord, $key);
+                        $fieldtype = $dbutility->getFieldType($objrecord, $key);
                         if ($fieldtype === 'datetime') {
                             $date = new \DateTime();
                             $date->setTimestamp($value);
@@ -202,7 +202,8 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
     private function isRecordChanged($entity, $fieldname, $oldvalue, $newvalue)
     {
-        $fieldtype = $this->getFieldType(new $entity(), $fieldname);
+        $dbutility = $this->getContainer()->get("ficorebundle.database.utility");
+        $fieldtype = $dbutility->getFieldType(new $entity(), $fieldname);
         if ($fieldtype === 'datetime') {
             return $this->isDateChanged($oldvalue, $newvalue);
         }
@@ -235,15 +236,5 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
             return true;
         }
         return count(array_diff($oldvalue, $newvalue)) > 0;
-    }
-
-    private function getFieldType($entity, $field)
-    {
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $metadata = $em->getClassMetadata(get_class($entity));
-        $fieldMetadata = $metadata->fieldMappings[$field];
-
-        $fieldType = $fieldMetadata['type'];
-        return $fieldType;
     }
 }
