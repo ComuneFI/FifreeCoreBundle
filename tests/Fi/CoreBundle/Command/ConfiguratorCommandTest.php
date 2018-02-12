@@ -16,7 +16,7 @@ class ConfiguratorCommandTest extends WebTestCase
         static::$kernel->boot();
     }
 
-    public function testAddOperatore()
+    public function testConfigurator()
     {
         $entity = 'OpzioniTabella';
         $fixturefile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "fixtures.yml";
@@ -32,12 +32,7 @@ class ConfiguratorCommandTest extends WebTestCase
 
         $commandimport = $application->find('fifree2:configuratorimport');
         $commandTesterImport = new CommandTester($commandimport);
-        $commandTesterImport->execute(
-                array(
-                    '--forceupdate' => true,
-                    '--verboso' => true
-                )
-        );
+        $commandTesterImport->execute(array('--forceupdate' => true, '--verboso' => true));
         $outputimport = $commandTesterImport->getDisplay();
 
         $this->assertRegExp('/.../', $outputimport);
@@ -55,7 +50,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $this->assertRegExp('/.../', $outputexport);
         $this->assertContains('Export Entity: Fi\\CoreBundle\\Entity\\' . $entity, $outputexport);
 
-        /*Rimuovo ruolo Utente per generare l'inserimento tramite import*/
+        /* Rimuovo ruolo Utente per generare l'inserimento tramite import */
         $em = static::$kernel->getContainer()->get('doctrine')->getManager();
 
         $user = $em->getRepository('FiCoreBundle:Ruoli')->findOneBy(array(
@@ -64,32 +59,20 @@ class ConfiguratorCommandTest extends WebTestCase
 
         $em->remove($user);
         $em->flush();
+        $em->clear();
 
 
         $commandTesterImport2 = new CommandTester($commandimport);
-        $commandTesterImport2->execute(
-                array(
-                    '--forceupdate' => true,
-                    '--verboso' => true
-                )
-        );
+        $commandTesterImport2->execute(array('--forceupdate' => true, '--verboso' => true));
         $outputimport2 = $commandTesterImport2->getDisplay();
         //echo $outputimport2;exit;
         $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport2);
         $this->assertContains('aggiunta', $outputimport2);
         unlink($fixturefile);
-        /* $em = static::$kernel->getContainer()->get('doctrine')->getManager();
-
-          $user = $em->getRepository('FiCoreBundle:Operatori')->findOneBy(array(
-          'username' => $userprova,
-          ));
-
-          //$this->assertContains('Created user', $output);
-          $this->assertEquals($userprova . '@domain.it', $user->getEmail());
-          $this->assertEquals(true, $user->isEnabled());
-
-          $em->remove($user);
-          $em->flush(); */
+        $user = $em->getRepository('FiCoreBundle:Ruoli')->findOneBy(array(
+            'ruolo' => "Utente",
+        ));
+        $this->assertTrue($user->getRuolo() === 'Utente');
     }
 
 }

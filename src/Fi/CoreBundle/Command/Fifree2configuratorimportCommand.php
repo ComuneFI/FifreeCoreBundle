@@ -60,7 +60,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         foreach ($fixture as $record) {
             $this->em = $this->getContainer()->get("doctrine")->getManager();
             $objrecord = $this->em->getRepository($entityclass)->find($record["id"]);
-            if (count($objrecord) > 0) {
+            if ($objrecord) {
                 if ($this->forceupdate) {
                     $retcode = $this->executeUpdate($entityclass, $record, $objrecord);
                     if ($retcode !== 0) {
@@ -234,7 +234,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         if ((!$oldvalue && $newvalue) || ($oldvalue && !$newvalue)) {
             return true;
         }
-        return count(array_diff($oldvalue, $newvalue) > 0);
+        return count(array_diff($oldvalue, $newvalue)) > 0;
     }
 
     private function getFieldType($entity, $field)
