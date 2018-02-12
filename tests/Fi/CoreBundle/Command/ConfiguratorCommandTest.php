@@ -50,6 +50,20 @@ class ConfiguratorCommandTest extends WebTestCase
         $this->assertRegExp('/.../', $outputexport);
         $this->assertContains('Export Entity: Fi\\CoreBundle\\Entity\\' . $entity, $outputexport);
 
+        $entitypermessi = "Permessi";
+        $commandexport = $application->find('fifree2:configuratorexport');
+        $commandTesterExport = new CommandTester($commandexport);
+        $commandTesterExport->execute(
+                array(
+                    'entity' => $entitypermessi,
+                    '--append' => true
+                )
+        );
+        $outputexport = $commandTesterExport->getDisplay();
+
+        $this->assertRegExp('/.../', $outputexport);
+        $this->assertContains('Export Entity: Fi\\CoreBundle\\Entity\\' . $entitypermessi, $outputexport);
+
         /* Rimuovo ruolo Utente per generare l'inserimento tramite import */
         $em = static::$kernel->getContainer()->get('doctrine')->getManager();
 
@@ -59,8 +73,31 @@ class ConfiguratorCommandTest extends WebTestCase
 
         $em->remove($user);
         $em->flush();
-        $em->clear();
 
+        $admin = $em->getRepository('FiCoreBundle:Ruoli')->findOneBy(array(
+            'ruolo' => "Amministratore",
+        ));
+
+        $admin->setRuolo("Amministratores");
+        $em->persist($admin);
+        $em->flush();
+
+        $permesso = $em->getRepository('FiCoreBundle:Permessi')->findOneBy(array(
+            'modulo' => "Ffprincipale",
+        ));
+        $permesso->setRuoli($admin);
+        $em->persist($permesso);
+        $em->flush();
+
+        /**/
+        $operatore = $em->getRepository('FiCoreBundle:Operatori')->findOneBy(array(
+            'username' => "admin",
+        ));
+        $operatore->setLastLogin(new \DateTime());
+        $operatore->setRoles(array("ROLE_SUPER_ADMIN", "ROLE_ADMIN", "ROLE_UNDEFINED"));
+        $em->persist($operatore);
+        $em->flush();
+        /**/
 
         $commandTesterImport2 = new CommandTester($commandimport);
         $commandTesterImport2->execute(array('--forceupdate' => true, '--verboso' => true));
@@ -68,11 +105,16 @@ class ConfiguratorCommandTest extends WebTestCase
         //echo $outputimport2;exit;
         $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport2);
         $this->assertContains('aggiunta', $outputimport2);
+        $this->assertContains('Modifica', $outputimport2);
+        $this->assertContains('tramite entity find', $outputimport2);
+        $this->assertContains('in formato DateTime', $outputimport2);
+        $this->assertContains('ROLE_UNDEFINED', $outputimport2);
+
+
         unlink($fixturefile);
         $user = $em->getRepository('FiCoreBundle:Ruoli')->findOneBy(array(
             'ruolo' => "Utente",
         ));
         $this->assertTrue($user->getRuolo() === 'Utente');
     }
-
 }

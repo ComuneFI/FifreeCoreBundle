@@ -146,7 +146,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                                     . " per campo " . $key . " cambio valore da "
                                     //. (!is_null($objrecord->$getfieldname())) ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "(null)"
                                     . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "")
-                                    . " a " . $date->format("Y-m-d H:i:s") . "</info>";
+                                    . " a " . $date->format("Y-m-d H:i:s") . " in formato DateTime</info>";
                             $this->output->writeln($msgok);
                             $objrecord->$setfieldname($date);
                             continue;
