@@ -18,7 +18,7 @@ class ConfiguratorCommandTest extends WebTestCase
 
     public function testConfigurator()
     {
-        $entity = 'OpzioniTabella';
+        $entity = 'Permessi';
         $fixturefile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "fixtures.yml";
         @unlink($fixturefile);
         /* $console = __DIR__ . '/../../bin/console';
@@ -50,19 +50,6 @@ class ConfiguratorCommandTest extends WebTestCase
         $this->assertRegExp('/.../', $outputexport);
         $this->assertContains('Export Entity: Fi\\CoreBundle\\Entity\\' . $entity, $outputexport);
 
-        $entitypermessi = "Permessi";
-        $commandexport = $application->find('fifree2:configuratorexport');
-        $commandTesterExport = new CommandTester($commandexport);
-        $commandTesterExport->execute(
-                array(
-                    'entity' => $entitypermessi,
-                    '--append' => true
-                )
-        );
-        $outputexport = $commandTesterExport->getDisplay();
-
-        $this->assertRegExp('/.../', $outputexport);
-        $this->assertContains('Export Entity: Fi\\CoreBundle\\Entity\\' . $entitypermessi, $outputexport);
 
         /* Rimuovo ruolo Utente per generare l'inserimento tramite import */
         $em = static::$kernel->getContainer()->get('doctrine')->getManager();
