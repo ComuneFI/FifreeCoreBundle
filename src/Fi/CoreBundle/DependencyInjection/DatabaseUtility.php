@@ -60,24 +60,30 @@ class DatabaseUtility
     {
         $datenewvalue = new \DateTime();
         $datenewvalue->setTimestamp($newvalue);
-        if (!$oldvalue && !$newvalue) {
+        $twoboth = !$oldvalue && !$newvalue;
+        if ($twoboth) {
             return false;
         }
-        if ((!$oldvalue && $newvalue) || ($oldvalue && !$newvalue)) {
+        $onlyonenull = (!$oldvalue && $newvalue) || ($oldvalue && !$newvalue);
+        if ($onlyonenull) {
             return true;
         }
-        return ($oldvalue != $datenewvalue);
+        $changed = ($oldvalue != $datenewvalue);
+        return $changed;
     }
 
     public function isArrayChanged($oldvalue, $newvalue)
     {
-        if (!$oldvalue && !$newvalue) {
+        $twoboth = !$oldvalue && !$newvalue;
+        if ($twoboth) {
             return false;
         }
-        if ((!$oldvalue && $newvalue) || ($oldvalue && !$newvalue)) {
+        $onlyonenull = (!$oldvalue && $newvalue) || ($oldvalue && !$newvalue);
+        if ($onlyonenull) {
             return true;
         }
-        return count(array_diff($oldvalue, $newvalue)) > 0;
+        $numdiff = array_diff($oldvalue, $newvalue);
+        return count($numdiff) > 0;
     }
 
     public function entityExists($className)
