@@ -124,8 +124,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
     private function executeUpdate($entityclass, $record, $objrecord)
     {
         foreach ($record as $key => $value) {
-            if ($key !== 'id' /* && $value !== null */) {
-                //if ($key=='is_user' && $value !== true){var_dump($value);exit;}
+            if ($key !== 'id') {
                 $propertyEntity = $this->dbutility->getEntityProperties($key, $objrecord);
                 $getfieldname = $propertyEntity["get"];
                 $setfieldname = $propertyEntity["set"];
@@ -149,7 +148,6 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                                     . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "")
                                     . " a " . $date->format("Y-m-d H:i:s") . "</info>";
                             $this->output->writeln($msgok);
-
                             $objrecord->$setfieldname($date);
                             continue;
                         }
@@ -162,7 +160,22 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                             $objrecord->$setfieldname($value);
                             continue;
                         }
-                        $msgok = "<info>" . $entityclass . " con id " . $record["id"]
+
+                        $joincolumn = $this->dbutility->getJoinTableField($entityclass, $key);
+                        $joincolumnproperty = $this->dbutility->getJoinTableFieldProperty($entityclass, $key);
+                        if ($joincolumn && $joincolumnproperty) {
+                            $joincolumnobj = $this->em->getRepository($joincolumn)->find($value);
+                            $msgok = "<info>Modifica " . $entityclass . " con id " . $record["id"]
+                                    . " per campo " . $key . " cambio valore da " . print_r($objrecord->$getfieldname(), true)
+                                    . " a " . print_r($value, true) . " tramite entity find</info>";
+                            $this->output->writeln($msgok);
+                            $joinobj = $this->dbutility->getEntityProperties($joincolumnproperty, new $entityclass());
+                            $setfieldname = $joinobj["set"];
+                            $objrecord->$setfieldname($joincolumnobj);
+                            continue;
+                        }
+
+                        $msgok = "<info>Modifica " . $entityclass . " con id " . $record["id"]
                                 . " per campo " . $key . " cambio valore da " . print_r($objrecord->$getfieldname(), true)
                                 . " a " . print_r($value, true) . "</info>";
                         $this->output->writeln($msgok);
@@ -172,15 +185,16 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                                 . " per campo " . $key . ", ERRORE: " . $exc->getMessage()
                                 . " alla riga " . $exc->getLine() . "</error>";
                         $this->output->writeln($msgerr);
+                        //dump($exc);
                         return 1;
                     }
                 }
             }
         }
-
         $this->em->persist($objrecord);
         $this->em->flush();
         $this->em->clear();
+
         return 0;
     }
 }

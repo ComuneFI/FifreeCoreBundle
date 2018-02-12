@@ -52,7 +52,7 @@ class DatabaseUtility
         if (is_array($oldvalue)) {
             return $this->isArrayChanged($oldvalue, $newvalue);
         }
-
+        
         return ($oldvalue !== $newvalue);
     }
 
@@ -107,6 +107,45 @@ class DatabaseUtility
             }
         }
         return $jointables;
+    }
+
+    public function getJoinTableField($entityclass, $field)
+    {
+        $joinTable = null;
+        $joinfields = $this->getEntityJoinTables($entityclass);
+        foreach ($joinfields as $joinfield) {
+            if (count($joinfield) != 1) {
+                return null;
+            }
+            $joinTable = $joinfield["entity"];
+            $joinColumns = $joinTable["joinColumns"];
+            foreach ($joinColumns as $joinColumn) {
+                if ($field === $joinColumn["name"]) {
+                    $joinTable = $joinTable["targetEntity"];
+                }
+            }
+        }
+        return $joinTable;
+    }
+
+    public function getJoinTableFieldProperty($entityclass, $field)
+    {
+        $joinFieldName = null;
+        $joinfields = $this->getEntityJoinTables($entityclass);
+        foreach ($joinfields as $joinfield) {
+            if (count($joinfield) != 1) {
+                return null;
+            }
+            $joinFieldentity = $joinfield["entity"];
+            $joinColumns = $joinFieldentity["joinColumns"];
+            foreach ($joinColumns as $joinColumn) {
+                if ($field === $joinColumn["name"]) {
+                    $joinFieldName = $joinFieldentity["fieldName"];
+                    return $joinFieldName;
+                }
+            }
+        }
+        return $joinFieldName;
     }
 
     public function entityHasJoinTables($entityclass)
