@@ -54,7 +54,16 @@ class ConfiguratorCommandTest extends WebTestCase
 
         $this->assertRegExp('/.../', $outputexport);
         $this->assertContains('Export Entity: Fi\\CoreBundle\\Entity\\' . $entity, $outputexport);
-        //echo $outputexport;
+
+        /*Rimuovo ruolo Utente per generare l'inserimento tramite import*/
+        $em = static::$kernel->getContainer()->get('doctrine')->getManager();
+
+        $user = $em->getRepository('FiCoreBundle:Ruoli')->findOneBy(array(
+            'ruolo' => "Utente",
+        ));
+
+        $em->remove($user);
+        $em->flush();
 
 
         $commandTesterImport2 = new CommandTester($commandimport);
@@ -67,6 +76,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $outputimport2 = $commandTesterImport2->getDisplay();
         //echo $outputimport2;exit;
         $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport2);
+        $this->assertContains('aggiunta', $outputimport2);
         unlink($fixturefile);
         /* $em = static::$kernel->getContainer()->get('doctrine')->getManager();
 
