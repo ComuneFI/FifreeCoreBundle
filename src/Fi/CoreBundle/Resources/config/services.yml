@@ -114,24 +114,6 @@ services:
         tags:
             -  { name: console.command }
             
-    fifree.command.mysqlconvertdbengine:
-        class: Fi\CoreBundle\Command\Fifree2mysqlconvertdbengineCommand
-        public: false
-        tags:
-            -  { name: console.command }
-            
-    fifree.command.mysqldropforeignkeys:
-        class: Fi\CoreBundle\Command\Fifree2mysqldropforeignkeysCommand
-        public: false
-        tags:
-            -  { name: console.command }
-            
-    fifree.command.mysqltruncatetables:
-        class: Fi\CoreBundle\Command\Fifree2mysqltruncatetablesCommand
-        public: false
-        tags:
-            -  { name: console.command }
-            
     fifree.command.pubblicamanuale:
         class: Fi\CoreBundle\Command\Fifree2pubblicamanualeCommand
         public: false
