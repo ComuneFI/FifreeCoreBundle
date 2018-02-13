@@ -116,9 +116,9 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
     {
         $sortedEntities = array();
         $entities = array();
-        foreach ($fixtures as $entityclass => $fixture) {
-            $sortedEntities = $this->sortEntities($entityclass);
-        }
+
+        $sortedEntities = $this->sortEntities($fixtures);
+
         foreach ($sortedEntities as $fixture) {
             $entities[$fixture] = $fixtures[$fixture];
         }
@@ -128,20 +128,22 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
     /**
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
-    private function sortEntities($entityclass)
+    private function sortEntities($fixtures)
     {
         $sortedEntities = array();
-        $hasentityjoin = $this->dbutility->entityHasJoinTables($entityclass);
-        if ($hasentityjoin) {
-            $entityjoins = $this->dbutility->getEntityJoinTables($entityclass);
-            foreach ($entityjoins as $keyjoin => $entityjoin) {
-                $sortedEntities[] = $keyjoin;
+        foreach ($fixtures as $entityclass => $fixture) {
+            $hasentityjoin = $this->dbutility->entityHasJoinTables($entityclass);
+            if ($hasentityjoin) {
+                $entityjoins = $this->dbutility->getEntityJoinTables($entityclass);
+                foreach ($entityjoins as $keyjoin => $entityjoin) {
+                    $sortedEntities[] = $keyjoin;
+                }
             }
+            $sortedEntities[] = $entityclass;
         }
-        $sortedEntities[] = $entityclass;
         return $sortedEntities;
     }
-
+    
     private function executeImport($entityclass, $fixture)
     {
         $msg = "<info>Trovati " . count($fixture) . " record per l'entity " . $entityclass . "</info>";
