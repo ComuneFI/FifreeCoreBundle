@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Filesystem\Filesystem;
-use Doctrine\Common\Persistence\Proxy;
 
 class Fifree2configuratorexportCommand extends ContainerAwareCommand
 {
@@ -63,13 +62,13 @@ class Fifree2configuratorexportCommand extends ContainerAwareCommand
 
     private function exportEntity($fixturefile, $entityclass)
     {
-        $dbutility = $this->getContainer()->get("ficorebundle.database.utility");
+        $entityutility = $this->getContainer()->get("ficorebundle.entity.utility");
         $this->output->writeln("<info>Export Entity: " . $entityclass . "</info>");
-        if ($dbutility->entityExists($entityclass)) {
-            $hasEntityCollegate = $dbutility->entityHasJoinTables($entityclass);
+        if ($entityutility->entityExists($entityclass)) {
+            $hasEntityCollegate = $entityutility->entityHasJoinTables($entityclass);
             if ($hasEntityCollegate) {
                 $this->output->writeln("<info>Entity " . $entityclass . " ha tabelle in join</info>");
-                $entityCollegata = $dbutility->getEntityJoinTables($entityclass);
+                $entityCollegata = $entityutility->getEntityJoinTables($entityclass);
                 foreach ($entityCollegata as $key => $tabella) {
                     $this->entities[] = $key;
                     $this->output->writeln("<info>Prima esporto " . $key . " -> " . $tabella["entity"]["fieldName"] . "</info>");

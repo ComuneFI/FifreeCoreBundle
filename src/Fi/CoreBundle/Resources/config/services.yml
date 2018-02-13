@@ -51,6 +51,12 @@ services:
         public: true
         arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
             
+    #Utility database
+    ficorebundle.entity.utility:
+        class: Fi\CoreBundle\DependencyInjection\EntityUtility
+        public: true
+        arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
+            
     #Utility tabelle
     ficorebundle.tabelle.utility:
         class: Fi\CoreBundle\DependencyInjection\TabelleUtility

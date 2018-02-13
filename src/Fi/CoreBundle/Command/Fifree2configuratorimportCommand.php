@@ -18,6 +18,8 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
     private $forceupdate = false;
     private $verboso = false;
     private $dbutility;
+    private $entityutility;
+
     /* @var $em \Doctrine\ORM\EntityManager */
     private $em;
 
@@ -39,6 +41,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         $this->verboso = $input->getOption('verboso');
         $this->truncatetables = $input->getOption('truncatetables');
         $this->dbutility = $this->getContainer()->get("ficorebundle.database.utility");
+        $this->entityutility = $this->getContainer()->get("ficorebundle.entity.utility");
         $this->em = $this->getContainer()->get("doctrine")->getManager();
 
         $this->checkSchemaStatus();
@@ -101,7 +104,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
     private function truncateTable($entityclass)
     {
-        $tablename = $this->dbutility->getTableFromEntity($entityclass);
+        $tablename = $this->entityutility->getTableFromEntity($entityclass);
         if ($tablename) {
             $msg = "<info>TRUNCATE della tabella " . $tablename . " (" . $entityclass . ")</info>";
             $this->output->writeln($msg);
@@ -114,11 +117,8 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
     private function getSortedEntities($fixtures)
     {
-        $sortedEntities = array();
         $entities = array();
-
         $sortedEntities = $this->sortEntities($fixtures);
-
         foreach ($sortedEntities as $fixture) {
             $entities[$fixture] = $fixtures[$fixture];
         }
@@ -132,9 +132,9 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
     {
         $sortedEntities = array();
         foreach ($fixtures as $entityclass => $fixture) {
-            $hasentityjoin = $this->dbutility->entityHasJoinTables($entityclass);
+            $hasentityjoin = $this->entityutility->entityHasJoinTables($entityclass);
             if ($hasentityjoin) {
-                $entityjoins = $this->dbutility->getEntityJoinTables($entityclass);
+                $entityjoins = $this->entityutility->getEntityJoinTables($entityclass);
                 foreach ($entityjoins as $keyjoin => $entityjoin) {
                     $sortedEntities[] = $keyjoin;
                 }
@@ -143,7 +143,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         }
         return $sortedEntities;
     }
-    
+
     private function executeImport($entityclass, $fixture)
     {
         $msg = "<info>Trovati " . count($fixture) . " record per l'entity " . $entityclass . "</info>";
@@ -177,7 +177,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
         foreach ($record as $key => $value) {
             if ($key !== 'id' && $value) {
-                $propertyEntity = $this->dbutility->getEntityProperties($key, $objrecord);
+                $propertyEntity = $this->entityutility->getEntityProperties($key, $objrecord);
                 $getfieldname = $propertyEntity["get"];
                 $setfieldname = $propertyEntity["set"];
                 $fieldtype = $this->dbutility->getFieldType($objrecord, $key);
@@ -203,15 +203,15 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                     continue;
                 }
 
-                $joincolumn = $this->dbutility->getJoinTableField($entityclass, $key);
-                $joincolumnproperty = $this->dbutility->getJoinTableFieldProperty($entityclass, $key);
+                $joincolumn = $this->entityutility->getJoinTableField($entityclass, $key);
+                $joincolumnproperty = $this->entityutility->getJoinTableFieldProperty($entityclass, $key);
                 if ($joincolumn && $joincolumnproperty) {
                     $joincolumnobj = $this->em->getRepository($joincolumn)->find($value);
                     $msgok = "<info>Inserimento " . $entityclass . " con id " . $record["id"]
                             . " per campo " . $key
                             . " con valore " . print_r($value, true) . " tramite entity find</info>";
                     $this->output->writeln($msgok);
-                    $joinobj = $this->dbutility->getEntityProperties($joincolumnproperty, new $entityclass());
+                    $joinobj = $this->entityutility->getEntityProperties($joincolumnproperty, new $entityclass());
                     $setfieldname = $joinobj["set"];
                     $objrecord->$setfieldname($joincolumnobj);
                     continue;
@@ -249,7 +249,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
     {
         foreach ($record as $key => $value) {
             if ($key !== 'id') {
-                $propertyEntity = $this->dbutility->getEntityProperties($key, $objrecord);
+                $propertyEntity = $this->entityutility->getEntityProperties($key, $objrecord);
                 $getfieldname = $propertyEntity["get"];
                 $setfieldname = $propertyEntity["set"];
                 $cambiato = $this->dbutility->isRecordChanged($entityclass, $key, $objrecord->$getfieldname(), $value);
@@ -285,15 +285,15 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                             continue;
                         }
 
-                        $joincolumn = $this->dbutility->getJoinTableField($entityclass, $key);
-                        $joincolumnproperty = $this->dbutility->getJoinTableFieldProperty($entityclass, $key);
+                        $joincolumn = $this->entityutility->getJoinTableField($entityclass, $key);
+                        $joincolumnproperty = $this->entityutility->getJoinTableFieldProperty($entityclass, $key);
                         if ($joincolumn && $joincolumnproperty) {
                             $joincolumnobj = $this->em->getRepository($joincolumn)->find($value);
                             $msgok = "<info>Modifica " . $entityclass . " con id " . $record["id"]
                                     . " per campo " . $key . " cambio valore da " . print_r($objrecord->$getfieldname(), true)
                                     . " a " . print_r($value, true) . " tramite entity find</info>";
                             $this->output->writeln($msgok);
-                            $joinobj = $this->dbutility->getEntityProperties($joincolumnproperty, new $entityclass());
+                            $joinobj = $this->entityutility->getEntityProperties($joincolumnproperty, new $entityclass());
                             $setfieldname = $joinobj["set"];
                             $objrecord->$setfieldname($joincolumnobj);
                             continue;
