@@ -8,6 +8,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 class Fifree2configuratorimportCommand extends ContainerAwareCommand
 {
@@ -38,6 +41,8 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         $this->dbutility = $this->getContainer()->get("ficorebundle.database.utility");
         $this->em = $this->getContainer()->get("doctrine")->getManager();
 
+        $this->checkSchemaStatus();
+
         $fixturefile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "fixtures.yml";
         return $this->import($fixturefile);
     }
@@ -49,18 +54,14 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
             $fixtures = Yaml::parse(file_get_contents($fixturefile));
             $msg = "<info>Trovate " . count($fixtures) . " entities nel file " . $fixturefile . "</info>";
             $this->output->writeln($msg);
-            foreach ($fixtures as $entityclass => $fixture) {
-                if ($this->truncatetables) {
-                    $tablename = $this->dbutility->getTableFromEntity($entityclass);
-                    if ($tablename) {
-                        $msg = "<info>TRUNCATE della tabella " . $tablename . " (" . $entityclass . ")</info>";
-                        $this->output->writeln($msg);
-                        $this->dbutility->truncatetable($tablename, true);
-                    } else {
-                        $msgerr = "<error>Tabella non trovata per entity " . $entityclass . "</error>";
-                        $this->output->writeln($msgerr);
-                    }
+
+            if ($this->truncatetables) {
+                foreach ($fixtures as $entityclass => $fixture) {
+                    $this->truncateTable($entityclass);
                 }
+            }
+            $sortedEntities = $this->getSortedEntities($fixtures);
+            foreach ($sortedEntities as $entityclass => $fixture) {
                 $this->executeImport($entityclass, $fixture);
             }
             return 0;
@@ -69,6 +70,76 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
             $this->output->writeln($msgerr);
             return 1;
         }
+    }
+
+    private function checkSchemaStatus()
+    {
+        $kernel = $this->getContainer()->get("kernel");
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+
+        $input = new ArrayInput(array(
+            'command' => 'doctrine:schema:update',
+            // (optional) define the value of command arguments
+            '--dump-sql' => true,
+            // (optional) pass options to the command
+            '--env' => $kernel->getEnvironment(),
+        ));
+
+        // You can use NullOutput() if you don't need the output
+        $output = new BufferedOutput();
+        $application->run($input, $output);
+
+        // return the output, don't use if you used NullOutput()
+        $content = $output->fetch();
+        if (strpos($content, 'Nothing to update') == false) {
+            $msgerr = "<error>Attenzione, lo schema database non è aggiornato, verrà comunque tentata l'importazione</error>";
+            $this->output->writeln($msgerr);
+            sleep(3);
+        }
+    }
+
+    private function truncateTable($entityclass)
+    {
+        $tablename = $this->dbutility->getTableFromEntity($entityclass);
+        if ($tablename) {
+            $msg = "<info>TRUNCATE della tabella " . $tablename . " (" . $entityclass . ")</info>";
+            $this->output->writeln($msg);
+            $this->dbutility->truncatetable($tablename, true);
+        } else {
+            $msgerr = "<error>Tabella non trovata per entity " . $entityclass . "</error>";
+            $this->output->writeln($msgerr);
+        }
+    }
+
+    private function getSortedEntities($fixtures)
+    {
+        $sortedEntities = array();
+        $entities = array();
+        foreach ($fixtures as $entityclass => $fixture) {
+            $sortedEntities = $this->sortEntities($entityclass);
+        }
+        foreach ($sortedEntities as $fixture) {
+            $entities[$fixture] = $fixtures[$fixture];
+        }
+        return $entities;
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
+    private function sortEntities($entityclass)
+    {
+        $sortedEntities = array();
+        $hasentityjoin = $this->dbutility->entityHasJoinTables($entityclass);
+        if ($hasentityjoin) {
+            $entityjoins = $this->dbutility->getEntityJoinTables($entityclass);
+            foreach ($entityjoins as $keyjoin => $entityjoin) {
+                $sortedEntities[] = $keyjoin;
+            }
+        }
+        $sortedEntities[] = $entityclass;
+        return $sortedEntities;
     }
 
     private function executeImport($entityclass, $fixture)
@@ -129,9 +200,9 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                     $objrecord->$setfieldname($value);
                     continue;
                 }
+
                 $joincolumn = $this->dbutility->getJoinTableField($entityclass, $key);
                 $joincolumnproperty = $this->dbutility->getJoinTableFieldProperty($entityclass, $key);
-
                 if ($joincolumn && $joincolumnproperty) {
                     $joincolumnobj = $this->em->getRepository($joincolumn)->find($value);
                     $msgok = "<info>Inserimento " . $entityclass . " con id " . $record["id"]
@@ -144,8 +215,6 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                     continue;
                 }
 
-                $propertyEntity = $this->dbutility->getEntityProperties($key, $objrecord);
-                $setfieldname = $propertyEntity["set"];
                 $objrecord->$setfieldname($value);
             }
         }
