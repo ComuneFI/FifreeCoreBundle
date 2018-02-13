@@ -8,6 +8,7 @@ class DatabaseUtility
 {
 
     private $container;
+    /* @var $em \Doctrine\ORM\EntityManager */
     private $em;
 
     public function __construct(Container $container)
@@ -78,7 +79,7 @@ class DatabaseUtility
         if ($cascademysql) {
             $connection->query('SET FOREIGN_KEY_CHECKS=0');
         }
-        $q = $dbPlatform->getTruncateTableSql($cmd->getTableName());
+        $q = $dbPlatform->getTruncateTableSql($cmd->getTableName(), $cascade);
         $connection->executeUpdate($q);
         if ($cascademysql) {
             $connection->query('SET FOREIGN_KEY_CHECKS=1');
