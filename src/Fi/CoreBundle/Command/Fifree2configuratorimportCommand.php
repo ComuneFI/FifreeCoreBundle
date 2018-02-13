@@ -80,9 +80,8 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
         $input = new ArrayInput(array(
             'command' => 'doctrine:schema:update',
-            // (optional) define the value of command arguments
             '--dump-sql' => true,
-            // (optional) pass options to the command
+            '--no-debug' => true,
             '--env' => $kernel->getEnvironment(),
         ));
 
@@ -92,7 +91,8 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
         // return the output, don't use if you used NullOutput()
         $content = $output->fetch();
-        if (strpos($content, 'Nothing to update') == false) {
+        $schemachanged = (strpos($content, 'Nothing to update') == false);
+        if ($schemachanged) {
             $msgerr = "<error>Attenzione, lo schema database non è aggiornato, verrà comunque tentata l'importazione</error>";
             $this->output->writeln($msgerr);
             sleep(3);

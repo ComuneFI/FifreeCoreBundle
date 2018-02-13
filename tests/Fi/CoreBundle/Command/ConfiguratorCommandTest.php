@@ -97,11 +97,20 @@ class ConfiguratorCommandTest extends WebTestCase
         $this->assertContains('in formato DateTime', $outputimport2);
         $this->assertContains('ROLE_UNDEFINED', $outputimport2);
 
-
-        unlink($fixturefile);
         $user = $em->getRepository('FiCoreBundle:Ruoli')->findOneBy(array(
             'ruolo' => "Utente",
         ));
         $this->assertTrue($user->getRuolo() === 'Utente');
+        
+        
+        $commandTesterImport3 = new CommandTester($commandimport);
+        $commandTesterImport3->execute(array('--forceupdate' => true, '--verboso' => true, '--truncatetables' => true));
+        $outputimport3 = $commandTesterImport3->getDisplay();
+        //echo $outputimport2;exit;
+        $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport3);
+        $this->assertContains('aggiunta', $outputimport3);
+        
+        unlink($fixturefile);
+        
     }
 }
