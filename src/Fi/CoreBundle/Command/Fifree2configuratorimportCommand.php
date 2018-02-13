@@ -91,6 +91,21 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
         foreach ($record as $key => $value) {
             if ($key !== 'id' && $value) {
+                $joincolumn = $this->dbutility->getJoinTableField($entityclass, $key);
+                $joincolumnproperty = $this->dbutility->getJoinTableFieldProperty($entityclass, $key);
+                
+                if ($joincolumn && $joincolumnproperty) {
+                    $joincolumnobj = $this->em->getRepository($joincolumn)->find($value);
+                    $msgok = "<info>Inserimento " . $entityclass . " con id " . $record["id"]
+                            . " per campo " . $key
+                            . " con valore " . print_r($value, true) . " tramite entity find</info>";
+                    $this->output->writeln($msgok);
+                    $joinobj = $this->dbutility->getEntityProperties($joincolumnproperty, new $entityclass());
+                    $setfieldname = $joinobj["set"];
+                    $objrecord->$setfieldname($joincolumnobj);
+                    continue;
+                }
+
                 $propertyEntity = $this->dbutility->getEntityProperties($key, $objrecord);
                 $setfieldname = $propertyEntity["set"];
                 $objrecord->$setfieldname($value);
