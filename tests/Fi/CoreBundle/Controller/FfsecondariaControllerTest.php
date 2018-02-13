@@ -110,13 +110,14 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
 
         // submit that form
         $crawler = $client->submit($form);
-
+        
         $qu = $em->createQueryBuilder();
         $qu->select(array('c'))
                 ->from('FiCoreBundle:Storicomodifiche', 'c')
                 ->where("c.nometabella= 'Ffsecondaria'")
                 ->andWhere("c.nomecampo = 'descsec'");
         $ffs = $qu->getQuery()->getResult();
+        
         $this->assertEquals(count($ffs), 1);
 
         $em->clear();
