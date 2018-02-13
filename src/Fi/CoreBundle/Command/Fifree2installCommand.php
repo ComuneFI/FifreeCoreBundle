@@ -67,21 +67,21 @@ class Fifree2installCommand extends ContainerAwareCommand
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
 
-        $ruolos = new \Fi\CoreBundle\Entity\ruoli();
+        $ruolos = new \Fi\CoreBundle\Entity\Ruoli();
         $ruolos->setRuolo('Super Admin');
         $ruolos->setPaginainiziale('/adminpanel');
         $ruolos->setIsSuperadmin(true);
         $ruolos->setIsAdmin(true);
         $ruolos->setIsUser(false);
         $em->persist($ruolos);
-        $ruoloa = new \Fi\CoreBundle\Entity\ruoli();
+        $ruoloa = new \Fi\CoreBundle\Entity\Ruoli();
         $ruoloa->setRuolo('Amministratore');
         $ruoloa->setPaginainiziale('/adminpanel');
         $ruoloa->setIsSuperadmin(false);
         $ruoloa->setIsAdmin(true);
         $ruoloa->setIsUser(false);
         $em->persist($ruoloa);
-        $ruolou = new \Fi\CoreBundle\Entity\ruoli();
+        $ruolou = new \Fi\CoreBundle\Entity\Ruoli();
         $ruolou->setRuolo('Utente');
         $ruolou->setPaginainiziale('/ffprincipale');
         $ruolou->setIsSuperadmin(false);
@@ -101,59 +101,59 @@ class Fifree2installCommand extends ContainerAwareCommand
 
         $this->insertDefaultFfTables($em);
 
-        $permessimnuapp = new \Fi\CoreBundle\Entity\permessi();
+        $permessimnuapp = new \Fi\CoreBundle\Entity\Permessi();
         $permessimnuapp->setRuoli($ruolo);
         $permessimnuapp->setModulo('MenuApplicazione');
         $permessimnuapp->setCrud('crud');
         $em->persist($permessimnuapp);
 
-        $permessiopt = new \Fi\CoreBundle\Entity\permessi();
+        $permessiopt = new \Fi\CoreBundle\Entity\Permessi();
         $permessiopt->setRuoli($ruolo);
         $permessiopt->setModulo('OpzioniTabella');
         $permessiopt->setCrud('crud');
         $em->persist($permessiopt);
 
-        $permessitbl = new \Fi\CoreBundle\Entity\permessi();
+        $permessitbl = new \Fi\CoreBundle\Entity\Permessi();
         $permessitbl->setRuoli($ruolo);
         $permessitbl->setModulo('Tabelle');
         $permessitbl->setCrud('crud');
         $em->persist($permessitbl);
 
-        $permessi = new \Fi\CoreBundle\Entity\permessi();
+        $permessi = new \Fi\CoreBundle\Entity\Permessi();
         $permessi->setRuoli($ruolo);
         $permessi->setModulo('Permessi');
         $permessi->setCrud('crud');
         $em->persist($permessi);
 
-        $permessiope = new \Fi\CoreBundle\Entity\permessi();
+        $permessiope = new \Fi\CoreBundle\Entity\Permessi();
         $permessiope->setRuoli($ruolo);
         $permessiope->setModulo('Operatori');
         $permessiope->setCrud('cru');
         $em->persist($permessiope);
 
-        $permessiruo = new \Fi\CoreBundle\Entity\permessi();
+        $permessiruo = new \Fi\CoreBundle\Entity\Permessi();
         $permessiruo->setRuoli($ruolo);
         $permessiruo->setModulo('Ruoli');
         $permessiruo->setCrud('crud');
         $em->persist($permessiruo);
 
-        $permessifp = new \Fi\CoreBundle\Entity\permessi();
+        $permessifp = new \Fi\CoreBundle\Entity\Permessi();
         $permessifp->setRuoli($ruolo);
         $permessifp->setModulo('Ffprincipale');
         $permessifp->setCrud('crud');
         $em->persist($permessifp);
 
-        $permessifs = new \Fi\CoreBundle\Entity\permessi();
+        $permessifs = new \Fi\CoreBundle\Entity\Permessi();
         $permessifs->setRuoli($ruolo);
         $permessifs->setModulo('Ffsecondaria');
         $permessifs->setCrud('crud');
         $em->persist($permessifs);
 
-        $tabelle = new \Fi\CoreBundle\Entity\tabelle();
+        $tabelle = new \Fi\CoreBundle\Entity\Tabelle();
         $tabelle->setNometabella('*');
         $em->persist($tabelle);
 
-        $tabelleUno = new \Fi\CoreBundle\Entity\tabelle();
+        $tabelleUno = new \Fi\CoreBundle\Entity\Tabelle();
         $tabelleUno->setNometabella('Ffsecondaria');
         $tabelleUno->setNomecampo('ffprincipale');
         $tabelleUno->setMostraindex(true);
@@ -161,7 +161,7 @@ class Fifree2installCommand extends ContainerAwareCommand
         $tabelleUno->setRegistrastorico(true);
         $em->persist($tabelleUno);
 
-        $tabelleDue = new \Fi\CoreBundle\Entity\tabelle();
+        $tabelleDue = new \Fi\CoreBundle\Entity\Tabelle();
         $tabelleDue->setNometabella('Ffsecondaria');
         $tabelleDue->setNomecampo('descsec');
         $tabelleDue->setMostraindex(true);
@@ -170,13 +170,13 @@ class Fifree2installCommand extends ContainerAwareCommand
         $em->persist($tabelleDue);
 
 
-        $opzionitabelle = new \Fi\CoreBundle\Entity\opzioniTabella();
+        $opzionitabelle = new \Fi\CoreBundle\Entity\OpzioniTabella();
         $opzionitabelle->setTabelle($tabelle);
         $opzionitabelle->setParametro('titolo');
         $opzionitabelle->setValore('Elenco dati per %tabella%');
         $em->persist($opzionitabelle);
 
-        $opzionitabelleag = new \Fi\CoreBundle\Entity\opzioniTabella();
+        $opzionitabelleag = new \Fi\CoreBundle\Entity\OpzioniTabella();
         $opzionitabelleag->setTabelle($tabelle);
         $opzionitabelleag->setDescrizione('Altezza Griglia');
         $opzionitabelleag->setParametro('altezzagriglia');
@@ -188,14 +188,14 @@ class Fifree2installCommand extends ContainerAwareCommand
 
     private function insertDefaultMenu($em)
     {
-        $menutabelle = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menutabelle = new \Fi\CoreBundle\Entity\MenuApplicazione();
         $menutabelle->setNome('Tabelle');
         $menutabelle->setAttivo(true);
         $menutabelle->setOrdine(10);
         $em->persist($menutabelle);
         $em->flush();
 
-        $menufp = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menufp = new \Fi\CoreBundle\Entity\MenuApplicazione();
         $menufp->setPadre($menutabelle->getId());
         $menufp->setNome('FFprincipale');
         $menufp->setPercorso('Ffprincipale');
@@ -203,7 +203,7 @@ class Fifree2installCommand extends ContainerAwareCommand
         $menufp->setOrdine(10);
         $em->persist($menufp);
 
-        $menufs = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menufs = new \Fi\CoreBundle\Entity\MenuApplicazione();
         $menufs->setPadre($menutabelle->getId());
         $menufs->setNome('FFsecondaria');
         $menufs->setPercorso('Ffsecondaria');
@@ -212,14 +212,14 @@ class Fifree2installCommand extends ContainerAwareCommand
         $em->persist($menufs);
         $em->flush();
 
-        $menuAmministrazione = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menuAmministrazione = new \Fi\CoreBundle\Entity\MenuApplicazione();
         $menuAmministrazione->setNome('Amministrazione');
         $menuAmministrazione->setAttivo(true);
         $menuAmministrazione->setOrdine(20);
         $em->persist($menuAmministrazione);
         $em->flush();
 
-        $menuop = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menuop = new \Fi\CoreBundle\Entity\MenuApplicazione();
         $menuop->setPadre($menuAmministrazione->getId());
         $menuop->setNome('Operatori');
         $menuop->setPercorso('Operatori');
@@ -227,7 +227,7 @@ class Fifree2installCommand extends ContainerAwareCommand
         $menuop->setOrdine(10);
         $em->persist($menuop);
 
-        $menuruo = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menuruo = new \Fi\CoreBundle\Entity\MenuApplicazione();
         $menuruo->setPadre($menuAmministrazione->getId());
         $menuruo->setNome('Ruoli');
         $menuruo->setPercorso('Ruoli');
@@ -235,7 +235,7 @@ class Fifree2installCommand extends ContainerAwareCommand
         $menuruo->setOrdine(20);
         $em->persist($menuruo);
 
-        $menuapp = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menuapp = new \Fi\CoreBundle\Entity\MenuApplicazione();
         $menuapp->setPadre($menuAmministrazione->getId());
         $menuapp->setNome('Permessi');
         $menuapp->setPercorso('Permessi');
@@ -243,7 +243,7 @@ class Fifree2installCommand extends ContainerAwareCommand
         $menuapp->setOrdine(30);
         $em->persist($menuapp);
 
-        $menutbl = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menutbl = new \Fi\CoreBundle\Entity\MenuApplicazione();
         $menutbl->setPadre($menuAmministrazione->getId());
         $menutbl->setNome('Gestione tabelle');
         $menutbl->setPercorso('');
@@ -252,7 +252,7 @@ class Fifree2installCommand extends ContainerAwareCommand
         $em->persist($menutbl);
         $em->flush();
 
-        $menutbs = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menutbs = new \Fi\CoreBundle\Entity\MenuApplicazione();
         $menutbs->setPadre($menutbl->getId());
         $menutbs->setNome('Tabelle');
         $menutbs->setPercorso('Tabelle');
@@ -260,7 +260,7 @@ class Fifree2installCommand extends ContainerAwareCommand
         $menutbs->setOrdine(10);
         $em->persist($menutbs);
 
-        $menuopt = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menuopt = new \Fi\CoreBundle\Entity\MenuApplicazione();
         $menuopt->setPadre($menutbl->getId());
         $menuopt->setNome('Opzioni tabella');
         $menuopt->setPercorso('OpzioniTabella');
@@ -268,7 +268,7 @@ class Fifree2installCommand extends ContainerAwareCommand
         $menuopt->setOrdine(20);
         $em->persist($menuopt);
 
-        $menumnuapp = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menumnuapp = new \Fi\CoreBundle\Entity\MenuApplicazione();
         $menumnuapp->setPadre($menuAmministrazione->getId());
         $menumnuapp->setNome('Menu Applicazione');
         $menumnuapp->setPercorso('MenuApplicazione_container');
@@ -276,7 +276,7 @@ class Fifree2installCommand extends ContainerAwareCommand
         $menumnuapp->setOrdine(50);
         $em->persist($menumnuapp);
 
-        $menuutil = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menuutil = new \Fi\CoreBundle\Entity\MenuApplicazione();
         $menuutil->setPadre($menuAmministrazione->getId());
         $menuutil->setNome('Utilità');
         $menuutil->setPercorso('fi_pannello_amministrazione_homepage');
@@ -284,7 +284,7 @@ class Fifree2installCommand extends ContainerAwareCommand
         $menuutil->setOrdine(100);
         $em->persist($menuutil);
 
-        $menudemo = new \Fi\CoreBundle\Entity\menuApplicazione();
+        $menudemo = new \Fi\CoreBundle\Entity\MenuApplicazione();
         $menudemo->setPadre($menuAmministrazione->getId());
         $menudemo->setNome('FiDemo');
         $menudemo->setPercorso('fi_demo_index');
@@ -296,7 +296,7 @@ class Fifree2installCommand extends ContainerAwareCommand
 
     private function insertDefaultFfTables($em)
     {
-        $ffprincipalerow = new \Fi\CoreBundle\Entity\ffprincipale();
+        $ffprincipalerow = new \Fi\CoreBundle\Entity\Ffprincipale();
         $ffprincipalerow->setDescrizione('Descrizione primo record');
         $em->persist($ffprincipalerow);
         $em->flush();
@@ -354,7 +354,7 @@ class Fifree2installCommand extends ContainerAwareCommand
 
         $em->persist($ffsecondariarow5);
 
-        $ffprincipale = new \Fi\CoreBundle\Entity\ffprincipale();
+        $ffprincipale = new \Fi\CoreBundle\Entity\Ffprincipale();
         $ffprincipale->setDescrizione('Descrizione secondo record');
         $em->persist($ffprincipale);
 
