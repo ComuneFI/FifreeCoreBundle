@@ -105,7 +105,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         if ($tablename) {
             $msg = "<info>TRUNCATE della tabella " . $tablename . " (" . $entityclass . ")</info>";
             $this->output->writeln($msg);
-            $this->dbutility->truncatetable($tablename, true);
+            $this->dbutility->truncatetable($entityclass, true);
         } else {
             $msgerr = "<error>Tabella non trovata per entity " . $entityclass . "</error>";
             $this->output->writeln($msgerr);

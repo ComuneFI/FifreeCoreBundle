@@ -180,9 +180,19 @@ class DatabaseUtility
 
     public function truncateTable($table, $cascade = false)
     {
+        $cmd = $this->em->getClassMetadata($entityclass);
         $connection = $this->em->getConnection();
-        $platform = $connection->getDatabasePlatform();
-
-        $connection->executeUpdate($platform->getTruncateTableSQL($table, $cascade));
+        $dbPlatform = $connection->getDatabasePlatform();
+        $dbtype = $connection->getDriver()->getDatabasePlatform()->getName();
+        $cascademysql = $cascade && $dbtype === 'mysql';
+        if ($cascademysql) {
+            $connection->query('SET FOREIGN_KEY_CHECKS=0');
+        }
+        $q = $dbPlatform->getTruncateTableSql($cmd->getTableName());
+        $connection->executeUpdate($q);
+        if ($cascademysql) {
+            $connection->query('SET FOREIGN_KEY_CHECKS=1');
+        }
     }
+
 }
