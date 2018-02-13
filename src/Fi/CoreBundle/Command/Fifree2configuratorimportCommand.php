@@ -25,6 +25,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                 ->setDescription('Configuratore per Fifree')
                 ->setHelp('Importa la configurazione di fifree da file fixtures.yml')
                 ->addOption('forceupdate', null, InputOption::VALUE_NONE, 'Forza update di record con id già presente')
+                ->addOption('truncatetables', null, InputOption::VALUE_NONE, 'Esegue una truncate della tabelle')
                 ->addOption('verboso', null, InputOption::VALUE_NONE, 'Visualizza tutti i messaggi di importazione');
     }
 
@@ -33,6 +34,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         $this->output = $output;
         $this->forceupdate = $input->getOption('forceupdate');
         $this->verboso = $input->getOption('verboso');
+        $this->truncatetables = $input->getOption('truncatetables');
         $this->dbutility = $this->getContainer()->get("ficorebundle.database.utility");
         $this->em = $this->getContainer()->get("doctrine")->getManager();
 
@@ -48,6 +50,17 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
             $msg = "<info>Trovate " . count($fixtures) . " entities nel file " . $fixturefile . "</info>";
             $this->output->writeln($msg);
             foreach ($fixtures as $entityclass => $fixture) {
+                if ($this->truncatetables) {
+                    $tablename = $this->dbutility->getTableFromEntity($entityclass);
+                    if ($tablename) {
+                        $msg = "<info>TRUNCATE della tabella " . $tablename . " (" . $entityclass . ")</info>";
+                        $this->output->writeln($msg);
+                        $this->dbutility->truncatetable($tablename, true);
+                    } else {
+                        $msgerr = "<error>Tabella non trovata per entity " . $entityclass . "</error>";
+                        $this->output->writeln($msgerr);
+                    }
+                }
                 $this->executeImport($entityclass, $fixture);
             }
             return 0;
@@ -91,9 +104,34 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
         foreach ($record as $key => $value) {
             if ($key !== 'id' && $value) {
+                $propertyEntity = $this->dbutility->getEntityProperties($key, $objrecord);
+                $getfieldname = $propertyEntity["get"];
+                $setfieldname = $propertyEntity["set"];
+                $fieldtype = $this->dbutility->getFieldType($objrecord, $key);
+                if ($fieldtype === 'datetime') {
+                    $date = new \DateTime();
+                    $date->setTimestamp($value);
+                    $msgok = "<info>" . $entityclass . " con id " . $record["id"]
+                            . " per campo " . $key . " cambio valore da "
+                            //. (!is_null($objrecord->$getfieldname())) ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "(null)"
+                            . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "")
+                            . " a " . $date->format("Y-m-d H:i:s") . " in formato DateTime</info>";
+                    $this->output->writeln($msgok);
+                    $objrecord->$setfieldname($date);
+                    continue;
+                }
+                if (is_array($value)) {
+                    $msgarray = "<info>" . $entityclass . " con id " . $record["id"]
+                            . " per campo " . $key . " cambio valore da "
+                            . json_encode($objrecord->$getfieldname()) . " a "
+                            . json_encode($value) . " in formato array" . "</info>";
+                    $this->output->writeln($msgarray);
+                    $objrecord->$setfieldname($value);
+                    continue;
+                }
                 $joincolumn = $this->dbutility->getJoinTableField($entityclass, $key);
                 $joincolumnproperty = $this->dbutility->getJoinTableFieldProperty($entityclass, $key);
-                
+
                 if ($joincolumn && $joincolumnproperty) {
                     $joincolumnobj = $this->em->getRepository($joincolumn)->find($value);
                     $msgok = "<info>Inserimento " . $entityclass . " con id " . $record["id"]

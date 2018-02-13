@@ -169,4 +169,20 @@ class DatabaseUtility
         }
         return null;
     }
+
+    public function getTableFromEntity($entity)
+    {
+        $metadata = $this->em->getClassMetadata($entity);
+        $tablename = $metadata->table["name"];
+
+        return $tablename;
+    }
+
+    public function truncateTable($table, $cascade = false)
+    {
+        $connection = $this->em->getConnection();
+        $platform = $connection->getDatabasePlatform();
+
+        $connection->executeUpdate($platform->getTruncateTableSQL($table, $cascade));
+    }
 }
