@@ -74,7 +74,7 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
         $valorenota = "Notaaaa";
 
         // submit that form
-        $form = $crawler->filter('form[id=formdatiFfsecondaria]')->form(array
+        $form2 = $crawler->filter('form[id=formdatiFfsecondaria]')->form(array
             ($campodescrizione => $valore,
             $campoffprincipale => $valoreffprincipale,
             $campodatad => $valoredatad,
@@ -86,11 +86,11 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
             $camponota => $valorenota,
         ));
 
-        $crawler = $client->submit($form);
+        $crawler = $client->submit($form2);
         //echo $crawler->html();exit;
         //update
         /* @var $qb \Doctrine\ORM\QueryBuilder */
-        $em = $this->getEntityManager();
+
         $qb = $em->createQueryBuilder();
         $qb->select(array('a'));
         $qb->from('FiCoreBundle:Ffsecondaria', 'a');
@@ -110,18 +110,20 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
 
         // submit that form
         $crawler = $client->submit($form);
+        /*
+        TODO: STORICO DA TESTARE CON CRAWLER
+        echo $crawler->html();
         
-        $qu = $em->createQueryBuilder();
-        $qu->select(array('c'))
+        $qs = $em->createQueryBuilder();
+        $qs->select(array('c'))
                 ->from('FiCoreBundle:Storicomodifiche', 'c')
                 ->where("c.nometabella= 'Ffsecondaria'")
                 ->andWhere("c.nomecampo = 'descsec'");
-        $ffs = $qu->getQuery()->getResult();
+        $ffs = $qs->getQuery()->getResult();
         
         $this->assertEquals(count($ffs), 1);
-
-        $em->clear();
-        $em = $this->getEntityManager();
+        */
+        
         $qb2 = $em->createQueryBuilder();
         $qb2->select(array('a'));
         $qb2->from('FiCoreBundle:Ffsecondaria', 'a');
