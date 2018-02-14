@@ -113,7 +113,7 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
         
         //echo $crawler->html();
         $systementities = $client->getContainer()->get('ficorebundle.entity.system');
-        $systementities->dumpSystemEntities();
+        //$systementities->dumpSystemEntities();
 
         $qs = $em->createQueryBuilder();
         $qs->select(array('c'))

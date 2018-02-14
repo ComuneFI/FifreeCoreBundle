@@ -85,28 +85,25 @@ class ConfiguratorCommandTest extends WebTestCase
         $commandTesterImport2 = new CommandTester($commandimport);
         $commandTesterImport2->execute(array('--forceupdate' => true, '--verboso' => true));
         $outputimport2 = $commandTesterImport2->getDisplay();
-        //echo $outputimport2;exit;
         $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport2);
-        $this->assertContains('aggiunta', $outputimport2);
         $this->assertContains('Modifica', $outputimport2);
-        $this->assertContains('tramite entity find', $outputimport2);
-        $this->assertContains('in formato DateTime', $outputimport2);
         $this->assertContains('ROLE_UNDEFINED', $outputimport2);
 
         $user = $em->getRepository('FiCoreBundle:Ruoli')->findOneBy(array(
             'ruolo' => "Utente",
         ));
         $this->assertTrue($user->getRuolo() === 'Utente');
-        
-        
+
         $commandTesterImport3 = new CommandTester($commandimport);
         $commandTesterImport3->execute(array('--forceupdate' => true, '--verboso' => true, '--truncatetables' => true));
         $outputimport3 = $commandTesterImport3->getDisplay();
-        //echo $outputimport2;exit;
+        //echo $outputimport3;exit;
         $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport3);
         $this->assertContains('aggiunta', $outputimport3);
-        
+        $this->assertContains('tramite entity find', $outputimport3);
+        $this->assertContains(' in formato Boolean', $outputimport3);
+        $this->assertContains('in formato DateTime', $outputimport3);
+
         unlink($fixturefile);
-        
     }
 }

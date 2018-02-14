@@ -171,58 +171,61 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
     private function executeInsert($entityclass, $record)
     {
         $objrecord = new $entityclass();
-        try {
-            foreach ($record as $key => $value) {
-                if ($key !== 'id' && $value) {
-                    $propertyEntity = $this->entityutility->getEntityProperties($key, $objrecord);
-                    $getfieldname = $propertyEntity["get"];
-                    $setfieldname = $propertyEntity["set"];
-                    $fieldtype = $this->dbutility->getFieldType($objrecord, $key);
-                    if ($fieldtype === 'datetime' || $fieldtype === 'date') {
-                        $date = new \DateTime();
-                        $date->setTimestamp($value);
-                        $msgok = "<info>" . $entityclass . " con id " . $record["id"]
-                                . " per campo " . $key . " cambio valore da "
-                                . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "")
-                                . " a " . $date->format("Y-m-d H:i:s") . " in formato DateTime</info>";
-                        $this->output->writeln($msgok);
-                        $objrecord->$setfieldname($date);
-                        continue;
-                    }
-                    if (is_array($value)) {
-                        $msgarray = "<info>" . $entityclass . " con id " . $record["id"]
-                                . " per campo " . $key . " cambio valore da "
-                                . json_encode($objrecord->$getfieldname()) . " a "
-                                . json_encode($value) . " in formato array" . "</info>";
-                        $this->output->writeln($msgarray);
-                        $objrecord->$setfieldname($value);
-                        continue;
-                    }
-
-                    $joincolumn = $this->entityutility->getJoinTableField($entityclass, $key);
-                    $joincolumnproperty = $this->entityutility->getJoinTableFieldProperty($entityclass, $key);
-                    if ($joincolumn && $joincolumnproperty) {
-                        $joincolumnobj = $this->em->getRepository($joincolumn)->find($value);
-                        $msgok = "<info>Inserimento " . $entityclass . " con id " . $record["id"]
-                                . " per campo " . $key
-                                . " con valore " . print_r($value, true) . " tramite entity find</info>";
-                        $this->output->writeln($msgok);
-                        $joinobj = $this->entityutility->getEntityProperties($joincolumnproperty, new $entityclass());
-                        $setfieldname = $joinobj["set"];
-                        $objrecord->$setfieldname($joincolumnobj);
-                        continue;
-                    }
-
-                    $objrecord->$setfieldname($value);
+        foreach ($record as $key => $value) {
+            if ($key !== 'id' && $value) {
+                $propertyEntity = $this->entityutility->getEntityProperties($key, $objrecord);
+                $getfieldname = $propertyEntity["get"];
+                $setfieldname = $propertyEntity["set"];
+                $fieldtype = $this->dbutility->getFieldType($objrecord, $key);
+                if ($fieldtype === 'boolean') {
+                    $msgok = "<info>Inserimento " . $entityclass . " con id " . $record["id"]
+                            . " per campo " . $key . " cambio valore da "
+                            . (bool) $objrecord->$getfieldname()
+                            . " a " . (bool) $value . " in formato Boolean</info>";
+                    $this->output->writeln($msgok);
+                    $objrecord->$setfieldname((bool) $value);
+                    continue;
                 }
+                if ($fieldtype === 'datetime' || $fieldtype === 'date') {
+                    $date = new \DateTime();
+                    $date->setTimestamp($value);
+                    $msgok = "<info>Inserimento " . $entityclass . " con id " . $record["id"]
+                            . " per campo " . $key . " cambio valore da "
+                            . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "")
+                            . " a " . $date->format("Y-m-d H:i:s") . " in formato DateTime</info>";
+                    $this->output->writeln($msgok);
+                    $objrecord->$setfieldname($date);
+                    continue;
+                }
+                if (is_array($value)) {
+                    $msgarray = "<info>Inserimento " . $entityclass . " con id " . $record["id"]
+                            . " per campo " . $key . " cambio valore da "
+                            . json_encode($objrecord->$getfieldname()) . " a "
+                            . json_encode($value) . " in formato array" . "</info>";
+                    $this->output->writeln($msgarray);
+                    $objrecord->$setfieldname($value);
+                    continue;
+                }
+
+                $joincolumn = $this->entityutility->getJoinTableField($entityclass, $key);
+                $joincolumnproperty = $this->entityutility->getJoinTableFieldProperty($entityclass, $key);
+                if ($joincolumn && $joincolumnproperty) {
+                    $joincolumnobj = $this->em->getRepository($joincolumn)->find($value);
+                    $msgok = "<info>Inserimento " . $entityclass . " con id " . $record["id"]
+                            . " per campo " . $key
+                            . " con valore " . print_r($value, true) . " tramite entity find</info>";
+                    $this->output->writeln($msgok);
+                    $joinobj = $this->entityutility->getEntityProperties($joincolumnproperty, new $entityclass());
+                    $setfieldname = $joinobj["set"];
+                    $objrecord->$setfieldname($joincolumnobj);
+                    continue;
+                }
+
+                $objrecord->$setfieldname($value);
             }
-            $this->em->persist($objrecord);
-            $this->em->flush();
-            $this->em->clear();
-        } catch (\Exception $exc) {
-            echo $exc->getMessage() . " at line " . $exc->getLine();
-            return 1;
         }
+        $this->em->persist($objrecord);
+        $this->em->flush();
 
         $infomsg = "<info>" . $entityclass . " con id " . $objrecord->getId() . " aggiunta</info>";
         $this->output->writeln($infomsg);
@@ -242,6 +245,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                 echo $exc->getMessage();
                 return 1;
             }
+            $this->em->flush();
         }
         return 0;
     }
@@ -264,6 +268,15 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                 } else {
                     try {
                         $fieldtype = $this->dbutility->getFieldType($objrecord, $key);
+                        if ($fieldtype === 'boolean') {
+                            $msgok = "<info>" . $entityclass . " con id " . $record["id"]
+                                    . " per campo " . $key . " cambio valore da "
+                                    . (bool) $objrecord->$getfieldname()
+                                    . " a " . (bool) $value . " in formato Boolean</info>";
+                            $this->output->writeln($msgok);
+                            $objrecord->$setfieldname((bool) $value);
+                            continue;
+                        }
                         if ($fieldtype === 'datetime' || $fieldtype === 'date') {
                             $date = new \DateTime();
                             $date->setTimestamp($value);
@@ -318,7 +331,6 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         }
         $this->em->persist($objrecord);
         $this->em->flush();
-        $this->em->clear();
 
         return 0;
     }

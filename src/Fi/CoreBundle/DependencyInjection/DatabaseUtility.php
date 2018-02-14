@@ -84,5 +84,6 @@ class DatabaseUtility
         if ($cascademysql) {
             $connection->query('SET FOREIGN_KEY_CHECKS=1');
         }
+        $this->em->clear();
     }
 }
