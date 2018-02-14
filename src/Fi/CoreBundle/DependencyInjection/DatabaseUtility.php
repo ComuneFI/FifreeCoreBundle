@@ -3,6 +3,9 @@
 namespace Fi\CoreBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 class DatabaseUtility
 {
@@ -29,7 +32,10 @@ class DatabaseUtility
     public function isRecordChanged($entity, $fieldname, $oldvalue, $newvalue)
     {
         $fieldtype = $this->getFieldType(new $entity(), $fieldname);
-        if ($fieldtype === 'datetime') {
+        if ($fieldtype === 'boolean') {
+            return $oldvalue !== $newvalue;
+        }
+        if ($fieldtype === 'datetime' || $fieldtype === 'date') {
             return $this->isDateChanged($oldvalue, $newvalue);
         }
         if (is_array($oldvalue)) {
@@ -85,5 +91,27 @@ class DatabaseUtility
             $connection->query('SET FOREIGN_KEY_CHECKS=1');
         }
         $this->em->clear();
+    }
+
+    public function isSchemaChanged()
+    {
+        $kernel = $this->container->get("kernel");
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+
+        $input = new ArrayInput(array(
+            'command' => 'doctrine:schema:update',
+            '--dump-sql' => true,
+            '--no-debug' => true,
+            '--env' => $kernel->getEnvironment(),
+        ));
+
+        // You can use NullOutput() if you don't need the output
+        $output = new BufferedOutput();
+        $application->run($input, $output);
+
+        // return the output, don't use if you used NullOutput()
+        $content = $output->fetch();
+        return (strpos($content, 'Nothing to update') == false);
     }
 }

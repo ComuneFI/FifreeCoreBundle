@@ -8,9 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
+use Fi\CoreBundle\Utils\FieldTypeUtility;
 
 class Fifree2configuratorimportCommand extends ContainerAwareCommand
 {
@@ -88,24 +86,8 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
     private function checkSchemaStatus()
     {
-        $kernel = $this->getContainer()->get("kernel");
-        $application = new Application($kernel);
-        $application->setAutoExit(false);
+        $schemachanged = $this->dbutility->isSchemaChanged();
 
-        $input = new ArrayInput(array(
-            'command' => 'doctrine:schema:update',
-            '--dump-sql' => true,
-            '--no-debug' => true,
-            '--env' => $kernel->getEnvironment(),
-        ));
-
-        // You can use NullOutput() if you don't need the output
-        $output = new BufferedOutput();
-        $application->run($input, $output);
-
-        // return the output, don't use if you used NullOutput()
-        $content = $output->fetch();
-        $schemachanged = (strpos($content, 'Nothing to update') == false);
         if ($schemachanged) {
             $msgerr = "<error>Attenzione, lo schema database non è aggiornato, verrà comunque tentata l'importazione</error>";
             $this->output->writeln($msgerr);
@@ -116,14 +98,9 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
     private function truncateTable($entityclass)
     {
         $tablename = $this->entityutility->getTableFromEntity($entityclass);
-        if ($tablename) {
-            $msg = "<info>TRUNCATE della tabella " . $tablename . " (" . $entityclass . ")</info>";
-            $this->output->writeln($msg);
-            $this->dbutility->truncatetable($entityclass, true);
-        } else {
-            $msgerr = "<error>Tabella non trovata per entity " . $entityclass . "</error>";
-            $this->output->writeln($msgerr);
-        }
+        $msg = "<info>TRUNCATE della tabella " . $tablename . " (" . $entityclass . ")</info>";
+        $this->output->writeln($msg);
+        $this->dbutility->truncatetable($entityclass, true);
     }
 
     /**
@@ -147,24 +124,27 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
         $this->output->writeln($msg);
         foreach ($fixture as $record) {
             $objrecord = $this->em->getRepository($entityclass)->find($record["id"]);
-            if ($objrecord) {
-                if ($this->forceupdate) {
-                    $retcode = $this->executeUpdate($entityclass, $record, $objrecord);
-                    if ($retcode !== 0) {
-                        return 1;
-                    }
-                } else {
-                    $msgerr = "<error>" . $entityclass . " con id " . $record["id"]
-                            . " non modificata, specificare l'opzione --forceupdate "
-                            . "per sovrascrivere record presenti</error>";
-                    $this->output->writeln($msgerr);
-                }
-            } else {
-                $retcode = $this->executeInsert($entityclass, $record);
-                if ($retcode !== 0) {
-                    return 1;
-                }
+            $ret = $this->switchInsertUpdate($entityclass, $record, $objrecord);
+            if ($ret !== 0) {
+                return 1;
             }
+        }
+        return 0;
+    }
+
+    private function switchInsertUpdate($entityclass, $record, $objrecord)
+    {
+        if (!$objrecord) {
+            return $this->executeInsert($entityclass, $record);
+        }
+
+        if ($this->forceupdate) {
+            return $this->executeUpdate($entityclass, $record, $objrecord);
+        } else {
+            $msgerr = "<error>" . $entityclass . " con id " . $record["id"]
+                    . " non modificata, specificare l'opzione --forceupdate "
+                    . "per sovrascrivere record presenti</error>";
+            $this->output->writeln($msgerr);
         }
     }
 
@@ -172,26 +152,29 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
     {
         $objrecord = new $entityclass();
         foreach ($record as $key => $value) {
-            if ($key !== 'id' && $value) {
+            if ($key !== 'id') {
                 $propertyEntity = $this->entityutility->getEntityProperties($key, $objrecord);
                 $getfieldname = $propertyEntity["get"];
                 $setfieldname = $propertyEntity["set"];
                 $fieldtype = $this->dbutility->getFieldType($objrecord, $key);
                 if ($fieldtype === 'boolean') {
+                    $newval = FieldTypeUtility::getBooleanValue($value);
                     $msgok = "<info>Inserimento " . $entityclass . " con id " . $record["id"]
-                            . " per campo " . $key . " cambio valore da "
-                            . (bool) $objrecord->$getfieldname()
-                            . " a " . (bool) $value . " in formato Boolean</info>";
+                            . " per campo " . $key . " con valore "
+                            . var_export($newval, true) . " in formato Boolean</info>";
                     $this->output->writeln($msgok);
-                    $objrecord->$setfieldname((bool) $value);
+                    $objrecord->$setfieldname($newval);
+                    continue;
+                }
+                //Si prende in considerazione solo il null del boolean, gli altri non si toccano
+                if (!$value) {
                     continue;
                 }
                 if ($fieldtype === 'datetime' || $fieldtype === 'date') {
-                    $date = new \DateTime();
-                    $date->setTimestamp($value);
+                    $date = FieldTypeUtility::getDateTimeValueFromTimestamp($value);
                     $msgok = "<info>Inserimento " . $entityclass . " con id " . $record["id"]
                             . " per campo " . $key . " cambio valore da "
-                            . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "")
+                            . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "NULL")
                             . " a " . $date->format("Y-m-d H:i:s") . " in formato DateTime</info>";
                     $this->output->writeln($msgok);
                     $objrecord->$setfieldname($date);
@@ -220,7 +203,6 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                     $objrecord->$setfieldname($joincolumnobj);
                     continue;
                 }
-
                 $objrecord->$setfieldname($value);
             }
         }
@@ -229,6 +211,12 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
         $infomsg = "<info>" . $entityclass . " con id " . $objrecord->getId() . " aggiunta</info>";
         $this->output->writeln($infomsg);
+        $checkid = $this->changeRecordId($entityclass, $record, $objrecord);
+        return $checkid;
+    }
+
+    private function changeRecordId($entityclass, $record, $objrecord)
+    {
         if ($record["id"] !== $objrecord->getId()) {
             try {
                 $qb = $this->em->createQueryBuilder();
@@ -269,21 +257,27 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                     try {
                         $fieldtype = $this->dbutility->getFieldType($objrecord, $key);
                         if ($fieldtype === 'boolean') {
+                            $newval = FieldTypeUtility::getBooleanValue($value);
+
                             $msgok = "<info>" . $entityclass . " con id " . $record["id"]
                                     . " per campo " . $key . " cambio valore da "
-                                    . (bool) $objrecord->$getfieldname()
-                                    . " a " . (bool) $value . " in formato Boolean</info>";
+                                    . var_export($objrecord->$getfieldname(), true)
+                                    . " a " . var_export($newval, true) . " in formato Boolean</info>";
                             $this->output->writeln($msgok);
-                            $objrecord->$setfieldname((bool) $value);
+                            $objrecord->$setfieldname($newval);
                             continue;
                         }
+                        //Si prende in considerazione solo il null del boolean, gli altri non si toccano
+                        if (!$value) {
+                            continue;
+                        }
+
                         if ($fieldtype === 'datetime' || $fieldtype === 'date') {
-                            $date = new \DateTime();
-                            $date->setTimestamp($value);
+                            $date = FieldTypeUtility::getDateTimeValueFromTimestamp($value);
                             $msgok = "<info>" . $entityclass . " con id " . $record["id"]
                                     . " per campo " . $key . " cambio valore da "
                                     //. (!is_null($objrecord->$getfieldname())) ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "(null)"
-                                    . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "")
+                                    . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "NULL")
                                     . " a " . $date->format("Y-m-d H:i:s") . " in formato DateTime</info>";
                             $this->output->writeln($msgok);
                             $objrecord->$setfieldname($date);
