@@ -90,7 +90,6 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
         //echo $crawler->html();exit;
         //update
         /* @var $qb \Doctrine\ORM\QueryBuilder */
-
         $qb = $em->createQueryBuilder();
         $qb->select(array('a'));
         $qb->from('FiCoreBundle:Ffsecondaria', 'a');
@@ -110,26 +109,29 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
 
         // submit that form
         $crawler = $client->submit($form);
-        /*
-        TODO: STORICO DA TESTARE CON CRAWLER
-        echo $crawler->html();
+        $em->clear();
         
+        //echo $crawler->html();
+        $systementities = $client->getContainer()->get('ficorebundle.entity.system');
+        $systementities->dumpSystemEntities();
+
         $qs = $em->createQueryBuilder();
         $qs->select(array('c'))
                 ->from('FiCoreBundle:Storicomodifiche', 'c')
                 ->where("c.nometabella= 'Ffsecondaria'")
                 ->andWhere("c.nomecampo = 'descsec'");
         $ffs = $qs->getQuery()->getResult();
-        
+
+        //dump($ffs);
         $this->assertEquals(count($ffs), 1);
-        */
-        
+
         $qb2 = $em->createQueryBuilder();
         $qb2->select(array('a'));
         $qb2->from('FiCoreBundle:Ffsecondaria', 'a');
         $qb2->where('a.descsec = :descrizione');
         $qb2->setParameter('descrizione', $valorenew);
         $record2 = $qb2->getQuery()->getResult();
+        //dump($record2);
         $recorddelete = $record2[0];
         $this->assertEquals($recorddelete->getDescsec(), $valorenew);
 
