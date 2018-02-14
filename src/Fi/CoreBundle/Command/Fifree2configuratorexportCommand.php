@@ -105,7 +105,9 @@ class Fifree2configuratorexportCommand extends ContainerAwareCommand
         foreach ($repo as $row) {
             $entityDump[$entityclass][] = $row;
         }
-        $yml = Yaml::dump($entityDump);
-        file_put_contents($fixturefile, $yml, FILE_APPEND);
+        if (count($entityDump) > 0) {
+            $yml = Yaml::dump($entityDump);
+            file_put_contents($fixturefile, $yml, FILE_APPEND);
+        }
     }
 }

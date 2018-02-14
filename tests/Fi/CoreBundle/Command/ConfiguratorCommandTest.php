@@ -40,11 +40,7 @@ class ConfiguratorCommandTest extends WebTestCase
 
         $commandexport = $application->find('fifree2:configuratorexport');
         $commandTesterExport = new CommandTester($commandexport);
-        $commandTesterExport->execute(
-                array(
-                    'entity' => $entity
-                )
-        );
+        $commandTesterExport->execute(array());
         $outputexport = $commandTesterExport->getDisplay();
 
         $this->assertRegExp('/.../', $outputexport);
