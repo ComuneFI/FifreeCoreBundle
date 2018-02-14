@@ -20,26 +20,31 @@ class Fifree2configuratorexportCommand extends ContainerAwareCommand
         $this
                 ->setName('fifree2:configuratorexport')
                 ->setDescription('Configuratore per Fifree')
-                ->setHelp('Esporta la configurazione di fifree')
-                ->addArgument('entity', InputArgument::REQUIRED, 'Entity da esportare')
-                ->addOption('append', null, InputOption::VALUE_NONE, 'Append per export');
+                ->setHelp('Esporta la configurazione di fifree');
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fs = new Filesystem;
-        $append = $input->getOption('append');
         $this->em = $this->getContainer()->get("doctrine")->getManager();
+        $this->systementity = $this->getContainer()->get("ficorebundle.entity.system");
         $this->output = $output;
-        $entity = $input->getArgument('entity');
 
         try {
             //$fixturefile = $this->getContainer()->get('kernel')->locateResource('@FiCoreBundle/Resources/config/fixtures.yml');
             $fixturefile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "fixtures.yml";
-            if (!$append) {
-                $fs->remove($fixturefile);
+            $fs->remove($fixturefile);
+            $systementities = $this->systementity->getSystemEntities();
+            foreach ($systementities as $entity => $details) {
+                $ret = $this->export($fixturefile, $entity);
+                if ($ret == 1) {
+                    return 1;
+                }
             }
-            return $this->export($fixturefile, $entity);
+            return 0;
         } catch (\Exception $exc) {
             echo $exc->getMessage() . " at line " . $exc->getLine();
         }
@@ -47,7 +52,7 @@ class Fifree2configuratorexportCommand extends ContainerAwareCommand
 
     protected function export($fixturefile, $entity)
     {
-        $entityclass = "Fi\\CoreBundle\\Entity\\" . $entity;
+        $entityclass = $entity;
         $ret = $this->exportEntity($fixturefile, $entityclass);
         if ($ret == 0) {
             foreach ($this->entities as $entity) {
@@ -65,16 +70,16 @@ class Fifree2configuratorexportCommand extends ContainerAwareCommand
         $entityutility = $this->getContainer()->get("ficorebundle.entity.utility");
         $this->output->writeln("<info>Export Entity: " . $entityclass . "</info>");
         if ($entityutility->entityExists($entityclass)) {
-            $hasEntityCollegate = $entityutility->entityHasJoinTables($entityclass);
-            if ($hasEntityCollegate) {
-                $this->output->writeln("<info>Entity " . $entityclass . " ha tabelle in join</info>");
-                $entityCollegata = $entityutility->getEntityJoinTables($entityclass);
-                foreach ($entityCollegata as $key => $tabella) {
-                    $this->entities[] = $key;
-                    $this->output->writeln("<info>Prima esporto " . $key . " -> " . $tabella["entity"]["fieldName"] . "</info>");
-                    $this->exportEntity($fixturefile, $key);
-                }
-            }
+            /* $hasEntityCollegate = $entityutility->entityHasJoinTables($entityclass);
+              if ($hasEntityCollegate) {
+              $this->output->writeln("<info>Entity " . $entityclass . " ha tabelle in join</info>");
+              $entityCollegata = $entityutility->getEntityJoinTables($entityclass);
+              foreach ($entityCollegata as $key => $tabella) {
+              $this->entities[] = $key;
+              $this->output->writeln("<info>Prima esporto " . $key . " -> " . $tabella["entity"]["fieldName"] . "</info>");
+              $this->exportEntity($fixturefile, $key);
+              }
+              } */
         } else {
             $this->output->writeln("<error>Entity not found: " . $entityclass . " </error>");
             return 1;

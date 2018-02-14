@@ -57,6 +57,12 @@ services:
         public: true
         arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
             
+    #Utility tabelle di sistema fifree
+    ficorebundle.entity.system:
+        class: Fi\CoreBundle\DependencyInjection\FifreeSystemTables
+        public: true
+        arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
+            
     #Utility tabelle
     ficorebundle.tabelle.utility:
         class: Fi\CoreBundle\DependencyInjection\TabelleUtility
