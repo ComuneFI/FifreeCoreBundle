@@ -72,33 +72,31 @@ class GrigliaDatiUtils
     public static function getDatiOrdinamento(&$sidx, $nometabella)
     {
         /* se non è passato nessun campo (ipotesi peregrina) usa id */
-
         if (!$sidx) {
             $sidx = $nometabella . '.id';
         } elseif (strrpos($sidx, '.') == 0) {
             if (strrpos($sidx, ',') == 0) {
                 // un solo campo
                 $sidx = $nometabella . '.' . $sidx;
-            }/* else {
-              // NON FUNZIONA
-              // più campi, passati separati da virgole
-              $sidx = self::splitFiledOrderBy($nometabella);
-              } */
+            } else {
+                // più campi, passati separati da virgole
+                $sidx = self::splitFiledOrderBy($sidx, $nometabella);
+            }
         }
     }
 
-    /* public static function splitFiledOrderBy($nometabella)
-      {
-      $sidx = "";
-      $parti = explode(',', $sidx);
-      foreach ($parti as $parte) {
-      if (trim($sidx) != '') {
-      $sidx = $sidx . ',';
-      }
-      $sidx = $sidx . $nometabella . '.' . trim($parte);
-      }
-      return $sidx;
-      } */
+    public static function splitFiledOrderBy($sidx, $nometabella)
+    {
+        $parti = explode(',', $sidx);
+        $neword = "";
+        foreach ($parti as $parte) {
+            if (trim($neword) != '') {
+                $neword = $neword . ', ';
+            }
+            $neword = $neword . $nometabella . '.' . trim($parte);
+        }
+        return $neword;
+    }
 
     public static function valorizzaVettore(&$vettoreriga, $parametri)
     {
