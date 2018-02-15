@@ -67,6 +67,8 @@ class FfsecondariaController extends FiCoreController
 
         $testatagriglia["filterToolbar_searchOnEnter"] = true;
         $testatagriglia["filterToolbar_searchOperators"] = true;
+        $testatagriglia["sortname"] = "data, descsec";
+        $testatagriglia["sortorder"] = "desc";
 
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
         $this->setParametriGriglia(array('request' => $request));
