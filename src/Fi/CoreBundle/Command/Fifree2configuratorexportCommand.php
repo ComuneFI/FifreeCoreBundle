@@ -96,7 +96,7 @@ class Fifree2configuratorexportCommand extends ContainerAwareCommand
                 ->select('p')
                 ->from($entityclass, 'p')
                 ->orderBy("p.id", "asc")
-                ->getQuery()                
+                ->getQuery()
         ;
         $repo = $query->getArrayResult();
 
