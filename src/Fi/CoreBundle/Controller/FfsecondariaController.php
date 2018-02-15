@@ -56,19 +56,7 @@ class FfsecondariaController extends FiCoreController
 
         $testatagriglia = Griglia::testataPerGriglia($paricevuti);
 
-        $testatagriglia['multisearch'] = 1;
-        $testatagriglia['showconfig'] = 1;
-        $testatagriglia['showadd'] = 1;
-        $testatagriglia['showedit'] = 1;
-        $testatagriglia['showdel'] = 1;
-
-        $testatagriglia['showexcel'] = 1;
-        $testatagriglia['showimportexcel'] = 1;
-
-        $testatagriglia["filterToolbar_searchOnEnter"] = true;
-        $testatagriglia["filterToolbar_searchOperators"] = true;
-        $testatagriglia["sortname"] = "data, descsec";
-        $testatagriglia["sortorder"] = "desc";
+        $this->setDefaultGridSettings($testatagriglia);
 
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
         $this->setParametriGriglia(array('request' => $request));
@@ -89,6 +77,23 @@ class FfsecondariaController extends FiCoreController
         } else {
             return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
         }
+    }
+
+    private function setDefaultGridSettings(&$testatagriglia)
+    {
+        $testatagriglia['multisearch'] = 1;
+        $testatagriglia['showconfig'] = 1;
+        $testatagriglia['showadd'] = 1;
+        $testatagriglia['showedit'] = 1;
+        $testatagriglia['showdel'] = 1;
+
+        $testatagriglia['showexcel'] = 1;
+        $testatagriglia['showimportexcel'] = 1;
+
+        $testatagriglia["filterToolbar_searchOnEnter"] = true;
+        $testatagriglia["filterToolbar_searchOperators"] = true;
+        $testatagriglia["sortname"] = "data, descsec";
+        $testatagriglia["sortorder"] = "desc";
     }
 
     private function getComboSelectFfprincipale()

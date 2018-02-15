@@ -112,6 +112,7 @@ class DatabaseUtility
 
         // return the output, don't use if you used NullOutput()
         $content = $output->fetch();
-        return (strpos($content, 'Nothing to update') == false);
+        $changed = strpos($content, 'Nothing to update');
+        return ($changed!==0);
     }
 }

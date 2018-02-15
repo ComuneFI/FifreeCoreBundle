@@ -34,6 +34,8 @@ class FiCoreController extends FiController
         $response->headers->set('Content-Disposition', 'attachment;filename="' . basename($fileexcel) . '"');
 
         $response->setContent(file_get_contents($fileexcel));
+        
+        @unlink($fileexcel);
 
         return $response;
     }

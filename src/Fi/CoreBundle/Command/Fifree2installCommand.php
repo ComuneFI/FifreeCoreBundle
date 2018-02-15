@@ -225,6 +225,18 @@ Fi\CoreBundle\Entity\OpzioniTabella:
     descrizione: 'Altezza Griglia'
     parametro: altezzagriglia
     valore: '400'
+  -
+    id: 3
+    tabelle_id: 1
+    descrizione: 'Esegue filtri con invio in testata griglia'
+    parametro: filterToolbar_searchOnEnter
+    valore: true
+  -
+    id: 4
+    tabelle_id: 1
+    descrizione: 'Aggiunge filtri di default in testata griglia'
+    parametro: filterToolbar_searchOperators
+    valore: true
 Fi\CoreBundle\Entity\Ffprincipale:
   -
     id: 1
