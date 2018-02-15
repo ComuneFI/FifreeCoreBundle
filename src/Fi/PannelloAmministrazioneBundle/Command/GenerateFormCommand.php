@@ -39,7 +39,7 @@ class GenerateFormCommand extends ContainerAwareCommand
         $crudparms = str_replace('/', '', $bundlename) . ':' . $entityform . ' --route-prefix=' . $entityform
                 . ' --env=' . $this->getContainer()->get('kernel')->getEnvironment()
                 . ' --with-write --format=yml --no-interaction'; // --no-debug
-        
+
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
         $resultcrud = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' doctrine:generate:crud ' . $crudparms);
@@ -98,9 +98,13 @@ class GenerateFormCommand extends ContainerAwareCommand
 
         //Si fa l'append nel file routing del bundle per aggiungerci le rotte della tabella che stiamo gestendo
         $fh = fopen($dest, 'a');
-        fwrite($fh, $routingContext);
-        fclose($fh);
-        $retmsg = 'Routing ' . $dest . " generato automaticamente da pannelloammonistrazionebundle\n\n* * * * CLEAR CACHE * * * *\n";
+        if ($fh !== false) {
+            fwrite($fh, $routingContext);
+            fclose($fh);
+            $retmsg = 'Routing ' . $dest . " generato automaticamente da pannelloammonistrazionebundle\n\n* * * * CLEAR CACHE * * * *\n";
+        } else {
+            $retmsg = 'Impossibile generare il ruoting automaticamente da pannelloammonistrazionebundle\n';
+        }
 
         return $retmsg;
     }

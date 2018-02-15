@@ -101,7 +101,7 @@ class Griglia extends Controller
      *                                           ad una tabella</pre>
      * <pre>string $parametri["output"]         : "index" se i dati servono per la griglia dell'index, "stampa" se i dati servono per la stampa</pre>
      *
-     * @return Response in formato JSON con i dati richiesti
+     * @return array in formato JSON con i dati richiesti
      */
     public static function datiPerGriglia($parametri = array())
     {

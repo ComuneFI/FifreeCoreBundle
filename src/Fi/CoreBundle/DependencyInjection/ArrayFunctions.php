@@ -38,9 +38,9 @@ class ArrayFunctions
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
      * e restituisce l'indice
      *
-     * @param $elem Oggetto da cercare
+     * @param $elem mixed Oggetto da cercare nell'array
      * @param $array Array nel quale cercare
-     * @param $key Nome della chiave nella quale cercare $elem
+     * @param $key mixed Nome della chiave nella quale cercare $elem
      * @return Mixed False se non trovato l'elemento, altrimenti il vettore con tutti gli indici
      */
     public static function inMultiarrayTutti($elem, $array, $key)
@@ -70,8 +70,8 @@ class ArrayFunctions
      * e restituisce l'indice
      *
      * @param $array Array nel quale cercare
-     * @param $search Chiave-valore da cercare
-     * @return Mixed False se non trovato l'elemento, altrimenti l'indice in cui si Ã¨ trovato il valore
+     * @param $search array Chiave-valore da cercare
+     * @return Mixed False se non trovato l'elemento, altrimenti l'indice in cui si trova il valore
      */
     public static function multiInMultiarray($array, $search, $debug = false, $tutti = false)
     {
@@ -111,7 +111,7 @@ class ArrayFunctions
      *
      * @param $array Array da ordinare
      * @param $key Nome della chiave dell'array per cui ordinare
-     * @param $type Tipo di ordinamento SORT_ASC, SORT_DESC
+     * @param $type int Tipo di ordinamento SORT_ASC, SORT_DESC
      *
      * @return array Ritorna l'array ordinato
      *

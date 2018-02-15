@@ -44,6 +44,7 @@ composer require fi/fifreecorebundle
     rm -rf test/var/cache/dev
     rm -rf test/var/cache/test
     php tests/bin/console cache:clear --no-warmup --env=test
+    php tests/bin/console fifree:dropdatabase --force --env=test
     php tests/bin/console fifree:install admin admin admin@admin.it --env=test
 
     #Assets install

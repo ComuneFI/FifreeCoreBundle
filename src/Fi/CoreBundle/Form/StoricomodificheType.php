@@ -25,9 +25,6 @@ class StoricomodificheType extends AbstractType
         ;
     }
     
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(

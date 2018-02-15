@@ -16,14 +16,13 @@
     <testsuites>
         <testsuite name="Pannelloamministrazionebundle">
             <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/Command</directory>
-            <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/Dependencyinjection</directory>
             <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/Controller</directory>
         </testsuite>
     </testsuites>
     
     <php>
         <server name="KERNEL_CLASS" value="AppKernel" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="30" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="45" />
         <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
         <const name="WEB_SERVER_HOST" value="localhost" />
         <const name="WEB_SERVER_PORT" value="8000" />

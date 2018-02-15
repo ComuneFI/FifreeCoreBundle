@@ -2,9 +2,6 @@
 
 namespace Fi\CoreBundle\Utils;
 
-use Fi\CoreBundle\Utils\JqgridDati;
-use Fi\CoreBundle\Utils\JqgridTestata;
-
 /**
  * Description of Jqgrid.
  *

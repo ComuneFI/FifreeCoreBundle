@@ -129,7 +129,6 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $FfsecondariaController->setParametriGriglia(array('request' => $newrequest));
         $testatagriglia['parametrigriglia'] = json_encode($FfsecondariaController::$parametrigriglia);
 
-        $testatatabellagriglia = $testatagriglia;
         $testatatabellagriglia = $testatagriglia['tabella'];
         $testatanomicolonnegriglia = $testatagriglia['nomicolonne'];
 
@@ -141,6 +140,7 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         if (is_object($datigriglia)) {
             $datigriglia = get_object_vars($datigriglia);
         }
+                
         $this->assertEquals(9, $datigriglia['total']);
         $this->assertEquals(9, count($datigriglia['rows']));
 
@@ -159,12 +159,24 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
                 $row[$idx] = \DateTime::createFromFormat('d/m/Y', $row[$idx])->format('Y-m-d');
             }
             if (!isset($modellocolonne[$idx]['search']) || !$modellocolonne[$idx]['search'] === false) {
-                $qu = $em->createQueryBuilder();
-                $qu->select(array('c'))
-                        ->from('FiCoreBundle:Ffsecondaria', 'c')
-                        ->where('c.' . $modellocolonne[$idx]['name'] . ' = :value')
-                        ->setParameter('value', $row[$idx]);
-                $ffrow = $qu->getQuery()->getResult();
+                if (is_null($row[$idx])) {
+                    $qu = $em->createQueryBuilder();
+                    $qu->select(array('c'))
+                            ->from('FiCoreBundle:Ffsecondaria', 'c')
+                            ->where('c.' . $modellocolonne[$idx]['name'] . ' is null');
+
+                    $ffrow = $qu->getQuery()->getResult();
+                } else {
+                    $qu = $em->createQueryBuilder();
+                    $qu->select(array('c'))
+                            ->from('FiCoreBundle:Ffsecondaria', 'c')
+                            ->where('c.' . $modellocolonne[$idx]['name'] . ' = :value')
+                            ->setParameter('value', $row[$idx]);
+                    $ffrow = $qu->getQuery()->getResult();
+                }
+                //dump($ffrow);
+                //dump($row[$idx]);
+                //dump($modellocolonne[$idx]['name']);
                 $ff = $ffrow[0];
                 $colmacro = 'get' . ucfirst($modellocolonne[$idx]['name']);
                 if (!method_exists($ff, $colmacro)) {

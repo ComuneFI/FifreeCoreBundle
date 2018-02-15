@@ -45,6 +45,24 @@ services:
         public: true
         arguments: [ '@service_container', '@security.token_storage', '@doctrine.orm.entity_manager' ]
             
+    #Utility database
+    ficorebundle.database.utility:
+        class: Fi\CoreBundle\DependencyInjection\DatabaseUtility
+        public: true
+        arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
+            
+    #Utility database
+    ficorebundle.entity.utility:
+        class: Fi\CoreBundle\DependencyInjection\EntityUtility
+        public: true
+        arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
+            
+    #Utility tabelle di sistema fifree
+    ficorebundle.entity.system:
+        class: Fi\CoreBundle\DependencyInjection\FifreeSystemTables
+        public: true
+        arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
+            
     #Utility tabelle
     ficorebundle.tabelle.utility:
         class: Fi\CoreBundle\DependencyInjection\TabelleUtility
@@ -108,26 +126,20 @@ services:
         tags:
             -  { name: console.command }
             
-    fifree.command.mysqlconvertdbengine:
-        class: Fi\CoreBundle\Command\Fifree2mysqlconvertdbengineCommand
-        public: false
-        tags:
-            -  { name: console.command }
-            
-    fifree.command.mysqldropforeignkeys:
-        class: Fi\CoreBundle\Command\Fifree2mysqldropforeignkeysCommand
-        public: false
-        tags:
-            -  { name: console.command }
-            
-    fifree.command.mysqltruncatetables:
-        class: Fi\CoreBundle\Command\Fifree2mysqltruncatetablesCommand
-        public: false
-        tags:
-            -  { name: console.command }
-            
     fifree.command.pubblicamanuale:
         class: Fi\CoreBundle\Command\Fifree2pubblicamanualeCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    fifree.command.configuratorimport:
+        class: Fi\CoreBundle\Command\Fifree2configuratorimportCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    fifree.command.configuratorexport:
+        class: Fi\CoreBundle\Command\Fifree2configuratorexportCommand
         public: false
         tags:
             -  { name: console.command }
