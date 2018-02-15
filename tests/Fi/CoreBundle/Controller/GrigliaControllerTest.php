@@ -129,7 +129,6 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $FfsecondariaController->setParametriGriglia(array('request' => $newrequest));
         $testatagriglia['parametrigriglia'] = json_encode($FfsecondariaController::$parametrigriglia);
 
-        $testatatabellagriglia = $testatagriglia;
         $testatatabellagriglia = $testatagriglia['tabella'];
         $testatanomicolonnegriglia = $testatagriglia['nomicolonne'];
 
@@ -141,6 +140,7 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         if (is_object($datigriglia)) {
             $datigriglia = get_object_vars($datigriglia);
         }
+                
         $this->assertEquals(9, $datigriglia['total']);
         $this->assertEquals(9, count($datigriglia['rows']));
 
