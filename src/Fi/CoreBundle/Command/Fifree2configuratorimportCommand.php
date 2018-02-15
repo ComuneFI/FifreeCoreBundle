@@ -16,10 +16,11 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
     private $forceupdate = false;
     private $verboso = false;
     private $dbutility;
+    private $systementity;
     private $entityutility;
-
-    /* @var $em \Doctrine\ORM\EntityManager */
     private $em;
+    private $truncatetables;
+    private $output;
 
     protected function configure()
     {

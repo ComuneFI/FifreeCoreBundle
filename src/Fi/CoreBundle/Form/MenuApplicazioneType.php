@@ -27,9 +27,6 @@ class MenuApplicazioneType extends AbstractType
             ->add('percorsonotifiche');
     }
 
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(

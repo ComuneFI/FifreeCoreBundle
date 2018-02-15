@@ -48,6 +48,7 @@ class FifreeSystemTables
 
     public function dumpSystemEntities()
     {
+        /** @scrutinizer ignore-call */
         dump($this->entities);
     }
 

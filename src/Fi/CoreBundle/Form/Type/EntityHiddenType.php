@@ -5,7 +5,7 @@ namespace Fi\CoreBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Fi\CoreBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class EntityHiddenType extends AbstractType
@@ -27,7 +27,7 @@ class EntityHiddenType extends AbstractType
         $builder->addModelTransformer($transformer);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver
                 ->setRequired(array('class'))
