@@ -39,13 +39,14 @@ composer require fi/fifreecorebundle
     composer install
 
     #Preparare il db
-    rm tests/app/dbtest.sqlite
+    rm tests/var/cache/dbtest.sqlite
     rm -rf test/var/cache/prod
     rm -rf test/var/cache/dev
     rm -rf test/var/cache/test
     php tests/bin/console cache:clear --no-warmup --env=test
     php tests/bin/console fifree:dropdatabase --force --env=test
     php tests/bin/console fifree:install admin admin admin@admin.it --env=test
+    chmod 666 tests/var/cache/dbtest.sqlite
 
     #Assets install
     php tests/bin/console assets:install tests/web --env=test
