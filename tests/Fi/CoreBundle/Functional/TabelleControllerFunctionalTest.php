@@ -14,7 +14,7 @@ class TabelleControllerFunctionalTest extends CoreMink
         $session = $this->getSession();
         $page = $this->getCurrentPage();
         
-        sleep(1);
+        
         
         $this->crudoperation($session, $page);
 
@@ -33,9 +33,9 @@ class TabelleControllerFunctionalTest extends CoreMink
         }
         $descrizionetest1 = 'testtabella';
         $page->fillField($fieldprefix . 'nometabella', $descrizionetest1);
-        sleep(1);
+        
         $this->clickElement('a#sDataTabelleS');
-        sleep(1);
+        
 
         $em = $this->em;
         $qb2 = $em->createQueryBuilder();
@@ -50,23 +50,23 @@ class TabelleControllerFunctionalTest extends CoreMink
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
-        sleep(1);
+        
         $this->clickElement('#buttonedit_list1');
-        sleep(1);
+        
         /* Modifica */
         $descrizionetest2 = 'testtabella 2';
         $page->fillField($fieldprefix . 'nometabella', $descrizionetest2);
 
-        sleep(1);
+        
         $this->clickElement('a#sDataTabelleS');
-        sleep(1);
+        
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
-        sleep(1);
+        
         $this->clickElement('#buttondel_list1');
-        sleep(1);
+        
         $this->clickElement('a#dData');
     }
 

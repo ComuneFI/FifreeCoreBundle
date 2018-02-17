@@ -14,7 +14,7 @@ class OpzioniTabellaControllerFunctionalTest extends CoreMink
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
-        sleep(1);
+        
 
         $this->crudoperation($session, $page);
 
@@ -24,7 +24,7 @@ class OpzioniTabellaControllerFunctionalTest extends CoreMink
     public function crudoperation($session, $page)
     {
         $this->clickElement('#buttonadd_list1');
-        sleep(1);
+        
         /* Inserimento */
         $descrizionetest1 = 'testtabella';
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
@@ -34,9 +34,9 @@ class OpzioniTabellaControllerFunctionalTest extends CoreMink
         }
         $page->selectFieldOption($fieldprefix . 'tabelle', 1);
         $page->fillField($fieldprefix . 'descrizione', $descrizionetest1);
-        sleep(1);
+        
         $this->clickElement('a#sDataOpzioniTabellaS');
-        sleep(1);
+        
 
         $em = $this->em;
         $qb2 = $em->createQueryBuilder();
@@ -52,23 +52,23 @@ class OpzioniTabellaControllerFunctionalTest extends CoreMink
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
-        sleep(1);
+        
         $this->clickElement('#buttonedit_list1');
-        sleep(1);
+        
         /* Modifica */
         $descrizionetest2 = 'testtabella 2';
         $page->fillField($fieldprefix . 'descrizione', $descrizionetest2);
 
-        sleep(1);
+        
         $this->clickElement('a#sDataOpzioniTabellaS');
-        sleep(1);
+        
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
-        sleep(1);
+        
         $this->clickElement('#buttondel_list1');
-        sleep(1);
+        
         $this->clickElement('a#dData');
     }
 

@@ -162,7 +162,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         //dump("Generated entities");
         $this->assertRegExp('/.../', $commandTester->getDisplay());
-        //dump($commandTester->getDisplay());
+        dump($commandTester->getDisplay());
 
         clearcache();
         cachewarmup();

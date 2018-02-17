@@ -13,7 +13,7 @@ class MenuApplicazioneControllerFunctionalTest extends CoreMink
         $session = $this->getSession();
         $page = $this->getCurrentPage();
         
-        sleep(1);
+        
 
         $this->crudoperation($session, $page);
 
@@ -40,9 +40,9 @@ class MenuApplicazioneControllerFunctionalTest extends CoreMink
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
 
-        sleep(1);
+        
         $this->clickElement('#buttonedit_list1');
-        sleep(1);
+        
         /* Modifica */
         $descrizionetest2 = 'testmenu 2';
         $page->fillField($fieldprefix . '_nome', $descrizionetest2);
@@ -64,9 +64,9 @@ class MenuApplicazioneControllerFunctionalTest extends CoreMink
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
-        sleep(1);
+        
         $this->clickElement('#buttondel_list1');
-        sleep(1);
+        
         $this->clickElement('a#dData');
     }
 
