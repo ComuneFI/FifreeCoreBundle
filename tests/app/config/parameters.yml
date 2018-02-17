@@ -3,8 +3,8 @@ parameters:
     database_driver: pdo_sqlite
     database_host: null
     database_port: null
-    database_name: '%kernel.root_dir%/dbtest.sqlite'
-    database_path: '%kernel.root_dir%/dbtest.sqlite'
+    database_name: '%kernel.cache_dir%/../dbtest.sqlite'
+    database_path: '%kernel.cache_dir%/../dbtest.sqlite'
     database_user: null
     database_password: null
     mailer_transport: smtp

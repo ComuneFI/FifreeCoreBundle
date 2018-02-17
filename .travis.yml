@@ -116,7 +116,7 @@ after_success:
   - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php ocular.phar code-coverage:upload --format=php-clover build/artifacts/coverage/clover.xml; fi;
   - sudo cat $TRAVIS_BUILD_DIR/build/artifacts/logs/selenium2.log
   - sudo cat $TRAVIS_BUILD_DIR/build/artifacts/logs/webserver.log
-  - rm tests/app/dbtest.sqlite
+  - rm tests/var/cache/dbtest.sqlite
   #- php tests/bin/console server:stop --env=test
   #- kill `ps -ef | grep selenium | awk '{ print $2 }'`
 

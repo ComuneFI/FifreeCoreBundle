@@ -80,6 +80,9 @@ class Fifree2installCommand extends ContainerAwareCommand
      */
     private function generateDefaultData($admin, $adminemail)
     {
+        $todaydt = new \DateTime();
+        $today = $todaydt->format("Y-m-d") . "T00:00:00+01:00";
+        
         $defaultData = <<<EOF
 Fi\CoreBundle\Entity\Ruoli:
   -
@@ -249,7 +252,7 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     id: 1
     descsec: '1° secondaria legato al 1° record principale'
     ffprincipale_id: 1
-    data: 2018-02-15T00:00:00+01:00
+    data: $today
     intero: 10
     importo: 12.34
     nota: 'Super Nota ffsecondaria'
@@ -258,7 +261,7 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     id: 2
     descsec: '2° secondaria legato al 1° record principale'
     ffprincipale_id: 1
-    data: 2018-02-15T00:00:00+01:00
+    data: $today
     intero: 1
     importo: 1.23
     nota: 'Nota ffsecondaria'
@@ -267,7 +270,7 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     id: 3
     descsec: '3° secondaria legato al 1° record principale'
     ffprincipale_id: 1
-    data: 2018-02-15T00:00:00+01:00
+    data: $today
     intero: 10
     importo: 11.34
     nota: 'Nota 3° ffsecondaria'
@@ -276,7 +279,7 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     id: 4
     descsec: '4° secondaria legato al 1° record principale'
     ffprincipale_id: 1
-    data: 2018-02-15T00:00:00+01:00
+    data: $today
     intero: 101
     importo: 101.34
     nota: 'Nota 4° ffsecondaria'
@@ -285,7 +288,7 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     id: 5
     descsec: '5° secondaria legato al 1° record principale'
     ffprincipale_id: 1
-    data: 2018-02-15T00:00:00+01:00
+    data: $today
     intero: 101
     importo: 101.34
     nota: 'Nota 4° ffsecondaria'
@@ -294,7 +297,7 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     id: 6
     descsec: '6° secondaria legato al 2° record principale'
     ffprincipale_id: 2
-    data: 2018-02-15T00:00:00+01:00
+    data: $today
     intero: 10006
     importo: 10006.12
     nota: 'Nota altra ffsecondaria'
@@ -303,7 +306,7 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     id: 7
     descsec: '7° secondaria legato al 2° record principale'
     ffprincipale_id: 2
-    data: 2018-02-15T00:00:00+01:00
+    data: $today
     intero: 10007
     importo: 10007.22
     nota: 'Nota altra 7 ffsecondaria'
@@ -312,7 +315,7 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     id: 8
     descsec: '9° secondaria legato al 2° "record principale"'
     ffprincipale_id: 2
-    data: 2018-02-15T00:00:00+01:00
+    data: $today
     intero: 1000
     importo: 1000.12
     nota: 'Nota altra ffsecondaria'
@@ -321,7 +324,7 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     id: 9
     descsec: '10° secondaria legato al 2° record principale ed è l''ultimo record'
     ffprincipale_id: 2
-    data: 2018-02-15T00:00:00+01:00
+    data: $today
     intero: 1100
     importo: 1100.99
     nota: 'Nota 10° altra ffsecondaria'
