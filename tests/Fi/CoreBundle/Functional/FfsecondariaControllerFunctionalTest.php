@@ -424,8 +424,8 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
             $pagepdf = $session->getPage();
-            
-            $element = $this->find('css', '.textLayer');
+            sleep(2);
+            $element = $pagepdf->find('css', '.textLayer');
             if (empty($element)) {
                 if (strpos($pagepdf->getHtml(), "application/pdf") >= 0) {
                     $this->assertContains("application/pdf", $pagepdf->getHtml());
