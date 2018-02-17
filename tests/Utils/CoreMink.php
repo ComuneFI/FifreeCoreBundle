@@ -96,16 +96,22 @@ abstract class CoreMink extends WebTestCase
         throw($e);
     }
 
-    public function find($type, $value)
+    public function find($type, $value, $seconds = 3)
     {
-        $page = $this->getCurrentPage();
 
-        try {
-            return $page->find($type, $value);
-        } catch (ElementNotFoundException $ex) {
-            $this->screenShot();
-            throw($ex);
+        $page = $this->getCurrentPage();
+        $e = null;
+        $i = 0;
+        while ($i < $seconds) {
+            try {
+                $element = $page->find($type, $value);
+                return $element;
+            } catch (\Exception $e) {
+                ++$i;
+                sleep(1);
+            }
         }
+        throw($e);
     }
 
     public function findField($type)

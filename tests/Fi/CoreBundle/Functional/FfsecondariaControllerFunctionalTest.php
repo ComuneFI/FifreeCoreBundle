@@ -423,14 +423,14 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $windowNames = $session->getWindowNames();
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
-            $page = $session->getPage();
+            $pagepdf = $session->getPage();
             
-            $element = $page->find('css', '.textLayer');
+            $element = $this->find('css', '.textLayer');
             if (empty($element)) {
-                if (strpos($page->getHtml(), "application/pdf") >= 0) {
-                    $this->assertContains("application/pdf", $page->getHtml());
+                if (strpos($pagepdf->getHtml(), "application/pdf") >= 0) {
+                    $this->assertContains("application/pdf", $pagepdf->getHtml());
                 } else {
-                    echo $page->getHtml();
+                    echo $pagepdf->getHtml();
                     throw new \Exception("No html element found for the selector 'textLayer'");
                 }
             } else {

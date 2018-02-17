@@ -114,7 +114,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
             $session->switchToWindow($windowNames[1]);
             $page = $session->getPage();
             
-            $element = $page->find('css', '.textLayer');
+            $element = $this->find('css', '.textLayer');
 
             if (empty($element)) {
                 if (strpos($page->getHtml(), "application/pdf") >= 0) {
