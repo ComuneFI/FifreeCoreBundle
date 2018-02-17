@@ -28,6 +28,8 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
 
         
         $this->printoperations($session, $page);
+        
+        $this->logout();
 
         $session->stop();
     }
@@ -99,6 +101,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
+        $this->ajaxWait();
 
         
         $this->clickElement('#buttondel_list1');

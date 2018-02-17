@@ -33,6 +33,8 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
         $this->printoperations($session, $page);
 
+        $this->logout();
+
         $session->stop();
     }
 

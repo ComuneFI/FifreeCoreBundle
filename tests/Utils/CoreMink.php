@@ -158,7 +158,7 @@ abstract class CoreMink extends WebTestCase
         $page = $this->getCurrentPage();
         try {
             $page->clickLink($field);
-        } catch (ElementNotFoundException $ex) {
+        } catch (\Exception $ex) {
             $this->screenShot();
             throw($ex);
         }
@@ -205,8 +205,9 @@ abstract class CoreMink extends WebTestCase
 
     public function logout()
     {
-        $page = $this->getCurrentPage();
-        $page->clickLink('logout');
+        /* $page = $this->getCurrentPage();
+          $page->clickLink('logout'); */
+        $this->visit("logout");
     }
 
     public function tearDown()
