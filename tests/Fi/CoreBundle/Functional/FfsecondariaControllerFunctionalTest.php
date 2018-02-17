@@ -363,7 +363,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->ajaxWait();
         /**/
 
-        $page->find('css', 'a#fbox_list1_search')->click();
+        $this->clickElement('a#fbox_list1_search');
         $this->ajaxWait();
 
         $numrowsgrid5 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
