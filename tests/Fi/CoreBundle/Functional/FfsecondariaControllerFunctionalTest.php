@@ -414,6 +414,8 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
         //reset filtri
         $this->clickElement('#search_list1');
+        //mi tocca rimettere questo sleep perchè schianta anche dopo il refactor
+        sleep(1);
         $this->clickElement('a#fbox_list1_reset');
     }
 
