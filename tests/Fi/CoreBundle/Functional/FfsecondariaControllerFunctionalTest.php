@@ -410,7 +410,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
         //reset filtri
         $this->clickElement('#search_list1');
-        $this->clickElement('a#fbox_list1_search');
+        $this->clickElement('a#fbox_list1_reset');
     }
 
     private function printoperations($session, $page)
