@@ -119,16 +119,24 @@ abstract class CoreMink extends WebTestCase
         }
     }
 
-    public function pressButton($field)
+    public function pressButton($field, $seconds = 3)
     {
-        $page = $this->getCurrentPage();
 
-        try {
-            $page->pressButton($field);
-        } catch (ElementNotFoundException $ex) {
-            $this->screenShot();
-            throw($ex);
+        $this->ajaxWait();
+        $page = $this->getCurrentPage();
+        $e = null;
+        $i = 0;
+        while ($i < $seconds) {
+            try {
+                $page->pressButton($field);
+                $this->ajaxWait();
+                return;
+            } catch (\Exception $e) {
+                ++$i;
+                sleep(1);
+            }
         }
+        throw($e);
     }
 
     public function login($user, $pass)

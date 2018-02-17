@@ -108,8 +108,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $session->executeScript($scriptclose);
 
-        
-        $page->pressButton('adminpanelgenerateclassentity');
+        $this->pressButton('adminpanelgenerateclassentity');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptrun);
         $this->ajaxWait();
@@ -152,7 +151,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $this->visit($url);
         
 
-        $page->pressButton('adminpanelaggiornadatabase');
+        $this->pressButton('adminpanelaggiornadatabase');
         $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
         $session->executeScript($scriptdb);
         $this->ajaxWait();
@@ -190,8 +189,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 
         
 
-        $page->fillField('bundlename', 'Fi/ProvaBundle');
-        $page->fillField('entityform', 'Prova');
+        $this->fillField('bundlename', 'Fi/ProvaBundle');
+        $this->fillField('entityform', 'Prova');
 
         $page->pressButton('adminpanelgenerateformcrud');
         $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
