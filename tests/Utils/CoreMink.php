@@ -138,7 +138,7 @@ abstract class CoreMink extends WebTestCase {
         $element = null;
         while (empty($element)) {
             $element = $page->find('css', $selector);
-            if ((time() - $start_time) > 3) {
+            if ((time() - $start_time) > 6) {
                 break; //
             }
         }
