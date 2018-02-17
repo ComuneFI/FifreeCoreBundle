@@ -9,9 +9,9 @@ class ArrayFunctions
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
      * e restituisce l'indice.
      *
-     * @param $elem Oggetto da cercare
+     * @param $elem mixed Elemento da cercare nell'array
      * @param $array Array nel quale cercare
-     * @param $key Nome della chiave nella quale cercare $elem
+     * @param $key string Nome della chiave nella quale cercare $elem
      *
      * @return mixed False se non trovato l'elemento, altrimenti l'indice in cui si è trovato il valore
      */
@@ -38,7 +38,7 @@ class ArrayFunctions
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
      * e restituisce l'indice
      *
-     * @param $elem mixed Oggetto da cercare nell'array
+     * @param $elem mixed Elemento da cercare nell'array
      * @param $array Array nel quale cercare
      * @param $key mixed Nome della chiave nella quale cercare $elem
      * @return Mixed False se non trovato l'elemento, altrimenti il vettore con tutti gli indici
@@ -110,7 +110,7 @@ class ArrayFunctions
      * La funzione ordina un array multidimensionale $array.
      *
      * @param $array Array da ordinare
-     * @param $key Nome della chiave dell'array per cui ordinare
+     * @param $key string Nome della chiave dell'array per cui ordinare
      * @param $type int Tipo di ordinamento SORT_ASC, SORT_DESC
      *
      * @return array Ritorna l'array ordinato
