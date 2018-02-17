@@ -39,7 +39,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         /* Ricerca 1 */
         $search1 = 'primo';
         
-        $page->fillField('jqg1', $search1);
+        $this->fillField('jqg1', $search1);
         $page->find('css', 'a#fbox_list1_search')->click();
         $this->ajaxWait();
 
@@ -56,7 +56,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
 
         $session->executeScript($javascript2);
-        $page->fillField('jqg1', $search2);
+        $this->fillField('jqg1', $search2);
 
         $page->find('css', 'a#fbox_list1_search')->click();
         $this->ajaxWait();
@@ -91,7 +91,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
-        $page->fillField($fieldprefix . 'descrizione', $descrizionetest2);
+        $this->fillField($fieldprefix . 'descrizione', $descrizionetest2);
         
         $this->clickElement('#sDataFfprincipaleS');
         
@@ -112,16 +112,16 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $windowNames = $session->getWindowNames();
         if (count($windowNames) > 1) {
             $session->switchToWindow($windowNames[1]);
-            $page = $session->getPage();
+            $pagepdf = $session->getPage();
             
             sleep(2);
-            $element = $page->find('css', '.textLayer');
+            $element = $pagepdf->find('css', '.textLayer');
 
             if (empty($element)) {
-                if (strpos($page->getHtml(), "application/pdf") >= 0) {
-                    $this->assertContains("application/pdf", $page->getHtml());
+                if (strpos($pagepdf->getHtml(), "application/pdf") >= 0) {
+                    $this->assertContains("application/pdf", $pagepdf->getHtml());
                 } else {
-                    echo $page->getHtml();
+                    echo $pagepdf->getHtml();
                     throw new \Exception("No html element found for the selector 'textLayer'");
                 }
             } else {
