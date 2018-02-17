@@ -167,11 +167,11 @@ abstract class CoreMink extends WebTestCase
     public function clickElement($selector, $seconds = 3)
     {
         $this->ajaxWait();
-        $page = $this->getCurrentPage();
         $e = null;
         $i = 0;
         while ($i < $seconds) {
             try {
+                $page = $this->getCurrentPage();
                 $element = $page->find('css', $selector);
                 $element->click();
                 $this->ajaxWait();
@@ -181,6 +181,8 @@ abstract class CoreMink extends WebTestCase
                 sleep(1);
             }
         }
+
+        echo $page->getHtml();
         throw($e);
     }
 
