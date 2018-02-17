@@ -69,7 +69,6 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
     {
         $this->clickElement('#buttonadd_list1');
         
-
         /* Inserimento */
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'ffprincipale_';
@@ -78,7 +77,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         }
         $this->ajaxWait();
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        $page->fillField($fieldprefix . 'descrizione', $descrizionetest1);
+        $this->fillField($fieldprefix . 'descrizione', $descrizionetest1);
         
         $this->clickElement('a#sDataFfprincipaleS');
         

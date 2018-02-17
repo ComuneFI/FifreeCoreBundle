@@ -9,7 +9,8 @@ use Behat\Mink\Session;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
-abstract class CoreMink extends WebTestCase {
+abstract class CoreMink extends WebTestCase
+{
 
     /** @var string */
     private $minkBaseUrl;
@@ -38,7 +39,8 @@ abstract class CoreMink extends WebTestCase {
     /**
      * @before
      */
-    public function setupMinkSession() {
+    public function setupMinkSession()
+    {
         $this->client = static::createClient();
         $container = $this->client->getContainer();
         $this->container = $container;
@@ -54,34 +56,48 @@ abstract class CoreMink extends WebTestCase {
         $this->minkSession->start();
     }
 
-    public function getCurrentPage() {
+    public function getCurrentPage()
+    {
         return $this->minkSession->getPage();
     }
 
-    public function getSession() {
+    public function getSession()
+    {
         return $this->minkSession;
     }
 
-    public function getCurrentPageContent() {
+    public function getCurrentPageContent()
+    {
         return $this->getCurrentPage()->getContent();
     }
 
-    public function visit($url) {
+    public function visit($url)
+    {
         $this->minkSession->visit($this->minkBaseUrl . $url);
     }
 
-    public function fillField($field, $value) {
-        $page = $this->getCurrentPage();
+    public function fillField($field, $value, $seconds = 3)
+    {
 
-        try {
-            $page->fillField($field, $value);
-        } catch (ElementNotFoundException $ex) {
-            $this->screenShot();
-            throw($ex);
+        $this->ajaxWait();
+        $page = $this->getCurrentPage();
+        $e = null;
+        $i = 0;
+        while ($i < $seconds) {
+            try {
+                $page->fillField($field, $value);
+                return;
+            } catch (ElementNotFoundException $e) {
+                ++$i;
+                sleep(1);
+            }
         }
+
+        throw($e);
     }
 
-    public function find($type, $value) {
+    public function find($type, $value)
+    {
         $page = $this->getCurrentPage();
 
         try {
@@ -92,9 +108,9 @@ abstract class CoreMink extends WebTestCase {
         }
     }
 
-    public function findField($type) {
+    public function findField($type)
+    {
         $page = $this->getCurrentPage();
-
         try {
             return $page->findField($type);
         } catch (ElementNotFoundException $ex) {
@@ -103,7 +119,8 @@ abstract class CoreMink extends WebTestCase {
         }
     }
 
-    public function pressButton($field) {
+    public function pressButton($field)
+    {
         $page = $this->getCurrentPage();
 
         try {
@@ -114,14 +131,16 @@ abstract class CoreMink extends WebTestCase {
         }
     }
 
-    public function login($user, $pass) {
+    public function login($user, $pass)
+    {
         $this->getCurrentPageContent();
         $this->fillField('username', $user);
         $this->fillField('password', $pass);
         $this->pressButton('_submit');
     }
 
-    public function clickLink($field) {
+    public function clickLink($field)
+    {
         $page = $this->getCurrentPage();
         try {
             $page->clickLink($field);
@@ -131,26 +150,28 @@ abstract class CoreMink extends WebTestCase {
         }
     }
 
-    public function clickElement($selector) {
+    public function clickElement($selector, $seconds = 3)
+    {
         $this->ajaxWait();
         $page = $this->getCurrentPage();
-        $start_time = time();
-        $element = null;
-        while (empty($element)) {
-            $element = $page->find('css', $selector);
-            if ((time() - $start_time) > 6) {
-                break; //
+        $e = null;
+        $i = 0;
+        while ($i < $seconds) {
+            try {
+                $element = $page->find('css', $selector);
+                $element->click();
+                $this->ajaxWait();
+                return;
+            } catch (\ElementNotFoundException $e) {
+                ++$i;
+                sleep(1);
             }
         }
-        if (empty($element)) {
-            throw new \Exception("No html element found for the selector ('$selector')");
-        }
-
-        $element->click();
-        $this->ajaxWait();
+        throw($e);
     }
 
-    public function screenShot() {
+    public function screenShot()
+    {
         $driver = $this->minkSession->getDriver();
         if (!($driver instanceof Selenium2Driver)) {
             if ($driver instanceof \Behat\Mink\Driver\ZombieDriver) {
@@ -168,16 +189,19 @@ abstract class CoreMink extends WebTestCase {
         file_put_contents('/tmp/' . $timeStamp . '.html', $this->getCurrentPageContent());
     }
 
-    public function logout() {
+    public function logout()
+    {
         $page = $this->getCurrentPage();
         $page->clickLink('logout');
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         parent::tearDown();
     }
 
-    protected function ajaxWait($timeout = 60000) {
+    protected function ajaxWait($timeout = 60000)
+    {
         $this->getSession()->wait($timeout, '(0 === jQuery.active)');
         //sleep(1);
     }
