@@ -381,8 +381,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $session->executeScript($javascript6);
         $this->ajaxWait();
         /**/
-
-        $page->find('css', 'a#fbox_list1_search')->click();
+        $this->clickElement('a#fbox_list1_search');
         $this->ajaxWait();
 
         $numrowsgrid5 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
@@ -401,7 +400,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->ajaxWait();
         /**/
 
-        $page->find('css', 'a#fbox_list1_search')->click();
+        $this->clickElement('a#fbox_list1_search');
         $this->ajaxWait();
 
         $numrowsgrid5 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
@@ -411,7 +410,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
         //reset filtri
         $this->clickElement('#search_list1');
-        $page->find('css', 'a#fbox_list1_reset')->click();
+        $this->clickElement('a#fbox_list1_search');
     }
 
     private function printoperations($session, $page)
