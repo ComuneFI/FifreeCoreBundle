@@ -176,7 +176,7 @@ abstract class CoreMink extends WebTestCase
                 $element->click();
                 $this->ajaxWait();
                 return;
-            } catch (\ElementNotFoundException $e) {
+            } catch (\Exception $e) {
                 ++$i;
                 sleep(1);
             }
