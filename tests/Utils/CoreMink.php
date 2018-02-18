@@ -207,15 +207,21 @@ abstract class CoreMink extends WebTestCase
             try {
                 $this->ajaxWait();
                 $page = $this->getCurrentPage();
-                $element = $page->find('css', $selector);
-                if (!$element) {
+                if ($this->findField($selector)) {
+                    $element = $page->find('css', $selector);
+                    if (!$element) {
+                        ++$i;
+                        sleep(1);
+                        continue;
+                    }
+                    $element->click();
+                    $this->ajaxWait();
+                    return;
+                } else {
                     ++$i;
                     sleep(1);
                     continue;
                 }
-                $element->click();
-                $this->ajaxWait();
-                return;
             } catch (\Exception $e) {
                 ++$i;
                 sleep(1);
