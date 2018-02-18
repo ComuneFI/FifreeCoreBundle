@@ -70,32 +70,20 @@ abstract class CoreMink extends WebTestCase {
         $this->minkSession->visit($this->minkBaseUrl . $url);
     }
 
-    public function fillField($field, $value, $timeout = 4) {
-
-        $e = null;
-        $i = 0;
-        while ($i < $timeout) {
-            try {
-                $this->ajaxWait();
-                $page = $this->getCurrentPage();
-                $page->fillField($field, $value);
-                return;
-            } catch (\Exception $e) {
-                ++$i;
-                sleep(1);
-            }
-        }
-        $this->screenShot();
-        throw($e);
+    public function login($user, $pass) {
+        $this->getCurrentPageContent();
+        $this->fillField('username', $user);
+        $this->fillField('password', $pass);
+        $this->pressButton('_submit');
     }
 
-    public function find($type, $value, $timeout = 4) {
-        $e = null;
+    public function find($selector, $value, $timeout = 4) {
+        $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
                 $page = $this->getCurrentPage();
-                $element = $page->find($type, $value);
+                $element = $page->find($selector, $value);
                 if (!$element) {
                     ++$i;
                     sleep(1);
@@ -111,13 +99,13 @@ abstract class CoreMink extends WebTestCase {
         throw($e);
     }
 
-    public function findField($type, $timeout = 4) {
-        $e = null;
+    public function findField($selector, $timeout = 4) {
+        $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
                 $page = $this->getCurrentPage();
-                $element = $page->findField($type);
+                $element = $page->findField($selector);
                 if (!$element) {
                     sleep(1);
                     continue;
@@ -132,15 +120,33 @@ abstract class CoreMink extends WebTestCase {
         throw($e);
     }
 
-    public function pressButton($field, $timeout = 4) {
-
-        $e = null;
+    public function fillField($selector, $value, $timeout = 4) {
+        $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
                 $this->ajaxWait();
                 $page = $this->getCurrentPage();
-                $page->pressButton($field);
+                $page->fillField($selector, $value);
+                return;
+            } catch (\Exception $e) {
+                ++$i;
+                sleep(1);
+            }
+        }
+        $this->screenShot();
+        throw($e);
+    }
+
+    public function pressButton($selector, $timeout = 4) {
+
+        $e = new \Exception("Impossibile trovare " . $selector);
+        $i = 0;
+        while ($i < $timeout) {
+            try {
+                $this->ajaxWait();
+                $page = $this->getCurrentPage();
+                $page->pressButton($selector);
                 $this->ajaxWait();
                 return;
             } catch (\Exception $e) {
@@ -152,25 +158,29 @@ abstract class CoreMink extends WebTestCase {
         throw($e);
     }
 
-    public function login($user, $pass) {
-        $this->getCurrentPageContent();
-        $this->fillField('username', $user);
-        $this->fillField('password', $pass);
-        $this->pressButton('_submit');
-    }
-
-    public function clickLink($field) {
-        $page = $this->getCurrentPage();
-        try {
-            $page->clickLink($field);
-        } catch (\Exception $ex) {
-            $this->screenShot();
-            throw($ex);
+    public function clickLink($selector, $timeout = 4) {
+        $e = new \Exception("Impossibile trovare " . $selector);
+        $i = 0;
+        while ($i < $timeout) {
+            try {
+                $this->ajaxWait();
+                $page = $this->getCurrentPage();
+                $page->clickLink($selector);
+                $this->ajaxWait();
+                return;
+            } catch (\Exception $e) {
+                ++$i;
+                sleep(1);
+            }
         }
+
+        echo $page->getHtml();
+        $this->screenShot();
+        throw($e);
     }
 
     public function clickElement($selector, $timeout = 4) {
-        $e = null;
+        $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -197,7 +207,7 @@ abstract class CoreMink extends WebTestCase {
     }
 
     public function dblClickElement($selector, $timeout = 4) {
-        $e = null;
+        $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
