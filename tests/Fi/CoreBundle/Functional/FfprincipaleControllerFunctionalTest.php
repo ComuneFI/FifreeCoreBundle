@@ -55,6 +55,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
 
         $session->executeScript($javascript2);
+        $this->ajaxWait();
         $this->fillField('jqg1', $search2);
 
         $this->clickElement('a#fbox_list1_search');
