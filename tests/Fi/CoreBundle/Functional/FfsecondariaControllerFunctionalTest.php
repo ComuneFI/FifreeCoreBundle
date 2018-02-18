@@ -161,15 +161,6 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
         $this->clickElement('.ui-icon-circle-close');
 
-        $selector = '.ui-icon-circle-close';
-        $element = $page->find('css', $selector);
-
-        if (empty($element)) {
-            throw new \Exception("No html element found for the selector ('$selector')");
-        }
-
-        $element->click();
-
         $elementattivo = $page->findAll('css', '#jqgh_list1_attivo');
         foreach ($elementattivo as $e) {
             $this->assertTrue($e->isVisible());
