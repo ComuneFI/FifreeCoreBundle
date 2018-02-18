@@ -12,7 +12,6 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
 
     public function testFfprincipale()
     {
-        //$url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'];
         $url = "/Ffprincipale";
         $this->visit($url);
         $this->login('admin', 'admin');
@@ -49,11 +48,9 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $this->assertEquals(0, $numrowsgrid1);
 
         /* Ricerca 1 */
-        
         $this->clickElement('#search_list1');
         $search2 = 'primo';
         
-        //$page->selectFieldOption('inizia con', "cn");
         $var2 = '"cn"';
         $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
 

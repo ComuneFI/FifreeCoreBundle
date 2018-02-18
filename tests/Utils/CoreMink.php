@@ -76,14 +76,14 @@ abstract class CoreMink extends WebTestCase
         $this->minkSession->visit($this->minkBaseUrl . $url);
     }
 
-    public function fillField($field, $value, $seconds = 3)
+    public function fillField($field, $value, $timeout = 3)
     {
 
         $this->ajaxWait();
         $page = $this->getCurrentPage();
         $e = null;
         $i = 0;
-        while ($i < $seconds) {
+        while ($i < $timeout) {
             try {
                 $page->fillField($field, $value);
                 return;
@@ -92,17 +92,17 @@ abstract class CoreMink extends WebTestCase
                 sleep(1);
             }
         }
-
+        $this->screenShot();
         throw($e);
     }
 
-    public function find($type, $value, $seconds = 3)
+    public function find($type, $value, $timeout = 3)
     {
 
         $page = $this->getCurrentPage();
         $e = null;
         $i = 0;
-        while ($i < $seconds) {
+        while ($i < $timeout) {
             try {
                 $element = $page->find($type, $value);
                 return $element;
@@ -111,28 +111,36 @@ abstract class CoreMink extends WebTestCase
                 sleep(1);
             }
         }
+        $this->screenShot();
         throw($e);
     }
 
-    public function findField($type)
+    public function findField($type, $timeout = 3)
     {
         $page = $this->getCurrentPage();
-        try {
-            return $page->findField($type);
-        } catch (ElementNotFoundException $ex) {
-            $this->screenShot();
-            throw($ex);
+        $e = null;
+        $i = 0;
+        while ($i < $timeout) {
+            try {
+                $element = $page->findField($type);
+                return $element;
+            } catch (\Exception $e) {
+                ++$i;
+                sleep(1);
+            }
         }
+        $this->screenShot();
+        throw($e);
     }
 
-    public function pressButton($field, $seconds = 3)
+    public function pressButton($field, $timeout = 3)
     {
 
         $this->ajaxWait();
         $page = $this->getCurrentPage();
         $e = null;
         $i = 0;
-        while ($i < $seconds) {
+        while ($i < $timeout) {
             try {
                 $page->pressButton($field);
                 $this->ajaxWait();
@@ -142,6 +150,7 @@ abstract class CoreMink extends WebTestCase
                 sleep(1);
             }
         }
+        $this->screenShot();
         throw($e);
     }
 
@@ -164,12 +173,12 @@ abstract class CoreMink extends WebTestCase
         }
     }
 
-    public function clickElement($selector, $seconds = 3)
+    public function clickElement($selector, $timeout = 3)
     {
         $this->ajaxWait();
         $e = null;
         $i = 0;
-        while ($i < $seconds) {
+        while ($i < $timeout) {
             try {
                 $page = $this->getCurrentPage();
                 $element = $page->find('css', $selector);
@@ -183,6 +192,7 @@ abstract class CoreMink extends WebTestCase
         }
 
         echo $page->getHtml();
+        $this->screenShot();
         throw($e);
     }
 
@@ -207,8 +217,6 @@ abstract class CoreMink extends WebTestCase
 
     public function logout()
     {
-        /* $page = $this->getCurrentPage();
-          $page->clickLink('logout'); */
         $this->visit("logout");
     }
 
@@ -220,7 +228,6 @@ abstract class CoreMink extends WebTestCase
     protected function ajaxWait($timeout = 60000)
     {
         $this->getSession()->wait($timeout, '(0 === jQuery.active)');
-        //sleep(1);
     }
 
 }
