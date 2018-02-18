@@ -32,7 +32,7 @@ class TabelleControllerFunctionalTest extends CoreMink
             $fieldprefix = 'fi_corebundle_tabelletype_';
         }
         $descrizionetest1 = 'testtabella';
-        $page->fillField($fieldprefix . 'nometabella', $descrizionetest1);
+        $this->fillField($fieldprefix . 'nometabella', $descrizionetest1);
         
         $this->clickElement('a#sDataTabelleS');
         
@@ -55,7 +55,7 @@ class TabelleControllerFunctionalTest extends CoreMink
         
         /* Modifica */
         $descrizionetest2 = 'testtabella 2';
-        $page->fillField($fieldprefix . 'nometabella', $descrizionetest2);
+        $this->fillField($fieldprefix . 'nometabella', $descrizionetest2);
 
         
         $this->clickElement('a#sDataTabelleS');

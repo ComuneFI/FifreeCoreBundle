@@ -32,8 +32,8 @@ class PermessiControllerFunctionalTest extends CoreMink
         /* Inserimento */
         $this->ajaxWait();
         $descrizionetest1 = 'testmodulo';
-        $page->fillField($fieldprefix . 'modulo', $descrizionetest1);
-        $page->find('css', 'a#sDataPermessiS')->click();
+        $this->fillField($fieldprefix . 'modulo', $descrizionetest1);
+        $this->clickElement('a#sDataPermessiS');
         $this->ajaxWait();
 
         $em = $this->em;
@@ -54,8 +54,8 @@ class PermessiControllerFunctionalTest extends CoreMink
         
         /* Modifica */
         $descrizionetest2 = 'testmodulo 2';
-        $page->fillField($fieldprefix . 'modulo', $descrizionetest2);
-        $page->find('css', 'a#sDataPermessiS')->click();
+        $this->fillField($fieldprefix . 'modulo', $descrizionetest2);
+        $this->clickElement('a#sDataPermessiS');
         $this->ajaxWait();
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';

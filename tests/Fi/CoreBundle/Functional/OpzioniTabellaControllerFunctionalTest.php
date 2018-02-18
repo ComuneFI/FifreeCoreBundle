@@ -33,7 +33,7 @@ class OpzioniTabellaControllerFunctionalTest extends CoreMink
             $fieldprefix = 'fi_corebundle_opzionitabellatype_';
         }
         $page->selectFieldOption($fieldprefix . 'tabelle', 1);
-        $page->fillField($fieldprefix . 'descrizione', $descrizionetest1);
+        $this->fillField($fieldprefix . 'descrizione', $descrizionetest1);
         
         $this->clickElement('a#sDataOpzioniTabellaS');
         
@@ -57,7 +57,7 @@ class OpzioniTabellaControllerFunctionalTest extends CoreMink
         
         /* Modifica */
         $descrizionetest2 = 'testtabella 2';
-        $page->fillField($fieldprefix . 'descrizione', $descrizionetest2);
+        $this->fillField($fieldprefix . 'descrizione', $descrizionetest2);
 
         
         $this->clickElement('a#sDataOpzioniTabellaS');

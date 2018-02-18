@@ -59,8 +59,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->fillField($fieldprefix . 'intero', 1000000);
         $this->fillField($fieldprefix . 'nota', 'Prova la nota');
         $this->fillField($fieldprefix . 'attivo', 1);
-
-        $page->find('css', 'a#sDataFfsecondariaS')->click();
+        $this->clickElement('a#sDataFfsecondariaS');
         $this->ajaxWait();
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
@@ -70,7 +69,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $this->fillField($fieldprefix . 'descsec', $descrizionetest2);
-        $page->find('css', 'a#sDataFfsecondariaS')->click();
+        $this->clickElement('a#sDataFfsecondariaS');
         $this->ajaxWait();
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
@@ -88,23 +87,11 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
 
         $element->rightClick();
 
-
-        $elementmodifiche = $page->find('css', "div#jqContextMenu");
-
-        if (empty($element)) {
-            throw new \Exception("No html element found for the selector ('jqContextMenu')");
-        }
-        $elementmodifiche->click();
+        $this->clickElement('div#jqContextMenu');
 
         $page->pressButton('Ok');
 
-        $elementchiudi = $page->find('css', ".fi-default-chiudi");
-
-        if (empty($element)) {
-            throw new \Exception("No html element found for the selector ('jqContextMenu')");
-        }
-
-        $elementchiudi->click();
+        $this->clickElement('.fi-default-chiudi');
 
         $this->searchmodifiche($descrizionetest1);
         /* Cancellazione */
@@ -146,14 +133,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $session->evaluateScript('function(){ var rowidcalsave = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSaveFirstRow . '}()');
         $this->ajaxWait();
 
-        $selector = '.ui-icon-circle-close';
-        $element = $page->find('css', $selector);
-
-        if (empty($element)) {
-            throw new \Exception("No html element found for the selector ('$selector')");
-        }
-
-        $element->click();
+        $this->clickElement('.ui-icon-circle-close');
 
         $elementattivo = $page->findAll('css', '#jqgh_list1_attivo');
         foreach ($elementattivo as $e) {
@@ -166,15 +146,9 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
         $this->ajaxWait();
+        
+        $this->dblClickElement('input[name=ordineindex]');
 
-        $selector = 'input[name=ordineindex]';
-        $element = $page->find('css', $selector);
-
-        if (empty($element)) {
-            throw new \Exception("No html element found for the selector ('$selector')");
-        }
-
-        $element->doubleClick();
         $script = 'function(){$("input[name=mostraindex]").prop("checked", true);}()';
         $session->evaluateScript($script);
 
@@ -184,6 +158,8 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $jsSaveFirstRow = '$("#listconfigura").saveRow(rowidcalsave);';
         $session->evaluateScript('function(){ var rowidcalsave = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSaveFirstRow . '}()');
         $this->ajaxWait();
+
+        $this->clickElement('.ui-icon-circle-close');
 
         $selector = '.ui-icon-circle-close';
         $element = $page->find('css', $selector);

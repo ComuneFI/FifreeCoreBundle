@@ -41,7 +41,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $search1 = 'primo';
         
         $this->fillField('jqg1', $search1);
-        $page->find('css', 'a#fbox_list1_search')->click();
+        $this->clickElement('a#fbox_list1_search');
         $this->ajaxWait();
 
         $numrowsgrid1 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
@@ -57,7 +57,7 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $session->executeScript($javascript2);
         $this->fillField('jqg1', $search2);
 
-        $page->find('css', 'a#fbox_list1_search')->click();
+        $this->clickElement('a#fbox_list1_search');
         $this->ajaxWait();
 
         $numrowsgrid2 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');

@@ -31,10 +31,10 @@ class MenuApplicazioneControllerFunctionalTest extends CoreMink
         } else {
             $fieldprefix = 'fi_corebundle_menuapplicazione';
         }
-        $page->fillField($fieldprefix . '_nome', $descrizionetest1);
-        $page->fillField($fieldprefix . '_percorso', 'http://www.google.it');
-        $page->fillField($fieldprefix . '_autorizzazionerichiesta', 1);
-        $page->find('css', 'a#sDataMenuApplicazioneS')->click();
+        $this->fillField($fieldprefix . '_nome', $descrizionetest1);
+        $this->fillField($fieldprefix . '_percorso', 'http://www.google.it');
+        $this->fillField($fieldprefix . '_autorizzazionerichiesta', 1);
+        $this->clickElement('a#sDataMenuApplicazioneS');
         $this->ajaxWait();
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
@@ -45,9 +45,9 @@ class MenuApplicazioneControllerFunctionalTest extends CoreMink
         
         /* Modifica */
         $descrizionetest2 = 'testmenu 2';
-        $page->fillField($fieldprefix . '_nome', $descrizionetest2);
+        $this->fillField($fieldprefix . '_nome', $descrizionetest2);
 
-        $page->find('css', 'a#sDataMenuApplicazioneS')->click();
+        $this->clickElement('a#sDataMenuApplicazioneS');
         $this->ajaxWait();
 
         $em = $this->em;

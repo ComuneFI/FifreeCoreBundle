@@ -14,7 +14,7 @@ class RuoliControllerFunctionalTest extends CoreMink
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
-        
+
 
         $this->crudoperation($session, $page);
 
@@ -32,9 +32,9 @@ class RuoliControllerFunctionalTest extends CoreMink
         /* Inserimento */
         $this->ajaxWait();
         $descrizionetest1 = 'testruolo';
-        $page->fillField($fieldprefix . 'ruolo', $descrizionetest1);
-        $page->fillField($fieldprefix . 'is_user', 1);
-        $page->find('css', 'a#sDataRuoliS')->click();
+        $this->fillField($fieldprefix . 'ruolo', $descrizionetest1);
+        $this->fillField($fieldprefix . 'is_user', 1);
+        $this->clickElement('a#sDataRuoliS');
         $this->ajaxWait();
 
         $em = $this->em;
@@ -49,24 +49,24 @@ class RuoliControllerFunctionalTest extends CoreMink
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
-        
-        
+
+
         $this->clickElement('#buttonedit_list1');
-        
+
         /* Modifica */
         $descrizionetest2 = 'testruolo 2';
-        $page->fillField($fieldprefix . 'ruolo', $descrizionetest2);
+        $this->fillField($fieldprefix . 'ruolo', $descrizionetest2);
 
-        
+
         $this->clickElement('a#sDataRuoliS');
-        
+
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
 
-        
+
         $this->clickElement('#buttondel_list1');
-        
+
         $this->clickElement('a#dData');
     }
 

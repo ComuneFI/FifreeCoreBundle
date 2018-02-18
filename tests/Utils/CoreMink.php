@@ -205,6 +205,32 @@ abstract class CoreMink extends WebTestCase
         throw($e);
     }
 
+    public function dblClickElement($selector, $timeout = 4)
+    {
+        $this->ajaxWait();
+        $e = null;
+        $i = 0;
+        while ($i < $timeout) {
+            try {
+                $page = $this->getCurrentPage();
+                $element = $page->find('css', $selector);
+                if (!$element) {
+                    continue;
+                }
+                $element->doubleClick();
+                $this->ajaxWait();
+                return;
+            } catch (\Exception $e) {
+                ++$i;
+                sleep(1);
+            }
+        }
+
+        echo $page->getHtml();
+        $this->screenShot();
+        throw($e);
+    }
+
     public function screenShot()
     {
         $driver = $this->minkSession->getDriver();
