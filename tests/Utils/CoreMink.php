@@ -4,13 +4,15 @@ namespace Tests\CoreBundle\Mink;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Behat\Mink\Driver\Selenium2Driver;
-use Behat\Mink\Exception\ElementNotFoundException;
+//use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Session;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 abstract class CoreMink extends WebTestCase
 {
+
+    const TIMEOUT = 10;
 
     /** @var string */
     private $minkBaseUrl;
@@ -84,7 +86,7 @@ abstract class CoreMink extends WebTestCase
         $this->pressButton('_submit');
     }
 
-    public function find($selector, $value, $timeout = 4)
+    public function find($selector, $value, $timeout = self::TIMEOUT)
     {
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
@@ -107,7 +109,7 @@ abstract class CoreMink extends WebTestCase
         throw($e);
     }
 
-    public function findField($selector, $timeout = 4)
+    public function findField($selector, $timeout = self::TIMEOUT)
     {
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
@@ -131,7 +133,7 @@ abstract class CoreMink extends WebTestCase
         throw($e);
     }
 
-    public function fillField($selector, $value, $timeout = 4)
+    public function fillField($selector, $value, $timeout = self::TIMEOUT)
     {
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
@@ -154,7 +156,7 @@ abstract class CoreMink extends WebTestCase
         throw($e);
     }
 
-    public function pressButton($selector, $timeout = 4)
+    public function pressButton($selector, $timeout = self::TIMEOUT)
     {
 
         $e = new \Exception("Impossibile trovare " . $selector);
@@ -175,7 +177,7 @@ abstract class CoreMink extends WebTestCase
         throw($e);
     }
 
-    public function clickLink($selector, $timeout = 4)
+    public function clickLink($selector, $timeout = self::TIMEOUT)
     {
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
@@ -197,7 +199,7 @@ abstract class CoreMink extends WebTestCase
         throw($e);
     }
 
-    public function clickElement($selector, $timeout = 4)
+    public function clickElement($selector, $timeout = self::TIMEOUT)
     {
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
@@ -225,7 +227,7 @@ abstract class CoreMink extends WebTestCase
         throw($e);
     }
 
-    public function dblClickElement($selector, $timeout = 4)
+    public function dblClickElement($selector, $timeout = self::TIMEOUT)
     {
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
@@ -253,7 +255,7 @@ abstract class CoreMink extends WebTestCase
         throw($e);
     }
 
-    public function rightClickElement($selector, $timeout = 4)
+    public function rightClickElement($selector, $timeout = self::TIMEOUT)
     {
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
