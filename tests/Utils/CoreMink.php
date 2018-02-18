@@ -233,6 +233,33 @@ abstract class CoreMink extends WebTestCase {
         throw($e);
     }
 
+    public function rightClickElement($selector, $timeout = 4) {
+        $e = new \Exception("Impossibile trovare " . $selector);
+        $i = 0;
+        while ($i < $timeout) {
+            try {
+                $this->ajaxWait();
+                $page = $this->getCurrentPage();
+                $element = $page->find('css', $selector);
+                if (!$element) {
+                    ++$i;
+                    sleep(1);
+                    continue;
+                }
+                $element->rightClick();
+                $this->ajaxWait();
+                return;
+            } catch (\Exception $e) {
+                ++$i;
+                sleep(1);
+            }
+        }
+
+        echo $page->getHtml();
+        $this->screenShot();
+        throw($e);
+    }
+
     public function screenShot() {
         $driver = $this->minkSession->getDriver();
         if (!($driver instanceof Selenium2Driver)) {
