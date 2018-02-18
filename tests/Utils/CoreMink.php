@@ -76,7 +76,7 @@ abstract class CoreMink extends WebTestCase
         $this->minkSession->visit($this->minkBaseUrl . $url);
     }
 
-    public function fillField($field, $value, $timeout = 3)
+    public function fillField($field, $value, $timeout = 4)
     {
 
         $this->ajaxWait();
@@ -96,7 +96,7 @@ abstract class CoreMink extends WebTestCase
         throw($e);
     }
 
-    public function find($type, $value, $timeout = 3)
+    public function find($type, $value, $timeout = 4)
     {
 
         $page = $this->getCurrentPage();
@@ -105,6 +105,9 @@ abstract class CoreMink extends WebTestCase
         while ($i < $timeout) {
             try {
                 $element = $page->find($type, $value);
+                if (!$element) {
+                    continue;
+                }
                 return $element;
             } catch (\Exception $e) {
                 ++$i;
@@ -115,7 +118,7 @@ abstract class CoreMink extends WebTestCase
         throw($e);
     }
 
-    public function findField($type, $timeout = 3)
+    public function findField($type, $timeout = 4)
     {
         $page = $this->getCurrentPage();
         $e = null;
@@ -123,6 +126,9 @@ abstract class CoreMink extends WebTestCase
         while ($i < $timeout) {
             try {
                 $element = $page->findField($type);
+                if (!$element) {
+                    continue;
+                }
                 return $element;
             } catch (\Exception $e) {
                 ++$i;
@@ -133,7 +139,7 @@ abstract class CoreMink extends WebTestCase
         throw($e);
     }
 
-    public function pressButton($field, $timeout = 3)
+    public function pressButton($field, $timeout = 4)
     {
 
         $this->ajaxWait();
@@ -173,7 +179,7 @@ abstract class CoreMink extends WebTestCase
         }
     }
 
-    public function clickElement($selector, $timeout = 3)
+    public function clickElement($selector, $timeout = 4)
     {
         $this->ajaxWait();
         $e = null;
@@ -182,6 +188,9 @@ abstract class CoreMink extends WebTestCase
             try {
                 $page = $this->getCurrentPage();
                 $element = $page->find('css', $selector);
+                if (!$element) {
+                    continue;
+                }
                 $element->click();
                 $this->ajaxWait();
                 return;
