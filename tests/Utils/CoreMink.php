@@ -87,7 +87,7 @@ abstract class CoreMink extends WebTestCase
             try {
                 $page->fillField($field, $value);
                 return;
-            } catch (ElementNotFoundException $e) {
+            } catch (\Exception $e) {
                 ++$i;
                 sleep(1);
             }
