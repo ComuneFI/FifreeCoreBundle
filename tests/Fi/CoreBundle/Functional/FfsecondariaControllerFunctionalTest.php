@@ -333,7 +333,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         /**/
 
         //mi tocca rimettere questo sleep perchè schianta anche dopo il refactor
-        sleep(1);
+        sleep(2);
         $this->clickElement('a#fbox_list1_search');
         $this->ajaxWait();
 

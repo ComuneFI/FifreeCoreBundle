@@ -106,6 +106,7 @@ abstract class CoreMink extends WebTestCase
             try {
                 $element = $page->find($type, $value);
                 if (!$element) {
+                    ++$i;
                     continue;
                 }
                 return $element;
@@ -189,6 +190,7 @@ abstract class CoreMink extends WebTestCase
                 $page = $this->getCurrentPage();
                 $element = $page->find('css', $selector);
                 if (!$element) {
+                    ++$i;
                     continue;
                 }
                 $element->click();
@@ -215,6 +217,7 @@ abstract class CoreMink extends WebTestCase
                 $page = $this->getCurrentPage();
                 $element = $page->find('css', $selector);
                 if (!$element) {
+                    ++$i;
                     continue;
                 }
                 $element->doubleClick();
