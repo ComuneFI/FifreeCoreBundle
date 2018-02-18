@@ -9,7 +9,8 @@ use Behat\Mink\Session;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
-abstract class CoreMink extends WebTestCase {
+abstract class CoreMink extends WebTestCase
+{
 
     /** @var string */
     private $minkBaseUrl;
@@ -38,7 +39,8 @@ abstract class CoreMink extends WebTestCase {
     /**
      * @before
      */
-    public function setupMinkSession() {
+    public function setupMinkSession()
+    {
         $this->client = static::createClient();
         $container = $this->client->getContainer();
         $this->container = $container;
@@ -54,37 +56,43 @@ abstract class CoreMink extends WebTestCase {
         $this->minkSession->start();
     }
 
-    public function getCurrentPage() {
+    public function getCurrentPage()
+    {
         return $this->minkSession->getPage();
     }
 
-    public function getSession() {
+    public function getSession()
+    {
         return $this->minkSession;
     }
 
-    public function getCurrentPageContent() {
+    public function getCurrentPageContent()
+    {
         return $this->getCurrentPage()->getContent();
     }
 
-    public function visit($url) {
+    public function visit($url)
+    {
         $this->minkSession->visit($this->minkBaseUrl . $url);
     }
 
-    public function login($user, $pass) {
+    public function login($user, $pass)
+    {
         $this->getCurrentPageContent();
         $this->fillField('username', $user);
         $this->fillField('password', $pass);
         $this->pressButton('_submit');
     }
 
-    public function find($selector, $value, $timeout = 4) {
+    public function find($selector, $value, $timeout = 4)
+    {
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
                 $page = $this->getCurrentPage();
                 $element = $page->find($selector, $value);
-                if (!$element) {
+                if (!$element || (!$element->isVisible())) {
                     ++$i;
                     sleep(1);
                     continue;
@@ -99,14 +107,17 @@ abstract class CoreMink extends WebTestCase {
         throw($e);
     }
 
-    public function findField($selector, $timeout = 4) {
+    public function findField($selector, $timeout = 4)
+    {
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
                 $page = $this->getCurrentPage();
                 $element = $page->findField($selector);
-                if (!$element) {
+                /* @var $element Behat\Mink\Element\NodeElement */
+                if (!$element || (!$element->isVisible())) {
+                    ++$i;
                     sleep(1);
                     continue;
                 }
@@ -120,15 +131,20 @@ abstract class CoreMink extends WebTestCase {
         throw($e);
     }
 
-    public function fillField($selector, $value, $timeout = 4) {
+    public function fillField($selector, $value, $timeout = 4)
+    {
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
                 $this->ajaxWait();
                 $page = $this->getCurrentPage();
-                $page->fillField($selector, $value);
-                return;
+                if ($this->findField($selector)) {
+                    $page->fillField($selector, $value);
+                    return;
+                }
+                ++$i;
+                sleep(1);
             } catch (\Exception $e) {
                 ++$i;
                 sleep(1);
@@ -138,7 +154,8 @@ abstract class CoreMink extends WebTestCase {
         throw($e);
     }
 
-    public function pressButton($selector, $timeout = 4) {
+    public function pressButton($selector, $timeout = 4)
+    {
 
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
@@ -158,7 +175,8 @@ abstract class CoreMink extends WebTestCase {
         throw($e);
     }
 
-    public function clickLink($selector, $timeout = 4) {
+    public function clickLink($selector, $timeout = 4)
+    {
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
         while ($i < $timeout) {
@@ -179,7 +197,8 @@ abstract class CoreMink extends WebTestCase {
         throw($e);
     }
 
-    public function clickElement($selector, $timeout = 4) {
+    public function clickElement($selector, $timeout = 4)
+    {
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
         while ($i < $timeout) {
@@ -206,7 +225,8 @@ abstract class CoreMink extends WebTestCase {
         throw($e);
     }
 
-    public function dblClickElement($selector, $timeout = 4) {
+    public function dblClickElement($selector, $timeout = 4)
+    {
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
         while ($i < $timeout) {
@@ -233,7 +253,8 @@ abstract class CoreMink extends WebTestCase {
         throw($e);
     }
 
-    public function rightClickElement($selector, $timeout = 4) {
+    public function rightClickElement($selector, $timeout = 4)
+    {
         $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
         while ($i < $timeout) {
@@ -260,7 +281,8 @@ abstract class CoreMink extends WebTestCase {
         throw($e);
     }
 
-    public function screenShot() {
+    public function screenShot()
+    {
         $driver = $this->minkSession->getDriver();
         if (!($driver instanceof Selenium2Driver)) {
             if ($driver instanceof \Behat\Mink\Driver\ZombieDriver) {
@@ -278,15 +300,18 @@ abstract class CoreMink extends WebTestCase {
         file_put_contents('/tmp/' . $timeStamp . '.html', $this->getCurrentPageContent());
     }
 
-    public function logout() {
+    public function logout()
+    {
         $this->visit("logout");
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         parent::tearDown();
     }
 
-    protected function ajaxWait($timeout = 60000) {
+    protected function ajaxWait($timeout = 60000)
+    {
         $this->getSession()->wait($timeout, '(0 === jQuery.active)');
     }
 
