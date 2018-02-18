@@ -156,6 +156,29 @@ abstract class CoreMink extends WebTestCase
         throw($e);
     }
 
+    public function selectFieldOption($selector, $value, $timeout = self::TIMEOUT)
+    {
+        $e = new \Exception("Impossibile trovare " . $selector);
+        $i = 0;
+        while ($i < $timeout) {
+            try {
+                $this->ajaxWait();
+                $page = $this->getCurrentPage();
+                if ($this->findField($selector)) {
+                    $page->selectFieldOption($selector, $value);
+                    return;
+                }
+                ++$i;
+                sleep(1);
+            } catch (\Exception $e) {
+                ++$i;
+                sleep(1);
+            }
+        }
+        $this->screenShot();
+        throw($e);
+    }
+
     public function pressButton($selector, $timeout = self::TIMEOUT)
     {
 

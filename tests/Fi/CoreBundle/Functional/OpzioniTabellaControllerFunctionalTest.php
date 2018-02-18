@@ -32,7 +32,7 @@ class OpzioniTabellaControllerFunctionalTest extends CoreMink
         } else {
             $fieldprefix = 'fi_corebundle_opzionitabellatype_';
         }
-        $page->selectFieldOption($fieldprefix . 'tabelle', 1);
+        $this->selectFieldOption($fieldprefix . 'tabelle', 1);
         $this->fillField($fieldprefix . 'descrizione', $descrizionetest1);
         
         $this->clickElement('a#sDataOpzioniTabellaS');
