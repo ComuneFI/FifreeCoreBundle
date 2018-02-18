@@ -2,8 +2,7 @@
 
 use Tests\CoreBundle\Mink\CoreMink;
 
-class FfsecondariaControllerFunctionalTest extends CoreMink
-{
+class FfsecondariaControllerFunctionalTest extends CoreMink {
     /*
      * @test
      * @covers Fi\CoreBundle\Controller\StoricomodificheController::<public>
@@ -12,8 +11,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
      * @covers Fi\CoreBundle\Controller\FiController::<public>
      */
 
-    public function testFfsecondaria()
-    {
+    public function testFfsecondaria() {
         //$url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $this->router->generate('Ffsecondaria');
         $url = "/Ffsecondaria";
         $this->visit($url);
@@ -38,8 +36,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $session->stop();
     }
 
-    private function crudoperation($session, $page)
-    {
+    private function crudoperation($session, $page) {
         $this->clickElement('#buttonadd_list1');
 
         /* Inserimento */
@@ -78,14 +75,8 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->clickElement('#buttonedit_list1');
 
 
-        $selector = $fieldprefix . 'descsec';
-        $element = $page->find('css', "#" . $selector);
-
-        if (empty($element)) {
-            throw new \Exception("No html element found for the selector ('$selector')");
-        }
-
-        $element->rightClick();
+        $selector = "#" . $fieldprefix . 'descsec';
+        $this->rightClickElement($selector);
 
         $this->clickElement('div#jqContextMenu');
 
@@ -101,8 +92,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->clickElement('a#dData');
     }
 
-    private function configuratabelleoperation($session, $page)
-    {
+    private function configuratabelleoperation($session, $page) {
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'ffsecondaria_';
         } else {
@@ -146,7 +136,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowid);';
         $session->evaluateScript('function(){ var rowid = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
         $this->ajaxWait();
-        
+
         $this->dblClickElement('input[name=ordineindex]');
 
         $script = 'function(){$("input[name=mostraindex]").prop("checked", true);}()';
@@ -167,8 +157,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         }
     }
 
-    private function validationoperation($session, $page)
-    {
+    private function validationoperation($session, $page) {
         $this->clickElement('#buttonadd_list1');
 
         /* Inserimento */
@@ -212,8 +201,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->clickElement('a#dData');
     }
 
-    private function searchoperation($session, $page)
-    {
+    private function searchoperation($session, $page) {
         /* Ricerca 0 */
 
         $this->clickElement('#search_list1');
@@ -388,8 +376,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         $this->clickElement('a#fbox_list1_reset');
     }
 
-    private function printoperations($session, $page)
-    {
+    private function printoperations($session, $page) {
         /* Print pdf */
         $this->clickElement('#buttonprint_list1');
 
@@ -423,8 +410,7 @@ class FfsecondariaControllerFunctionalTest extends CoreMink
         }
     }
 
-    private function searchmodifiche($valoreprecedente)
-    {
+    private function searchmodifiche($valoreprecedente) {
         $em = $this->doctrine->getManager();
 
         $qu = $em->createQueryBuilder();
