@@ -9,6 +9,7 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
+use Facebook\WebDriver\Chrome\ChromeOptions;
 
 abstract class FacebookDriverTester extends WebTestCase
 {
@@ -59,9 +60,14 @@ abstract class FacebookDriverTester extends WebTestCase
         switch ($this->seleniumDriverType) {
             case "firefox":
                 $desired_capabilities = DesiredCapabilities::firefox();
+                $desired_capabilities->setCapability(
+                        'moz:firefoxOptions', ['args' => ['-headless']]
+                );
                 break;
             case "chrome":
                 $desired_capabilities = DesiredCapabilities::chrome();
+                $chromeOptions = (new ChromeOptions)->addArguments(['headless', 'disable-gpu']);
+                $desired_capabilities->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
                 break;
             default:
                 throw new \Exception("Driver non supportato " . $this->seleniumDriverType . ", selezionare firefox o chrome");
