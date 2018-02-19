@@ -180,7 +180,36 @@ abstract class FacebookDriverTester extends WebTestCase
                 $this->ajaxWait();
                 $element = $this->findField($selector);
                 if ($element) {
+                    $element->clear();
                     $element->sendKeys($value);
+                    return;
+                }
+                ++$i;
+                sleep(1);
+            } catch (\Exception $e) {
+                ++$i;
+                sleep(1);
+            }
+        }
+        $this->screenShot();
+        throw($e);
+    }
+
+    public function checkboxSelect($selector, $value, $timeout = self::TIMEOUT)
+    {
+        $e = new \Exception("Impossibile trovare " . $selector);
+        $i = 0;
+        while ($i < $timeout) {
+            try {
+                $this->ajaxWait();
+                $select = $this->findField($selector);
+                if ($select) {
+                    if ($select->isSelected() != $value) {
+                        dump($select->isSelected());
+                        dump($value);
+                        $select->click();
+                        //$select->click();
+                    }
                     return;
                 }
                 ++$i;
