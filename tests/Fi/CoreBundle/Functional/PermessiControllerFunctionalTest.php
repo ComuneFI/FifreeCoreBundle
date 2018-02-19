@@ -1,8 +1,8 @@
 <?php
 
-use Tests\CoreBundle\Mink\CoreMink;
+use Tests\CoreBundle\FacebookDriver\FacebookDriverTester;
 
-class PermessiControllerFunctionalTest extends CoreMink
+class PermessiControllerFunctionalTest extends FacebookDriverTester
 {
 
     public function testPermessi()
@@ -13,17 +13,15 @@ class PermessiControllerFunctionalTest extends CoreMink
         $this->login('admin', 'admin');
         $session = $this->getSession();
         $page = $this->getCurrentPage();
-        
-        
      
         $this->crudoperation($session, $page);
 
-        $session->stop();
+        $session->quit();
     }
 
     public function crudoperation($session, $page)
     {
-        $this->clickElement('#buttonadd_list1');
+        $this->clickElement('buttonadd_list1');
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'permessi_';
         } else {
@@ -33,7 +31,7 @@ class PermessiControllerFunctionalTest extends CoreMink
         $this->ajaxWait();
         $descrizionetest1 = 'testmodulo';
         $this->fillField($fieldprefix . 'modulo', $descrizionetest1);
-        $this->clickElement('a#sDataPermessiS');
+        $this->clickElement('sDataPermessiS');
         $this->ajaxWait();
 
         $em = $this->em;
@@ -47,24 +45,24 @@ class PermessiControllerFunctionalTest extends CoreMink
         $this->assertEquals($recorddelete->getModulo(), $descrizionetest1);
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
+        $this->evaluateScript('var testselid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}(testselid)');
 
         
-        $this->clickElement('#buttonedit_list1');
+        $this->clickElement('buttonedit_list1');
         
         /* Modifica */
         $descrizionetest2 = 'testmodulo 2';
         $this->fillField($fieldprefix . 'modulo', $descrizionetest2);
-        $this->clickElement('a#sDataPermessiS');
+        $this->clickElement('sDataPermessiS');
         $this->ajaxWait();
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
+        $this->evaluateScript('var testselid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}(testselid)');
 
         
-        $this->clickElement('#buttondel_list1');
+        $this->clickElement('buttondel_list1');
         
-        $this->clickElement('a#dData');
+        $this->clickElement('dData');
     }
 
 }
