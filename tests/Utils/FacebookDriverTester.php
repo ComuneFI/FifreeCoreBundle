@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverKeys;
 
 abstract class FacebookDriverTester extends WebTestCase
 {
@@ -135,20 +136,25 @@ abstract class FacebookDriverTester extends WebTestCase
 
     private function getElementBySelector($selector)
     {
-        $element = $this->facebookDriver->findElement(WebDriverBy::id($selector));
-        if (!$element) {
-            $element = $this->facebookDriver->findElement(WebDriverBy::cssSelector($selector));
-            /* @var $element Behat\Mink\Element\NodeElement */
-            if (!$element) {
-                $element = $this->facebookDriver->findElement(WebDriverBy::name($selector));
-                if (!$element) {
-                    $element = $this->facebookDriver->findElement(WebDriverBy::tagName($selector));
-                    if (!$element) {
+        $element = null;
+        try {
+            $element = $this->facebookDriver->findElement(WebDriverBy::id($selector));
+        } catch (\Exception $exc) {
+            try {
+                $element = $this->facebookDriver->findElement(WebDriverBy::cssSelector($selector));
+            } catch (\Exception $exc) {
+                try {
+                    $element = $this->facebookDriver->findElement(WebDriverBy::name($selector));
+                } catch (\Exception $exc) {
+                    try {
+                        $element = $this->facebookDriver->findElement(WebDriverBy::tagName($selector));
+                    } catch (\Exception $exc) {
                         $element = $this->facebookDriver->findElement(WebDriverBy::className($selector));
                     }
                 }
             }
         }
+
         return $element;
     }
 
@@ -210,12 +216,34 @@ abstract class FacebookDriverTester extends WebTestCase
                 $select = $this->findField($selector);
                 if ($select) {
                     if ($select->isSelected() != $value) {
-                        dump($select->isSelected());
-                        dump($value);
+                        //dump($select->isSelected());
+                        //dump($value);
                         $select->click();
                         //$select->click();
                     }
                     return;
+                }
+                ++$i;
+                sleep(1);
+            } catch (\Exception $e) {
+                ++$i;
+                sleep(1);
+            }
+        }
+        $this->screenShot();
+        throw($e);
+    }
+
+    public function checkboxIsChecked($selector, $timeout = self::TIMEOUT)
+    {
+        $e = new \Exception("Impossibile trovare " . $selector);
+        $i = 0;
+        while ($i < $timeout) {
+            try {
+                $this->ajaxWait();
+                $select = $this->findField($selector);
+                if ($select) {
+                    return $select->isSelected();
                 }
                 ++$i;
                 sleep(1);
@@ -295,6 +323,25 @@ abstract class FacebookDriverTester extends WebTestCase
         throw($e);
     }
 
+    public function elementIsVisible($selector, $timeout = self::TIMEOUT)
+    {
+        $i = 0;
+        while ($i < $timeout) {
+            try {
+                $this->ajaxWait();
+                $element = $this->getElementBySelector($selector);
+                return $element->isDisplayed();
+                $this->ajaxWait();
+                return;
+            } catch (\Exception $e) {
+                ++$i;
+                sleep(1);
+            }
+        }
+
+        return false;
+    }
+
     public function clickElement($selector, $timeout = self::TIMEOUT)
     {
         $e = new \Exception("Impossibile trovare " . $selector);
@@ -328,8 +375,7 @@ abstract class FacebookDriverTester extends WebTestCase
         while ($i < $timeout) {
             try {
                 $this->ajaxWait();
-                $page = $this->getCurrentPage();
-                $element = $page->find('css', $selector);
+                $element = $this->facebookDriver->findElement($selector);
                 if (!$element) {
                     ++$i;
                     sleep(1);
@@ -351,30 +397,32 @@ abstract class FacebookDriverTester extends WebTestCase
 
     public function rightClickElement($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception("Impossibile trovare " . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
                 $this->ajaxWait();
-                $page = $this->getCurrentPage();
-                $element = $page->find('css', $selector);
+                $element = $this->findField($selector);
                 if (!$element) {
                     ++$i;
                     sleep(1);
                     continue;
                 }
-                $element->rightClick();
+                $this->facebookDriver->
+                        action()->
+                        contextClick($element)->
+                        sendKeys(NULL, WebDriverKeys::ARROW_DOWN)->
+                        perform();
+
                 $this->ajaxWait();
-                return;
+                return true;
             } catch (\Exception $e) {
                 ++$i;
                 sleep(1);
             }
         }
 
-        echo $page->getHtml();
         $this->screenShot();
-        throw($e);
+        return null;
     }
 
     public function screenShot()
