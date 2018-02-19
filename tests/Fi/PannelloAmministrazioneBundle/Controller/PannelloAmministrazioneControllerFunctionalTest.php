@@ -1,8 +1,8 @@
 <?php
 
-use Tests\CoreBundle\Mink\CoreMink;
+use Tests\CoreBundle\FacebookDriver\FacebookDriverTester;
 
-class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
+class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTester
 {
 
     public static function setUpBeforeClass()
@@ -42,22 +42,23 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
-        
 
-        $page->fillField('bundlename', 'Fi/ProvaBundle');
+
+        $this->fillField('bundlename', 'Fi/ProvaBundle');
 
         $javascript = "window.alert = function() {};";
-        $session->executeScript($javascript);
-        $page->pressButton('adminpanelgeneratebundle');
-        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-        $session->executeScript($scriptrun);
+        $this->executeScript($javascript);
+        $this->pressButton('adminpanelgeneratebundle');
+
+        $this->pressButton('/html/body/div[12]/div[3]/div/button[1]');
+        //$scriptrun = "function(){ $('button:contains(\"Si\")').click();";
+        //$this->executeScript($scriptrun);
         $this->ajaxWait();
 
-        $scriptrun = "function(){ $('button:contains(\"Chiudi\")').click();}()";
-        $session->executeScript($scriptrun);
+        $scriptrun = "$('button:contains(\"Chiudi\")').click();";
+        $this->executeScript($scriptrun);
         //parent::ajaxWait($session, 60000);
         //$session->getDriver()->getWebDriverSession()->accept_alert();
-        
         //echo $session->getPage()->getHtml();
         /**/
         //$screenshot = $driver->getWebDriverSession()->screenshot();
@@ -65,7 +66,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         /**/
         //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
         //$scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        //$session->executeScript($scriptclose);
+        //$this->executeScript($scriptclose);
         //echo passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
         /* qui */
         //removecache();
@@ -73,14 +74,14 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         //$driver->reload();
 
         /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-          $session->executeScript($scriptclose); */
+          $this->executeScript($scriptclose); */
 
         //***************************************************************************************************************
         //$urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         //$url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;
         //$page->fillField('username', 'admin');
         //$page->fillField('password', 'admin');
-        //$page->pressButton('_submit');
+        //$this->pressButton('_submit');
         clearcache();
 
         $this->visit($url);
@@ -88,47 +89,58 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
-        
+
         $this->visit($url);
         $checkprovabundle = file_exists($fileprovabundle);
         $this->assertTrue($checkprovabundle, $fileprovabundle);
 
-        
-        $page->fillField('bundlename', 'Fi/ProvaBundle');
 
-        $page->selectFieldOption('entitybundle', 'Fi/ProvaBundle');
-        $page->selectFieldOption('entityfile', 'wbadmintest.mwb');
+        $this->fillField('bundlename', 'Fi/ProvaBundle');
 
-        $page->pressButton('adminpanelgenerateentity');
-        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-        $session->executeScript($scriptrun);
+        $this->selectFieldOption('entitybundle', 'Fi/ProvaBundle');
+        $this->selectFieldOption('entityfile', 'wbadmintest.mwb');
+
+        $this->pressButton('adminpanelgenerateentity');
+
+        $this->pressButton('/html/body/div[12]/div[3]/div/button[1]');
+
+        /* $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+          $this->executeScript($scriptrun); */
         $this->ajaxWait();
 
-        
-        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $session->executeScript($scriptclose);
+
+        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+          $this->executeScript($scriptclose); */
+        $this->pressButton('/html/body/div[11]/div[3]/div/button');
+
 
         $this->pressButton('adminpanelgenerateclassentity');
-        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-        $session->executeScript($scriptrun);
+        /* $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+          $this->executeScript($scriptrun); */
+
+        $this->pressButton('/html/body/div[12]/div[3]/div/button[1]');
+
         $this->ajaxWait();
-        
+
         //echo $session->getPage()->getHtml();
         /**/
         //$screenshot = $driver->getWebDriverSession()->screenshot();
         //file_put_contents('/tmp/test3.png', base64_decode($screenshot));
         /**/
-        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $session->executeScript($scriptclose);
+        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+          $this->executeScript($scriptclose);
+         */
+        $this->pressButton('/html/body/div[11]/div[11]/div/button');
+
         $this->assertTrue(file_exists($checkentityprova));
 
         $this->assertTrue(file_exists($checkresourceprova));
 
-        /* $page->pressButton('adminpanelcc');
+        /* $this->pressButton('adminpanelcc');
           $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-          $session->executeScript($scriptrun);
+          $this->executeScript($scriptrun);
           parent::ajaxWait($session, 60000);
-           */
+         */
         //echo $session->getPage()->getHtml(); 
         /**/
         //$screenshot = $driver->getWebDriverSession()->screenshot();
@@ -136,7 +148,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         /**/
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-          $session->executeScript($scriptclose); */
+          $this->executeScript($scriptclose); */
 
         /* qui */
         //removecache();
@@ -147,13 +159,17 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
-        
+
         $this->visit($url);
-        
+
 
         $this->pressButton('adminpanelaggiornadatabase');
-        $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
-        $session->executeScript($scriptdb);
+        /* $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
+          $this->executeScript($scriptdb);
+         */
+
+        $this->pressButton('/html/body/div[12]/div[3]/div/button[1]');
+
         $this->ajaxWait();
         /**/
         //$screenshot = $driver->getWebDriverSession()->screenshot();
@@ -162,24 +178,27 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 
         //echo $session->getPage()->getHtml();
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
-        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $session->executeScript($scriptclose);
+        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+          $this->executeScript($scriptclose);
+         */
+        $this->pressButton('/html/body/div[11]/div[3]/div/button');
+
         //passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
-        
+
         /* $session->visit($url);
           $page = $session->getPage();
-          
+
           //echo $session->getPage()->getHtml();
           //Login
           $page->fillField('username', 'admin');
           $page->fillField('password', 'admin');
-          $page->pressButton('_submit');
+          $this->pressButton('_submit');
 
-          
+
           $session->visit($url);
           $page = $session->getPage();
 
-           */
+         */
 
         clearcache();
         $this->visit($url);
@@ -187,16 +206,19 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
-        
+
 
         $this->fillField('bundlename', 'Fi/ProvaBundle');
         $this->fillField('entityform', 'Prova');
 
-        $page->pressButton('adminpanelgenerateformcrud');
-        $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-        $session->executeScript($scriptrun);
+        $this->pressButton('adminpanelgenerateformcrud');
+        /* $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+          $this->executeScript($scriptrun); */
+
+        $this->pressButton('/html/body/div[12]/div[3]/div/button[1]');
+
         $this->ajaxWait();
-        
+
         //echo $page->getHtml();
         $this->assertTrue(file_exists($checktypeprova));
         $this->assertTrue(file_exists($checkviewsprova));
@@ -206,16 +228,18 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         //file_put_contents('/tmp/test6.png', base64_decode($screenshot));
         /**/
 
-        
+
 
         //echo $session->getPage()->getHtml();
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
-        $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $session->executeScript($scriptclose);
+        /*$scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $this->executeScript($scriptclose);*/
+        $this->pressButton('/html/body/div[11]/div[3]/div/button');
+        
 
-        /* $page->pressButton('adminpanelcc');
+        /* $this->pressButton('adminpanelcc');
           $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-          $session->executeScript($scriptrun);
+          $this->executeScript($scriptrun);
           parent::ajaxWait($session, 60000); */
         //echo passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
 
@@ -223,7 +247,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         //removecache();
         clearcache();
         //$driver->reload();
-        
         //***************************************************************************************************************
         try {
             $urlRouting = $this->router->generate('Prova_container');
@@ -239,14 +262,14 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
-        
+
 
         //echo $page->getHtml();
-        
+
         $this->crudoperation($session, $page);
 
-        
-        $session->stop();
+
+        $session->quit();
     }
 
     /*
@@ -272,8 +295,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
 
     private function crudoperation($session, $page)
     {
-        $this->clickElement('#buttonadd_list1');
-        
+        $this->clickElement('buttonadd_list1');
+
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
 //        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
@@ -282,33 +305,33 @@ class PannelloAmministrazioneControllerFunctionalTest extends CoreMink
         $fieldhtml = 'fi_provabundle_prova_descrizione';
 //        }
 
-        $page->fillField($fieldhtml, $descrizionetest1);
-        
-        $this->clickElement('a#sDataProvaS');
-        
+        $this->fillField($fieldhtml, $descrizionetest1);
+
+        $this->clickElement('sDataProvaS');
+
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
+        $this->evaluateScript('var testid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}(testid)');
 
-        
-        $this->clickElement('#buttonedit_list1');
-        
+
+        $this->clickElement('buttonedit_list1');
+
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
-        $page->fillField($fieldhtml, $descrizionetest2);
-        
-        $this->clickElement('a#sDataProvaS');
-        
+        $this->fillField($fieldhtml, $descrizionetest2);
+
+        $this->clickElement('sDataProvaS');
+
         $this->ajaxWait();
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
+        $this->evaluateScript('var testid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}(testid)');
         $this->ajaxWait();
 
-        
-        $this->clickElement('#buttondel_list1');
-        
-        $this->clickElement('a#dData');
+
+        $this->clickElement('buttondel_list1');
+
+        $this->clickElement('dData');
     }
 
     /**
