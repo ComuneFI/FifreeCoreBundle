@@ -18,7 +18,7 @@ abstract class FacebookDriverTester extends WebTestCase
     private $minkBaseUrl;
 
     /** @var RemoteWebDriver */
-    protected $minkSession;
+    protected $facebookDriver;
 
     /** @var Client */
     protected $client;
@@ -70,27 +70,27 @@ abstract class FacebookDriverTester extends WebTestCase
         $driver = RemoteWebDriver::create($host, $desired_capabilities);
 
 
-        $this->minkSession = $driver;
+        $this->facebookDriver = $driver;
     }
 
     public function getCurrentPage()
     {
-        return $this->minkSession;
+        return $this->facebookDriver;
     }
 
     public function getSession()
     {
-        return $this->minkSession;
+        return $this->facebookDriver;
     }
 
     public function getCurrentPageContent()
     {
-        return $this->minkSession->getPageSource();
+        return $this->facebookDriver->getPageSource();
     }
 
     public function visit($url)
     {
-        $this->minkSession->get($this->minkBaseUrl . $url);
+        $this->facebookDriver->get($this->minkBaseUrl . $url);
     }
 
     public function login($user, $pass)
@@ -102,7 +102,12 @@ abstract class FacebookDriverTester extends WebTestCase
 
     public function evaluateScript($script)
     {
-        $this->minkSession->executeScript($script, array());
+        return $this->facebookDriver->executeScript($script, array());
+    }
+
+    public function executeScript($script)
+    {
+        return $this->evaluateScript($script);
     }
 
     public function find($selector, $value, $timeout = self::TIMEOUT)
@@ -130,16 +135,16 @@ abstract class FacebookDriverTester extends WebTestCase
 
     private function getElementBySelector($selector)
     {
-        $element = $this->minkSession->findElement(WebDriverBy::id($selector));
+        $element = $this->facebookDriver->findElement(WebDriverBy::id($selector));
         if (!$element) {
-            $element = $this->minkSession->findElement(WebDriverBy::cssSelector($selector));
+            $element = $this->facebookDriver->findElement(WebDriverBy::cssSelector($selector));
             /* @var $element Behat\Mink\Element\NodeElement */
             if (!$element) {
-                $element = $this->minkSession->findElement(WebDriverBy::name($selector));
+                $element = $this->facebookDriver->findElement(WebDriverBy::name($selector));
                 if (!$element) {
-                    $element = $this->minkSession->findElement(WebDriverBy::tagName($selector));
+                    $element = $this->facebookDriver->findElement(WebDriverBy::tagName($selector));
                     if (!$element) {
-                        $element = $this->minkSession->findElement(WebDriverBy::className($selector));
+                        $element = $this->facebookDriver->findElement(WebDriverBy::className($selector));
                     }
                 }
             }
@@ -402,9 +407,21 @@ abstract class FacebookDriverTester extends WebTestCase
         parent::tearDown();
     }
 
-    protected function ajaxWait($timeout = 60000)
+    /**
+     * waitForAjax : wait for all ajax request to close
+     * @param  integer $timeout  timeout in seconds
+     * @param  integer $interval interval in miliseconds
+     * @return void            
+     */
+    public function ajaxWait($timeout = 5, $interval = 200)
     {
-        $this->getSession()->wait($timeout, '(0 === jQuery.active)');
+        $this->facebookDriver->wait($timeout, $interval)->until(function() {
+            // jQuery: "jQuery.active" or $.active
+            // Prototype: "Ajax.activeRequestCount"
+            // Dojo: "dojo.io.XMLHTTPTransport.inFlight.length"
+            $condition = 'return ($.active == 0);';
+            return $this->facebookDriver->executeScript($condition);
+        });
     }
 
 }
