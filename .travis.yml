@@ -42,7 +42,8 @@ cache:
     - $HOME/.composer/cache
     
 addons:
-  firefox: "45.8.0esr"
+  #firefox: "45.8.0esr"
+  firefox: "latest"
   chrome: stable
 
 before_script:
