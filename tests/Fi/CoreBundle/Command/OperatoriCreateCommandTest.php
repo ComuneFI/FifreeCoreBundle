@@ -19,28 +19,27 @@ class OperatoriCreateCommandTest extends WebTestCase
     public function testAddOperatore()
     {
         $userprova = 'utenteprova';
-        /* $console = __DIR__ . '/../../bin/console';
-          $cmd = "php " . $console . " fos:user:create $userprova $userprova@domain.it passwordprova --no-debug --env=test";
-          passthru($cmd); */
-        $kernel = static::$kernel;
-        $application = new Application($kernel);
-
-        $application->add(new \FOS\UserBundle\Command\CreateUserCommand());
-        $application->add(new \FOS\UserBundle\Command\ActivateUserCommand());
-
-        $command = $application->find('fos:user:create');
-        $commandTester = new CommandTester($command);
-        $commandTester->execute(
-                array(
-                    'username' => $userprova,
-                    'email' => $userprova . '@domain.it',
-                    'password' => 'passwordprova',
-                    '--env' => 'test'
-                )
-        );
-        $output = $commandTester->getDisplay();
-
-        $this->assertRegExp('/.../', $commandTester->getDisplay());
+        $console = __DIR__ . '/../../../bin/console';
+        $cmd = "php " . $console . " fos:user:create $userprova $userprova@domain.it passwordprova --env=test";
+        passthru($cmd);
+//        $kernel = static::$kernel;
+//        $application = new Application($kernel);
+//        $application->add(new \FOS\UserBundle\Command\CreateUserCommand());
+//        $application->add(new \FOS\UserBundle\Command\ActivateUserCommand());
+//
+//        $command = $application->find('fos:user:create');
+//        $commandTester = new CommandTester($command);
+//        $commandTester->execute(
+//                array(
+//                    'username' => $userprova,
+//                    'email' => $userprova . '@domain.it',
+//                    'password' => 'passwordprova',
+//                    '--env' => 'test'
+//                )
+//        );
+//        $output = $commandTester->getDisplay();
+//
+//        $this->assertRegExp('/.../', $commandTester->getDisplay());
 
         $em = static::$kernel->getContainer()->get('doctrine')->getManager();
 
