@@ -1,8 +1,9 @@
 <?php
 
-use Tests\CoreBundle\Mink\CoreMink;
+use Tests\CoreBundle\FacebookDriver\FacebookDriverTester;
 
-class FfsecondariaControllerFunctionalTest extends CoreMink {
+class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
+{
     /*
      * @test
      * @covers Fi\CoreBundle\Controller\StoricomodificheController::<public>
@@ -11,7 +12,8 @@ class FfsecondariaControllerFunctionalTest extends CoreMink {
      * @covers Fi\CoreBundle\Controller\FiController::<public>
      */
 
-    public function testFfsecondaria() {
+    public function testFfsecondaria()
+    {
         //$url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $this->router->generate('Ffsecondaria');
         $url = "/Ffsecondaria";
         $this->visit($url);
@@ -33,11 +35,12 @@ class FfsecondariaControllerFunctionalTest extends CoreMink {
 
         $this->logout();
 
-        $session->stop();
+        $session->quit();
     }
 
-    private function crudoperation($session, $page) {
-        $this->clickElement('#buttonadd_list1');
+    private function crudoperation($session, $page)
+    {
+        $this->clickElement('buttonadd_list1');
 
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
@@ -48,119 +51,109 @@ class FfsecondariaControllerFunctionalTest extends CoreMink {
         }
 
         $this->fillField($fieldprefix . 'descsec', $descrizionetest1);
-        $page->selectFieldOption($fieldprefix . 'ffprincipale', 1);
-        $page->selectFieldOption($fieldprefix . 'data_day', (int) date('d'));
-        $page->selectFieldOption($fieldprefix . 'data_month', (int) date('m'));
-        $page->selectFieldOption($fieldprefix . 'data_year', (int) date('Y'));
+        $this->selectFieldOption($fieldprefix . 'ffprincipale', 1);
+        $this->selectFieldOption($fieldprefix . 'data_day', (int) date('d'));
+        $this->selectFieldOption($fieldprefix . 'data_month', (int) date('m'));
+        $this->selectFieldOption($fieldprefix . 'data_year', (int) date('Y'));
         $this->fillField($fieldprefix . 'importo', 1000000.12);
         $this->fillField($fieldprefix . 'intero', 1000000);
         $this->fillField($fieldprefix . 'nota', 'Prova la nota');
-        $this->fillField($fieldprefix . 'attivo', 1);
-        $this->clickElement('a#sDataFfsecondariaS');
+        $this->checkboxSelect($fieldprefix . 'attivo', 1);
+        $this->clickElement('sDataFfsecondariaS');
         $this->ajaxWait();
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
+        $this->evaluateScript('var testretid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}(testretid)');
         $this->ajaxWait();
 
-        $this->clickElement('#buttonedit_list1');
+        $this->clickElement('buttonedit_list1');
         $this->ajaxWait();
 
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $this->fillField($fieldprefix . 'descsec', $descrizionetest2);
-        $this->clickElement('a#sDataFfsecondariaS');
+        $this->clickElement('sDataFfsecondariaS');
         $this->ajaxWait();
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
+        $this->evaluateScript('var testid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}(testid)');
 
-        $this->clickElement('#buttonedit_list1');
+        $this->clickElement('buttonedit_list1');
 
 
         $selector = "#" . $fieldprefix . 'descsec';
-        $this->rightClickElement($selector);
+        $iffindelementrightclick = $this->rightClickElement($selector);
+        //Metto questo if perchè non è stato implementato per firefox con geckodriver ancora
+        if ($iffindelementrightclick) {
+            $this->clickElement('jqContextMenu');
 
-        $this->clickElement('div#jqContextMenu');
+            //$this->pressButton('Ok');
 
-        $page->pressButton('Ok');
-
-        $this->clickElement('.fi-default-chiudi');
+            $this->clickElement('ui-dialog-titlebar-close');
+            $this->clickElement('fi-default-chiudi');
+        }
 
         $this->searchmodifiche($descrizionetest1);
         /* Cancellazione */
         $jsSetFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
-        $this->clickElement('#buttondel_list1');
-        $this->clickElement('a#dData');
+        $this->evaluateScript('var testid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}(testid)');
+        $this->clickElement('buttondel_list1');
+        $this->clickElement('dData');
     }
 
-    private function configuratabelleoperation($session, $page) {
+    private function configuratabelleoperation($session, $page)
+    {
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'ffsecondaria_';
         } else {
             $fieldprefix = 'fi_corebundle_ffsecondariatype_';
         }
         /**/
-        $this->clickElement('#buttonconfig_list1');
+        $this->clickElement('buttonconfig_list1');
         $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowidcal);';
-        $session->evaluateScript('function(){ var rowidcal = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
+        $this->evaluateScript('var testcalid = function(){ var rowidcal = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}(testcalid )');
         $this->ajaxWait();
 
+        $checkbox = "18_mostraindex";
+        $this->checkboxSelect($checkbox, 0);
 
-        $selector = 'input[name=ordineindex]';
-        $element = $page->find('css', $selector);
-
-        if (empty($element)) {
-            echo $page->getHtml();
-            throw new \Exception("No html element found for the selector ('$selector')");
-        }
-
-        $element->doubleClick();
-        $script = 'function(){$("input[name=mostraindex]").prop("checked", false);}()';
-        $session->evaluateScript($script);
+        //$script = 'var ischecked = function(){var ischecked = $("input[name=mostraindex]").prop("checked", false);return ischecked;}(ischecked)';
+        $ischecked = $this->checkboxIsChecked($checkbox);
+        $this->assertEquals(false, $ischecked);
 
         //$script = 'function(){$("#listconfigura").trigger("keydown", {which: 50});}()';
-        //$session->evaluateScript($script);
+        //$this->evaluateScript($script);
         $jsSaveFirstRow = '$("#listconfigura").saveRow(rowidcalsave);';
-        $session->evaluateScript('function(){ var rowidcalsave = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSaveFirstRow . '}()');
+        $this->evaluateScript('var rowsave = function(){ var rowidcalsave = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSaveFirstRow . '}(rowsave)');
         $this->ajaxWait();
 
         $this->clickElement('.ui-icon-circle-close');
 
-        $elementattivo = $page->findAll('css', '#jqgh_list1_attivo');
-        foreach ($elementattivo as $e) {
-            $this->assertTrue(!$e->isVisible());
-        }
+        $this->assertTrue(!$this->elementIsVisible("jqgh_list1_attivo"));
 
         /**/
 
-        $this->clickElement('#buttonconfig_list1');
+        $this->clickElement('buttonconfig_list1');
         $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
+        $this->evaluateScript('var rowid = function(){ var rowid = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}(rowid)');
         $this->ajaxWait();
 
-        $this->dblClickElement('input[name=ordineindex]');
+        $this->checkboxSelect($checkbox, 1);
+        $ischecked = $this->checkboxIsChecked($checkbox);
+        $this->assertEquals(true, $ischecked);
 
-        $script = 'function(){$("input[name=mostraindex]").prop("checked", true);}()';
-        $session->evaluateScript($script);
-
-        //$script = 'function(){$("#listconfigura").trigger("keydown", {which: 50});}()';
-        //$session->evaluateScript($script);
 
         $jsSaveFirstRow = '$("#listconfigura").saveRow(rowidcalsave);';
-        $session->evaluateScript('function(){ var rowidcalsave = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSaveFirstRow . '}()');
+        $this->evaluateScript('var rowsave = function(){ var rowidcalsave = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSaveFirstRow . '}(rowsave)');
         $this->ajaxWait();
 
         $this->clickElement('.ui-icon-circle-close');
 
-        $elementattivo = $page->findAll('css', '#jqgh_list1_attivo');
-        foreach ($elementattivo as $e) {
-            $this->assertTrue($e->isVisible());
-        }
+        $this->assertTrue($this->elementIsVisible("jqgh_list1_attivo"));
     }
 
-    private function validationoperation($session, $page) {
-        $this->clickElement('#buttonadd_list1');
+    private function validationoperation($session, $page)
+    {
+        $this->clickElement('buttonadd_list1');
 
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
@@ -170,43 +163,39 @@ class FfsecondariaControllerFunctionalTest extends CoreMink {
             $fieldprefix = 'fi_corebundle_ffsecondariatype_';
         }
         $this->fillField($fieldprefix . 'descsec', $descrizionetest1);
-        $page->selectFieldOption($fieldprefix . 'ffprincipale', 1);
-        $page->selectFieldOption($fieldprefix . 'data_day', (int) date('d'));
-        $page->selectFieldOption($fieldprefix . 'data_month', (int) date('m'));
-        $page->selectFieldOption($fieldprefix . 'data_year', (int) date('Y'));
+        $this->selectFieldOption($fieldprefix . 'ffprincipale', 1);
+        $this->selectFieldOption($fieldprefix . 'data_day', (int) date('d'));
+        $this->selectFieldOption($fieldprefix . 'data_month', (int) date('m'));
+        $this->selectFieldOption($fieldprefix . 'data_year', (int) date('Y'));
         $this->fillField($fieldprefix . 'importo', 1);
         $this->fillField($fieldprefix . 'intero', 1);
         $this->fillField($fieldprefix . 'nota', 'Prova la nota validation');
-        $this->fillField($fieldprefix . 'attivo', 0);
+        $this->checkboxSelect($fieldprefix . 'attivo', 0);
 
 
-        $this->clickElement('a#sDataFfsecondariaS');
-
-        $elementvalid = $page->findAll('css', '.error_list');
-
-        foreach ($elementvalid as $e) {
-            $this->assertTrue($e->isVisible());
-        }
+        $this->clickElement('sDataFfsecondariaS');
+        $this->assertTrue($this->elementIsVisible('error_list'));
 
         $this->fillField($fieldprefix . 'importo', 2);
         $this->fillField($fieldprefix . 'intero', 2);
 
-        $this->clickElement('a#sDataFfsecondariaS');
+        $this->clickElement('sDataFfsecondariaS');
 
 
         /* Cancellazione */
         $jsSetFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}()');
+        $this->evaluateScript('var rowid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}(rowid)');
 
-        $this->clickElement('#buttondel_list1');
+        $this->clickElement('buttondel_list1');
 
-        $this->clickElement('a#dData');
+        $this->clickElement('dData');
     }
 
-    private function searchoperation($session, $page) {
+    private function searchoperation($session, $page)
+    {
         /* Ricerca 0 */
 
-        $this->clickElement('#search_list1');
+        $this->clickElement('search_list1');
 
         $search0 = "10° secondaria legato al 2° record principale ed è l'";
         $this->fillField('jqg1', $search0);
@@ -214,53 +203,53 @@ class FfsecondariaControllerFunctionalTest extends CoreMink {
         $this->clickElement('a#fbox_list1_search');
 
 
-        $numrowsgrid0 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $numrowsgrid0 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
         $this->assertEquals(1, $numrowsgrid0);
         /* Ricerca 0 */
 
 
-        $this->clickElement('#search_list1');
+        $this->clickElement('search_list1');
 
         $search0 = "l'";
         $var2 = '"cn"';
         $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
 
-        $session->executeScript($javascript2);
+        $this->evaluateScript($javascript2);
         $this->fillField('jqg1', $search0);
         $this->ajaxWait();
 
 
-        $this->clickElement('a#fbox_list1_search');
+        $this->clickElement('fbox_list1_search');
 
 
-        $numrowsgrid0 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $numrowsgrid0 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
         $this->assertEquals(1, $numrowsgrid0);
 
         /* Ricerca 0 */
 
         /* Ricerca 1 */
 
-        $this->clickElement('#search_list1');
+        $this->clickElement('search_list1');
 
         $search1 = '9° secondaria';
         $this->fillField('jqg1', $search1);
 
-        $this->clickElement('a#fbox_list1_search');
+        $this->clickElement('fbox_list1_search');
 
 
-        $numrowsgrid1 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $numrowsgrid1 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
         $this->assertEquals(1, $numrowsgrid1);
 
         /* Ricerca 1 */
 
-        $this->clickElement('#search_list1');
+        $this->clickElement('search_list1');
 
         $search2 = '1°';
-        //$page->selectFieldOption('inizia con', "cn");
+        //$this->selectFieldOption('inizia con', "cn");
         $var2 = '"cn"';
         $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
 
-        $session->executeScript($javascript2);
+        $this->evaluateScript($javascript2);
         $this->fillField('jqg1', $search2);
         $this->ajaxWait();
 
@@ -268,151 +257,140 @@ class FfsecondariaControllerFunctionalTest extends CoreMink {
         $this->clickElement('a#fbox_list1_search');
 
 
-        $numrowsgrid2 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $numrowsgrid2 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
         $this->assertEquals(5, $numrowsgrid2);
         $this->ajaxWait();
 
 
         /* doppia condizione */
-        $this->clickElement('#search_list1');
+        $this->clickElement('search_list1');
         $search3 = 100;
         $addrulejs = "$('.ui-add').click();";
         $this->ajaxWait();
 
-        $session->executeScript($addrulejs);
+        $this->evaluateScript($addrulejs);
         $this->ajaxWait();
 
         $var3 = '"intero"';
         $selector3 = '#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first';
         $javascript3 = "$('" . $selector3 . ' option[value=' . $var3 . "]').attr('selected', 'selected').change();";
         $this->ajaxWait();
-        $session->executeScript($javascript3);
+        $this->evaluateScript($javascript3);
         $this->ajaxWait();
         $this->fillField('jqg4', $search3);
 
         $var4 = '"ge"';
         $javascript4 = "$('.selectopts:first option[value=" . $var4 . "]').attr('selected', 'selected').change();;";
-        $session->executeScript($javascript4);
+        $this->evaluateScript($javascript4);
         $search5 = '6°';
         $this->fillField('jqg3', $search5);
 
 
-        $this->clickElement('a#fbox_list1_search');
+        $this->clickElement('fbox_list1_search');
 
 
-        $numrowsgrid3 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $numrowsgrid3 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
         $this->assertEquals(1, $numrowsgrid3);
 
         //reset filtri
 
-        $this->clickElement('#search_list1');
+        $this->clickElement('search_list1');
 
-        $this->clickElement('a#fbox_list1_reset');
+        $this->clickElement('fbox_list1_reset');
 
 
 
         /* Ricerca 4 */
-        $this->clickElement('#search_list1');
+        $this->clickElement('search_list1');
         /**/
         $var5 = '"attivo"';
         $selector5 = '#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first';
         $javascript5 = "$('" . $selector5 . ' option[value=' . $var5 . "]').attr('selected', 'selected').change();";
         $this->ajaxWait();
-        $session->executeScript($javascript5);
+        $this->evaluateScript($javascript5);
         $this->ajaxWait();
         /**/
 
         //mi tocca rimettere questo sleep perchè schianta anche dopo il refactor
         sleep(2);
-        $this->clickElement('a#fbox_list1_search');
+        $this->clickElement('fbox_list1_search');
         $this->ajaxWait();
 
-        $numrowsgrid5 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $numrowsgrid5 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
         $this->assertEquals(9, $numrowsgrid5);
         $this->ajaxWait();
 
 
         /* Ricerca 5 */
-        $this->clickElement('#search_list1');
+        $this->clickElement('search_list1');
         /**/
         $var6 = '"true"';
         $selector6 = '.input-elm';
         $javascript6 = "$('" . $selector6 . ' option[value=' . $var6 . "]').attr('selected', 'selected').change();";
         $this->ajaxWait();
-        $session->executeScript($javascript6);
+        $this->evaluateScript($javascript6);
         $this->ajaxWait();
         /**/
-        $this->clickElement('a#fbox_list1_search');
+        $this->clickElement('fbox_list1_search');
         $this->ajaxWait();
 
-        $numrowsgrid5 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $numrowsgrid5 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
         $this->assertEquals(6, $numrowsgrid5);
         $this->ajaxWait();
 
 
         /* Ricerca 6 */
-        $this->clickElement('#search_list1');
+        $this->clickElement('search_list1');
 
         $var6 = '"false"';
         $selector6 = '.input-elm';
         $javascript6 = "$('" . $selector6 . ' option[value=' . $var6 . "]').attr('selected', 'selected').change();";
         $this->ajaxWait();
-        $session->executeScript($javascript6);
+        $this->evaluateScript($javascript6);
         $this->ajaxWait();
         /**/
 
         //mi tocca rimettere questo sleep perchè schianta anche dopo il refactor
         sleep(1);
-        $this->clickElement('a#fbox_list1_search');
+        $this->clickElement('fbox_list1_search');
         $this->ajaxWait();
 
-        $numrowsgrid5 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $numrowsgrid5 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
         $this->assertEquals(3, $numrowsgrid5);
         $this->ajaxWait();
 
 
         //reset filtri
-        $this->clickElement('#search_list1');
+        $this->clickElement('search_list1');
         //mi tocca rimettere questo sleep perchè schianta anche dopo il refactor
         sleep(1);
-        $this->clickElement('a#fbox_list1_reset');
+        $this->clickElement('fbox_list1_reset');
     }
 
-    private function printoperations($session, $page) {
+    private function printoperations($session, $page)
+    {
         /* Print pdf */
-        $this->clickElement('#buttonprint_list1');
+        $this->clickElement('buttonprint_list1');
+        sleep(5);
+        $this->facebookDriver->switchTo()->window(end($this->facebookDriver->getWindowHandles()));
 
-        $windowNames = $session->getWindowNames();
-        if (count($windowNames) > 1) {
-            $session->switchToWindow($windowNames[1]);
-            $pagepdf = $session->getPage();
-            sleep(2);
-            $element = $pagepdf->find('css', '.textLayer');
-            if (empty($element)) {
-                if (strpos($pagepdf->getHtml(), "application/pdf") >= 0) {
-                    $this->assertContains("application/pdf", $pagepdf->getHtml());
-                } else {
-                    echo $pagepdf->getHtml();
-                    throw new \Exception("No html element found for the selector 'textLayer'");
-                }
-            } else {
-                $this->assertContains('FiFree2', $element->getText());
-                $this->assertContains('Ffsecondaria', $element->getText());
-                $this->assertContains('Descrizione secondo record', $element->getText());
-            }
-
-
-
-            $session->executeScript('window.close()');
-            $mainwindow = $windowNames[0];
-
-            $session->switchToWindow($mainwindow);
-
-            $page = $session->getPage();
+        $page = $this->getCurrentPageContent();
+        $find = strpos($page, 'name="plugin" id="plugin"');
+        if ($find !== false) {
+            $this->assertContains("application/pdf", $page);
+        } else {
+            $this->assertContains('Ffsecondaria', $this->facebookDriver->getTitle());
+            $this->assertContains('FiFree2', $page);
+            $this->assertContains('Descrizione secondo record', $page);
         }
+
+        $session->executeScript('window.close();');
+
+        $this->facebookDriver->switchTo()->window(end($this->facebookDriver->getWindowHandles()));
     }
 
-    private function searchmodifiche($valoreprecedente) {
+    private function searchmodifiche($valoreprecedente)
+    {
         $em = $this->doctrine->getManager();
 
         $qu = $em->createQueryBuilder();
