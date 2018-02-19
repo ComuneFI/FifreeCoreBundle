@@ -1,8 +1,8 @@
 <?php
 
-use Tests\CoreBundle\Mink\CoreMink;
+use Tests\CoreBundle\FacebookDriver\FacebookDriverTester;
 
-class MenuApplicazioneControllerFunctionalTest extends CoreMink
+class MenuApplicazioneControllerFunctionalTest extends FacebookDriverTester
 {
 
     public function testMenuApplicazione()
@@ -17,12 +17,12 @@ class MenuApplicazioneControllerFunctionalTest extends CoreMink
 
         $this->crudoperation($session, $page);
 
-        $session->stop();
+        $session->quit();
     }
 
     public function crudoperation($session, $page)
     {
-        $this->clickElement('#buttonadd_list1');
+        $this->clickElement('buttonadd_list1');
         /* Inserimento */
         $this->ajaxWait();
         $descrizionetest1 = 'testmenu';
@@ -33,21 +33,23 @@ class MenuApplicazioneControllerFunctionalTest extends CoreMink
         }
         $this->fillField($fieldprefix . '_nome', $descrizionetest1);
         $this->fillField($fieldprefix . '_percorso', 'http://www.google.it');
-        $this->fillField($fieldprefix . '_autorizzazionerichiesta', 1);
-        $this->clickElement('a#sDataMenuApplicazioneS');
+        $this->checkboxSelect($fieldprefix . '_autorizzazionerichiesta', 1);
+        $this->checkboxSelect($fieldprefix . '_autorizzazionerichiesta', 1);
+        $this->checkboxSelect($fieldprefix . '_autorizzazionerichiesta', 0);
+        $this->clickElement('sDataMenuApplicazioneS');
         $this->ajaxWait();
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
+        $this->evaluateScript('var testselid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}(testselid )');
 
         
-        $this->clickElement('#buttonedit_list1');
+        $this->clickElement('buttonedit_list1');
         
         /* Modifica */
         $descrizionetest2 = 'testmenu 2';
         $this->fillField($fieldprefix . '_nome', $descrizionetest2);
 
-        $this->clickElement('a#sDataMenuApplicazioneS');
+        $this->clickElement('sDataMenuApplicazioneS');
         $this->ajaxWait();
 
         $em = $this->em;
@@ -62,12 +64,12 @@ class MenuApplicazioneControllerFunctionalTest extends CoreMink
 
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
+        $this->evaluateScript('var testselid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}(testselid)');
 
         
-        $this->clickElement('#buttondel_list1');
+        $this->clickElement('buttondel_list1');
         
-        $this->clickElement('a#dData');
+        $this->clickElement('dData');
     }
 
 }
