@@ -1,8 +1,8 @@
 <?php
 
-use Tests\CoreBundle\Mink\CoreMink;
+use Tests\CoreBundle\FacebookDriver\FacebookDriverTester;
 
-class TabelleControllerFunctionalTest extends CoreMink
+class TabelleControllerFunctionalTest extends FacebookDriverTester
 {
 
     public function testTabelle()
@@ -18,13 +18,13 @@ class TabelleControllerFunctionalTest extends CoreMink
         
         $this->crudoperation($session, $page);
 
-        $session->stop();
+        $session->quit();
 
     }
 
     public function crudoperation($session, $page)
     {
-        $this->clickElement('#buttonadd_list1');
+        $this->clickElement('buttonadd_list1');
         /* Inserimento */
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'tabelle_';
@@ -34,7 +34,7 @@ class TabelleControllerFunctionalTest extends CoreMink
         $descrizionetest1 = 'testtabella';
         $this->fillField($fieldprefix . 'nometabella', $descrizionetest1);
         
-        $this->clickElement('a#sDataTabelleS');
+        $this->clickElement('sDataTabelleS');
         
 
         $em = $this->em;
@@ -48,26 +48,26 @@ class TabelleControllerFunctionalTest extends CoreMink
         $this->assertEquals($recorddelete->getNometabella(), $descrizionetest1);
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
+        $this->evaluateScript('var testselid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}(testselid)');
 
         
-        $this->clickElement('#buttonedit_list1');
+        $this->clickElement('buttonedit_list1');
         
         /* Modifica */
         $descrizionetest2 = 'testtabella 2';
         $this->fillField($fieldprefix . 'nometabella', $descrizionetest2);
 
         
-        $this->clickElement('a#sDataTabelleS');
+        $this->clickElement('sDataTabelleS');
         
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
+        $this->evaluateScript('var testselid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}(testselid)');
 
         
-        $this->clickElement('#buttondel_list1');
+        $this->clickElement('buttondel_list1');
         
-        $this->clickElement('a#dData');
+        $this->clickElement('dData');
     }
 
 }
