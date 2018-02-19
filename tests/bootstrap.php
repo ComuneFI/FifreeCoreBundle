@@ -8,10 +8,11 @@ require __DIR__ . '/Utils/FifreeTestAuthorizedClient.php';
 require __DIR__ . '/Utils/FifreeTestUnauthorizedClient.php';
 require __DIR__ . '/Utils/FifreeUserTestUtil.php';
 require __DIR__ . '/Utils/CommandTestCase.php';
-require __DIR__ . '/Utils/CoreMink.php';
+//require __DIR__ . '/Utils/CoreMinkDriver.php';
 require __DIR__ . '/Utils/FacebookDriverTester.php';
 require __DIR__ . '/Utils/StartServers.php';
 
+date_default_timezone_set('Europe/Rome');
 
 function clearcache()
 {
