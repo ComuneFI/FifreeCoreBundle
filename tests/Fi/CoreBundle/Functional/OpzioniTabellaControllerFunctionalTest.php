@@ -1,8 +1,8 @@
 <?php
 
-use Tests\CoreBundle\Mink\CoreMink;
+use Tests\CoreBundle\FacebookDriver\FacebookDriverTester;
 
-class OpzioniTabellaControllerFunctionalTest extends CoreMink
+class OpzioniTabellaControllerFunctionalTest extends FacebookDriverTester
 {
 
     public function testOpzioniTabella()
@@ -14,17 +14,17 @@ class OpzioniTabellaControllerFunctionalTest extends CoreMink
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
-        
+
 
         $this->crudoperation($session, $page);
 
-        $session->stop();
+        $session->quit();
     }
 
     public function crudoperation($session, $page)
     {
-        $this->clickElement('#buttonadd_list1');
-        
+        $this->clickElement('buttonadd_list1');
+
         /* Inserimento */
         $descrizionetest1 = 'testtabella';
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
@@ -32,11 +32,11 @@ class OpzioniTabellaControllerFunctionalTest extends CoreMink
         } else {
             $fieldprefix = 'fi_corebundle_opzionitabellatype_';
         }
-        $this->selectFieldOption($fieldprefix . 'tabelle', 1);
         $this->fillField($fieldprefix . 'descrizione', $descrizionetest1);
-        
-        $this->clickElement('a#sDataOpzioniTabellaS');
-        
+        $this->selectFieldOption($fieldprefix . 'tabelle', 1);
+
+        $this->clickElement('sDataOpzioniTabellaS');
+
 
         $em = $this->em;
         $qb2 = $em->createQueryBuilder();
@@ -50,26 +50,26 @@ class OpzioniTabellaControllerFunctionalTest extends CoreMink
 
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
+        $this->evaluateScript('var testselid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}(testselid)');
 
-        
-        $this->clickElement('#buttonedit_list1');
-        
+
+        $this->clickElement('buttonedit_list1');
+
         /* Modifica */
         $descrizionetest2 = 'testtabella 2';
         $this->fillField($fieldprefix . 'descrizione', $descrizionetest2);
 
-        
-        $this->clickElement('a#sDataOpzioniTabellaS');
-        
+
+        $this->clickElement('sDataOpzioniTabellaS');
+
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
+        $this->evaluateScript('var testselid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}(testselid)');
 
-        
-        $this->clickElement('#buttondel_list1');
-        
-        $this->clickElement('a#dData');
+
+        $this->clickElement('buttondel_list1');
+
+        $this->clickElement('dData');
     }
 
 }

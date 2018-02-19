@@ -9,6 +9,7 @@ require __DIR__ . '/Utils/FifreeTestUnauthorizedClient.php';
 require __DIR__ . '/Utils/FifreeUserTestUtil.php';
 require __DIR__ . '/Utils/CommandTestCase.php';
 require __DIR__ . '/Utils/CoreMink.php';
+require __DIR__ . '/Utils/FacebookDriverTester.php';
 require __DIR__ . '/Utils/StartServers.php';
 
 
