@@ -1,8 +1,8 @@
 <?php
 
-use Tests\CoreBundle\Mink\CoreMink;
+use Tests\CoreBundle\FacebookDriver\FacebookDriverTester;
 
-class FfprincipaleControllerFunctionalTest extends CoreMink
+class FfprincipaleControllerFunctionalTest extends FacebookDriverTester
 {
     /*
      * @test
@@ -18,57 +18,53 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
-        
+        $this->crudoperation($session);
 
-        $this->crudoperation($session, $page);
+        $this->searchoperation($session);
 
-        
-        $this->searchoperation($session, $page);
+        $this->printoperations($session);
 
-        
-        $this->printoperations($session, $page);
-        
         $this->logout();
 
-        $session->stop();
+        $session->quit();
     }
 
-    private function searchoperation($session, $page)
+    private function searchoperation($session)
     {
-        
-        $this->clickElement('#search_list1');
+
+        $this->clickElement('search_list1');
         /* Ricerca 1 */
         $search1 = 'primo';
-        
+
         $this->fillField('jqg1', $search1);
-        $this->clickElement('a#fbox_list1_search');
+        $this->clickElement('fbox_list1_search');
         $this->ajaxWait();
 
-        $numrowsgrid1 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $numrowsgrid1 = $this->evaluateScript('var numrow = function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}(numrow)');
         $this->assertEquals(0, $numrowsgrid1);
 
         /* Ricerca 1 */
-        $this->clickElement('#search_list1');
+        $this->clickElement('search_list1');
         $search2 = 'primo';
-        
+
         $var2 = '"cn"';
         $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
 
-        $session->executeScript($javascript2);
+        $this->executeScript($javascript2);
         $this->ajaxWait();
         $this->fillField('jqg1', $search2);
 
-        $this->clickElement('a#fbox_list1_search');
+        $this->clickElement('fbox_list1_search');
         $this->ajaxWait();
 
-        $numrowsgrid2 = $session->evaluateScript('function(){ var numrow = $("#list1").jqGrid("getGridParam", "records");return numrow;}()');
+        $numrowsgrid2 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
         $this->assertEquals(1, $numrowsgrid2);
     }
 
-    private function crudoperation($session, $page)
+    private function crudoperation($session)
     {
-        $this->clickElement('#buttonadd_list1');
-        
+        $this->clickElement('buttonadd_list1');
+
         /* Inserimento */
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'ffprincipale_';
@@ -78,64 +74,54 @@ class FfprincipaleControllerFunctionalTest extends CoreMink
         $this->ajaxWait();
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         $this->fillField($fieldprefix . 'descrizione', $descrizionetest1);
-        
-        $this->clickElement('a#sDataFfprincipaleS');
-        
+
+        $this->clickElement('sDataFfprincipaleS');
+
         $this->ajaxWait();
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
+        $this->evaluateScript('var rowid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}(rowid)');
 
-        
-        $this->clickElement('#buttonedit_list1');
-        
+
+        $this->clickElement('buttonedit_list1');
+
         /* Modifica */
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
         $this->fillField($fieldprefix . 'descrizione', $descrizionetest2);
-        
-        $this->clickElement('#sDataFfprincipaleS');
-        
+
+        $this->clickElement('sDataFfprincipaleS');
+
         $this->ajaxWait();
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
+        $this->evaluateScript('var rowid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}(rowid)');
         $this->ajaxWait();
 
-        
-        $this->clickElement('#buttondel_list1');
-        
-        $this->clickElement('a#dData');
+
+        $this->clickElement('buttondel_list1');
+
+        $this->clickElement('dData');
     }
 
-    private function printoperations($session, $page)
+    private function printoperations($session)
     {
-        $this->clickElement('#buttonprint_list1');
-        $windowNames = $session->getWindowNames();
-        if (count($windowNames) > 1) {
-            $session->switchToWindow($windowNames[1]);
-            $pagepdf = $session->getPage();
-            
-            sleep(2);
-            $element = $pagepdf->find('css', '.textLayer');
+        $this->clickElement('buttonprint_list1');
+        sleep(5);
+        $this->facebookDriver->switchTo()->window(end($this->facebookDriver->getWindowHandles()));
 
-            if (empty($element)) {
-                if (strpos($pagepdf->getHtml(), "application/pdf") >= 0) {
-                    $this->assertContains("application/pdf", $pagepdf->getHtml());
-                } else {
-                    echo $pagepdf->getHtml();
-                    throw new \Exception("No html element found for the selector 'textLayer'");
-                }
-            } else {
-                $this->assertContains('FiFree2', $element->getText());
-                $this->assertContains('Ffprincipale', $element->getText());
-                $this->assertContains('Descrizione primo record', $element->getText());
-            }
-
-            $session->executeScript('window.close()');
-            $mainwindow = $windowNames[0];
-            $session->switchToWindow($mainwindow);
-            $page = $session->getPage();
+        $page = $this->getCurrentPageContent();
+        $find = strpos($page, 'name="plugin" id="plugin"');
+        if ($find !== false) {
+            $this->assertContains("application/pdf", $page);
+        } else {
+            $this->assertContains('Ffprincipale', $this->facebookDriver->getTitle());
+            $this->assertContains('FiFree2', $page);
+            $this->assertContains('Descrizione primo record', $page);
         }
+
+        $session->executeScript('window.close();');
+
+        $this->facebookDriver->switchTo()->window(end($this->facebookDriver->getWindowHandles()));
     }
 
 }
