@@ -149,7 +149,15 @@ abstract class FacebookDriverTester extends WebTestCase
                     try {
                         $element = $this->facebookDriver->findElement(WebDriverBy::tagName($selector));
                     } catch (\Exception $exc) {
-                        $element = $this->facebookDriver->findElement(WebDriverBy::className($selector));
+                        try {
+                            $element = $this->facebookDriver->findElement(WebDriverBy::className($selector));
+                        } catch (\Exception $exc) {
+                            try {
+                                $element = $this->facebookDriver->findElement(WebDriverBy::linkText($selector));
+                            } catch (\Exception $exc) {
+                                $element = $this->facebookDriver->findElement(WebDriverBy::xpath($selector));
+                            }
+                        }
                     }
                 }
             }
