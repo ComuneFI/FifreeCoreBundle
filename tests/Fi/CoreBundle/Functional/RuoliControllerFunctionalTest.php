@@ -1,8 +1,8 @@
 <?php
 
-use Tests\CoreBundle\Mink\CoreMink;
+use Tests\CoreBundle\FacebookDriver\FacebookDriverTester;
 
-class RuoliControllerFunctionalTest extends CoreMink
+class RuoliControllerFunctionalTest extends FacebookDriverTester
 {
 
     public function testRuoli()
@@ -18,12 +18,12 @@ class RuoliControllerFunctionalTest extends CoreMink
 
         $this->crudoperation($session, $page);
 
-        $session->stop();
+        $session->quit();
     }
 
     public function crudoperation($session, $page)
     {
-        $this->clickElement('#buttonadd_list1');
+        $this->clickElement('buttonadd_list1');
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'ruoli_';
         } else {
@@ -34,7 +34,7 @@ class RuoliControllerFunctionalTest extends CoreMink
         $descrizionetest1 = 'testruolo';
         $this->fillField($fieldprefix . 'ruolo', $descrizionetest1);
         $this->fillField($fieldprefix . 'is_user', 1);
-        $this->clickElement('a#sDataRuoliS');
+        $this->clickElement('sDataRuoliS');
         $this->ajaxWait();
 
         $em = $this->em;
@@ -48,26 +48,26 @@ class RuoliControllerFunctionalTest extends CoreMink
         $this->assertEquals($recorddelete->getRuolo(), $descrizionetest1);
 
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}()');
+        $this->evaluateScript('var testselid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}(testselid)');
 
 
-        $this->clickElement('#buttonedit_list1');
+        $this->clickElement('buttonedit_list1');
 
         /* Modifica */
         $descrizionetest2 = 'testruolo 2';
         $this->fillField($fieldprefix . 'ruolo', $descrizionetest2);
 
 
-        $this->clickElement('a#sDataRuoliS');
+        $this->clickElement('sDataRuoliS');
 
         /* Cancellazione */
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
-        $session->evaluateScript('function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}()');
+        $this->evaluateScript('var testselid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}(testselid)');
 
 
-        $this->clickElement('#buttondel_list1');
+        $this->clickElement('buttondel_list1');
 
-        $this->clickElement('a#dData');
+        $this->clickElement('dData');
     }
 
 }
