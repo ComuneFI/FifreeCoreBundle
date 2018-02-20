@@ -382,7 +382,9 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         /* Print pdf */
         $this->clickElement('buttonprint_list1');
         sleep(5);
-        $this->facebookDriver->switchTo()->window(end($this->facebookDriver->getWindowHandles()));
+        $windows = $this->facebookDriver->getWindowHandles();
+        $lastwindow = end($windows);
+        $this->facebookDriver->switchTo()->window($lastwindow);
 
         $page = $this->getCurrentPageContent();
         $find = strpos($page, 'name="plugin" id="plugin"');
@@ -396,7 +398,9 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         $session->executeScript('window.close();');
 
-        $this->facebookDriver->switchTo()->window(end($this->facebookDriver->getWindowHandles()));
+        $windows2 = $this->facebookDriver->getWindowHandles();
+        $lastwindow2 = end($windows2);
+        $this->facebookDriver->switchTo()->window($lastwindow2);
     }
 
     private function searchmodifiche($valoreprecedente)
