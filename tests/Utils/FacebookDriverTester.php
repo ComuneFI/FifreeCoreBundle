@@ -14,7 +14,7 @@ use Facebook\WebDriver\Chrome\ChromeOptions;
 abstract class FacebookDriverTester extends WebTestCase
 {
 
-    const TIMEOUT = 2;
+    const TIMEOUT = 4;
 
     /** @var string */
     private $minkBaseUrl;
@@ -60,14 +60,14 @@ abstract class FacebookDriverTester extends WebTestCase
         switch ($this->seleniumDriverType) {
             case "firefox":
                 $desired_capabilities = DesiredCapabilities::firefox();
-                $desired_capabilities->setCapability(
-                        'moz:firefoxOptions', ['args' => ['-headless']]
-                );
+                /* $desired_capabilities->setCapability(
+                  'moz:firefoxOptions', ['args' => ['-headless']]
+                  ); */
                 break;
             case "chrome":
                 $desired_capabilities = DesiredCapabilities::chrome();
-                $chromeOptions = (new ChromeOptions)->addArguments(['headless', 'disable-gpu']);
-                $desired_capabilities->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
+                /* $chromeOptions = (new ChromeOptions)->addArguments(['headless', 'disable-gpu']);
+                  $desired_capabilities->setCapability(ChromeOptions::CAPABILITY, $chromeOptions); */
                 break;
             default:
                 throw new \Exception("Driver non supportato " . $this->seleniumDriverType . ", selezionare firefox o chrome");
@@ -205,10 +205,18 @@ abstract class FacebookDriverTester extends WebTestCase
                 $this->ajaxWait();
                 $element = $this->findField($selector);
                 if ($element) {
-                    $element->clear();
-                    $element->sendKeys($value);
-                    return;
+                    if (!$element->isEnabled() || !$element->isDisplayed()) {
+                        ++$i;
+                        sleep(1);
+                    } else {
+                        $element->clear();
+                        $element->sendKeys($value);
+                        return;
+                    }
                 }
+                ++$i;
+                sleep(1);
+            } catch (\Facebook\WebDriver\Exception\InvalidElementStateException $e) {
                 ++$i;
                 sleep(1);
             } catch (\Exception $e) {
