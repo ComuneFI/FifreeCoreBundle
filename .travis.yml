@@ -94,7 +94,6 @@ before_script:
 
   
   - "export DISPLAY=:99.0"
-  - "export DBUS_SESSION_BUS_ADDRESS=/dev/null"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
   - composer install
