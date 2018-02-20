@@ -207,8 +207,8 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         $this->clickElement('search_list1');
         $this->ajaxWait();
-
-        $search0 = "10° secondaria legato al 2° record principale ed è l'";
+        //Test case sensitive
+        $search0 = "10° SECONDARIA legato al 2° record principale ed è l'";
         $this->fillField('jqg1', $search0);
 
         $this->clickElement('fbox_list1_search');
@@ -223,7 +223,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $this->clickElement('search_list1');
         $this->ajaxWait();
 
-        $search0 = "l'";
+        $search0 = "L'";
         $var2 = '"cn"';
         $javascript2 = "$('.selectopts option[value=" . $var2 . "]').attr('selected', 'selected').change();;";
 
@@ -271,7 +271,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $this->ajaxWait();
 
 
-        $this->clickElement('a#fbox_list1_search');
+        $this->clickElement('fbox_list1_search');
         $this->ajaxWait();
 
 

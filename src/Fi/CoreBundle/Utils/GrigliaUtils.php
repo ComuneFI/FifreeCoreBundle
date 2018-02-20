@@ -8,6 +8,8 @@ class GrigliaUtils
     public static $decodificaop;
     public static $precarattere;
     public static $postcarattere;
+    public static $precaratterecampo;
+    public static $postcaratterecampo;
 
     const LARGHEZZAMASSIMA = 500;
     const MOLTIPLICATORELARGHEZZA = 10;
@@ -63,6 +65,27 @@ class GrigliaUtils
             'nt' => 'TRUE',
         );
 
+        // questo contiene il carattere da usare prima del campo dati in query dipendentemente dal tipo di operatore
+        self::$precaratterecampo = array(
+            'eq' => '',
+            'ne' => '',
+            'lt' => '',
+            'le' => '',
+            'gt' => '',
+            'ge' => '',
+            'bw' => 'lower(',
+            'bn' => 'lower(',
+            'in' => '(',
+            'ni' => '(',
+            'ew' => 'lower(',
+            'en' => 'lower(',
+            'cn' => 'lower(',
+            'nc' => 'lower(',
+            'nu' => 'NULL',
+            'nn' => 'NULL',
+            'nt' => 'TRUE',
+        );
+
         // questo contiene il carattere da usare dopo il campo dati in query dipendentemente dal tipo di operatore
         self::$postcarattere = array(
             'eq' => '',
@@ -82,22 +105,41 @@ class GrigliaUtils
             'nu' => '',
             'nn' => '',
             'nt' => '',);
+        // questo contiene il carattere da usare dopo il campo dati in query dipendentemente dal tipo di operatore
+        self::$postcaratterecampo = array(
+            'eq' => '',
+            'ne' => '',
+            'lt' => '',
+            'le' => '',
+            'gt' => '',
+            'ge' => '',
+            'bw' => ')',
+            'bn' => ')',
+            'in' => ')',
+            'ni' => ')',
+            'ew' => ')',
+            'en' => ')',
+            'cn' => ')',
+            'nc' => ')',
+            'nu' => '',
+            'nn' => '',
+            'nt' => '',);
     }
 
     public static function setVettoriPerData()
     {
-        self::$precarattere['eq'] = "'";
-        self::$precarattere['ne'] = "'";
-        self::$precarattere['lt'] = "'";
-        self::$precarattere['le'] = "'";
-        self::$precarattere['gt'] = "'";
-        self::$precarattere['ge'] = "'";
-        self::$postcarattere['eq'] = "'";
-        self::$postcarattere['ne'] = "'";
-        self::$postcarattere['lt'] = "'";
-        self::$postcarattere['le'] = "'";
-        self::$postcarattere['gt'] = "'";
-        self::$postcarattere['ge'] = "'";
+        self::$precarattere['eq'] = "";
+        self::$precarattere['ne'] = "";
+        self::$precarattere['lt'] = "";
+        self::$precarattere['le'] = "";
+        self::$precarattere['gt'] = "";
+        self::$precarattere['ge'] = "";
+        self::$postcarattere['eq'] = "";
+        self::$postcarattere['ne'] = "";
+        self::$postcarattere['lt'] = "";
+        self::$postcarattere['le'] = "";
+        self::$postcarattere['gt'] = "";
+        self::$postcarattere['ge'] = "";
     }
 
     public static function setVettoriPerBoolean()
@@ -113,12 +155,18 @@ class GrigliaUtils
         self::$precarattere['le'] = "lower('";
         self::$precarattere['gt'] = "lower('";
         self::$precarattere['ge'] = "lower('";
+        self::$precarattere['cn'] = "%";
+        self::$precarattere['nc'] = "%";
+        self::$precarattere['bw'] = "";
         self::$postcarattere['eq'] = "')";
         self::$postcarattere['ne'] = "')";
         self::$postcarattere['lt'] = "')";
         self::$postcarattere['le'] = "')";
         self::$postcarattere['gt'] = "')";
         self::$postcarattere['ge'] = "')";
+        self::$postcarattere['cn'] = "%";
+        self::$postcarattere['nc'] = "%";
+        self::$postcarattere['bw'] = "%";
     }
 
     public static function setVettoriPerNumero()

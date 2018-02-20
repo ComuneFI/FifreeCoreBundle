@@ -250,7 +250,7 @@ Fi\CoreBundle\Entity\Ffprincipale:
 Fi\CoreBundle\Entity\Ffsecondaria:
   -
     id: 1
-    descsec: '1° secondaria legato al 1° record principale'
+    descsec: '1° secondaria legato al 1° record PRINCIPALE'
     ffprincipale_id: 1
     data: $today
     intero: 10
@@ -259,7 +259,7 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     attivo: true
   -
     id: 2
-    descsec: '2° secondaria legato al 1° record principale'
+    descsec: '2° SECONDARIA legato al 1° record principale'
     ffprincipale_id: 1
     data: $today
     intero: 1
@@ -277,7 +277,7 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     attivo: false
   -
     id: 4
-    descsec: '4° secondaria legato al 1° record principale'
+    descsec: '4° Secondaria legato al 1° record Principale'
     ffprincipale_id: 1
     data: $today
     intero: 101

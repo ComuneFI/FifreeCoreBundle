@@ -49,9 +49,9 @@ class GrigliaRegoleUtils
     public static function setRegole(&$q, &$primo, $parametri = array())
     {
         $regole = $parametri['regole'];
-        $tipof = $parametri['tipof'];
+        //$tipof = $parametri['tipof'];
         $tipo = null;
-        foreach ($regole as $regola) {
+        foreach ($regole as $key => $regola) {
             //Se il campo non ha il . significa che è necessario aggiungere il nometabella
             self::getTipoRegola($tipo, $regola, $parametri);
 
@@ -59,21 +59,37 @@ class GrigliaRegoleUtils
             if (!$regola) {
                 continue;
             }
-            if ($tipof == 'OR') {
-                $condizioneOR = $regola['field'] . ' ' .
-                        GrigliaUtils::$decodificaop[$regola['op']] . ' ' .
-                        GrigliaUtils::$precarattere[$regola['op']] .
-                        str_replace("'", "''", $regola['data']) .
-                        GrigliaUtils::$postcarattere[$regola['op']];
-                $q->orWhere($condizioneOR);
+            if (GrigliaUtils::$decodificaop[$regola['op']] == 'IN') {
+                $fieldparm = GrigliaUtils::$precarattere[$regola['op']]
+                        . str_replace(".", "", ":" . $regola['field'] . $key)
+                        . GrigliaUtils::$postcarattere[$regola['op']];
+                $sqlparameter = str_replace(".", "", ":" . $regola['field'] . $key);
+                $condition = $regola['field'] . " in " . $fieldparm;
+                $value = explode(",", str_replace(" ", "", $regola['data']));
             } else {
-                $condizioneAND = $regola['field'] . ' ' .
-                        GrigliaUtils::$decodificaop[$regola['op']] . ' ' .
-                        GrigliaUtils::$precarattere[$regola['op']] .
-                        str_replace("'", "''", $regola['data']) .
-                        GrigliaUtils::$postcarattere[$regola['op']];
-                $q->andWhere($condizioneAND);
+                $fieldparm = GrigliaUtils::$precaratterecampo[$regola['op']]
+                        . str_replace(".", "", ":" . $regola['field'] . $key)
+                        . GrigliaUtils::$postcaratterecampo[$regola['op']];
+                $sqlparameter = str_replace(".", "", $regola['field'] . $key);
+                $condition = GrigliaUtils::$precaratterecampo[$regola['op']]
+                        . $regola['field']
+                        . GrigliaUtils::$postcaratterecampo[$regola['op']] . " "
+                        . GrigliaUtils::$decodificaop[$regola['op']] . " " . $fieldparm;
+                $value = GrigliaUtils::$precarattere[$regola['op']] . $regola['data'] . GrigliaUtils::$postcarattere[$regola['op']];
             }
+            if ($primo) {
+                $primo = false;
+                $q->where($condition);
+            } else {
+                $q->andwhere($condition);
+            }
+            $q->setParameter($sqlparameter, $value);
+            /* $condizioneAND = $regola['field'] . ' ' .
+              GrigliaUtils::$decodificaop[$regola['op']] . ' ' .
+              GrigliaUtils::$precarattere[$regola['op']] .
+              str_replace("'", "''", $regola['data']) .
+              GrigliaUtils::$postcarattere[$regola['op']];
+              $q->andWhere($condizioneAND); */
         }
     }
 
@@ -87,7 +103,7 @@ class GrigliaRegoleUtils
             $regola['data'] = FiUtilita::data2db($regola['data']);
         } elseif ($tipo == 'string') {
             GrigliaUtils::setVettoriPerStringa();
-            $regola['field'] = 'lower(' . $regola['field'] . ')';
+            $regola['field'] = $regola['field'];
         }
         if ($tipo == 'boolean') {
             self::setTipoBoolean($regola, $tipo);
