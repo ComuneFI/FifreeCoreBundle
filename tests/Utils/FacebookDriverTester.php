@@ -53,10 +53,12 @@ abstract class FacebookDriverTester extends WebTestCase
         $this->em = $container->get('doctrine')->getManager();
 
         $this->facebookDriverUrl = $container->getParameter('facebookdriver_url');
+        $facebookDriverHost = $container->getParameter('facebookdriver_host');
+
         $this->seleniumDriverType = $container->getParameter('selenium_driver_type');
         //$driver = new \Behat\Mink\Driver\ZombieDriver(new \Behat\Mink\Driver\NodeJS\Server\ZombieServer());
         //$driver = new Selenium2Driver($this->seleniumDriverType);
-        
+
         switch ($this->seleniumDriverType) {
             case "firefox":
                 $desired_capabilities = DesiredCapabilities::firefox();
@@ -74,7 +76,7 @@ abstract class FacebookDriverTester extends WebTestCase
                 break;
         }
         //$desired_capabilities->setCapability('enablePassThrough', false);
-        $driver = RemoteWebDriver::create($this->facebookDriverUrl, $desired_capabilities);
+        $driver = RemoteWebDriver::create($facebookDriverHost, $desired_capabilities);
 
 
         $this->facebookDriver = $driver;

@@ -26,7 +26,7 @@ swiftmailer:
 parameters:
     user4test: admin
     usernoprivileges4test: user4test
-    mink_url: "http://127.0.0.1:8000/app_test.php"
-    facebookdriver_url: "http://localhost:4444/wd/hub"
+    facebookdriver_url: "http://127.0.0.1:8000/app_test.php"
+    facebookdriver_host: "http://localhost:4444/wd/hub"
     selenium_driver_type: "%browser4test%"
     
