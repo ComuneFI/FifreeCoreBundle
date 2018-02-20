@@ -123,8 +123,10 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
         $client = $this->getClient();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $url = $client->getContainer()->get('router')->generate('Tabelle_stampatabella', array('nometabella' => 'Ffprincipale'));
-
+        ob_start();
         $client->request('GET', $url);
+        $pdfcontents = ob_get_clean();
+
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 200
         );
