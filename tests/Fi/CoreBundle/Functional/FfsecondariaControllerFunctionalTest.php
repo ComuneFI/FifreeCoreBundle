@@ -211,7 +211,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $search0 = "10° secondaria legato al 2° record principale ed è l'";
         $this->fillField('jqg1', $search0);
 
-        $this->clickElement('a#fbox_list1_search');
+        $this->clickElement('fbox_list1_search');
         $this->ajaxWait();
 
 

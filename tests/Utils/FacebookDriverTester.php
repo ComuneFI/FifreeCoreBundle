@@ -374,7 +374,7 @@ abstract class FacebookDriverTester extends WebTestCase
             try {
                 $this->ajaxWait();
                 $element = $this->getElementBySelector($selector);
-                if (!$element) {
+                if (!$element || !$this->elementIsVisible($selector)) {
                     ++$i;
                     sleep(1);
                     continue;
