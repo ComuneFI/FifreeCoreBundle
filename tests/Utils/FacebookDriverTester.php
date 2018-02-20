@@ -17,7 +17,7 @@ abstract class FacebookDriverTester extends WebTestCase
     const TIMEOUT = 4;
 
     /** @var string */
-    private $minkBaseUrl;
+    private $facebookDriverUrl;
 
     /** @var RemoteWebDriver */
     protected $facebookDriver;
@@ -52,11 +52,11 @@ abstract class FacebookDriverTester extends WebTestCase
         $this->doctrine = $container->get('doctrine');
         $this->em = $container->get('doctrine')->getManager();
 
-        $this->minkBaseUrl = $container->getParameter('mink_url');
+        $this->facebookDriverUrl = $container->getParameter('facebookdriver_url');
         $this->seleniumDriverType = $container->getParameter('selenium_driver_type');
         //$driver = new \Behat\Mink\Driver\ZombieDriver(new \Behat\Mink\Driver\NodeJS\Server\ZombieServer());
         //$driver = new Selenium2Driver($this->seleniumDriverType);
-        $host = 'http://localhost:4444/wd/hub';
+        
         switch ($this->seleniumDriverType) {
             case "firefox":
                 $desired_capabilities = DesiredCapabilities::firefox();
@@ -74,7 +74,7 @@ abstract class FacebookDriverTester extends WebTestCase
                 break;
         }
         //$desired_capabilities->setCapability('enablePassThrough', false);
-        $driver = RemoteWebDriver::create($host, $desired_capabilities);
+        $driver = RemoteWebDriver::create($this->facebookDriverUrl, $desired_capabilities);
 
 
         $this->facebookDriver = $driver;
@@ -97,7 +97,7 @@ abstract class FacebookDriverTester extends WebTestCase
 
     public function visit($url)
     {
-        $this->facebookDriver->get($this->minkBaseUrl . $url);
+        $this->facebookDriver->get($this->facebookDriverUrl . $url);
     }
 
     public function login($user, $pass)

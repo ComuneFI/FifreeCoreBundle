@@ -206,11 +206,13 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         /* Ricerca 0 */
 
         $this->clickElement('search_list1');
+        $this->ajaxWait();
 
         $search0 = "10° secondaria legato al 2° record principale ed è l'";
         $this->fillField('jqg1', $search0);
 
         $this->clickElement('a#fbox_list1_search');
+        $this->ajaxWait();
 
 
         $numrowsgrid0 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
@@ -219,6 +221,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
 
         $this->clickElement('search_list1');
+        $this->ajaxWait();
 
         $search0 = "l'";
         $var2 = '"cn"';
@@ -230,6 +233,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
 
         $this->clickElement('fbox_list1_search');
+        $this->ajaxWait();
 
 
         $numrowsgrid0 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
@@ -240,11 +244,13 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         /* Ricerca 1 */
 
         $this->clickElement('search_list1');
+        $this->ajaxWait();
 
         $search1 = '9° secondaria';
         $this->fillField('jqg1', $search1);
 
         $this->clickElement('fbox_list1_search');
+        $this->ajaxWait();
 
 
         $numrowsgrid1 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
@@ -253,6 +259,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         /* Ricerca 1 */
 
         $this->clickElement('search_list1');
+        $this->ajaxWait();
 
         $search2 = '1°';
         //$this->selectFieldOption('inizia con', "cn");
@@ -265,6 +272,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
 
         $this->clickElement('a#fbox_list1_search');
+        $this->ajaxWait();
 
 
         $numrowsgrid2 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
@@ -297,7 +305,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
 
         $this->clickElement('fbox_list1_search');
-
+        $this->ajaxWait();
 
         $numrowsgrid3 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
         $this->assertEquals(1, $numrowsgrid3);
@@ -305,13 +313,14 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         //reset filtri
 
         $this->clickElement('search_list1');
+        $this->ajaxWait();
 
         $this->clickElement('fbox_list1_reset');
-
-
+        $this->ajaxWait();
 
         /* Ricerca 4 */
         $this->clickElement('search_list1');
+        $this->ajaxWait();
         /**/
         $var5 = '"attivo"';
         $selector5 = '#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first';
@@ -333,6 +342,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         /* Ricerca 5 */
         $this->clickElement('search_list1');
+        $this->ajaxWait();
         /**/
         $var6 = '"true"';
         $selector6 = '.input-elm';
@@ -351,6 +361,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         /* Ricerca 6 */
         $this->clickElement('search_list1');
+        $this->ajaxWait();
 
         $var6 = '"false"';
         $selector6 = '.input-elm';
@@ -375,6 +386,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         //mi tocca rimettere questo sleep perchè schianta anche dopo il refactor
         sleep(1);
         $this->clickElement('fbox_list1_reset');
+        $this->ajaxWait();
     }
 
     private function printoperations($session, $page)
