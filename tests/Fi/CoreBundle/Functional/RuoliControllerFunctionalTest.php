@@ -34,7 +34,7 @@ class RuoliControllerFunctionalTest extends FacebookDriverTester
         $descrizionetest1 = 'testruolo';
         
         $this->fillField($fieldprefix . 'ruolo', $descrizionetest1);
-        $this->fillField($fieldprefix . 'is_user', 1);
+        $this->checkboxSelect($fieldprefix . 'is_user', 1);
         $this->clickElement('sDataRuoliS');
         $this->ajaxWait();
 
