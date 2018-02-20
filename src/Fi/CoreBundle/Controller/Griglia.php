@@ -74,7 +74,7 @@ class Griglia extends Controller
         $testata['tabella'] = $nometabella;
         $testata['nomebundle'] = $nomebundle;
         $testata['output'] = GrigliaParametriUtils::getOuputType($paricevuti);
-        
+
         $response = new GridTestata($testata);
         return $response->getResponse();
     }
@@ -156,6 +156,7 @@ class Griglia extends Controller
 
         /* se ci sono delle precondizioni avanzate le imposta qui */
         if ($precondizioniAvanzate) {
+            $primo = false;
             GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
                 $q,
                 $primo,

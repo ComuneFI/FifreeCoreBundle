@@ -162,7 +162,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         //dump("Generated entities");
         $this->assertRegExp('/.../', $commandTester->getDisplay());
-        dump($commandTester->getDisplay());
+        //dump($commandTester->getDisplay());
 
         clearcache();
         cachewarmup();
@@ -170,10 +170,10 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $this->assertTrue(file_exists($checkent));
         $this->assertTrue(file_exists($checkres));
         /* Genera form */
-        
+
         $bundlename = "Fi/ProvaBundle";
         $entityform = "Prova";
-        
+
         $container = $this->application->getKernel()->getContainer();
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($container);
         $checkform = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .

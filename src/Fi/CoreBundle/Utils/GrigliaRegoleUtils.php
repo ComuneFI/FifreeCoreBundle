@@ -40,18 +40,22 @@ class GrigliaRegoleUtils
     public static function getRegolaPerData(&$regola)
     {
         if (isset($regola) && count($regola) > 0) {
-            if ((substr($regola['data'], 0, 1) == "'") && (substr($regola['data'], strlen($regola['data']) - 1, 1) == "'")) {
-                $regola['data'] = substr($regola['data'], 1, strlen($regola['data']) - 2);
-            }
+            $regola['data'] = preg_replace('/^(\'(.*)\'|"(.*)")$/', '$2$3', $regola['data']);
         }
     }
 
     public static function setRegole(&$q, &$primo, $parametri = array())
     {
         $regole = $parametri['regole'];
+        //file_put_contents("/tmp/appo.log", print_r($regole, true) . "\n", FILE_APPEND);
         //$tipof = $parametri['tipof'];
         $tipo = null;
+        //echo "<pre>";
+        //\debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,0);
+        //echo "</pre>";
+        ////file_put_contents("/tmp/appo.log", "\n\n" .  . "\n\n", FILE_APPEND);
         foreach ($regole as $key => $regola) {
+            //file_put_contents("/tmp/appo.log", "***1***" . "\n", FILE_APPEND);
             //Se il campo non ha il . significa che è necessario aggiungere il nometabella
             self::getTipoRegola($tipo, $regola, $parametri);
 
@@ -59,14 +63,20 @@ class GrigliaRegoleUtils
             if (!$regola) {
                 continue;
             }
-            if (GrigliaUtils::$decodificaop[$regola['op']] == 'IN') {
-                $fieldparm = GrigliaUtils::$precarattere[$regola['op']]
+            //file_put_contents("/tmp/appo.log", "!" . $tipo . "! " . print_r($regola,true) . "\n", FILE_APPEND);
+            if (GrigliaUtils::$decodificaop[$regola['op']] == 'IN' || GrigliaUtils::$decodificaop[$regola['op']] == 'NOT IN') {
+                $fieldparm = GrigliaUtils::$precaratterecampo[$regola['op']]
                         . str_replace(".", "", ":" . $regola['field'] . $key)
-                        . GrigliaUtils::$postcarattere[$regola['op']];
+                        . GrigliaUtils::$postcaratterecampo[$regola['op']];
                 $sqlparameter = str_replace(".", "", ":" . $regola['field'] . $key);
-                $condition = $regola['field'] . " in " . $fieldparm;
-                $value = explode(",", str_replace(" ", "", $regola['data']));
+                $condition = GrigliaUtils::$precarattere[$regola['op']]
+                        . $regola['field']
+                        . GrigliaUtils::$postcarattere[$regola['op']]
+                        . " " . GrigliaUtils::$decodificaop[$regola['op']] . " " . $fieldparm;
+                $value = explode(",", str_replace(", ", ",", $regola['data']));
+                //file_put_contents("/tmp/appo.log", "|" . $regola['op'] . "| " . $regola['data'] . "\n", FILE_APPEND);
             } else {
+                //file_put_contents("/tmp/appo.log", "|" . $regola['op'] . "| " . $regola['data'] . "\n", FILE_APPEND);
                 $fieldparm = GrigliaUtils::$precaratterecampo[$regola['op']]
                         . str_replace(".", "", ":" . $regola['field'] . $key)
                         . GrigliaUtils::$postcaratterecampo[$regola['op']];
@@ -75,7 +85,10 @@ class GrigliaRegoleUtils
                         . $regola['field']
                         . GrigliaUtils::$postcaratterecampo[$regola['op']] . " "
                         . GrigliaUtils::$decodificaop[$regola['op']] . " " . $fieldparm;
-                $value = GrigliaUtils::$precarattere[$regola['op']] . $regola['data'] . GrigliaUtils::$postcarattere[$regola['op']];
+                $value = GrigliaUtils::$precarattere[$regola['op']]
+                        . $regola['data']
+                        . GrigliaUtils::$postcarattere[$regola['op']]
+                ;
             }
             if ($primo) {
                 $primo = false;
@@ -90,11 +103,16 @@ class GrigliaRegoleUtils
               str_replace("'", "''", $regola['data']) .
               GrigliaUtils::$postcarattere[$regola['op']];
               $q->andWhere($condizioneAND); */
+            //file_put_contents("/tmp/appo.log", dump($fieldparm) . "\n", FILE_APPEND);
+            //file_put_contents("/tmp/appo.log", dump($sqlparameter) . "\n", FILE_APPEND);
+            //file_put_contents("/tmp/appo.log", dump($condition) . "\n", FILE_APPEND);
+            //file_put_contents("/tmp/appo.log", print_r($value, true) . "\n", FILE_APPEND);
         }
     }
 
     public static function setSingolaRegola($tipo, $regola)
     {
+        //file_put_contents("/tmp/appo.log", "...". $tipo."-" .$regola['data']. "\n", FILE_APPEND);
         if (!$tipo || $tipo == "integer" || $tipo == "float") {
             GrigliaUtils::setVettoriPerNumero();
         }
@@ -103,7 +121,8 @@ class GrigliaRegoleUtils
             $regola['data'] = FiUtilita::data2db($regola['data']);
         } elseif ($tipo == 'string') {
             GrigliaUtils::setVettoriPerStringa();
-            $regola['field'] = $regola['field'];
+            //file_put_contents("/tmp/appo.log", "..." . $tipo . "-" . $regola['data'] . "->" . strlen($regola['data']) . "\n", FILE_APPEND);
+            $regola['data'] = preg_replace('/^(\'(.*)\'|"(.*)")$/', '$2$3', $regola['data']);
         }
         if ($tipo == 'boolean') {
             self::setTipoBoolean($regola, $tipo);

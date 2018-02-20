@@ -110,7 +110,7 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
         // submit that form
         $crawler = $client->submit($form);
         $em->clear();
-        
+
         //echo $crawler->html();
         $systementities = $client->getContainer()->get('ficorebundle.entity.system');
         //$systementities->dumpSystemEntities();
@@ -145,14 +145,6 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
         //quindi lancio la delete a mano
 
         $crawler = $client->request('GET', '/Ffsecondaria/' . $recorddelete->getId() . '/delete');
-
-        /* $qu = $em->createQueryBuilder();
-          $qu->select(array('c'))
-          ->from('FiCoreBundle:Storicomodifiche', 'c')
-          ->where("c.nometabella= 'Ffsecondaria'")
-          ->andWhere("c.nomecampo = 'descsec'");
-          $ff = $qu->getQuery()->getResult();
-          var_dump(count($ff)); */
 
         $qu = $em->createQueryBuilder();
         $qu->delete('FiCoreBundle:Storicomodifiche', "s")

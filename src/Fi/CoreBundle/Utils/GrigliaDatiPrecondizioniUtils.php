@@ -6,10 +6,10 @@ use Fi\CoreBundle\Controller\FiUtilita;
 
 class GrigliaDatiPrecondizioniUtils
 {
+
     public static function setPrecondizioni(&$q, &$primo, $parametri = array())
     {
         $precondizioni = $parametri['precondizioni'];
-
         $i = 1;
         foreach ($precondizioni as $nomecampopre => $precondizione) {
             if ($primo) {
@@ -74,19 +74,18 @@ class GrigliaDatiPrecondizioniUtils
             $regole[] = array(
                 'field' => "$nometabellaprecondizione.$nomecampoprecondizione",
                 'op' => $operatoreprecondizione,
-                'data' => $valorecampoprecondizione, );
-            $tipof = $operatorelogicoprecondizione;
-            $regolearray = array(
-                'regole' => $regole,
-                'doctrine' => $doctrine,
-                'nometabella' => $nometabella,
-                'entityName' => $entityName,
-                'bundle' => $bundle,
-                'tipof' => $tipof,
-            );
-            GrigliaRegoleUtils::setRegole($q, $primo, $regolearray);
-            $primo = false;
+                'data' => $valorecampoprecondizione,
+                'typof' => $operatorelogicoprecondizione);
         }
+        $regolearray = array(
+            'regole' => $regole,
+            'doctrine' => $doctrine,
+            'nometabella' => $nometabella,
+            'entityName' => $entityName,
+            'bundle' => $bundle/*,
+            'tipof' => $tipof,*/
+        );
+        GrigliaRegoleUtils::setRegole($q, $primo, $regolearray);
     }
 
     private static function elaboravalorecampo($type, $valuepre)
@@ -101,9 +100,9 @@ class GrigliaDatiPrecondizioniUtils
         } elseif ($tipo && $tipo == 'string') {
             GrigliaUtils::setVettoriPerStringa();
             foreach ($valuepre as $chiave => $valore) {
-                $valuepre[$chiave] = strtolower("'" . $valore . "'");
+                $valuepre[$chiave] = strtolower($valore);
             }
-            return "'" . implode(', ', $valuepre) . "'";
+            return implode(', ', $valuepre);
         } else {
             GrigliaUtils::setVettoriPerNumero();
             return implode(', ', $valuepre);

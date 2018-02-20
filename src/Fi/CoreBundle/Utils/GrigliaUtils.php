@@ -42,7 +42,7 @@ class GrigliaUtils
             'nc' => 'NOT LIKE',
             'nu' => 'IS',
             'nn' => 'IS NOT',
-            'nt' => '<>',
+            'nt' => '<>'
         );
         // questo contiene il carattere da usare prima del campo dati in query dipendentemente dal tipo di operatore
         self::$precarattere = array(
@@ -62,8 +62,28 @@ class GrigliaUtils
             'nc' => 'lower(\'%',
             'nu' => 'NULL',
             'nn' => 'NULL',
-            'nt' => 'TRUE',
+            'nt' => 'TRUE'
         );
+
+        // questo contiene il carattere da usare dopo il campo dati in query dipendentemente dal tipo di operatore
+        self::$postcarattere = array(
+            'eq' => '',
+            'ne' => '',
+            'lt' => '',
+            'le' => '',
+            'gt' => '',
+            'ge' => '',
+            'bw' => '%\')',
+            'bn' => '%\')',
+            'in' => ')',
+            'ni' => ')',
+            'ew' => '\')',
+            'en' => '\')',
+            'cn' => '%\')',
+            'nc' => '%\')',
+            'nu' => '',
+            'nn' => '',
+            'nt' => '');
 
         // questo contiene il carattere da usare prima del campo dati in query dipendentemente dal tipo di operatore
         self::$precaratterecampo = array(
@@ -87,25 +107,6 @@ class GrigliaUtils
         );
 
         // questo contiene il carattere da usare dopo il campo dati in query dipendentemente dal tipo di operatore
-        self::$postcarattere = array(
-            'eq' => '',
-            'ne' => '',
-            'lt' => '',
-            'le' => '',
-            'gt' => '',
-            'ge' => '',
-            'bw' => '%\')',
-            'bn' => '%\')',
-            'in' => ')',
-            'ni' => ')',
-            'ew' => '\')',
-            'en' => '\')',
-            'cn' => '%\')',
-            'nc' => '%\')',
-            'nu' => '',
-            'nn' => '',
-            'nt' => '',);
-        // questo contiene il carattere da usare dopo il campo dati in query dipendentemente dal tipo di operatore
         self::$postcaratterecampo = array(
             'eq' => '',
             'ne' => '',
@@ -128,6 +129,11 @@ class GrigliaUtils
 
     public static function setVettoriPerData()
     {
+        self::$precaratterecampo['eq'] = "";
+        self::$postcaratterecampo['eq'] = "";
+        self::$precaratterecampo['ne'] = "";
+        self::$postcaratterecampo['ne'] = "";
+
         self::$precarattere['eq'] = "";
         self::$precarattere['ne'] = "";
         self::$precarattere['lt'] = "";
@@ -149,40 +155,62 @@ class GrigliaUtils
 
     public static function setVettoriPerStringa()
     {
-        self::$precarattere['eq'] = "lower('";
-        self::$precarattere['ne'] = "lower('";
-        self::$precarattere['lt'] = "lower('";
-        self::$precarattere['le'] = "lower('";
-        self::$precarattere['gt'] = "lower('";
-        self::$precarattere['ge'] = "lower('";
+        self::$precaratterecampo['eq'] = "lower(";
+        self::$postcaratterecampo['eq'] = ")";
+        self::$precaratterecampo['ne'] = "lower(";
+        self::$postcaratterecampo['ne'] = ")";
+
+        self::$precarattere['eq'] = "";
+        self::$precarattere['ne'] = "";
+        self::$precarattere['lt'] = "";
+        self::$precarattere['le'] = "";
+        self::$precarattere['gt'] = "";
+        self::$precarattere['ge'] = "";
         self::$precarattere['cn'] = "%";
         self::$precarattere['nc'] = "%";
         self::$precarattere['bw'] = "";
-        self::$postcarattere['eq'] = "')";
-        self::$postcarattere['ne'] = "')";
-        self::$postcarattere['lt'] = "')";
-        self::$postcarattere['le'] = "')";
-        self::$postcarattere['gt'] = "')";
-        self::$postcarattere['ge'] = "')";
+        self::$precarattere['in'] = "lower(";
+        self::$precarattere['ni'] = "lower(";
+        self::$postcarattere['eq'] = "";
+        self::$postcarattere['ne'] = "";
+        self::$postcarattere['lt'] = "";
+        self::$postcarattere['le'] = "";
+        self::$postcarattere['gt'] = "";
+        self::$postcarattere['ge'] = "";
         self::$postcarattere['cn'] = "%";
         self::$postcarattere['nc'] = "%";
         self::$postcarattere['bw'] = "%";
+        self::$postcarattere['in'] = ")";
+        self::$postcarattere['ni'] = ")";
     }
 
     public static function setVettoriPerNumero()
     {
+        self::$precaratterecampo['eq'] = "";
+        self::$postcaratterecampo['eq'] = "";
+        self::$precaratterecampo['ne'] = "";
+        self::$postcaratterecampo['ne'] = "";
+        self::$precaratterecampo['in'] = "(";
+        self::$postcaratterecampo['in'] = ")";
+        self::$precaratterecampo['ni'] = "(";
+        self::$postcaratterecampo['ni'] = ")";
+
         self::$precarattere['eq'] = '';
         self::$precarattere['ne'] = '';
         self::$precarattere['lt'] = '';
         self::$precarattere['le'] = '';
         self::$precarattere['gt'] = '';
         self::$precarattere['ge'] = '';
+        self::$precarattere['in'] = '';
+        self::$precarattere['ni'] = '';
         self::$postcarattere['eq'] = '';
         self::$postcarattere['ne'] = '';
         self::$postcarattere['lt'] = '';
         self::$postcarattere['le'] = '';
         self::$postcarattere['gt'] = '';
         self::$postcarattere['ge'] = '';
+        self::$postcarattere['in'] = '';
+        self::$postcarattere['ni'] = '';
     }
 
     public static function getCampiEsclusi($riga, $output)
