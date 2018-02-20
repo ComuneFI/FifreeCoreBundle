@@ -26,7 +26,7 @@ class FfsecondariaRepositoryFunctionalTest extends KernelTestCase
     {
         $object = $this->em
                 ->getRepository('FiCoreBundle:Ffsecondaria')
-                ->findByDescsec('2° secondaria legato al 1° record principale')
+                ->findByDescsec('2° SECONDARIA legato al 1° record principale')
         ;
 
         $this->assertCount(1, $object);
