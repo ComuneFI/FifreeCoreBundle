@@ -14,8 +14,6 @@ class RuoliControllerFunctionalTest extends FacebookDriverTester
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
-
-
         $this->crudoperation($session, $page);
 
         $session->quit();
@@ -24,6 +22,8 @@ class RuoliControllerFunctionalTest extends FacebookDriverTester
     public function crudoperation($session, $page)
     {
         $this->clickElement('buttonadd_list1');
+        $this->ajaxWait();
+        
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'ruoli_';
         } else {
@@ -32,6 +32,7 @@ class RuoliControllerFunctionalTest extends FacebookDriverTester
         /* Inserimento */
         $this->ajaxWait();
         $descrizionetest1 = 'testruolo';
+        
         $this->fillField($fieldprefix . 'ruolo', $descrizionetest1);
         $this->fillField($fieldprefix . 'is_user', 1);
         $this->clickElement('sDataRuoliS');

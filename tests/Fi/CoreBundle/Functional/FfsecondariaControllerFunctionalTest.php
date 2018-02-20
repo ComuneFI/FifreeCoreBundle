@@ -113,7 +113,17 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $this->evaluateScript('var testcalid = function(){ var rowidcal = $($("#listconfigura").find(">tbody>tr.jqgrow:first")).attr("id");' . $jsSetFirstRow . '}(testcalid )');
         $this->ajaxWait();
 
-        $checkbox = "18_mostraindex";
+        $em = $this->doctrine->getManager();
+
+        $qu = $em->createQueryBuilder();
+        $qu->select(array('c'))
+                ->from('FiCoreBundle:Tabelle', 'c')
+                ->where("c.operatori_id = 1")
+                ->andWhere("c.nometabella = 'Ffsecondaria'")
+                ->andWhere("c.nomecampo = 'attivo'");
+        $ff = $qu->getQuery()->getResult();
+        $idtab = $ff[0];
+        $checkbox = $idtab->getId() . "_mostraindex";
         $this->checkboxSelect($checkbox, 0);
 
         //$script = 'var ischecked = function(){var ischecked = $("input[name=mostraindex]").prop("checked", false);return ischecked;}(ischecked)';
