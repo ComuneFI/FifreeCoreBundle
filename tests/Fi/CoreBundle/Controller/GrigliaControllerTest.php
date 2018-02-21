@@ -715,6 +715,109 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
             "resultrows" => 2
         );
 
+        //**************************
+        //**************************
+        //  MIX VARIEGATI PRECONDIZIONI AVANZATE E FILTRI CON OR
+        //**************************
+        //**************************
+        //Torna tutti perche la precondizione avanzata viene surclassata dalla OR
+        $tests[] = array(
+            "descrizionetest" => "Mix Precondizioni avanzate e filtri con AND 1",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is',
+                    'valorecampo' => null,
+                    'operatorelogico' => 'AND')),
+            "filterarray" => array(
+                "groupOp" => "OR",
+                "rules" => array
+                    (array("field" => "descsec", "op" => "cn", "data" => "3"),
+                    array("field" => "descsec", "op" => "cn", "data" => "4")
+                )
+            ),
+            "resultrows" => 3
+        );
+
+        $tests[] = array(
+            "descrizionetest" => "Mix Precondizioni avanzate e filtri con OR 1",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is',
+                    'valorecampo' => null,
+                    'operatorelogico' => 'OR')),
+            "filterarray" => array(
+                "groupOp" => "OR",
+                "rules" => array
+                    (array("field" => "descsec", "op" => "cn", "data" => "3"),
+                    array("field" => "descsec", "op" => "cn", "data" => "4")
+                )
+            ),
+            "resultrows" => 3
+        );
+
+        $tests[] = array(
+            "descrizionetest" => "Mix filtri con OR 1",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(),
+            "filterarray" => array(
+                "groupOp" => "OR",
+                "rules" => array
+                    (array("field" => "descsec", "op" => "cn", "data" => "3"),
+                    array("field" => "descsec", "op" => "cn", "data" => "4")
+                )
+            ),
+            "resultrows" => 2
+        );
+        
+        $tests[] = array(
+            "descrizionetest" => "Mix Precondizioni avanzate con OR 1",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(
+                array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is',
+                    'valorecampo' => null,
+                    'operatorelogico' => 'OR'),
+                array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'attivo',
+                    'operatore' => '=',
+                    'valorecampo' => true,
+                    'operatorelogico' => 'OR'),
+            ),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 7
+        );
+
+        $tests[] = array(
+            "descrizionetest" => "Mix Precondizioni avanzate con OR 2",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(
+                array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is',
+                    'valorecampo' => null,
+                    'operatorelogico' => 'OR'),
+                array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'attivo',
+                    'operatore' => '=',
+                    'valorecampo' => true,
+                    'operatorelogico' => 'OR'),
+                array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'intero',
+                    'operatore' => '=',
+                    'valorecampo' => 10,
+                    'operatorelogico' => 'OR'),
+            ),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 8
+        );
+
         //
         //test Template
         /*
