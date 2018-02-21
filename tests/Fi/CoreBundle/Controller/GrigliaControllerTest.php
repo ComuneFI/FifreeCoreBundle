@@ -58,7 +58,12 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
     private function getAllTests()
     {
         $tests = array();
-
+        //**************************
+        //**************************
+        //  PRECONDIZIONI AVANZATE
+        //**************************
+        //**************************
+        //
         //test
         $tests[] = array(
             "descrizionetest" => "Solo filtri da griglia descsec contiene 1",
@@ -355,31 +360,67 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
             "precondizioni" => array(),
             "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
                     'nomecampo' => 'attivo',
-                    'operatore' => 'not is',
-                    'valorecampo' => null)),
-            "filterarray" => array(
-                "groupOp" => "AND",
-                "rules" => array()),
-            "resultrows" => 0
-        );
-
-        //test Template
-        /*
-        $tests[] = array(
-            "descrizionetest" => "PROVA",
-            "precondizioni" => array('descsec' => '1° secondaria legato al 1° record PRINCIPALE'),
-            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
-                    'nomecampo' => 'descsec',
                     'operatore' => 'is not',
                     'valorecampo' => null)),
             "filterarray" => array(
                 "groupOp" => "AND",
-                "rules" => array
-                    (array("field" => "descsec", "op" => "cn", "data" => "1")
-                )
-            ),
-            "resultrows" => 0
-        );*/
+                "rules" => array()),
+            "resultrows" => 10
+        );
+
+        //**************************
+        //**************************
+        //  PRECONDIZIONI NORMALI
+        //**************************
+        //**************************
+        //
+        
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni normali Stringa uguale stringa",
+            "precondizioni" => array('descsec' => '1° secondaria legato al 1° record PRINCIPALE'),
+            "precondizioniAvanzate" => array(),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 1
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni normali intero uguale ad altro",
+            "precondizioni" => array('intero' => 10),
+            "precondizioniAvanzate" => array(),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 2
+        );
+
+        //**************************
+        //**************************
+        //  FILTRI GRIGLIA
+        //**************************
+        //**************************
+        //
+        
+        //test Template
+        /*
+          $tests[] = array(
+          "descrizionetest" => "PROVA",
+          "precondizioni" => array('descsec' => '1° secondaria legato al 1° record PRINCIPALE'),
+          "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+          'nomecampo' => 'descsec',
+          'operatore' => 'is not',
+          'valorecampo' => null)),
+          "filterarray" => array(
+          "groupOp" => "AND",
+          "rules" => array
+          (array("field" => "descsec", "op" => "cn", "data" => "1")
+          )
+          ),
+          "resultrows" => 0
+          ); */
 
         return $tests;
     }
