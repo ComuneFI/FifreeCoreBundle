@@ -403,7 +403,319 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         //**************************
         //**************************
         //
+        $tests[] = array(
+            "descrizionetest" => "Filtri griglia contiene stringa",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (array("field" => "descsec", "op" => "cn", "data" => "1")
+                )
+            ),
+            "resultrows" => 6
+        );
+
+        $tests[] = array(
+            "descrizionetest" => "Filtri griglia contiene stringa BIS",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (array("field" => "descsec", "op" => "cn", "data" => "secon")
+                )
+            ),
+            "resultrows" => 9
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Filtri griglia inizia con stringa",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (array("field" => "descsec", "op" => "bw", "data" => "1")
+                )
+            ),
+            "resultrows" => 2
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Filtri griglia uguale con stringa",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (array("field" => "descsec", "op" => "eq", "data" => '9° secondaria legato al 2° "record principale"')
+                )
+            ),
+            "resultrows" => 1
+        );
+
+        //**************************
+        //**************************
+        //  MIX PRECONDIZIONI NORMALI E AVANZATE
+        //**************************
+        //**************************
+        //
         
+        $tests[] = array(
+            "descrizionetest" => "Mix precondizioni normali e avanzate 1",
+            "precondizioni" => array('descsec' => '1° secondaria legato al 1° record PRINCIPALE'),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is not',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 1
+        );
+
+        $tests[] = array(
+            "descrizionetest" => "Mix precondizioni normali e avanzate 2",
+            "precondizioni" => array('descsec' => '1° secondaria legato al 1° record PRINCIPALE'),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 0
+        );
+
+        $tests[] = array(
+            "descrizionetest" => "Mix precondizioni normali e avanzate 3",
+            "precondizioni" => array('descsec' => '1° secondaria legato al 1° record PRINCIPALE'),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => '=',
+                    'valorecampo' => '1° secondaria legato al 1° record PRINCIPALE')),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 1
+        );
+
+        //**************************
+        //**************************
+        //  MIX PRECONDIZIONI AVANZATE E FILTRI
+        //**************************
+        //**************************
+        //
+        $tests[] = array(
+            "descrizionetest" => "Mix precondizioni avanzate e filtri 1",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is not',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (array("field" => "descsec", "op" => "cn", "data" => "1")
+                )
+            ),
+            "resultrows" => 6
+        );
+
+        $tests[] = array(
+            "descrizionetest" => "Mix precondizioni avanzate e filtri 2",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is not',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (array("field" => "descsec", "op" => "cn", "data" => "seconda")
+                )
+            ),
+            "resultrows" => 9
+        );
+
+        $tests[] = array(
+            "descrizionetest" => "Mix precondizioni avanzate e filtri 3",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is not',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (array("field" => "intero", "op" => "ge", "data" => 10)
+                )
+            ),
+            "resultrows" => 8
+        );
+
+        $tests[] = array(
+            "descrizionetest" => "Mix precondizioni avanzate e filtri 4",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is not',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (array("field" => "intero", "op" => "lt", "data" => 10)
+                )
+            ),
+            "resultrows" => 1
+        );
+
+        $tests[] = array(
+            "descrizionetest" => "Mix precondizioni avanzate e filtri 5",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is not',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (
+                    array("field" => "intero", "op" => "lt", "data" => 1000),
+                    array("field" => "intero", "op" => "ge", "data" => 1)
+                )
+            ),
+            "resultrows" => 5
+        );
+
+        $tests[] = array(
+            "descrizionetest" => "Mix precondizioni avanzate e filtri 6",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is not',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (
+                    array("field" => "intero", "op" => "lt", "data" => 1000),
+                    array("field" => "intero", "op" => "ge", "data" => 1),
+                    array("field" => "attivo", "op" => "eq", "data" => true),
+                )
+            ),
+            "resultrows" => 4
+        );
+
+        $tests[] = array(
+            "descrizionetest" => "Mix precondizioni avanzate e filtri 7",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is not',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (
+                    array("field" => "intero", "op" => "lt", "data" => 10000),
+                    array("field" => "intero", "op" => "ge", "data" => 1),
+                    array("field" => "attivo", "op" => "eq", "data" => false),
+                )
+            ),
+            "resultrows" => 2
+        );
+
+        $tests[] = array(
+            "descrizionetest" => "Mix precondizioni avanzate e filtri 8",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is not',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (
+                    array("field" => "intero", "op" => "lt", "data" => 10000),
+                    array("field" => "intero", "op" => "ge", "data" => 1),
+                    array("field" => "attivo", "op" => "eq", "data" => false),
+                    array("field" => "ffprincipale_id", "op" => "eq", "data" => 1),
+                )
+            ),
+            "resultrows" => 1
+        );
+
+        $tests[] = array(
+            "descrizionetest" => "Mix precondizioni avanzate e filtri 9",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is not',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (
+                    array("field" => "intero", "op" => "lt", "data" => 10000),
+                    array("field" => "intero", "op" => "ne", "data" => 10),
+                    array("field" => "attivo", "op" => "eq", "data" => true),
+                    array("field" => "ffprincipale_id", "op" => "eq", "data" => 1),
+                )
+            ),
+            "resultrows" => 3
+        );
+
+        //**************************
+        //**************************
+        //  MIX VARIEGATI PRECONDIZIONI AVANZATE E FILTRI
+        //**************************
+        //**************************
+
+        $precondizioniAvanzate = array();
+        $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
+            'nomecampo' => 'descsec',
+            'operatore' => 'in',
+            'valorecampo' => $listaffsecondaria);
+        $tests[] = array(
+            "descrizionetest" => "Mix Precondizioni avanzate where in array string",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => $precondizioniAvanzate,
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array(
+                    array("field" => "intero", "op" => "lt", "data" => 10000),
+                    array("field" => "intero", "op" => "ne", "data" => 10),
+                    array("field" => "attivo", "op" => "eq", "data" => true),
+                    array("field" => "ffprincipale_id", "op" => "eq", "data" => 1)
+                )),
+            "resultrows" => 1
+        );
+
+        $precondizioniAvanzate = array();
+        $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
+            'nomecampo' => 'descsec',
+            'operatore' => 'not in',
+            'valorecampo' => $listaffsecondaria);
+        $tests[] = array(
+            "descrizionetest" => "Mix Precondizioni avanzate where not in array string",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => $precondizioniAvanzate,
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array(
+                    array("field" => "intero", "op" => "lt", "data" => 10000),
+                    array("field" => "intero", "op" => "ge", "data" => 10),
+                    array("field" => "attivo", "op" => "eq", "data" => true),
+                    array("field" => "ffprincipale_id", "op" => "eq", "data" => 1)
+                )),
+            "resultrows" => 2
+        );
+
+        //
         //test Template
         /*
           $tests[] = array(
