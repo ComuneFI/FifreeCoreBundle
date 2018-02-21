@@ -90,4 +90,21 @@ class GrigliaDatiPrecondizioniUtils
             return implode(', ', $valuepre);
         }
     }
+
+    public static function precondizioniToPrecondizioniAvanzate($precondizioni, &$precondizioniAvanzate, $nometabella)
+    {
+        foreach ($precondizioni as $campoprecondizione => $valoreprecondizione) {
+            if (strpos($campoprecondizione, ".") === false) {
+                $nometabellaprecondizione = $nometabella;
+                $nomecampoprecondizione = $campoprecondizione;
+            } else {
+                $nometabellaprecondizione = substr($campoprecondizione, 0, strrpos($campoprecondizione, '.'));
+                $nomecampoprecondizione = substr($campoprecondizione, strrpos($campoprecondizione, '.') + 1);
+            }
+            $precondizioniAvanzate[] = array('nometabella' => $nometabellaprecondizione,
+                'nomecampo' => $nomecampoprecondizione,
+                'operatore' => '=',
+                'valorecampo' => $valoreprecondizione);
+        }
+    }
 }

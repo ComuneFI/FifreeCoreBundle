@@ -149,20 +149,10 @@ class Griglia extends Controller
         GrigliaUtils::init();
 
         $primo = true;
+        
         /* se ci sono delle precondizioni le imposta qui */
-        foreach ($precondizioni as $campoprecondizione => $valoreprecondizione) {
-            if (strpos($campoprecondizione, ".") === false) {
-                $nometabellaprecondizione = $nometabella;
-                $nomecampoprecondizione = $campoprecondizione;
-            } else {
-                $nometabellaprecondizione = substr($campoprecondizione, 0, strrpos($campoprecondizione, '.'));
-                $nomecampoprecondizione = substr($campoprecondizione, strrpos($campoprecondizione, '.') + 1);
-            }
-            $precondizioniAvanzate[] = array('nometabella' => $nometabellaprecondizione,
-                'nomecampo' => $nomecampoprecondizione,
-                'operatore' => '=',
-                'valorecampo' => $valoreprecondizione);
-        }
+        GrigliaDatiPrecondizioniUtils::precondizioniToPrecondizioniAvanzate($precondizioni, $precondizioniAvanzate, $nometabella);
+        
         /* se ci sono delle precondizioni avanzate le imposta qui */
         if ($precondizioniAvanzate) {
             GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
