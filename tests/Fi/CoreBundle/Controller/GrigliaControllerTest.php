@@ -10,6 +10,402 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
     /**
      * @test
      */
+    public function testGrigliaFilters()
+    {
+        $namespace = 'Fi';
+        $bundle = 'Core';
+        $controller = 'Ffsecondaria';
+        $client = $this->getClient();
+        $container = $client->getContainer();
+
+        /* TESTATA */
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        /* @var $em \Doctrine\ORM\EntityManager */
+        /* $em = $this->container->get('doctrine')->getManager(); */
+        $descsec = array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text'));
+        $ffprincipaleId = array(
+            array('nomecampo' => 'ffprincipale.descrizione',
+                'lunghezza' => '400',
+                'descrizione' => 'Descrizione record principale',
+                'tipo' => 'text',),
+        );
+        $dettaglij = array(
+            'descsec' => $descsec,
+            'ffprincipale_id' => $ffprincipaleId,
+        );
+        $tests = $this->getAllTests();
+
+
+        foreach ($tests as $test) {
+            $paricevuti = array(
+                'nomebundle' => $nomebundle,
+                'nometabella' => $controller,
+                'dettaglij' => $dettaglij,
+                'campiextra' => array(),
+                'escludere' => array(),
+                'container' => $container,
+                'precondizioniAvanzate' => $test["precondizioniAvanzate"],
+                'precondizioni' => $test["precondizioni"],
+                "filterarray" => $test["filterarray"]
+            );
+
+            $datigriglia = $this->getDatiGriglia($paricevuti);
+            $this->assertEquals($test["resultrows"], $datigriglia['total'], $test["descrizionetest"]);
+            $this->assertEquals($test["resultrows"], $datigriglia['records'], $test["descrizionetest"]);
+        }
+    }
+
+    private function getAllTests()
+    {
+        $tests = array();
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Solo filtri da griglia descsec contiene 1",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (array("field" => "descsec", "op" => "cn", "data" => "1")
+                )
+            ),
+            "resultrows" => 6
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate descsec is not null",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is not',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 9
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate descsec is null",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 1
+        );
+
+        //test
+        //Where in - not in
+        $listaffsecondaria[] = "1° secondaria legato al 1° record PRINCIPALE";
+        $listaffsecondaria[] = "2° SECONDARIA legato al 1° record principale";
+        $listaffsecondaria[] = "10° secondaria legato al 2° record principale ed è l'ultimo record";
+        $listaffsecondaria[] = "6° secondaria legato al 2° record principale";
+
+        $precondizioniAvanzate = array();
+        $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
+            'nomecampo' => 'descsec',
+            'operatore' => 'in',
+            'valorecampo' => $listaffsecondaria);
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate where in array string",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => $precondizioniAvanzate,
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 4
+        );
+
+        /* TODO: se null la NOT IN deve estrarlo? */
+        $precondizioniAvanzate = array();
+        $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
+            'nomecampo' => 'descsec',
+            'operatore' => 'not in',
+            'valorecampo' => $listaffsecondaria);
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate where not in array string",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => $precondizioniAvanzate,
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 5 //6
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Stringa uguale a una",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => '=',
+                    'valorecampo' => "1° secondaria legato al 1° record PRINCIPALE")),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 1
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Stringa diversa da una",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => '<>',
+                    'valorecampo' => "1° secondaria legato al 1° record PRINCIPALE")),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 8
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Numero uguale a uno scelto",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'intero',
+                    'operatore' => '=',
+                    'valorecampo' => 10)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 2
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Numero maggiore a uno scelto",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'intero',
+                    'operatore' => '>',
+                    'valorecampo' => 10)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 7
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Numero minore a uno scelto",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'intero',
+                    'operatore' => '<',
+                    'valorecampo' => 100)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 3
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Numero minore o uguale a uno scelto",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'intero',
+                    'operatore' => '<=',
+                    'valorecampo' => 1000)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 6
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Numero minore a uno scelto BIS",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'intero',
+                    'operatore' => '<',
+                    'valorecampo' => 1000)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 5
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Numero maggiore uguale a uno scelto BIS",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'intero',
+                    'operatore' => '>=',
+                    'valorecampo' => 1000)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 5
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Numero diverso a uno scelto",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'intero',
+                    'operatore' => '<>',
+                    'valorecampo' => 1000)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 9
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Numero where in array",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'intero',
+                    'operatore' => 'in',
+                    'valorecampo' => array(1, 10))),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 3
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Numero where not in array",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'intero',
+                    'operatore' => 'not in',
+                    'valorecampo' => array(1, 10))),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 7
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Boolean true",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'attivo',
+                    'operatore' => '=',
+                    'valorecampo' => true)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 6
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Boolean false",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'attivo',
+                    'operatore' => '=',
+                    'valorecampo' => false)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 4
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Boolean tutti",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'attivo',
+                    'operatore' => '=',
+                    'valorecampo' => "null")),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 10
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Boolean is null",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'attivo',
+                    'operatore' => 'is',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 0
+        );
+
+        //test
+        $tests[] = array(
+            "descrizionetest" => "Precondizioni avanzate Boolean not is null",
+            "precondizioni" => array(),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'attivo',
+                    'operatore' => 'not is',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "resultrows" => 0
+        );
+
+        //test Template
+        /*
+        $tests[] = array(
+            "descrizionetest" => "PROVA",
+            "precondizioni" => array('descsec' => '1° secondaria legato al 1° record PRINCIPALE'),
+            "precondizioniAvanzate" => array(array('nometabella' => 'Ffsecondaria',
+                    'nomecampo' => 'descsec',
+                    'operatore' => 'is not',
+                    'valorecampo' => null)),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array
+                    (array("field" => "descsec", "op" => "cn", "data" => "1")
+                )
+            ),
+            "resultrows" => 0
+        );*/
+
+        return $tests;
+    }
+
+    private function getDatiGriglia($paricevuti)
+    {
+
+        $requestarray = array(
+            'POST',
+            '/Ffsecondaria/griglia',
+            array('paricevuti' => $paricevuti),
+            'filters' => json_encode($paricevuti["filterarray"]),
+            array(),
+            array(),
+            '',
+        );
+
+        $newrequest = new \Symfony\Component\HttpFoundation\Request($requestarray);
+        $parametrigriglia = array_merge(array("request" => $newrequest), $paricevuti);
+        $datigriglia = json_decode(Griglia::datiPerGriglia($parametrigriglia), true);
+        return $datigriglia;
+    }
+
+    /**
+     * @test
+     */
     public function testGrigliaMain()
     {
         $namespace = 'Fi';
@@ -120,7 +516,8 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $requestarray = array(
             'POST',
             '/Ffsecondaria/griglia',
-            array('paricevuti' => $paricevuti), 'filters' => json_encode(array("groupOp" => "AND", "rules" => array(array("field" => "descsec", "op" => "cn", "data" => "secondaria")), array("field" => "attivo", "op" => "eq", "data" => "null"))),
+            array('paricevuti' => $paricevuti),
+            'filters' => json_encode(array("groupOp" => "AND", "rules" => array(array("field" => "descsec", "op" => "cn", "data" => "secondaria")), array("field" => "attivo", "op" => "eq", "data" => "null"))),
             array(),
             array(),
             '',
@@ -140,7 +537,7 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         if (is_object($datigriglia)) {
             $datigriglia = get_object_vars($datigriglia);
         }
-                
+
         $this->assertEquals(9, $datigriglia['total']);
         $this->assertEquals(9, count($datigriglia['rows']));
 

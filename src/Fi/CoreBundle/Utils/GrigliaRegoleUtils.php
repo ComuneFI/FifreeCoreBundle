@@ -50,10 +50,7 @@ class GrigliaRegoleUtils
         //file_put_contents("/tmp/appo.log", print_r($regole, true) . "\n", FILE_APPEND);
         //$tipof = $parametri['tipof'];
         $tipo = null;
-        //echo "<pre>";
-        //\debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,0);
-        //echo "</pre>";
-        ////file_put_contents("/tmp/appo.log", "\n\n" .  . "\n\n", FILE_APPEND);
+        //file_put_contents("/tmp/appo.log", "\n\n" .  . "\n\n", FILE_APPEND);
         foreach ($regole as $key => $regola) {
             //file_put_contents("/tmp/appo.log", "***1***" . "\n", FILE_APPEND);
             //Se il campo non ha il . significa che è necessario aggiungere il nometabella
@@ -92,8 +89,8 @@ class GrigliaRegoleUtils
               $q->andWhere($condizioneAND); */
             //file_put_contents("/tmp/appo.log", dump($fieldparm) . "\n", FILE_APPEND);
             //file_put_contents("/tmp/appo.log", dump($sqlparameter) . "\n", FILE_APPEND);
-            file_put_contents("/tmp/appo.log", print_r($condition, true) . "\n", FILE_APPEND);
-            file_put_contents("/tmp/appo.log", print_r($value, true) . "\n", FILE_APPEND);
+            //file_put_contents("/tmp/appo.log", print_r($condition, true) . "\n", FILE_APPEND);
+            //file_put_contents("/tmp/appo.log", print_r($value, true) . "\n", FILE_APPEND);
         }
     }
 
@@ -124,7 +121,7 @@ class GrigliaRegoleUtils
             return array("condition" => $condition, "sqlparameter" => $sqlparameter, "value" => $value);
         }
 
-        file_put_contents("/tmp/appo.log", "|" . $regola['op'] . "| " . $regola['data'] . "\n", FILE_APPEND);
+        //file_put_contents("/tmp/appo.log", "|" . $regola['op'] . "| " . $regola['data'] . "\n", FILE_APPEND);
         $fieldparm = GrigliaUtils::$precaratterecampo[$regola['op']]
                 . str_replace(".", "", ":" . $regola['field'] . $key)
                 . GrigliaUtils::$postcaratterecampo[$regola['op']];
