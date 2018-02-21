@@ -141,12 +141,25 @@ class FfsecondariaController extends FiCoreController
 
         $campiextra = array(array('lunghezzanota'), array('attivoToString'));
 
-        $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
-            'nomecampo' => 'intero',
-            'operatore' => '>=',
-            'valorecampo' => 1,);
+        /* $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
+          'nomecampo' => 'intero',
+          'operatore' => '>=',
+          'valorecampo' => 1,
+          'operatorelogico' => 'OR'); */
 
         //$precondizioni = array('ffprincipale_id' => '1');
+        $precondizioni = array();
+        $precondizioniAvanzate = array();
+
+        /* $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
+          'nomecampo' => 'descsec',
+          'operatore' => 'is', //'operatore' => 'not in'
+          'valorecampo' => null); */
+
+        $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
+            'nomecampo' => 'descsec',
+            'operatore' => 'is not', //'operatore' => 'not in'
+            'valorecampo' => null);
 
         /* $listaffsecondaria = array();
           $listaffsecondaria[] = "1° secondaria legato al 1° record PRINCIPALE";
@@ -158,11 +171,33 @@ class FfsecondariaController extends FiCoreController
           'operatore' => 'in', //'operatore' => 'not in'
           'valorecampo' => $listaffsecondaria); */
 
-        $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
-            'nomecampo' => 'data',
-            'operatore' => '<=',
-            'valorecampo' => date('Y-m-d'),
-            'operatorelogico' => 'AND',);
+        /* $listaffsecondaria = array();
+          $listaffsecondaria[] = "1° secondaria legato al 1° record PRINCIPALE";
+          $listaffsecondaria[] = "2° SECONDARIA legato al 1° record principale";
+          $listaffsecondaria[] = "10° secondaria legato al 2° record principale ed è l'ultimo record";
+          $listaffsecondaria[] = "6° secondaria legato al 2° record principale";
+          $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
+          'nomecampo' => 'descsec',
+          'operatore' => 'not in', //'operatore' => 'not in'
+          'valorecampo' => $listaffsecondaria); */
+
+        /* $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
+          'nomecampo' => 'intero',
+          'operatore' => '=',
+          'valorecampo' => 1,
+          'operatorelogico' => 'OR',); */
+
+        /* $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
+          'nomecampo' => 'intero',
+          'operatore' => '<',
+          'valorecampo' => 100,
+          'operatorelogico' => 'OR',); */
+
+        /* $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
+          'nomecampo' => 'data',
+          'operatore' => '<=',
+          'valorecampo' => date('Y-m-d'),
+          'operatorelogico' => 'AND',); */
 
 
 //        $lista[] = '1° secondaria legato al 1° record principale';
@@ -180,7 +215,7 @@ class FfsecondariaController extends FiCoreController
             'nometabella' => $controller,
             'campiextra' => $campiextra,
             'escludere' => $escludi,
-//            'precondizioni' => $precondizioni,
+            'precondizioni' => $precondizioni,
             'precondizioniAvanzate' => $precondizioniAvanzate,
         );
 
@@ -190,4 +225,5 @@ class FfsecondariaController extends FiCoreController
 
         self::$parametrigriglia = $paricevuti;
     }
+
 }

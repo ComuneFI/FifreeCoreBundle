@@ -65,8 +65,7 @@ class GrigliaDatiPrecondizioniUtils
             'doctrine' => $doctrine,
             'nometabella' => $nometabella,
             'entityName' => $entityName,
-            'bundle' => $bundle/*,
-            'tipof' => $tipof,*/
+            'bundle' => $bundle
         );
         GrigliaRegoleUtils::setRegole($q, $primo, $regolearray);
     }

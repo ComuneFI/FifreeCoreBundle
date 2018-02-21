@@ -60,8 +60,8 @@ class GrigliaUtils
             'en' => 'lower(\'%',
             'cn' => 'lower(\'%',
             'nc' => 'lower(\'%',
-            'nu' => 'NULL',
-            'nn' => 'NULL',
+            'nu' => '',
+            'nn' => '',
             'nt' => 'TRUE'
         );
 
@@ -101,8 +101,8 @@ class GrigliaUtils
             'en' => 'lower(',
             'cn' => 'lower(',
             'nc' => 'lower(',
-            'nu' => 'NULL',
-            'nn' => 'NULL',
+            'nu' => '',
+            'nn' => '',
             'nt' => 'TRUE',
         );
 

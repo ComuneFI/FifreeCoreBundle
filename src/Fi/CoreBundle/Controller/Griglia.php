@@ -151,19 +151,18 @@ class Griglia extends Controller
         $primo = true;
         /* se ci sono delle precondizioni le imposta qui */
         foreach ($precondizioni as $campoprecondizione => $valoreprecondizione) {
-            if (strpos($campoprecondizione, ".") >= 0) {
-                $nometabellaprecondizione = substr($campoprecondizione, 0, strrpos($campoprecondizione, '.'));
-                $nomecampoprecondizione = substr($campoprecondizione, strrpos($campoprecondizione, '.') + 1);
-            } else {
+            if (strpos($campoprecondizione, ".") === false) {
                 $nometabellaprecondizione = $nometabella;
                 $nomecampoprecondizione = $campoprecondizione;
+            } else {
+                $nometabellaprecondizione = substr($campoprecondizione, 0, strrpos($campoprecondizione, '.'));
+                $nomecampoprecondizione = substr($campoprecondizione, strrpos($campoprecondizione, '.') + 1);
             }
             $precondizioniAvanzate[] = array('nometabella' => $nometabellaprecondizione,
                 'nomecampo' => $nomecampoprecondizione,
                 'operatore' => '=',
                 'valorecampo' => $valoreprecondizione);
         }
-
         /* se ci sono delle precondizioni avanzate le imposta qui */
         if ($precondizioniAvanzate) {
             GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
@@ -173,11 +172,15 @@ class Griglia extends Controller
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
                 'entityName' => $entityName,
-                'bundle' => $bundle,)
+                'bundle' => $bundle)
             );
         }
         /* scorro ogni singola regola */
         if (isset($regole)) {
+            foreach ($regole as $key => $regola) {
+                $regole[$key]["typof"] = $tipof;
+                $regola = $regola;
+            }
             GrigliaRegoleUtils::setRegole(
                 $q,
                 $primo,
@@ -186,8 +189,7 @@ class Griglia extends Controller
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
                 'entityName' => $entityName,
-                'bundle' => $bundle,
-                'tipof' => $tipof,
+                'bundle' => $bundle
                     )
             );
         }

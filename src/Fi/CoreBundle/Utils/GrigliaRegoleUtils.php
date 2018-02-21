@@ -58,45 +58,32 @@ class GrigliaRegoleUtils
             //file_put_contents("/tmp/appo.log", "***1***" . "\n", FILE_APPEND);
             //Se il campo non ha il . significa che è necessario aggiungere il nometabella
             self::getTipoRegola($tipo, $regola, $parametri);
-
+            $tipof = isset($regola["typof"]) ? $regola["typof"] : 'AND';
             $regola = self::setSingolaRegola($tipo, $regola);
             if (!$regola) {
                 continue;
             }
-            //file_put_contents("/tmp/appo.log", "!" . $tipo . "! " . print_r($regola,true) . "\n", FILE_APPEND);
-            if (GrigliaUtils::$decodificaop[$regola['op']] == 'IN' || GrigliaUtils::$decodificaop[$regola['op']] == 'NOT IN') {
-                $fieldparm = GrigliaUtils::$precaratterecampo[$regola['op']]
-                        . str_replace(".", "", ":" . $regola['field'] . $key)
-                        . GrigliaUtils::$postcaratterecampo[$regola['op']];
-                $sqlparameter = str_replace(".", "", ":" . $regola['field'] . $key);
-                $condition = GrigliaUtils::$precarattere[$regola['op']]
-                        . $regola['field']
-                        . GrigliaUtils::$postcarattere[$regola['op']]
-                        . " " . GrigliaUtils::$decodificaop[$regola['op']] . " " . $fieldparm;
-                $value = explode(",", str_replace(", ", ",", $regola['data']));
-                //file_put_contents("/tmp/appo.log", "|" . $regola['op'] . "| " . $regola['data'] . "\n", FILE_APPEND);
-            } else {
-                //file_put_contents("/tmp/appo.log", "|" . $regola['op'] . "| " . $regola['data'] . "\n", FILE_APPEND);
-                $fieldparm = GrigliaUtils::$precaratterecampo[$regola['op']]
-                        . str_replace(".", "", ":" . $regola['field'] . $key)
-                        . GrigliaUtils::$postcaratterecampo[$regola['op']];
-                $sqlparameter = str_replace(".", "", $regola['field'] . $key);
-                $condition = GrigliaUtils::$precaratterecampo[$regola['op']]
-                        . $regola['field']
-                        . GrigliaUtils::$postcaratterecampo[$regola['op']] . " "
-                        . GrigliaUtils::$decodificaop[$regola['op']] . " " . $fieldparm;
-                $value = GrigliaUtils::$precarattere[$regola['op']]
-                        . $regola['data']
-                        . GrigliaUtils::$postcarattere[$regola['op']]
-                ;
-            }
+
+            $conditions = self::getDoctrineConditions($regola, $key);
+
+            $condition = $conditions["condition"];
+            $sqlparameter = $conditions["sqlparameter"];
+            $value = $conditions["value"];
+
             if ($primo) {
                 $primo = false;
                 $q->where($condition);
             } else {
-                $q->andwhere($condition);
+                //file_put_contents("/tmp/appo.log", $tipof . "\n", FILE_APPEND);
+                if (strtoupper($tipof) == 'OR') {
+                    $q->orWhere($condition);
+                } else {
+                    $q->andwhere($condition);
+                }
             }
-            $q->setParameter($sqlparameter, $value);
+            if ($sqlparameter) {
+                $q->setParameter($sqlparameter, $value);
+            }
             /* $condizioneAND = $regola['field'] . ' ' .
               GrigliaUtils::$decodificaop[$regola['op']] . ' ' .
               GrigliaUtils::$precarattere[$regola['op']] .
@@ -105,9 +92,51 @@ class GrigliaRegoleUtils
               $q->andWhere($condizioneAND); */
             //file_put_contents("/tmp/appo.log", dump($fieldparm) . "\n", FILE_APPEND);
             //file_put_contents("/tmp/appo.log", dump($sqlparameter) . "\n", FILE_APPEND);
-            //file_put_contents("/tmp/appo.log", print_r($condition, true) . "\n", FILE_APPEND);
-            //file_put_contents("/tmp/appo.log", print_r($value, true) . "\n", FILE_APPEND);
+            file_put_contents("/tmp/appo.log", print_r($condition, true) . "\n", FILE_APPEND);
+            file_put_contents("/tmp/appo.log", print_r($value, true) . "\n", FILE_APPEND);
         }
+    }
+
+    private static function getDoctrineConditions($regola, $key)
+    {
+        //file_put_contents("/tmp/appo.log", "!" . $tipo . "! " . print_r($regola,true) . "\n", FILE_APPEND);
+        if (GrigliaUtils::$decodificaop[$regola['op']] == 'IS' || GrigliaUtils::$decodificaop[$regola['op']] == 'IS NOT') {
+            $condition = GrigliaUtils::$precaratterecampo[$regola['op']]
+                    . $regola['field']
+                    . GrigliaUtils::$postcaratterecampo[$regola['op']] . " "
+                    . GrigliaUtils::$decodificaop[$regola['op']] . " NULL";
+            $value = null;
+            $sqlparameter = null;
+            return array("condition" => $condition, "sqlparameter" => $sqlparameter, "value" => $value);
+        }
+
+        if (GrigliaUtils::$decodificaop[$regola['op']] == 'IN' || GrigliaUtils::$decodificaop[$regola['op']] == 'NOT IN') {
+            $fieldparm = GrigliaUtils::$precaratterecampo[$regola['op']]
+                    . str_replace(".", "", ":" . $regola['field'] . $key)
+                    . GrigliaUtils::$postcaratterecampo[$regola['op']];
+            $sqlparameter = str_replace(".", "", ":" . $regola['field'] . $key);
+            $condition = GrigliaUtils::$precarattere[$regola['op']]
+                    . $regola['field']
+                    . GrigliaUtils::$postcarattere[$regola['op']]
+                    . " " . GrigliaUtils::$decodificaop[$regola['op']] . " " . $fieldparm;
+            $value = explode(",", str_replace(", ", ",", $regola['data']));
+            //file_put_contents("/tmp/appo.log", "|" . $regola['op'] . "| " . $regola['data'] . "\n", FILE_APPEND);
+            return array("condition" => $condition, "sqlparameter" => $sqlparameter, "value" => $value);
+        }
+
+        file_put_contents("/tmp/appo.log", "|" . $regola['op'] . "| " . $regola['data'] . "\n", FILE_APPEND);
+        $fieldparm = GrigliaUtils::$precaratterecampo[$regola['op']]
+                . str_replace(".", "", ":" . $regola['field'] . $key)
+                . GrigliaUtils::$postcaratterecampo[$regola['op']];
+        $sqlparameter = str_replace(".", "", $regola['field'] . $key);
+        $condition = GrigliaUtils::$precaratterecampo[$regola['op']]
+                . $regola['field']
+                . GrigliaUtils::$postcaratterecampo[$regola['op']] . " "
+                . GrigliaUtils::$decodificaop[$regola['op']] . " " . $fieldparm;
+        $value = GrigliaUtils::$precarattere[$regola['op']]
+                . $regola['data']
+                . GrigliaUtils::$postcarattere[$regola['op']];
+        return array("condition" => $condition, "sqlparameter" => $sqlparameter, "value" => $value);
     }
 
     public static function setSingolaRegola($tipo, $regola)

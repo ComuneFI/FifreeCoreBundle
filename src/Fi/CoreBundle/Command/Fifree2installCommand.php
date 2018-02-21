@@ -313,6 +313,15 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     attivo: false
   -
     id: 8
+    descsec: null
+    ffprincipale_id: 2
+    data: $today
+    intero: 1111
+    importo: 1111.12
+    nota: 'Nota ffsecondaria con descsec null'
+    attivo: false
+  -
+    id: 9
     descsec: '9° secondaria legato al 2° "record principale"'
     ffprincipale_id: 2
     data: $today
@@ -321,7 +330,7 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     nota: 'Nota altra ffsecondaria'
     attivo: true
   -
-    id: 9
+    id: 10
     descsec: '10° secondaria legato al 2° record principale ed è l''ultimo record'
     ffprincipale_id: 2
     data: $today
