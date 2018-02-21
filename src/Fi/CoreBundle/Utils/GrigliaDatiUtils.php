@@ -46,12 +46,12 @@ class GrigliaDatiUtils
 
     public static function getDatiPrecondizioni($parametri)
     {
-        return isset($parametri['precondizioni']) ? $parametri['precondizioni'] : false;
+        return isset($parametri['precondizioni']) ? $parametri['precondizioni'] : array();
     }
 
     public static function getDatiPrecondizioniAvanzate($parametri)
     {
-        return isset($parametri['precondizioniAvanzate']) ? $parametri['precondizioniAvanzate'] : false;
+        return isset($parametri['precondizioniAvanzate']) ? $parametri['precondizioniAvanzate'] : array();
     }
 
     public static function getDatiCampiExtra($parametri)

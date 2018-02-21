@@ -105,7 +105,7 @@ class GrigliaRegoleUtils
               $q->andWhere($condizioneAND); */
             //file_put_contents("/tmp/appo.log", dump($fieldparm) . "\n", FILE_APPEND);
             //file_put_contents("/tmp/appo.log", dump($sqlparameter) . "\n", FILE_APPEND);
-            //file_put_contents("/tmp/appo.log", dump($condition) . "\n", FILE_APPEND);
+            //file_put_contents("/tmp/appo.log", print_r($condition, true) . "\n", FILE_APPEND);
             //file_put_contents("/tmp/appo.log", print_r($value, true) . "\n", FILE_APPEND);
         }
     }

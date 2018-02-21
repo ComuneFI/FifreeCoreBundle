@@ -146,6 +146,8 @@ class FfsecondariaController extends FiCoreController
             'operatore' => '>=',
             'valorecampo' => 1,);
 
+        //$precondizioni = array('ffprincipale_id' => '1');
+
         /* $listaffsecondaria = array();
           $listaffsecondaria[] = "1° secondaria legato al 1° record PRINCIPALE";
           $listaffsecondaria[] = "2° SECONDARIA legato al 1° record principale";
@@ -163,14 +165,14 @@ class FfsecondariaController extends FiCoreController
             'operatorelogico' => 'AND',);
 
 
-        /* $lista[] = '1° secondaria legato al 1° record principale';
-          $lista[] = '2° secondaria legato al 1° record principale';
-          $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
-          'nomecampo' => 'descsec',
-          'operatore' => 'in',
-          'valorecampo' => $lista,
-          'operatorelogico' => 'AND',);
-         */
+//        $lista[] = '1° secondaria legato al 1° record principale';
+//        $lista[] = '2° secondaria legato al 1° record principale';
+//        $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
+//            'nomecampo' => 'descsec',
+//            'operatore' => 'in',
+//            'valorecampo' => $lista,
+//            'operatorelogico' => 'AND',);
+
 
         $paricevuti = array('container' => $this->container,
             'nomebundle' => $nomebundle,
@@ -178,7 +180,9 @@ class FfsecondariaController extends FiCoreController
             'nometabella' => $controller,
             'campiextra' => $campiextra,
             'escludere' => $escludi,
-            'precondizioniAvanzate' => $precondizioniAvanzate,);
+//            'precondizioni' => $precondizioni,
+            'precondizioniAvanzate' => $precondizioniAvanzate,
+        );
 
         if (!empty($prepar)) {
             $paricevuti = array_merge($paricevuti, $prepar);

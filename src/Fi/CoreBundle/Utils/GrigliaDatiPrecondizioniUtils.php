@@ -7,23 +7,6 @@ use Fi\CoreBundle\Controller\FiUtilita;
 class GrigliaDatiPrecondizioniUtils
 {
 
-    public static function setPrecondizioni(&$q, &$primo, $parametri = array())
-    {
-        $precondizioni = $parametri['precondizioni'];
-        $i = 1;
-        foreach ($precondizioni as $nomecampopre => $precondizione) {
-            if ($primo) {
-                $q->where("$nomecampopre = :var$i");
-
-                $primo = false;
-            } else {
-                $q->andWhere("$nomecampopre = :var$i");
-            }
-            $q->setParameter("var$i", $precondizione);
-            ++$i;
-        }
-    }
-
     public static function setPrecondizioniAvanzate(&$q, &$primo, $parametri = array())
     {
         $doctrine = $parametri['doctrine'];

@@ -148,15 +148,24 @@ class Griglia extends Controller
 
         GrigliaUtils::init();
 
-        /* se ci sono delle precondizioni le imposta qui */
         $primo = true;
-        if ($precondizioni) {
-            GrigliaDatiPrecondizioniUtils::setPrecondizioni($q, $primo, array('precondizioni' => $precondizioni));
+        /* se ci sono delle precondizioni le imposta qui */
+        foreach ($precondizioni as $campoprecondizione => $valoreprecondizione) {
+            if (strpos($campoprecondizione, ".") >= 0) {
+                $nometabellaprecondizione = substr($campoprecondizione, 0, strrpos($campoprecondizione, '.'));
+                $nomecampoprecondizione = substr($campoprecondizione, strrpos($campoprecondizione, '.') + 1);
+            } else {
+                $nometabellaprecondizione = $nometabella;
+                $nomecampoprecondizione = $campoprecondizione;
+            }
+            $precondizioniAvanzate[] = array('nometabella' => $nometabellaprecondizione,
+                'nomecampo' => $nomecampoprecondizione,
+                'operatore' => '=',
+                'valorecampo' => $valoreprecondizione);
         }
 
         /* se ci sono delle precondizioni avanzate le imposta qui */
         if ($precondizioniAvanzate) {
-            $primo = false;
             GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
                 $q,
                 $primo,
@@ -195,8 +204,6 @@ class Griglia extends Controller
         $vettorerisposta['filtri'] = $filtri;
         $indice = 0;
 
-
-
         $escludere = GrigliaParametriUtils::getDatiEscludere($parametri);
         $escludereutente = GrigliaParametriUtils::getDatiEscludereDaTabella($parametri);
         $ordinecolonne = GrigliaDatiUtils::getDatiOrdineColonne($parametri);
@@ -207,7 +214,6 @@ class Griglia extends Controller
         $parametri["ordinecolonne"] = $ordinecolonne;
         $parametri["decodifiche"] = $decodifiche;
         $parametri["tabellej"] = $tabellej;
-
 
         /* Si scorrono tutti i records della query */
         foreach ($q as $singolo) {
