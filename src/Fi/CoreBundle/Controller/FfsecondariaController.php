@@ -225,5 +225,4 @@ class FfsecondariaController extends FiCoreController
 
         self::$parametrigriglia = $paricevuti;
     }
-
 }
