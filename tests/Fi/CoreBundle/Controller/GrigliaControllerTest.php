@@ -10,6 +10,163 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
     /**
      * @test
      */
+    public function testOrdinamentoAscGriglia()
+    {
+        $namespace = 'Fi';
+        $bundle = 'Core';
+        $controller = 'Ffsecondaria';
+        $client = $this->getClient();
+        $container = $client->getContainer();
+
+        /* TESTATA */
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        /* @var $em \Doctrine\ORM\EntityManager */
+        /* $em = $this->container->get('doctrine')->getManager(); */
+        $descsec = array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text'));
+        $ffprincipaleId = array(
+            array('nomecampo' => 'ffprincipale.descrizione',
+                'lunghezza' => '400',
+                'descrizione' => 'Descrizione record principale',
+                'tipo' => 'text',),
+        );
+        $dettaglij = array(
+            'descsec' => $descsec,
+            'ffprincipale_id' => $ffprincipaleId,
+        );
+        $escludi = array('nota');
+        $campiextra = array(
+            array('nomecampo' => 'lunghezzanota', 'lunghezza' => '400', 'descrizione' => 'Lunghezza Nota', 'tipo' => 'integer'),
+            array('nomecampo' => 'attivoToString', 'lunghezza' => '200', 'descrizione' => 'Attivo string', 'tipo' => 'text'),
+        );
+
+        $paricevuti = array(
+            'nomebundle' => $nomebundle,
+            'nometabella' => $controller,
+            'dettaglij' => $dettaglij,
+            'campiextra' => $campiextra,
+            'escludere' => $escludi,
+            'container' => $container
+        );
+
+        $testatagriglia = Griglia::testataPerGriglia($paricevuti);
+
+        $tabellagriglia = $testatagriglia['tabella'];
+        $testatagriglia['parametritesta'] = json_encode($paricevuti);
+        $FfsecondariaController = new \Fi\CoreBundle\Controller\FfsecondariaController();
+        $FfsecondariaController->setContainer($container);
+
+        $requestarray = array(
+            'POST',
+            '/Ffsecondaria/griglia',
+            array('paricevuti' => $paricevuti),
+            'sidx' => 'intero',
+            'sord' => 'asc',
+            'filters' => json_encode(array("groupOp" => "AND", "rules" => array(array("field" => "descsec", "op" => "cn", "data" => "secondaria")), array("field" => "attivo", "op" => "eq", "data" => "null"))),
+            array(),
+            array(),
+            '',
+        );
+        $newrequest = new \Symfony\Component\HttpFoundation\Request($requestarray);
+        $FfsecondariaController->setParametriGriglia(array('request' => $newrequest));
+        $testatagriglia['parametrigriglia'] = json_encode($FfsecondariaController::$parametrigriglia);
+
+        $testatanomicolonnegriglia = $testatagriglia['nomicolonne'];
+
+        $grigliareturn = $FfsecondariaController->grigliaAction($newrequest);
+        $datigriglia = json_decode($grigliareturn->getContent());
+        if (is_object($datigriglia)) {
+            $datigriglia = get_object_vars($datigriglia);
+        }
+
+        $rows = $datigriglia['rows'];
+        // @var $em \Doctrine\ORM\EntityManager
+        $em = $this->container->get('doctrine')->getManager();
+        $this->assertTrue($rows[0]->id == 2);
+        $this->assertTrue($rows[8]->id == 7);
+    }
+
+/**
+     * @test
+     */
+
+    public function testOrdinamentoDescGriglia()
+    {
+        $namespace = 'Fi';
+        $bundle = 'Core';
+        $controller = 'Ffsecondaria';
+        $client = $this->getClient();
+        $container = $client->getContainer();
+
+        /* TESTATA */
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        /* @var $em \Doctrine\ORM\EntityManager */
+        /* $em = $this->container->get('doctrine')->getManager(); */
+        $descsec = array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text'));
+        $ffprincipaleId = array(
+            array('nomecampo' => 'ffprincipale.descrizione',
+                'lunghezza' => '400',
+                'descrizione' => 'Descrizione record principale',
+                'tipo' => 'text',),
+        );
+        $dettaglij = array(
+            'descsec' => $descsec,
+            'ffprincipale_id' => $ffprincipaleId,
+        );
+        $escludi = array('nota');
+        $campiextra = array(
+            array('nomecampo' => 'lunghezzanota', 'lunghezza' => '400', 'descrizione' => 'Lunghezza Nota', 'tipo' => 'integer'),
+            array('nomecampo' => 'attivoToString', 'lunghezza' => '200', 'descrizione' => 'Attivo string', 'tipo' => 'text'),
+        );
+
+        $paricevuti = array(
+            'nomebundle' => $nomebundle,
+            'nometabella' => $controller,
+            'dettaglij' => $dettaglij,
+            'campiextra' => $campiextra,
+            'escludere' => $escludi,
+            'container' => $container
+        );
+
+        $testatagriglia = Griglia::testataPerGriglia($paricevuti);
+
+        $tabellagriglia = $testatagriglia['tabella'];
+        $testatagriglia['parametritesta'] = json_encode($paricevuti);
+        $FfsecondariaController = new \Fi\CoreBundle\Controller\FfsecondariaController();
+        $FfsecondariaController->setContainer($container);
+
+        $requestarray = array(
+            'POST',
+            '/Ffsecondaria/griglia',
+            array('paricevuti' => $paricevuti),
+            'sidx' => 'intero',
+            'sord' => 'desc',
+            'filters' => json_encode(array("groupOp" => "AND", "rules" => array(array("field" => "descsec", "op" => "cn", "data" => "secondaria")), array("field" => "attivo", "op" => "eq", "data" => "null"))),
+            array(),
+            array(),
+            '',
+        );
+        $newrequest = new \Symfony\Component\HttpFoundation\Request($requestarray);
+        $FfsecondariaController->setParametriGriglia(array('request' => $newrequest));
+        $testatagriglia['parametrigriglia'] = json_encode($FfsecondariaController::$parametrigriglia);
+
+        $testatanomicolonnegriglia = $testatagriglia['nomicolonne'];
+
+        $grigliareturn = $FfsecondariaController->grigliaAction($newrequest);
+        $datigriglia = json_decode($grigliareturn->getContent());
+        if (is_object($datigriglia)) {
+            $datigriglia = get_object_vars($datigriglia);
+        }
+
+        $rows = $datigriglia['rows'];
+        // @var $em \Doctrine\ORM\EntityManager
+        $em = $this->container->get('doctrine')->getManager();
+        $this->assertTrue($rows[0]->id == 7);
+        $this->assertTrue($rows[8]->id == 2);
+    }
+
+    /**
+     * @test
+     */
     public function testGrigliaFilters()
     {
         $namespace = 'Fi';
@@ -770,7 +927,7 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
             ),
             "resultrows" => 2
         );
-        
+
         $tests[] = array(
             "descrizionetest" => "Mix Precondizioni avanzate con OR 1",
             "precondizioni" => array(),
