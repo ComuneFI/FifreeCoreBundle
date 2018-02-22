@@ -85,10 +85,9 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $this->assertTrue($rows[8]->id == 7);
     }
 
-/**
+    /**
      * @test
      */
-
     public function testOrdinamentoDescGriglia()
     {
         $namespace = 'Fi';
@@ -1155,6 +1154,10 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $this->assertEquals(9, count($datigriglia['rows']));
 
         $rows = $datigriglia['rows'];
+
+        $this->assertTrue($rows[0]->id == 1);
+        $this->assertTrue($rows[8]->id == 10);
+
         // @var $em \Doctrine\ORM\EntityManager
         $em = $this->container->get('doctrine')->getManager();
         foreach ($rows as $idx => $row) {
@@ -1204,6 +1207,112 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
                 }
             }
         }
+    }
+
+    /**
+     * @test
+     */
+    public function testGrigliaOrdinemantoColonne()
+    {
+        $namespace = 'Fi';
+        $bundle = 'Core';
+        $controller = 'Ffsecondaria';
+        $client = $this->getClient();
+        $container = $client->getContainer();
+
+        /* TESTATA */
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        /* @var $em \Doctrine\ORM\EntityManager */
+        /* $em = $this->container->get('doctrine')->getManager(); */
+        $descsec = array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text'));
+        $ffprincipaleId = array(
+            array('nomecampo' => 'ffprincipale.descrizione',
+                'lunghezza' => '400',
+                'descrizione' => 'Descrizione record principale',
+                'tipo' => 'text',),
+        );
+        $dettaglij = array(
+            'descsec' => $descsec,
+            'ffprincipale_id' => $ffprincipaleId,
+        );
+        $escludi = array('nota');
+        $campiextra = array(
+            array('nomecampo' => 'lunghezzanota', 'lunghezza' => '400', 'descrizione' => 'Lunghezza Nota', 'tipo' => 'integer'),
+            array('nomecampo' => 'attivoToString', 'lunghezza' => '200', 'descrizione' => 'Attivo string', 'tipo' => 'text'),
+        );
+
+        $paricevuti = array(
+            'nomebundle' => $nomebundle,
+            'nometabella' => $controller,
+            'dettaglij' => $dettaglij,
+            'campiextra' => array(),
+            'escludere' => array(),
+            'container' => $container,
+            'precondizioniAvanzate' => array(),
+            'precondizioni' => array(),
+            "filterarray" => array(
+                "groupOp" => "AND",
+                "rules" => array()),
+            "ordinecolonne" => array("attivo", "ffprincipale_id", "descsec", "importo", "intero")
+        );
+
+
+        $testatagriglia = Griglia::testataPerGriglia($paricevuti);
+        $modellocolonne = $testatagriglia['modellocolonne'];
+        $this->assertEquals(8, count($modellocolonne));
+
+        $this->assertEquals('attivo', $modellocolonne[0]['name']);
+        $this->assertEquals('attivo', $modellocolonne[0]['id']);
+        $this->assertEquals(110, $modellocolonne[0]['width']);
+        $this->assertEquals('boolean', $modellocolonne[0]['tipocampo']);
+
+        $this->assertEquals('ffprincipale.descrizione', $modellocolonne[1]['name']);
+        $this->assertEquals('ffprincipale.descrizione', $modellocolonne[1]['id']);
+        $this->assertEquals(400, $modellocolonne[1]['width']);
+        $this->assertEquals('text', $modellocolonne[1]['tipocampo']);
+
+        $this->assertEquals('descsec', $modellocolonne[2]['name']);
+        $this->assertEquals('descsec', $modellocolonne[2]['id']);
+        $this->assertEquals(400, $modellocolonne[2]['width']);
+        $this->assertEquals('text', $modellocolonne[2]['tipocampo']);
+
+        $this->assertEquals('importo', $modellocolonne[3]['name']);
+        $this->assertEquals('importo', $modellocolonne[3]['id']);
+        $this->assertEquals(110, $modellocolonne[3]['width']);
+        $this->assertEquals('float', $modellocolonne[3]['tipocampo']);
+
+        $this->assertEquals('intero', $modellocolonne[4]['name']);
+        $this->assertEquals('intero', $modellocolonne[4]['id']);
+        $this->assertEquals(110, $modellocolonne[4]['width']);
+        $this->assertEquals('integer', $modellocolonne[4]['tipocampo']);
+
+        $this->assertEquals('id', $modellocolonne[5]['name']);
+        $this->assertEquals('id', $modellocolonne[5]['id']);
+        $this->assertEquals(110, $modellocolonne[5]['width']);
+        $this->assertEquals('integer', $modellocolonne[5]['tipocampo']);
+
+        $this->assertEquals('data', $modellocolonne[6]['name']);
+        $this->assertEquals('data', $modellocolonne[6]['id']);
+        $this->assertEquals(110, $modellocolonne[6]['width']);
+        $this->assertEquals('date', $modellocolonne[6]['tipocampo']);
+
+        $this->assertEquals('nota', $modellocolonne[7]['name']);
+        $this->assertEquals('nota', $modellocolonne[7]['id']);
+        $this->assertEquals(500, $modellocolonne[7]['width']);
+        $this->assertEquals('string', $modellocolonne[7]['tipocampo']);
+
+        $datigriglia = $this->getDatiGriglia($paricevuti);
+
+        $this->assertTrue($datigriglia["rows"][8]["cell"][0]);
+
+        $this->assertFalse($datigriglia["rows"][9]["cell"][0]);
+        $this->assertEquals($datigriglia["rows"][9]["cell"][1], 2);
+        $this->assertEquals($datigriglia["rows"][9]["cell"][2], "10° secondaria legato al 2° record principale ed è l'ultimo record");
+        $this->assertEquals($datigriglia["rows"][9]["cell"][3], 1100.99);
+        $this->assertEquals($datigriglia["rows"][9]["cell"][4], 1100);
+        $this->assertEquals($datigriglia["rows"][9]["cell"][5], 10);
+        $this->assertTrue(DateTime::createFromFormat('d/m/Y', $datigriglia["rows"][9]["cell"][6]) !== false);
+        $this->assertEquals($datigriglia["rows"][9]["cell"][7], "Nota 10° altra ffsecondaria");
     }
 
 }

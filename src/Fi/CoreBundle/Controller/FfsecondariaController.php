@@ -52,7 +52,8 @@ class FfsecondariaController extends FiCoreController
             'dettaglij' => $dettaglij,
             'campiextra' => $campiextra,
             'escludere' => $escludi,
-            'container' => $container,);
+            'container' => $container,
+            /*"ordinecolonne" => array("ffprincipale_id", "descsec", "importo", "intero")*/);
 
         $testatagriglia = Griglia::testataPerGriglia($paricevuti);
 
@@ -217,6 +218,7 @@ class FfsecondariaController extends FiCoreController
             'escludere' => $escludi,
             'precondizioni' => $precondizioni,
             'precondizioniAvanzate' => $precondizioniAvanzate,
+            /*"ordinecolonne" => array("ffprincipale_id", "descsec", "importo", "intero")*/
         );
 
         if (!empty($prepar)) {

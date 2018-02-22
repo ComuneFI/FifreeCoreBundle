@@ -74,7 +74,9 @@ class GrigliaDatiUtils
         /* se non è passato nessun campo (ipotesi peregrina) usa id */
         if (!$sidx) {
             $sidx = $nometabella . '.id';
-        } elseif (strrpos($sidx, '.') == 0) {
+            return ;
+        }
+        if (strrpos($sidx, '.') == 0) {
             if (strrpos($sidx, ',') == 0) {
                 // un solo campo
                 $sidx = $nometabella . '.' . $sidx;
