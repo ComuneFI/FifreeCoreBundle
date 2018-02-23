@@ -54,6 +54,7 @@ abstract class FacebookDriverTester extends WebTestCase
 
         $this->facebookDriverUrl = $container->getParameter('facebookdriver_url');
         $facebookDriverHost = $container->getParameter('facebookdriver_host');
+        $browserHeadless = $container->getParameter('browser_headless');
 
         $this->seleniumDriverType = $container->getParameter('selenium_driver_type');
         //$driver = new \Behat\Mink\Driver\ZombieDriver(new \Behat\Mink\Driver\NodeJS\Server\ZombieServer());
@@ -62,14 +63,19 @@ abstract class FacebookDriverTester extends WebTestCase
         switch ($this->seleniumDriverType) {
             case "firefox":
                 $desired_capabilities = DesiredCapabilities::firefox();
-                /* $desired_capabilities->setCapability(
-                  'moz:firefoxOptions', ['args' => ['-headless']]
-                  ); */
+                if ($browserHeadless) {
+                    $desired_capabilities->setCapability(
+                            'moz:firefoxOptions', ['args' => ['-headless']]
+                    );
+                }
                 break;
             case "chrome":
                 $desired_capabilities = DesiredCapabilities::chrome();
-                /* $chromeOptions = (new ChromeOptions)->addArguments(['headless', 'disable-gpu']);
-                  $desired_capabilities->setCapability(ChromeOptions::CAPABILITY, $chromeOptions); */
+
+                if ($browserHeadless) {
+                    $chromeOptions = (new ChromeOptions)->addArguments(['headless', 'disable-gpu']);
+                    $desired_capabilities->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
+                }
                 break;
             default:
                 throw new \Exception("Driver non supportato " . $this->seleniumDriverType . ", selezionare firefox o chrome");
