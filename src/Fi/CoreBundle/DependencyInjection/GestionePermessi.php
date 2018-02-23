@@ -3,6 +3,7 @@
 namespace Fi\CoreBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
+use Fi\CoreBundle\Utils\PermessiSingletonUtility;
 
 /*
  * Se c'è l'accoppiata UTENTE + MODULO allora vale quel permesso
@@ -126,28 +127,12 @@ class GestionePermessi
         }
 
         $utentecorrente = $this->utentecorrente();
-
-        $q = $this->container->get('doctrine')
-                ->getRepository('FiCoreBundle:Permessi')
-                ->findOneBy(array('operatori_id' => $utentecorrente['id'], 'modulo' => $this->modulo));
-
-        if ($q) {
-            $this->crud = $q->getCrud();
-            return;
-        }
-
-        $q = $this->container->get('doctrine')
-                ->getRepository('FiCoreBundle:Permessi')
-                ->findOneBy(array('ruoli_id' => $utentecorrente['ruolo_id'], 'modulo' => $this->modulo, 'operatori_id' => null));
-
-        if ($q) {
-            $this->crud = $q->getCrud();
-            return;
-        }
-
-        $q = $this->container->get('doctrine')
-                ->getRepository('FiCoreBundle:Permessi')
-                ->findOneBy(array('ruoli_id' => null, 'modulo' => $this->modulo, 'operatori_id' => null));
+        $q = PermessiSingletonUtility::instance(
+            $this->container->get('doctrine'),
+            $this->modulo,
+            $utentecorrente["id"],
+            $utentecorrente['ruolo_id']
+        )->getPermessi();
 
         if ($q) {
             $this->crud = $q->getCrud();

@@ -15,6 +15,10 @@ class FiCrudController extends Controller
     public static $controller;
     public static $action;
     public static $parametrigriglia;
+    public static $canRead;
+    public static $canDelete;
+    public static $canCreate;
+    public static $canUpdate;
 
     protected function setup(Request $request)
     {
@@ -27,6 +31,12 @@ class FiCrudController extends Controller
         self::$bundle = $matches[2];
         self::$controller = $matches[3];
         self::$action = substr($request->attributes->get('_controller'), strrpos($request->attributes->get('_controller'), ':') + 1);
+
+        $gestionepermessi = $this->get('ficorebundle.gestionepermessi');
+        self::$canRead = ($gestionepermessi->leggere(array('modulo' => self::$controller)) ? 1 : 0);
+        self::$canDelete = ($gestionepermessi->cancellare(array('modulo' => self::$controller)) ? 1 : 0);
+        self::$canCreate = ($gestionepermessi->creare(array('modulo' => self::$controller)) ? 1 : 0);
+        self::$canUpdate = ($gestionepermessi->aggiornare(array('modulo' => self::$controller)) ? 1 : 0);
     }
 
     /**
@@ -39,16 +49,13 @@ class FiCrudController extends Controller
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
-        $container = $this->container;
 
-        $gestionepermessi = $this->get('ficorebundle.gestionepermessi');
-        $canRead = ($gestionepermessi->leggere(array('modulo' => $controller)) ? 1 : 0);
-        $canDelete = ($gestionepermessi->cancellare(array('modulo' => $controller)) ? 1 : 0);
-        $canCreare = ($gestionepermessi->creare(array('modulo' => $controller)) ? 1 : 0);
-        $canAggiornare = ($gestionepermessi->aggiornare(array('modulo' => $controller)) ? 1 : 0);
-        if (!$canRead) {
+        if (!self::$canRead) {
             throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
         }
+
+        $container = $this->container;
+
         $idpassato = $request->get('id');
 
         $nomebundle = $namespace . $bundle . 'Bundle';
@@ -62,9 +69,9 @@ class FiCrudController extends Controller
         $testatagriglia['multisearch'] = 1;
         $testatagriglia['showconfig'] = 1;
         $testatagriglia['overlayopen'] = 1;
-        $testatagriglia['showadd'] = $canCreare;
-        $testatagriglia['showedit'] = $canAggiornare;
-        $testatagriglia['showdel'] = $canDelete;
+        $testatagriglia['showadd'] = self::$canCreate;
+        $testatagriglia['showedit'] = self::$canUpdate;
+        $testatagriglia['showdel'] = self::$canDelete;
         $testatagriglia["filterToolbar_searchOnEnter"] = true;
         $testatagriglia["filterToolbar_searchOperators"] = true;
 
@@ -79,7 +86,7 @@ class FiCrudController extends Controller
             array(
                     'nomecontroller' => $controller,
                     'testata' => $testata,
-                    'canread' => $canRead,
+                    'canread' => self::$canRead,
                     'idpassato' => $idpassato,
                         )
         );
@@ -94,6 +101,10 @@ class FiCrudController extends Controller
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
+
+        if (!self::$canCreate) {
+            throw new AccessDeniedException("Non si hanno i permessi per creare questo contenuto");
+        }
 
         $nomebundle = $namespace . $bundle . 'Bundle';
         $classbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Entity\\' . $controller;
@@ -147,6 +158,10 @@ class FiCrudController extends Controller
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
+        if (!self::$canCreate) {
+            throw new AccessDeniedException("Non si hanno i permessi per creare questo contenuto");
+        }
+
         $nomebundle = $namespace . $bundle . 'Bundle';
         $classbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Entity\\' . $controller;
         $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
@@ -184,6 +199,10 @@ class FiCrudController extends Controller
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
+
+        if (!self::$canUpdate) {
+            throw new AccessDeniedException("Non si hanno i permessi per modificare questo contenuto");
+        }
 
         $nomebundle = $namespace . $bundle . 'Bundle';
         $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
@@ -233,6 +252,10 @@ class FiCrudController extends Controller
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
+
+        if (!self::$canUpdate) {
+            throw new AccessDeniedException("Non si hanno i permessi per aggiornare questo contenuto");
+        }
 
         $nomebundle = $namespace . $bundle . 'Bundle';
         $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
@@ -304,6 +327,10 @@ class FiCrudController extends Controller
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
+
+        if (!self::$canUpdate) {
+            throw new AccessDeniedException("Non si hanno i permessi per aggiornare questo contenuto");
+        }
 
         $nomebundle = $namespace . $bundle . 'Bundle';
 

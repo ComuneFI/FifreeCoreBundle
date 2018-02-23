@@ -14,6 +14,7 @@ use Fi\CoreBundle\Utils\GrigliaDatiPrecondizioniUtils;
 use Fi\CoreBundle\Utils\GrigliaExtraFunzioniUtils;
 use Fi\CoreBundle\Utils\GrigliaDatiMultiUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class Griglia extends Controller
 {
@@ -106,10 +107,17 @@ class Griglia extends Controller
     public static function datiPerGriglia($parametri = array())
     {
         $request = $parametri['request'];
+        $container = $parametri['container'];
         $doctrine = GrigliaParametriUtils::getDoctrineByEm($parametri);
         $bundle = $parametri['nomebundle'];
         $nometabella = $parametri['nometabella'];
-        /* qui */
+
+        $gestionepermessi = $container->get('ficorebundle.gestionepermessi');
+        $canRead = ($gestionepermessi->leggere(array('modulo' => $nometabella)) ? 1 : 0);
+        if (!$canRead) {
+            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto, controllare i permessi dell'utente");
+        }
+
         $tabellej = GrigliaDatiUtils::getTabellejNormalizzate($parametri);
 
         $precondizioni = GrigliaDatiUtils::getDatiPrecondizioni($parametri);
@@ -149,10 +157,10 @@ class Griglia extends Controller
         GrigliaUtils::init();
 
         $primo = true;
-        
+
         /* se ci sono delle precondizioni le imposta qui */
         GrigliaDatiPrecondizioniUtils::precondizioniToPrecondizioniAvanzate($precondizioni, $precondizioniAvanzate, $nometabella);
-        
+
         /* se ci sono delle precondizioni avanzate le imposta qui */
         if ($precondizioniAvanzate) {
             GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
