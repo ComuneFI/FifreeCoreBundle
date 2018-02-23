@@ -38,9 +38,6 @@ echo sprintf(
 
 sleep(2);
 
-creaUtenteNoPrivilegi();
-creaUtenteAdminPochiPrivilegi();
-
 // Kill the web server when the process ends
 register_shutdown_function(function() use ($pidws) {
     echo sprintf('%s - Killing process with ID %d', date('r'), $pidws) . PHP_EOL;
@@ -51,9 +48,4 @@ register_shutdown_function(function() use ($pidws) {
 register_shutdown_function(function() use ($pidse) {
     echo sprintf('%s - Killing process with ID %d', date('r'), $pidse) . PHP_EOL;
     exec('kill ' . $pidse);
-});
-
-register_shutdown_function(function() {
-    rimuoviUtenteNoPrivilegi();
-    rimuoviaAdminPochiPrivilegi();
 });

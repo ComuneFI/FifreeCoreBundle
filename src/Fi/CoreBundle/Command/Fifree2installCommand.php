@@ -85,93 +85,332 @@ class Fifree2installCommand extends ContainerAwareCommand
         
         $defaultData = <<<EOF
 Fi\CoreBundle\Entity\Ruoli:
-  -
-    id: 1
-    ruolo: 'Super Admin'
-    paginainiziale: /adminpanel
-    is_superadmin: true
-    is_admin: true
-    is_user: false
-  -
-    id: 2
-    ruolo: Amministratore
-    paginainiziale: /adminpanel
-    is_superadmin: false
-    is_admin: true
-    is_user: false
-  -
-    id: 3
-    ruolo: Utente
-    paginainiziale: /ffprincipale
-    is_superadmin: false
-    is_admin: false
-    is_user: true
+    -
+        id: 1
+        ruolo: 'Super Admin'
+        paginainiziale: /adminpanel
+        is_superadmin: true
+        is_admin: true
+        is_user: false
+    -
+        id: 2
+        ruolo: Amministratore
+        paginainiziale: /adminpanel
+        is_superadmin: false
+        is_admin: true
+        is_user: false
+    -
+        id: 3
+        ruolo: Utente
+        paginainiziale: /ffprincipale
+        is_superadmin: false
+        is_admin: false
+        is_user: true
+    -
+        id: 4
+        ruolo: Ffprincipale
+        paginainiziale: /ffprincipale
+        is_superadmin: false
+        is_admin: false
+        is_user: true
+    -
+        id: 5
+        ruolo: Ffsecondaria
+        paginainiziale: /ffsecondaria
+        is_superadmin: false
+        is_admin: false
+        is_user: true
 Fi\CoreBundle\Entity\Operatori:
-  -
-    username: $admin
-    usernameCanonical: $admin
-    email: $adminemail
-    emailCanonical: $adminemail
-    enabled: true
-    salt: null
-    password: $admin
-    lastLogin: null
-    confirmationToken: null
-    passwordRequestedAt: null
-    roles:
-      - ROLE_SUPER_ADMIN
-    id: 1
-    operatore: $admin
-    ruoli_id: 1
+    -
+        username: $admin
+        usernameCanonical: $admin
+        email: $adminemail
+        emailCanonical: $adminemail
+        enabled: true
+        salt: null
+        password: $admin
+        lastLogin: null
+        confirmationToken: null
+        passwordRequestedAt: null
+        roles:
+            - ROLE_SUPER_ADMIN
+        id: 1
+        operatore: $admin
+        ruoli_id: 1
+    -
+        username: ffprincipalec
+        usernameCanonical: ffprincipalec
+        email: ffprincipalec@ffprincipale.it
+        emailCanonical: ffprincipalec@ffprincipale.it
+        enabled: true
+        salt: TsslJJBJVZRzYSN1XrR97bTj33MEM0hf5b0xaFgbtF8
+        password: q3EgysATetLjBY1EEcLJX54wwWv6z/Vv9ftTj+wbEg8E+YfQTHHoAoII0ig40fThp23BdyZ88iOelJ65EYmpwA==
+        lastLogin: null
+        confirmationToken: null
+        passwordRequestedAt: null
+        roles: {  }
+        id: 2
+        operatore: null
+        ruoli_id: null
+    -
+        username: ffprincipaler
+        usernameCanonical: ffprincipaler
+        email: ffprincipaler@ffprincipale.it
+        emailCanonical: ffprincipaler@ffprincipale.it
+        enabled: true
+        salt: FYjiqs9fg2Rye/rQW2kZOVugzSRYvDEvOeXaRL1NH.Y
+        password: KZaxi0Vsje3TWwa5/5P/oHy56N0ZPj/IqdeAd8DPuMPFgjI89HcoWrF1PQCEvdCL0p3xuIA+R9zoxC6aw/q1NA==
+        lastLogin: null
+        confirmationToken: null
+        passwordRequestedAt: null
+        roles: {  }
+        id: 3
+        operatore: null
+        ruoli_id: null
+    -
+        username: ffprincipaleu
+        usernameCanonical: ffprincipaleu
+        email: ffprincipaleu@ffprincipale.it
+        emailCanonical: ffprincipaleu@ffprincipale.it
+        enabled: true
+        salt: P4NejU4s9XNhkisXm/TX1rFO3Yx6DbO28H8c.kuphq0
+        password: M6Q7MArq/XbgCRueH93DaMduzTqhTQxqNxD5syKyXsj9tjerQa2ZzvX8Wgg9JE0pqnv1vJVVFFUmfjguSL0NQg==
+        lastLogin: null
+        confirmationToken: null
+        passwordRequestedAt: null
+        roles: {  }
+        id: 4
+        operatore: null
+        ruoli_id: null
+    -
+        username: ffprincipaled
+        usernameCanonical: ffprincipaled
+        email: ffprincipaled@ffprincipale.it
+        emailCanonical: ffprincipaled@ffprincipale.it
+        enabled: true
+        salt: pE01F9zH7sYq3PqvT4dwykSA.3ax0E7ERZSPxse6/Mw
+        password: Pj3I9hXVrvx57CKoUyBxzvjLbuZCAthfXsN6qoz+8FhTN/a0iwkfLikd2DPAy2ePCb3Dv2ukRIxoJSRL/fiAnA==
+        lastLogin: null
+        confirmationToken: null
+        passwordRequestedAt: null
+        roles: {  }
+        id: 5
+        operatore: null
+        ruoli_id: null
+    -
+        username: ffsecondariac
+        usernameCanonical: ffsecondariac
+        email: ffsecondariac@ffsecondaria.it
+        emailCanonical: ffsecondariac@ffsecondaria.it
+        enabled: true
+        salt: rCmWpPixVyq0.ytBt/Uk7juA.KS6JAscAn3ZhNMscM8
+        password: sPtyn93cPWF60mKTI5FAoKppJWlX8KGiJKs7DbyxNtA8MKiTl9C4HG9UsNsNdgMexg5/EF5eLFLa4wUqOha37g==
+        lastLogin: null
+        confirmationToken: null
+        passwordRequestedAt: null
+        roles: {  }
+        id: 6
+        operatore: null
+        ruoli_id: null
+    -
+        username: ffsecondariar
+        usernameCanonical: ffsecondariar
+        email: ffsecondariar@ffsecondaria.it
+        emailCanonical: ffsecondariar@ffsecondaria.it
+        enabled: true
+        salt: nFDM1Za4bdC4UQqM8trUWT8T4lVi3N1k4F2.651zWTM
+        password: BJ2+8wWV3MKaDN6t3bHQiAn1C3BNqiIDMCstMPinO1qOwBKNcumBdbMdvRC86Az/c/5srb8wpwCHdZZ7bdTbwQ==
+        lastLogin: null
+        confirmationToken: null
+        passwordRequestedAt: null
+        roles: {  }
+        id: 7
+        operatore: null
+        ruoli_id: null
+    -
+        username: ffsecondariau
+        usernameCanonical: ffsecondariau
+        email: ffsecondariau@ffsecondaria.it
+        emailCanonical: ffsecondariau@ffsecondaria.it
+        enabled: true
+        salt: t24V9m5oaJVEHy6bgYmK8R.dZ.WrCrUoj6dR7XUY8H4
+        password: SeFRn5cJiRZgWU5Hj623v+4FGF5PI0J3cuNb62EhIrazudvMQCGrvdcZutKNZdhdCM7In8fiTE8DjPUJqg64DQ==
+        lastLogin: null
+        confirmationToken: null
+        passwordRequestedAt: null
+        roles: {  }
+        id: 8
+        operatore: null
+        ruoli_id: null
+    -
+        username: ffsecondariad
+        usernameCanonical: ffsecondariad
+        email: ffsecondariad@ffsecondaria.it
+        emailCanonical: ffsecondariad@ffsecondaria.it
+        enabled: true
+        salt: 6r2f.2sU8C3FMWvAevOnXA1haSXFywcb2DZhICZE9dI
+        password: Csop95dNeEv8B6PzVMlzFyZfkLNyU8KaljQlVrWDUtbmNbUPWEFyaFRVOCKVVdlQK+yi+TNDI7sgzrmuwhtg4w==
+        lastLogin: null
+        confirmationToken: null
+        passwordRequestedAt: null
+        roles: {  }
+        id: 9
+        operatore: null
+        ruoli_id: null
+    -
+        username: ffprincipale
+        usernameCanonical: ffprincipale
+        email: ffprincipale@ffprincipale.it
+        emailCanonical: ffprincipale@ffprincipale.it
+        enabled: true
+        salt: .5AIBmH.CKC2oSXdZOFO/ccQew3MP3LVqpFGpvRmrQk
+        password: qhutSK2csuIn0UluYXOT3DKLxwMMuddfuEjGaa6iMDnVLjntSPccJTmmCa1wcikzQ8mAAwrhOUAcnmatYhg33g==
+        lastLogin: null
+        confirmationToken: null
+        passwordRequestedAt: null
+        roles: {  }
+        id: 10
+        operatore: null
+        ruoli_id: 4
+    -
+        username: ffsecondaria
+        usernameCanonical: ffsecondaria
+        email: ffsecondaria@ffsecondaria.it
+        emailCanonical: ffsecondaria@ffsecondaria.it
+        enabled: true
+        salt: Ol1WIAFWsAw7DewtYdyFM86T7fWYOYslvm.7C7rwV5c
+        password: s/jZyrl4SCACNKiYVq9ie3l4b2Q/AvAhy7eiHPrLxcfeAa/Mn2MvlFkEppQC/JHINIICKjXhNhdZk0PO5vS7IA==
+        lastLogin: null
+        confirmationToken: null
+        passwordRequestedAt: null
+        roles: {  }
+        id: 11
+        operatore: null
+        ruoli_id: 5
+    -
+        username: usernoroles
+        usernameCanonical: usernoroles
+        email: usernoroles@usernoroles.it
+        emailCanonical: usernoroles@usernoroles.it
+        enabled: true
+        salt: nczIukArDyAEH6vvjehM973qvfDjE.WGzkP24umtpfE
+        password: Ce0FJ16dd5HfwJ8CbzocZB3UDZWzwvD9l/A3kyJJR1oHoisxGjF06qR4sSj/Nsk8J6aCI1GtgmHbJfeF7TS93w==
+        lastLogin: null
+        confirmationToken: null
+        passwordRequestedAt: null
+        roles: {  }
+        id: 12
+        operatore: null
+        ruoli_id: null
 Fi\CoreBundle\Entity\Permessi:
-  -
-    id: 1
-    modulo: MenuApplicazione
-    crud: crud
-    operatori_id: null
-    ruoli_id: 1
-  -
-    id: 2
-    modulo: OpzioniTabella
-    crud: crud
-    operatori_id: null
-    ruoli_id: 1
-  -
-    id: 3
-    modulo: Tabelle
-    crud: crud
-    operatori_id: null
-    ruoli_id: 1
-  -
-    id: 4
-    modulo: Permessi
-    crud: crud
-    operatori_id: null
-    ruoli_id: 1
-  -
-    id: 5
-    modulo: Operatori
-    crud: cru
-    operatori_id: null
-    ruoli_id: 1
-  -
-    id: 6
-    modulo: Ruoli
-    crud: crud
-    operatori_id: null
-    ruoli_id: 1
-  -
-    id: 7
-    modulo: Ffprincipale
-    crud: crud
-    operatori_id: null
-    ruoli_id: 1
-  -
-    id: 8
-    modulo: Ffsecondaria
-    crud: crud
-    operatori_id: null
-    ruoli_id: 1
+    -
+        id: 1
+        modulo: MenuApplicazione
+        crud: crud
+        operatori_id: null
+        ruoli_id: 1
+    -
+        id: 2
+        modulo: OpzioniTabella
+        crud: crud
+        operatori_id: null
+        ruoli_id: 1
+    -
+        id: 3
+        modulo: Tabelle
+        crud: crud
+        operatori_id: null
+        ruoli_id: 1
+    -
+        id: 4
+        modulo: Permessi
+        crud: crud
+        operatori_id: null
+        ruoli_id: 1
+    -
+        id: 5
+        modulo: Operatori
+        crud: cru
+        operatori_id: null
+        ruoli_id: 1
+    -
+        id: 6
+        modulo: Ruoli
+        crud: crud
+        operatori_id: null
+        ruoli_id: 1
+    -
+        id: 7
+        modulo: Ffprincipale
+        crud: crud
+        operatori_id: null
+        ruoli_id: 1
+    -
+        id: 8
+        modulo: Ffsecondaria
+        crud: crud
+        operatori_id: null
+        ruoli_id: 1
+    -
+        id: 9
+        modulo: Ffsecondaria
+        crud: crud
+        operatori_id: null
+        ruoli_id: 5
+    -
+        id: 10
+        modulo: Ffprincipale
+        crud: crud
+        operatori_id: null
+        ruoli_id: 4
+    -
+        id: 11
+        modulo: Ffprincipale
+        crud: c
+        operatori_id: 2
+        ruoli_id: null
+    -
+        id: 12
+        modulo: Ffprincipale
+        crud: r
+        operatori_id: 3
+        ruoli_id: null
+    -
+        id: 13
+        modulo: Ffprincipale
+        crud: u
+        operatori_id: 4
+        ruoli_id: null
+    -
+        id: 14
+        modulo: Ffprincipale
+        crud: d
+        operatori_id: 5
+        ruoli_id: null
+    -
+        id: 15
+        modulo: Ffsecondaria
+        crud: c
+        operatori_id: 6
+        ruoli_id: null
+    -
+        id: 16
+        modulo: Ffsecondaria
+        crud: r
+        operatori_id: 7
+        ruoli_id: null
+    -
+        id: 17
+        modulo: Ffsecondaria
+        crud: u
+        operatori_id: 8
+        ruoli_id: null
+    -
+        id: 18
+        modulo: Ffsecondaria
+        crud: d
+        operatori_id: 9
+        ruoli_id: null
 Fi\CoreBundle\Entity\Tabelle:
   -
     id: 1

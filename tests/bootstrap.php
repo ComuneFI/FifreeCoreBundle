@@ -14,42 +14,6 @@ require __DIR__ . '/Utils/StartServers.php';
 
 date_default_timezone_set('Europe/Rome');
 
-creaUtenteNoPrivilegi();
-
-function creaUtenteNoPrivilegi()
-{
-    passthru(sprintf(
-                    'php "%s/console" fos:user:create usernoprivilege usernoprivilege@domain.it usernoprivilege --env=%s > /dev/null 2>&1', __DIR__ . '/../tests/bin/', "test"
-    ));
-    passthru(sprintf(
-                    'php "%s/console" fos:user:activate usernoprivilege --env=%s  > /dev/null', __DIR__ . '/../tests/bin/', "test"
-    ));
-}
-
-function creaUtenteAdminPochiPrivilegi()
-{
-    passthru(sprintf(
-                    'php "%s/console" fos:user:create adminlowprivilege adminlowprivilege@domain.it adminlowprivilege --env=%s > /dev/null 2>&1', __DIR__ . '/../tests/bin/', "test"
-    ));
-    passthru(sprintf(
-                    'php "%s/console" fos:user:activate adminlowprivilege --env=%s  > /dev/null', __DIR__ . '/../tests/bin/', "test"
-    ));
-}
-
-function rimuoviaAdminPochiPrivilegi()
-{
-    passthru(sprintf(
-                    'php "%s/console" fos:user:deactivate adminlowprivilege --env=%s  > /dev/null', __DIR__ . '/../tests/bin/', "test"
-    ));
-}
-function rimuoviUtenteNoPrivilegi()
-{
-    passthru(sprintf(
-                    'php "%s/console" fos:user:deactivate usernoprivilege --env=%s  > /dev/null', __DIR__ . '/../tests/bin/', "test"
-    ));
-}
-
-
 function clearcache()
 {
     passthru(sprintf(
