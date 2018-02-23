@@ -214,15 +214,23 @@ class FfprincipalePermessiControllerTest extends FifreeTestUnauthorizedClient
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 403
         );
-        $crawler = $client->request('GET', '/Ffprincipale/1/edit');
-        $this->assertTrue(
-                $client->getResponse()->getStatusCode() === 200
-        );
         $crawler = $client->request('POST', '/Ffprincipale/0/delete');
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 403
         );
-        $crawler = $client->request('POST', '/Ffprincipale/1/update');
+        $crawler = $client->request('GET', '/Ffprincipale/1/edit');
+        $this->assertTrue(
+                $client->getResponse()->getStatusCode() === 200
+        );
+
+        $form = $crawler->filter('#formdatiFfprincipale')->form();
+        $form->setValues(array(
+            "ffprincipale[descrizione]" => "Descrizione primo record"
+        ));
+
+        //$client->setServerParameter("HTTP_X-Requested-With", "XMLHttpRequest");
+        $client->submit($form);
+
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 200
         );
