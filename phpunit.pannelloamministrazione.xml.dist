@@ -17,6 +17,7 @@
         <testsuite name="Pannelloamministrazionebundle">
             <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/Command</directory>
             <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/Controller</directory>
+            <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/DependencyInjection</directory>
         </testsuite>
     </testsuites>
     
