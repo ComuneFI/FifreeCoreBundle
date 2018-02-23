@@ -231,14 +231,7 @@ class GrigliaUtils
 
     public static function getUserCustomTableFields($em, $nometabella, $operatore)
     {
-        $q = $em->getRepository('FiCoreBundle:Tabelle')->findBy(array('operatori_id' => $operatore['id'], 'nometabella' => $nometabella));
-
-        if (!$q) {
-            unset($q);
-            $q = $em->getRepository('FiCoreBundle:Tabelle')->findBy(array('operatori_id' => null, 'nometabella' => $nometabella));
-        }
-
-        return $q;
+        return TabelleSingletonUtility::instance($em, $nometabella, $operatore)->getTabelle();
     }
 
     public static function etichettecampi($parametri = array())
@@ -260,7 +253,7 @@ class GrigliaUtils
 
         $etichette = array();
 
-        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
+        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente["id"]);
 
         if ($q) {
             foreach ($q as $riga) {
@@ -294,7 +287,7 @@ class GrigliaUtils
 
         $etichette = array();
 
-        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
+        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente["id"]);
 
         if (!$q) {
             return $etichette;
@@ -331,7 +324,7 @@ class GrigliaUtils
 
         $ordine = array();
 
-        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
+        $q = self::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente["id"]);
 
         if ($q) {
             foreach ($q as $riga) {

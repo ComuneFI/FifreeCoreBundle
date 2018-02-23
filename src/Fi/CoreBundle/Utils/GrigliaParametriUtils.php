@@ -95,11 +95,11 @@ class GrigliaParametriUtils
 
         $escludi = array();
 
-        $q = $doctrine->getRepository($bundle . ":tabelle")->findBy(array("operatori_id" => $operatorecorrente["id"], "nometabella" => $nometabella));
+        $q = $doctrine->getRepository($bundle . ":Tabelle")->findBy(array("operatori_id" => $operatorecorrente["id"], "nometabella" => $nometabella));
 
         if (!$q) {
             unset($q);
-            $q = $doctrine->getRepository($bundle . ":tabelle")->findBy(array("operatori_id" => null, "nometabella" => $nometabella));
+            $q = $doctrine->getRepository($bundle . ":Tabelle")->findBy(array("operatori_id" => null, "nometabella" => $nometabella));
         }
 
         if ($q) {

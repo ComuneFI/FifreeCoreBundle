@@ -194,7 +194,7 @@ class GrigliaRegoleUtils
         $operatorecorrente = $gestionepermessi->utentecorrente();
 
         $escludi = array();
-        $q = GrigliaUtils::getUserCustomTableFields($doctrineficore, $nometabella, $operatorecorrente);
+        $q = TabelleSingletonUtility::instance($doctrineficore, $nometabella, $operatorecorrente["id"])->getTabelle();
         if (!$q) {
             return $escludi;
         }
