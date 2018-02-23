@@ -29,6 +29,7 @@ class FiController extends FiCrudController
 
     public function grigliaAction(Request $request)
     {
+        $this->setup($request);
         $this->setParametriGriglia(array('request' => $request));
         $paricevuti = self::$parametrigriglia;
 

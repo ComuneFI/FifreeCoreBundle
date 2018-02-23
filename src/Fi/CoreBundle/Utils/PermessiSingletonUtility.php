@@ -12,6 +12,9 @@ final class PermessiSingletonUtility
 {
 
     private static $PermessiTabelle;
+    private static $modulo;
+    private static $operatore;
+    private static $ruolo;
 
     /**
      * Call this method to get singleton
@@ -22,6 +25,15 @@ final class PermessiSingletonUtility
     {
         static $inst = null;
         if ($inst === null) {
+            self::$modulo = $modulo;
+            self::$operatore = $operatore;
+            self::$ruolo = $ruolo;
+            $inst = new PermessiSingletonUtility($em, $modulo, $operatore, $ruolo);
+        }
+        if ($modulo != self::$modulo || $operatore != self::$operatore || $ruolo != self::$ruolo) {
+            self::$modulo = $modulo;
+            self::$operatore = $operatore;
+            self::$ruolo = $ruolo;
             $inst = new PermessiSingletonUtility($em, $modulo, $operatore, $ruolo);
         }
         return $inst;

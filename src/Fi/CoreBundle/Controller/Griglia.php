@@ -14,7 +14,7 @@ use Fi\CoreBundle\Utils\GrigliaDatiPrecondizioniUtils;
 use Fi\CoreBundle\Utils\GrigliaExtraFunzioniUtils;
 use Fi\CoreBundle\Utils\GrigliaDatiMultiUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class Griglia extends Controller
 {

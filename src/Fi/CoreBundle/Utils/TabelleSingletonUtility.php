@@ -12,6 +12,8 @@ final class TabelleSingletonUtility
 {
 
     private static $queryTabelle;
+    private static $nometabella;
+    private static $operatore;
 
     /**
      * Call this method to get singleton
@@ -22,6 +24,13 @@ final class TabelleSingletonUtility
     {
         static $inst = null;
         if ($inst === null) {
+            self::$nometabella = $nometabella;
+            self::$operatore = $operatore;
+            $inst = new TabelleSingletonUtility($em, $nometabella, $operatore);
+        }
+        if ($nometabella != self::$nometabella || $operatore != self::$operatore) {
+            self::$nometabella = $nometabella;
+            self::$operatore = $operatore;
             $inst = new TabelleSingletonUtility($em, $nometabella, $operatore);
         }
         return $inst;

@@ -31,6 +31,12 @@ class FiCrudController extends Controller
         self::$bundle = $matches[2];
         self::$controller = $matches[3];
         self::$action = substr($request->attributes->get('_controller'), strrpos($request->attributes->get('_controller'), ':') + 1);
+        
+        $gestionepermessi = $this->get('ficorebundle.gestionepermessi');
+        self::$canRead = ($gestionepermessi->leggere(array('modulo' => self::$controller)) ? 1 : 0);
+        self::$canDelete = ($gestionepermessi->cancellare(array('modulo' => self::$controller)) ? 1 : 0);
+        self::$canCreate = ($gestionepermessi->creare(array('modulo' => self::$controller)) ? 1 : 0);
+        self::$canUpdate = ($gestionepermessi->aggiornare(array('modulo' => self::$controller)) ? 1 : 0);
     }
 
     /**
@@ -351,6 +357,9 @@ class FiCrudController extends Controller
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         $this->setup($request);
+        if (!self::$canDelete) {
+            throw new AccessDeniedException("Non si hanno i permessi per aggiornare questo contenuto");
+        }
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
         $controller = $this->getController();
