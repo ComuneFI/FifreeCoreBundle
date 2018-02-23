@@ -118,10 +118,10 @@ class TabelleUtility
             return false;
         }
 
-        $namespace = $parametri['namespace'];
+        //$namespace = $parametri['namespace'];
         $bundle = $parametri['bundle'];
 
-        $nomebundle = $namespace . $bundle . 'Bundle';
+        //$nomebundle = $namespace . $bundle . 'Bundle';
 
         $nometabella = $parametri['tabella'];
         $em = $this->container->get("doctrine")->getManager();
@@ -154,10 +154,10 @@ class TabelleUtility
         $c = $em->getClassMetadata($bundleClass . ':' . $nometabella);
 
         $colonne = $c->getColumnNames();
-        $this->scriviDB($colonne, $nometabella, $nomebundle, $parametri);
+        $this->scriviDB($colonne, $nometabella, $parametri);
     }
 
-    private function scriviDB($colonne, $nometabella, $nomebundle, $parametri)
+    private function scriviDB($colonne, $nometabella, $parametri)
     {
         foreach ($colonne as $colonna) {
             $vettorericerca = array(

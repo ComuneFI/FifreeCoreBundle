@@ -146,7 +146,7 @@ class TabelleController extends FiCoreController
 
         $testata = Griglia::testataPerGriglia($paricevuti);
 
-        $testata['titolo'] = "Configurazione colonne per tabella $nometabella";
+        $testata['titolo'] = sprintf("Configurazione colonne per tabella %s", $nometabella);
         $testata['multisearch'] = 0;
         $testata['showdel'] = 0;
         $testata['showadd'] = 0;

@@ -67,7 +67,7 @@ class StoricomodificheRepository extends EntityRepository
      * return @boolean
      *
      */
-    private function isHistoricized($nomebundle, $controller, $indiceDato)
+    private function isHistoricized($controller, $indiceDato)
     {
 
         $risposta = false;
@@ -97,10 +97,10 @@ class StoricomodificheRepository extends EntityRepository
      * return @string
      *
      */
-    private function isDataChanged($nomebundle, $controller, $datooriginale, $singoloDato, $indiceDato, &$changes)
+    private function isDataChanged($controller, $datooriginale, $singoloDato, $indiceDato, &$changes)
     {
 
-        if (($datooriginale !== $singoloDato) && $this->isHistoricized($nomebundle, $controller, $indiceDato)) {
+        if (($datooriginale !== $singoloDato) && $this->isHistoricized($controller, $indiceDato)) {
             $changes[$indiceDato] = $datooriginale;
         }
     }
