@@ -11,12 +11,13 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class CheckgitversionCommand extends ContainerAwareCommand
 {
+
     protected function configure()
     {
         $this
-            ->setName('pannelloamministrazione:checkgitversion')
-            ->setDescription('Controllo versioni bundles')
-            ->setHelp('Controlla le versioni git dei bundles');
+                ->setName('pannelloamministrazione:checkgitversion')
+                ->setDescription('Controllo versioni bundles')
+                ->setHelp('Controlla le versioni git dei bundles');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -27,23 +28,22 @@ class CheckgitversionCommand extends ContainerAwareCommand
             return 0;
         }
 
-        $projectDir = substr($this->getContainer()->get('kernel')->getRootDir(), 0, -4);
-
         $composerbundles = array();
-        $composerbundlespath = $projectDir.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'fi';
+        $papath = $this->getContainer()->get('pannelloamministrazione.projectpath');
+        $composerbundlespath =  $papath->getVendorBinPath(). '/../fi';
         $findercomposerbundle = new Finder();
         $findercomposerbundle->in($composerbundlespath)->sortByName()->directories()->depth('== 0');
 
         foreach ($findercomposerbundle as $file) {
-            $fullcomposerbundlepath = $composerbundlespath.DIRECTORY_SEPARATOR.$file->getBasename();
+            $fullcomposerbundlepath = $composerbundlespath . DIRECTORY_SEPARATOR . $file->getBasename();
             $local = $this->getGitVersion($fullcomposerbundlepath, false);
             $remote = $this->getGitVersion($fullcomposerbundlepath, true);
             $style = new OutputFormatterStyle('blue', 'white', array('bold', 'blink'));
             $output->getFormatter()->setStyle('warning', $style);
             if ($local !== $remote) {
-                $remote = '<warning> * '.$remote.' * </warning>';
+                $remote = '<warning> * ' . $remote . ' * </warning>';
             }
-            $output->writeln('<info>'.$file->getBasename().'</info> '.$local.' -> '.$remote);
+            $output->writeln('<info>' . $file->getBasename() . '</info> ' . $local . ' -> ' . $remote);
 
             $composerbundles[] = array(
                 'name' => $file->getBasename(),
