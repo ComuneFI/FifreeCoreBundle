@@ -1,11 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Fi\CoreBundle\Utils;
 
 final class TabelleSingletonUtility
@@ -18,7 +12,7 @@ final class TabelleSingletonUtility
     /**
      * Call this method to get singleton
      *
-     * @return UserFactory
+     * @return \Fi\CoreBundle\Entity\Tabelle
      */
     public static function instance($em, $nometabella, $operatore)
     {

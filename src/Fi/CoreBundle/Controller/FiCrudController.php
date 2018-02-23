@@ -130,8 +130,8 @@ class FiCrudController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            $continua = $request->get('continua');
-            if ($continua == 0) {
+            $continua = (int)$request->get('continua');
+            if ($continua === 0) {
                 return new Response('OK');
             } else {
                 return $this->redirect($this->generateUrl($controller . '_edit', array('id' => $entity->getId())));
@@ -298,8 +298,8 @@ class FiCrudController extends Controller
                 $repoStorico->saveHistory($controller, $changes, $id, $this->getUser());
             }
 
-            $continua = $request->get('continua');
-            if ($continua == 0) {
+            $continua = (int)$request->get('continua');
+            if ($continua === 0) {
                 return new Response('OK');
             } else {
                 return $this->redirect($this->generateUrl($controller . '_edit', array('id' => $id)));

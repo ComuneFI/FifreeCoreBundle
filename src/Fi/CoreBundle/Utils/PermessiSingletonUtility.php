@@ -19,7 +19,7 @@ final class PermessiSingletonUtility
     /**
      * Call this method to get singleton
      *
-     * @return UserFactory
+     * @return \Fi\CoreBundle\Entity\Permessi
      */
     public static function instance($em, $modulo, $operatore, $ruolo)
     {
