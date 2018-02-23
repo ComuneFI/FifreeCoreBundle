@@ -119,7 +119,7 @@ class StoricomodificheRepository extends EntityRepository
 
         $changes = array();
         foreach ($newData as $indiceDato => $singoloDato) {
-            $this->isDataChanged($nomebundle, $controller, $originalData[$indiceDato], $singoloDato, $indiceDato, $changes);
+            $this->isDataChanged($controller, $originalData[$indiceDato], $singoloDato, $indiceDato, $changes);
         }
         return $changes;
     }
