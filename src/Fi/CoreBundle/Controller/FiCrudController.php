@@ -31,16 +31,6 @@ class FiCrudController extends Controller
         self::$bundle = $matches[2];
         self::$controller = $matches[3];
         self::$action = substr($request->attributes->get('_controller'), strrpos($request->attributes->get('_controller'), ':') + 1);
-
-        $gestionepermessi = $this->get('ficorebundle.gestionepermessi');
-        self::$canRead = ($gestionepermessi->leggere(array('modulo' => self::$controller)) ? 1 : 0);
-        self::$canDelete = ($gestionepermessi->cancellare(array('modulo' => self::$controller)) ? 1 : 0);
-        self::$canCreate = ($gestionepermessi->creare(array('modulo' => self::$controller)) ? 1 : 0);
-        self::$canUpdate = ($gestionepermessi->aggiornare(array('modulo' => self::$controller)) ? 1 : 0);
-        
-        if (!self::$canRead) {
-            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
-        }
     }
 
     /**
