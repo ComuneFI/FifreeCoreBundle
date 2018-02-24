@@ -161,4 +161,47 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
         $this->assertEquals(count($fftt), 0);
     }
 
+    /**
+     * @test
+     * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
+     * @covers Fi\CoreBundle\Controller\FiController::<public>
+     * @covers Fi\CoreBundle\Controller\StampatabellaController::printHeaderXls
+     * @covers Fi\CoreBundle\Controller\StampatabellaController::printBodyXls
+     * 
+     */
+    public function testExcelFfsecondaria()
+    {
+        $client = $this->getClient();
+        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
+        $url = $client->getContainer()->get('router')->generate('Tabelle_esportaexceltabella', array('nometabella' => 'Ffsecondaria'));
+
+        $client->request('GET', $url);
+        $this->assertTrue(
+                $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
+        );
+    }
+
+    /**
+     * @test
+     * 
+     * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
+     * @covers Fi\CoreBundle\Controller\FiController::<public>
+     * @covers Fi\CoreBundle\Controller\StampatabellaController::stampa
+     * @covers Fi\CoreBundle\Controller\StampatabellaController::stampaTestata
+     * 
+     */
+    public function testStampaFfprincipale()
+    {
+        $client = $this->getClient();
+        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
+        $url = $client->getContainer()->get('router')->generate('Tabelle_stampatabella', array('nometabella' => 'Ffsecondaria'));
+        ob_start();
+        $client->request('GET', $url);
+        $pdfcontents = ob_get_clean();
+
+        $this->assertTrue(
+                $client->getResponse()->getStatusCode() === 200
+        );
+    }
+
 }
