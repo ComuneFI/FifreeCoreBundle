@@ -1,10 +1,7 @@
+stampa tabella dividere in service pdf + xls
 test su ordinamento campi definiti da utente
 test su stampa campi definiti da utente
-test se precondizioni avanzate boolean impostato, cosa succede se uno cambia?
-test su precondizioni
-test su filtri in header griglia
-
 
 funzionalità:
-import from excel in tabella
+
 

@@ -39,16 +39,10 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory>./src</directory>
-            <exclude>
-                <!--<directory suffix=".php">/path/to/files</directory>-->
-                <file>/src/Fi/CoreBundle/Controller/FfprincipaleController.php</file>
-                <file>/src/Fi/CoreBundle/Controller/FfsecondariaController.php</file>
-            </exclude>
         </whitelist>
     </filter>
     
     <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
         <listener class="Symfony\Bridge\PhpUnit\CoverageListener" />
     </listeners>   
 </phpunit>
