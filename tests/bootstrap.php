@@ -17,7 +17,7 @@ date_default_timezone_set('Europe/Rome');
 function clearcache()
 {
     passthru(sprintf(
-                    'php "%s/console" cache:clear --no-warmup --env=%s  > /dev/null', __DIR__ . '/../tests/bin/', "test"
+                    'php "%s/console" cache:clear --no-warmup --env=%s  > /dev/null 2>&1', __DIR__ . '/../tests/bin/', "test"
     ));
 }
 
@@ -26,7 +26,7 @@ function clearcache()
 function cachewarmup()
 {
     passthru(sprintf(
-                    'php "%s/console" cache:warmup --env=%s > /dev/null', __DIR__ . '/../tests/bin/', "test"
+                    'php "%s/console" cache:warmup --env=%s > /dev/null 2>&1', __DIR__ . '/../tests/bin/', "test"
     ));
     #sleep(1);
 }

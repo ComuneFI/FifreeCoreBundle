@@ -114,7 +114,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         //dump("Generate bundle");
         $console = __DIR__ . '/../../../bin/console';
-        $cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --format=yml  -n --env=test --no-debug > /dev/null";
+        $cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --format=yml  -n --env=test --no-debug > /dev/null 2>&1";
         passthru($cmd);
         //dump("Generated bundle");
 

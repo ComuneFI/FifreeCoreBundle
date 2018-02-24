@@ -20,7 +20,7 @@ class OperatoriCreateCommandTest extends WebTestCase
     {
         $userprova = 'utenteprova';
         $console = __DIR__ . '/../../../bin/console';
-        $cmd = "php " . $console . " fos:user:create $userprova $userprova@domain.it passwordprova --env=test";
+        $cmd = "php " . $console . " fos:user:create $userprova $userprova@domain.it passwordprova --env=test > /dev/null 2>&1";
         passthru($cmd);
 //        $kernel = static::$kernel;
 //        $application = new Application($kernel);
