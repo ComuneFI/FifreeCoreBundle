@@ -9,11 +9,6 @@ final class TabelleSingletonUtility
     private static $nometabella;
     private static $operatore;
 
-    /**
-     * Call this method to get singleton
-     *
-     * @return \Fi\CoreBundle\Entity\Tabelle
-     */
     public static function instance($em, $nometabella, $operatore)
     {
         static $inst = null;
@@ -43,6 +38,12 @@ final class TabelleSingletonUtility
         }
     }
 
+    /**
+     * Call this method to get singleton
+     *
+     * @return \Fi\CoreBundle\Entity\Tabelle
+     */
+    
     public static function getTabelle()
     {
         return self::$queryTabelle;

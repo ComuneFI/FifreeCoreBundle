@@ -44,7 +44,8 @@ class GrigliaColonneUtils
         $infocolonne = $doctrine->getMetadataFactory()->getMetadataFor($entityName);
 
         $colonne = array();
-        foreach ($infocolonne->fieldMappings as $colonna) {
+        $fieldMappings = $infocolonne->fieldMappings;
+        foreach ($fieldMappings as $colonna) {
             $colonne[$colonna['fieldName']] = $colonna;
             if ($colonne[$colonna['fieldName']]['type'] == 'integer' || !(isset($colonne[$colonna['fieldName']]['length']))) {
                 $colonne[$colonna['fieldName']]['length'] = 11;

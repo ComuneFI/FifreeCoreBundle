@@ -43,7 +43,8 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
                 if (isset($classMetadata->idGenerator)) {
                     $sequncename = $em->getConfiguration()->getQuoteStrategy()
                             ->getSequenceName($newDefinition, $classMetadata, $em->getConnection()->getDatabasePlatform());
-                    $sequenceGenerator = new SequenceGenerator($sequncename, $newDefinition['allocationSize']);
+                    $allocationSize = $newDefinition['allocationSize'];
+                    $sequenceGenerator = new SequenceGenerator($sequncename, $allocationSize);
                     $classMetadata->setIdGenerator($sequenceGenerator);
                 }
             }

@@ -16,11 +16,6 @@ final class PermessiSingletonUtility
     private static $operatore;
     private static $ruolo;
 
-    /**
-     * Call this method to get singleton
-     *
-     * @return \Fi\CoreBundle\Entity\Permessi
-     */
     public static function instance($em, $modulo, $operatore, $ruolo)
     {
         static $inst = null;
@@ -63,6 +58,11 @@ final class PermessiSingletonUtility
         self::$PermessiTabelle = $q;
     }
 
+    /**
+     * Call this method to get singleton
+     *
+     * @return \Fi\CoreBundle\Entity\Permessi
+     */
     public static function getPermessi()
     {
         return self::$PermessiTabelle;
