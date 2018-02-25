@@ -72,10 +72,12 @@ services:
     #Stampa tabella
     ficorebundle.tabelle.stampa.pdf:
         class: Fi\CoreBundle\DependencyInjection\EsportaTabellaPdf        
+        public: true
 
     #Esporta tabella excel
     ficorebundle.tabelle.stampa.xls:
         class: Fi\CoreBundle\DependencyInjection\EsportaTabellaXls        
+        public: true
 
     ficorebundle.tblprefix_subscriber:
         class: Fi\CoreBundle\Subscriber\TablePrefixSubscriber
