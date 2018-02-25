@@ -49,7 +49,7 @@ addons:
 before_script:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi make
-  - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo 'date.timezone = "Europe/Rome"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then sudo apt-get install -y --force-yes php5-dev php-pear php5-mysql php5-curl php5-gd php5-json php5-sqlite php5-pgsql; fi
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi
@@ -106,16 +106,10 @@ before_script:
   
 
 script:
-  - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then ant; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == "7.0" ]]; then ant; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == "7.1" ]]; then ant; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == "7.2" ]]; then ant; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then ant; fi
 
 after_success:
-  - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]]; then php vendor/bin/php-coveralls -v; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == "7.0" ]]; then php vendor/bin/php-coveralls -v; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == "7.1" ]]; then php vendor/bin/php-coveralls -v; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == "7.2" ]]; then php vendor/bin/php-coveralls -v; fi
+  - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php vendor/bin/php-coveralls -v; fi
   - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then wget https://scrutinizer-ci.com/ocular.phar -t 3; fi;
   - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php ocular.phar code-coverage:upload --format=php-clover build/artifacts/coverage/clover.xml; fi;
   - sudo cat $TRAVIS_BUILD_DIR/build/artifacts/logs/selenium2.log
