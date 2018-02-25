@@ -11,11 +11,11 @@ class FiCoreController extends FiController
     public function stampatabellaAction(Request $request)
     {
         $this->setup($request);
-        $pdf = new StampatabellaController($this->container);
-
+        $stampaservice = $this->get("ficorebundle.tabelle.stampa.pdf");
+        
         $parametri = $this->prepareOutput($request);
-
-        $pdf->stampa($parametri);
+        
+        $stampaservice->stampa($parametri);
 
         return new Response('OK');
     }
@@ -23,11 +23,12 @@ class FiCoreController extends FiController
     public function esportaexcelAction(Request $request)
     {
         $this->setup($request);
-        $xls = new StampatabellaController($this->container);
-
+        $stampaservice = $this->get("ficorebundle.tabelle.stampa.xls");
+        
         $parametri = $this->prepareOutput($request);
 
-        $fileexcel = $xls->esportaexcel($parametri);
+        $fileexcel = $stampaservice->esportaexcel($parametri);
+
         $response = new Response();
 
         $response->headers->set('Content-Type', 'text/csv');
