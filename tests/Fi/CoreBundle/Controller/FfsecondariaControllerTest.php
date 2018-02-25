@@ -186,8 +186,8 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
      * 
      * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
      * @covers Fi\CoreBundle\Controller\FiController::<public>
-     * @covers Fi\CoreBundle\Controller\StampatabellaController::stampa
-     * @covers Fi\CoreBundle\Controller\StampatabellaController::stampaTestata
+     * @covers Fi\CoreBundle\DependencyInjection\EsportaTabellaPdf::stampa
+     * @covers Fi\CoreBundle\DependencyInjection\EsportaTabellaPdf::stampaTestata
      * 
      */
     public function testStampaFfprincipale()

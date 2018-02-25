@@ -11,13 +11,11 @@
     processIsolation            = "false"
     stopOnFailure               = "true"
     syntaxCheck                 = "false"
-    bootstrap                   = "tests/bootstrap.php" >
+    bootstrap                   = "./../../tests/bootstrap.php" >
 
     <testsuites>
-        <testsuite name="Pannelloamministrazionebundle">
-            <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/Command</directory>
-            <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/Controller</directory>
-            <directory suffix=".php">./tests/Fi/PannelloAmministrazioneBundle/DependencyInjection</directory>
+        <testsuite name="Pannelloamministrazionebundle Functional">
+            <directory suffix=".php">./../../tests/Fi/PannelloAmministrazioneBundle/Functional</directory>
         </testsuite>
     </testsuites>
     
@@ -27,12 +25,12 @@
         <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
         <const name="WEB_SERVER_HOST" value="localhost" />
         <const name="WEB_SERVER_PORT" value="8000" />
-        <const name="WEB_SERVER_DOCROOT" value="./tests/web" />
+        <const name="WEB_SERVER_DOCROOT" value="./../../tests/web" />
     </php>
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory>./src</directory>
+            <directory>./../../src</directory>
         </whitelist>
     </filter>
     
