@@ -54,7 +54,7 @@ function caricaGriglia(parametrijs) {
     var overlayopen = (parametrijs["overlayopen"] == 1) ? true : false;
     var imgwaiturl = parametrijs['imgwaiturl'] || '/bundles/ficore/images/wait.gif';
     var indirizzoexcel = (parametrijs["indirizzoexcel"]) ? parametrijs["indirizzoexcel"] : "Tabelle/esportaexcel/" + parametrijs["tabella"];
-    var importexcel = (parametrijs["importexcel"]) ? parametrijs["importexcel"] : "Tabelle/importaexcel/" + parametrijs["tabella"];
+    //var importexcel = (parametrijs["importexcel"]) ? parametrijs["importexcel"] : "Tabelle/importaexcel/" + parametrijs["tabella"];
 
     var parametriaggiuntivi_edit = parametrijs["parametriaggiuntivi_edit"] || {};
     var open_new_window = parametrijs["open_new_window"] || 0;
@@ -93,8 +93,8 @@ function caricaGriglia(parametrijs) {
         'titolo': titolo,
         'parametritesta': parametritesta,
         'parametrigriglia': parametrigriglia,
-        'indirizzoexcel': indirizzoexcel,
-        'importexcel': importexcel
+        'indirizzoexcel': indirizzoexcel/*,
+        'importexcel': importexcel*/
                 //'filtri': jQuery(nomelist).getGridParam("postData").filters
     };
 
@@ -588,7 +588,7 @@ function caricaGriglia(parametrijs) {
     }
 
     //Se si hanno i diritti per stampare si imposta il pulsante e la funizonalità
-    if (showimportexcel) {
+    /*if (showimportexcel) {
         jQuery(nomelist).navGrid(nomepager).navButtonAdd(nomepager, {
             id: "buttonimportexcel_" + nomelist.substr(1),
             caption: captionexcel,
@@ -601,7 +601,7 @@ function caricaGriglia(parametrijs) {
             cursor: "pointer"
         });
 
-    }
+    }*/
 
     //Se si hanno i diritti per modificare la configurazioen della griglia si imposta il pulsante e la funizonalità
     if (showconfig) {
@@ -1090,7 +1090,7 @@ function esportaexcel(parametriexcel) {
 
 }
 
-function importaexcel(parametriexcel) {
+/*function importaexcel(parametriexcel) {
     var indirizzoexcel = parametriexcel["importexcel"];
     jQuery("#formimportaexcel").remove();
     var creaformxls = jQuery("<form id='formimportaexcel' name='formimportaexcel' class='dropzone'></form>");
@@ -1147,7 +1147,7 @@ function importaexcel(parametriexcel) {
     //document.formesportaexcel.submit();
     //jQuery("#formesportaexcel").remove();
 
-}
+}*/
 
 function apriDettaglio(parametri) {
     var tabella = parametri['tabella'];

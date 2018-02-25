@@ -71,7 +71,7 @@ class FiCoreController extends FiController
         return $parametri;
     }
 
-    public function importaexcelAction(Request $request)
+    /*public function importaexcelAction(Request $request)
     {
         $this->setup($request);
         $return = "OK";
@@ -149,5 +149,5 @@ class FiCoreController extends FiController
         }
 
         return $valore;
-    }
+    }*/
 }

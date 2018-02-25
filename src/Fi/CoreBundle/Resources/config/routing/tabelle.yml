@@ -17,10 +17,10 @@ Tabelle_esportaexceltabella:
     defaults: { _controller: "FiCoreBundle:Tabelle:esportaexcel" }
     requirements: { methods: post|put|get }
     
-Tabelle_importaexceltabella:
-    path:  /importaexcel/{nometabella}
-    defaults: { _controller: "FiCoreBundle:Tabelle:importaexcel" }
-    requirements: { methods: post|put|get }
+#Tabelle_importaexceltabella:
+#    path:  /importaexcel/{nometabella}
+#    defaults: { _controller: "FiCoreBundle:Tabelle:importaexcel" }
+#    requirements: { methods: post|put|get }
 
 Tabelle_grigliapopup:
     path:  /{chiamante}/grigliapopup
