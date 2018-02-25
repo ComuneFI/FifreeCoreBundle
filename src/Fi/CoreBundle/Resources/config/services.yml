@@ -68,7 +68,15 @@ services:
         class: Fi\CoreBundle\DependencyInjection\TabelleUtility
         public: true
         arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
-            
+        
+    #Stampa tabella
+    ficorebundle.tabelle.stampa.pdf:
+        class: Fi\CoreBundle\DependencyInjection\EsportaTabellaPdf        
+
+    #Esporta tabella excel
+    ficorebundle.tabelle.stampa.xls:
+        class: Fi\CoreBundle\DependencyInjection\EsportaTabellaXls        
+
     ficorebundle.tblprefix_subscriber:
         class: Fi\CoreBundle\Subscriber\TablePrefixSubscriber
         arguments: ["%ficorebundle.db.table_prefix%"]
