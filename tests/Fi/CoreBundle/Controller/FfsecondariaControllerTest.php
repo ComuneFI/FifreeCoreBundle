@@ -165,8 +165,8 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
      * @test
      * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
      * @covers Fi\CoreBundle\Controller\FiController::<public>
-     * @covers Fi\CoreBundle\Controller\StampatabellaController::printHeaderXls
-     * @covers Fi\CoreBundle\Controller\StampatabellaController::printBodyXls
+     * @covers Fi\CoreBundle\DependencyInjection\EsportaTabellaXls::printHeaderXls
+     * @covers Fi\CoreBundle\DependencyInjection\EsportaTabellaXls::printBodyXls
      * 
      */
     public function testExcelFfsecondaria()
