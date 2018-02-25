@@ -137,7 +137,7 @@ class FiUtilita
             $mm = substr($restante, 0, $barra);
             $gg = substr($restante, $barra + 1);
 
-            $formattata = (strlen($gg) == 0 ? '' : "$gg/$mm/$aaaa");
+            $formattata = (strlen($gg) == 0 ? '' : sprintf("%s/%s/%s", $gg, $mm, $aaaa));
         }
 
         return $formattata;
@@ -149,7 +149,7 @@ class FiUtilita
         $mm = substr($giorno, 4, 2);
         $gg = substr($giorno, 6, 2);
 
-        $formattata = (strlen($gg) == 0 ? '' : "$gg/$mm/$aaaa");
+        $formattata = (strlen($gg) == 0 ? '' : sprintf("%s/%s/%s", $gg, $mm, $aaaa));
 
         return $formattata;
     }
