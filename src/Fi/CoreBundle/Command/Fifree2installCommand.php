@@ -454,6 +454,20 @@ Fi\CoreBundle\Entity\Tabelle:
     etichettastampa: null
     operatori_id: null
     registrastorico: true
+  -
+    id: 4
+    nometabella: Ffprincipale
+    nomecampo: null
+    mostraindex: null
+    ordineindex: null
+    larghezzaindex: null
+    etichettaindex: null
+    mostrastampa: null
+    ordinestampa: null
+    larghezzastampa: null
+    etichettastampa: null
+    operatori_id: null
+    registrastorico: null
 Fi\CoreBundle\Entity\OpzioniTabella:
   -
     id: 1
@@ -478,6 +492,36 @@ Fi\CoreBundle\Entity\OpzioniTabella:
     tabelle_id: 1
     descrizione: 'Aggiunge filtri di default in testata griglia'
     parametro: filterToolbar_searchOperators
+    valore: true
+  -
+    id: 5
+    tabelle_id: 4
+    descrizione: 'Allarga griglia Ffprincipale'
+    parametro: larghezzagriglia
+    valore: 800
+  -
+    id: 6
+    tabelle_id: 4
+    descrizione: 'Multisearch Ffprincipale'
+    parametro: multisearch
+    valore: true
+  -
+    id: 7
+    tabelle_id: 4
+    descrizione: 'Showconfig Ffprincipale'
+    parametro: showconfig
+    valore: true
+  -
+    id: 8
+    tabelle_id: 4
+    descrizione: 'Show excel Ffprincipale'
+    parametro: showexcel
+    valore: true
+  -
+    id: 9
+    tabelle_id: 4
+    descrizione: 'Overlayopen Ffprincipale'
+    parametro: overlayopen
     valore: true
 Fi\CoreBundle\Entity\Ffprincipale:
   -

@@ -89,7 +89,6 @@ class FfsecondariaController extends FiCoreController
         $testatagriglia['showdel'] = 1;
 
         $testatagriglia['showexcel'] = 1;
-        $testatagriglia['showimportexcel'] = 1;
 
         $testatagriglia["filterToolbar_searchOnEnter"] = true;
         $testatagriglia["filterToolbar_searchOperators"] = true;
