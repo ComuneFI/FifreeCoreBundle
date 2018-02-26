@@ -49,11 +49,8 @@ class PannelloamministrazioneCommands
         $bundlePath = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundleName;
 
         if ($fs->exists($bundlePath)) {
-            return array('errcode' => -1, 'command' => 'generate:bundle', 'message' => "Il bundle esiste gia' in $bundlePath");
+            return array('errcode' => -1, 'command' => 'generate:bundle', 'message' => sprintf("Il bundle esiste gia' in %s", $bundlePath));
         }
-//        if (!is_writable($bundlePath)) {
-//            return array('errcode' => -1, 'command' => 'generate:bundle', 'message' => "$bundlePath non scrivibile");
-//        }
 
         $commandparms = array(
             '--namespace' => $bundleName,

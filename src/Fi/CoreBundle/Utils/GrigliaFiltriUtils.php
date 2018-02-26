@@ -35,7 +35,7 @@ class GrigliaFiltriUtils
             'cn' => ' contiene ',
             'nc' => ' non contiene ',
             'nu' => ' è vuoto',
-            'nn' => ' non è vuoto', );
+            'nn' => ' non è vuoto',);
 
         if (!isset($filtri) || (!$filtri)) {
             return '';
@@ -45,18 +45,19 @@ class GrigliaFiltriUtils
 
         return $filtrodescritto;
     }
-
     public static function getFiltrodescritto($filtri, $tipofiltro)
     {
-        $filtrodescritto = ('I dati mostrati rispondono a'.($tipofiltro == 'AND' ? ' tutti i' : 'd almeno uno dei').' seguenti criteri: ');
+        $filtrodescritto = ('I dati mostrati rispondono a' . ($tipofiltro == 'AND' ? ' tutti i' : 'd almeno uno dei') . ' seguenti criteri: ');
 
         foreach ($filtri as $indice => $filtro) {
             $campo = $filtro->field;
             $operatore = $filtro->op;
             $data = $filtro->data;
-            $filtrodescritto .= ($indice !== 0 ? ($tipofiltro == 'AND' ? ' e ' : ' o ') : '').
-                    GrigliaUtils::toCamelCase(array('str' => $campo, 'primamaiuscola' => true)).
-                    GrigliaUtils::$decodificaop[$operatore]."\"$data\"";
+            $strtipofiltro = ($indice !== 0 ? ($tipofiltro == 'AND' ? ' e ' : ' o ') : '');
+            $strcampo = GrigliaUtils::toCamelCase(array('str' => $campo, 'primamaiuscola' => true));
+            $stroperatore = GrigliaUtils::$decodificaop[$operatore];
+            $strdata = "\"$data\"";
+            $filtrodescritto = sprintf("%s%s%s%s%s", $filtrodescritto, $strtipofiltro, $strcampo, $stroperatore, $strdata);
         }
 
         $filtrodescritto .= '.';

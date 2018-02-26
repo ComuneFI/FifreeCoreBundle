@@ -55,7 +55,7 @@ class GrigliaDatiPrecondizioniUtils
             }
 
             $regole[] = array(
-                'field' => "$nometabellaprecondizione.$nomecampoprecondizione",
+                'field' => sprintf("%s.%s", $nometabellaprecondizione, $nomecampoprecondizione),
                 'op' => $operatoreprecondizione,
                 'data' => $valorecampoprecondizione,
                 'typof' => $operatorelogicoprecondizione);
