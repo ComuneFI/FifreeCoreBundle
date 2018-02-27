@@ -21,7 +21,9 @@ class GrigliaDatiPrecondizioniUtils
         $tipof = $filtri['groupOp'];
         /* prende un vettore con tutte le ricerche */
         $regolegriglia = isset($filtri['rules']) ? $filtri['rules'] : array();
-
+        foreach ($regolegriglia as $key => $regola) {
+            $regolegriglia[$key]["typof"] = $tipof;
+        }
 
 
         foreach ($precondizioniAvanzate as $elem) {
@@ -70,18 +72,15 @@ class GrigliaDatiPrecondizioniUtils
         }
         /**/
 
-        $regole = array_merge($regolegriglia, $regoleprecondizioni);
-
-        $regolearray = array(
-            'regole' => $regole,
+        $regole = array(
+            'regole' => array_merge($regolegriglia, $regoleprecondizioni),
             'doctrine' => $doctrine,
             'nometabella' => $nometabella,
             'entityName' => $entityName,
             'bundle' => $bundle
         );
 
-        GrigliaRegoleUtils::setRegole($q, $primo, $regolearray);
-
+        GrigliaRegoleUtils::setRegole($q, $regole);
     }
 
     private static function elaboravalorecampo($type, $valuepre)

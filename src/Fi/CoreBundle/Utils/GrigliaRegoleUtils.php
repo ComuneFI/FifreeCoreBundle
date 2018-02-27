@@ -44,12 +44,13 @@ class GrigliaRegoleUtils
         }
     }
 
-    public static function setRegole(&$q, &$primo, $parametri = array())
+    public static function setRegole(&$q, $parametri = array())
     {
         $regole = $parametri['regole'];
         //file_put_contents("/tmp/appo.log", print_r($regole, true) . "\n", FILE_APPEND);
         //$tipof = $parametri['tipof'];
         $tipo = null;
+        $primo = true;
         //file_put_contents("/tmp/appo.log", "\n\n" .  . "\n\n", FILE_APPEND);
         foreach ($regole as $key => $regola) {
             //file_put_contents("/tmp/appo.log", "***1***" . "\n", FILE_APPEND);

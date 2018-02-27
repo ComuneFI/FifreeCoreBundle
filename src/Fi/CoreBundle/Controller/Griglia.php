@@ -147,8 +147,6 @@ class Griglia extends Controller
 
         GrigliaUtils::init();
 
-        $primo = true;
-
         /* se ci sono delle precondizioni le imposta qui */
 
         GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate($q, $parametri);
