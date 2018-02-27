@@ -7,13 +7,13 @@ use Fi\CoreBundle\Controller\FiUtilita;
 class GrigliaDatiPrecondizioniUtils
 {
 
-    public static function setPrecondizioniAvanzate(&$q, &$primo, $parametri = array())
+    public static function setPrecondizioniAvanzate(&$q, $parametri = array())
     {
-        $doctrine = $parametri['doctrine'];
+        $precondizioniAvanzate = GrigliaDatiPrecondizioniUtils::precondizioniToPrecondizioniAvanzate($parametri);
+        $doctrine = GrigliaParametriUtils::getDoctrineByEm($parametri);
+        $bundle = $parametri['nomebundle'];
         $nometabella = $parametri['nometabella'];
-        $entityName = $parametri['entityName'];
-        $bundle = $parametri['bundle'];
-        $precondizioniAvanzate = $parametri['precondizioniAvanzate'];
+        $entityName = $bundle . ':' . $nometabella;
         $regole = array();
 
         foreach ($precondizioniAvanzate as $elem) {
@@ -40,7 +40,7 @@ class GrigliaDatiPrecondizioniUtils
                         break;
                     case 'valorecampo':
                         if (is_array($valuepre)) {
-                            $type = $doctrine->getClassMetadata($parametri['entityName'])->getFieldMapping($nomecampoprecondizione);
+                            $type = $doctrine->getClassMetadata($entityName)->getFieldMapping($nomecampoprecondizione);
                             $valorecampoprecondizione = self::elaboravalorecampo($type, $valuepre);
                         } else {
                             $valorecampoprecondizione = $valuepre;

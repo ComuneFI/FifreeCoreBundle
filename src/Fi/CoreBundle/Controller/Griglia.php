@@ -155,20 +155,21 @@ class Griglia extends Controller
         $primo = true;
 
         /* se ci sono delle precondizioni le imposta qui */
-        $precondizioniAvanzate = GrigliaDatiPrecondizioniUtils::precondizioniToPrecondizioniAvanzate($parametri);
-
+        
+        GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
+                $q, $parametri);
         /* se ci sono delle precondizioni avanzate le imposta qui */
-        if ($precondizioniAvanzate) {
-            GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
-                $q,
-                $primo,
-                array('precondizioniAvanzate' => $precondizioniAvanzate,
-                'doctrine' => $doctrine,
-                'nometabella' => $nometabella,
-                'entityName' => $entityName,
-                'bundle' => $bundle)
-            );
-        }
+        /* if ($precondizioniAvanzate) {
+          GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
+          $q,
+          $primo,
+          array('precondizioniAvanzate' => $precondizioniAvanzate,
+          'doctrine' => $doctrine,
+          'nometabella' => $nometabella,
+          'entityName' => $entityName,
+          'bundle' => $bundle)
+          );
+          } */
         /* scorro ogni singola regola */
         if (isset($regole)) {
             foreach ($regole as $key => $regola) {
@@ -176,9 +177,7 @@ class Griglia extends Controller
                 $regola = $regola;
             }
             GrigliaRegoleUtils::setRegole(
-                $q,
-                $primo,
-                array(
+                    $q, $primo, array(
                 'regole' => $regole,
                 'doctrine' => $doctrine,
                 'nometabella' => $nometabella,
@@ -218,13 +217,7 @@ class Griglia extends Controller
             $indicecolonna = 0;
             foreach ($singolo as $nomecampo => $singolocampo) {
                 GrigliaDatiMultiUtils::buildDatiGriglia(
-                    $parametri,
-                    $vettoreriga,
-                    $singolo,
-                    $nomecampo,
-                    $indice,
-                    $indicecolonna,
-                    $singolocampo
+                        $parametri, $vettoreriga, $singolo, $nomecampo, $indice, $indicecolonna, $singolocampo
                 );
             }
 
@@ -235,4 +228,5 @@ class Griglia extends Controller
         $response = new GridDati($vettorerisposta);
         return $response->getResponse();
     }
+
 }
