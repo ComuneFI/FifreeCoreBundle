@@ -145,47 +145,15 @@ class Griglia extends Controller
             GrigliaDatiUtils::setTabelleJoin($q, array('tabellej' => $tabellej, 'nometabella' => $nometabella));
         }
 
-        /* dal filtro prende il tipo di operatore (AND o OR sono i due fin qui gestiti) */
-        $tipof = $filtri['groupOp'];
-        /* prende un vettore con tutte le ricerche */
-        $regole = $filtri['rules'];
-
         GrigliaUtils::init();
 
         $primo = true;
 
         /* se ci sono delle precondizioni le imposta qui */
-        
-        GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
-                $q, $parametri);
+
+        GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate($q, $parametri);
         /* se ci sono delle precondizioni avanzate le imposta qui */
-        /* if ($precondizioniAvanzate) {
-          GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate(
-          $q,
-          $primo,
-          array('precondizioniAvanzate' => $precondizioniAvanzate,
-          'doctrine' => $doctrine,
-          'nometabella' => $nometabella,
-          'entityName' => $entityName,
-          'bundle' => $bundle)
-          );
-          } */
         /* scorro ogni singola regola */
-        if (isset($regole)) {
-            foreach ($regole as $key => $regola) {
-                $regole[$key]["typof"] = $tipof;
-                $regola = $regola;
-            }
-            GrigliaRegoleUtils::setRegole(
-                    $q, $primo, array(
-                'regole' => $regole,
-                'doctrine' => $doctrine,
-                'nometabella' => $nometabella,
-                'entityName' => $entityName,
-                'bundle' => $bundle
-                    )
-            );
-        }
         $quanti = 0;
         GrigliaDatiMultiUtils::prepareQuery($parametri, $q, $sidx, $sord, $page, $limit, $quanti);
 

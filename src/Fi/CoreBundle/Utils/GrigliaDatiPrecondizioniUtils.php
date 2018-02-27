@@ -9,12 +9,20 @@ class GrigliaDatiPrecondizioniUtils
 
     public static function setPrecondizioniAvanzate(&$q, $parametri = array())
     {
+        $request = $parametri['request'];
         $precondizioniAvanzate = GrigliaDatiPrecondizioniUtils::precondizioniToPrecondizioniAvanzate($parametri);
         $doctrine = GrigliaParametriUtils::getDoctrineByEm($parametri);
         $bundle = $parametri['nomebundle'];
         $nometabella = $parametri['nometabella'];
         $entityName = $bundle . ':' . $nometabella;
-        $regole = array();
+        $regoleprecondizioni = array();
+        $filtri = json_decode($request->get('filters'), true);
+        /* dal filtro prende il tipo di operatore (AND o OR sono i due fin qui gestiti) */
+        $tipof = $filtri['groupOp'];
+        /* prende un vettore con tutte le ricerche */
+        $regolegriglia = isset($filtri['rules']) ? $filtri['rules'] : array();
+
+
 
         foreach ($precondizioniAvanzate as $elem) {
             $nometabellaprecondizione = '';
@@ -54,12 +62,16 @@ class GrigliaDatiPrecondizioniUtils
                 }
             }
 
-            $regole[] = array(
+            $regoleprecondizioni[] = array(
                 'field' => sprintf("%s.%s", $nometabellaprecondizione, $nomecampoprecondizione),
                 'op' => $operatoreprecondizione,
                 'data' => $valorecampoprecondizione,
                 'typof' => $operatorelogicoprecondizione);
         }
+        /**/
+
+        $regole = array_merge($regolegriglia, $regoleprecondizioni);
+
         $regolearray = array(
             'regole' => $regole,
             'doctrine' => $doctrine,
@@ -67,7 +79,9 @@ class GrigliaDatiPrecondizioniUtils
             'entityName' => $entityName,
             'bundle' => $bundle
         );
+
         GrigliaRegoleUtils::setRegole($q, $primo, $regolearray);
+
     }
 
     private static function elaboravalorecampo($type, $valuepre)
@@ -96,7 +110,7 @@ class GrigliaDatiPrecondizioniUtils
         $precondizioni = GrigliaDatiUtils::getDatiPrecondizioni($parametri);
 
         $precondizioniAvanzate = GrigliaDatiUtils::getDatiPrecondizioniAvanzate($parametri);
-        
+
         foreach ($precondizioni as $campoprecondizione => $valoreprecondizione) {
             if (strpos($campoprecondizione, ".") === false) {
                 $nometabellaprecondizione = $parametri['nometabella'];
@@ -112,4 +126,5 @@ class GrigliaDatiPrecondizioniUtils
         }
         return $precondizioniAvanzate;
     }
+
 }
