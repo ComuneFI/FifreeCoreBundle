@@ -5,8 +5,6 @@
             depends="prepare,
                     composer-self-update,
                     composer-run-install,
-                    drop-database,
-                    install-fifreecorebundle,
                     php-lint-ci, 
                     phpmd-ci, 
                     phpcs-ci, 
@@ -49,18 +47,6 @@
     <target name="composer-run-install" depends="composer-self-update">
         <exec executable="php" failonerror="true">
             <arg line="composer.phar install"/>
-        </exec>
-    </target>
-
-    <target name="drop-database">
-        <exec executable="php" failonerror="true">
-            <arg line="tests/bin/console fifree2:dropdatabase --force --env=test"/>
-        </exec>
-    </target>
-    
-    <target name="install-fifreecorebundle">
-        <exec executable="php" failonerror="true">
-            <arg line="tests/bin/console fifree2:install admin admin admin@admin.it --env=test"/>
         </exec>
     </target>
   
