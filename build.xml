@@ -53,14 +53,19 @@
     </target>
 
     <target name="drop-database">
-        <exec executable="php" failonerror="true">
-            <arg line="tests/bin/console fifree2:dropdatabase --force --env=test"/>
+        <exec executable="tests/bin/console fifree2:dropdatabase" failonerror="true">
+            <arg value="--force"/>
+            <arg value="--env=test"/>
         </exec>
     </target>
     
     <target name="install-fifreecorebundle">
-        <exec executable="php" failonerror="true">
-            <arg line="tests/bin/console fifree2:install admin admin admin@admin.it --env=test"/>
+        <exec executable="tests/bin/console fifree2:install" failonerror="true">
+            <arg value="admin"/>
+            <arg value="admin"/>
+            <arg value="admin@admin.it"/>
+            <arg value="--env=test"/>
+            <arg line="admin admin admin@admin.it"/>
         </exec>
     </target>
   
