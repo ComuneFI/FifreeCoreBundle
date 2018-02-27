@@ -183,7 +183,13 @@ class Griglia extends Controller
             $indicecolonna = 0;
             foreach ($singolo as $nomecampo => $singolocampo) {
                 GrigliaDatiMultiUtils::buildDatiGriglia(
-                        $parametri, $vettoreriga, $singolo, $nomecampo, $indice, $indicecolonna, $singolocampo
+                    $parametri,
+                    $vettoreriga,
+                    $singolo,
+                    $nomecampo,
+                    $indice,
+                    $indicecolonna,
+                    $singolocampo
                 );
             }
 
@@ -194,5 +200,4 @@ class Griglia extends Controller
         $response = new GridDati($vettorerisposta);
         return $response->getResponse();
     }
-
 }

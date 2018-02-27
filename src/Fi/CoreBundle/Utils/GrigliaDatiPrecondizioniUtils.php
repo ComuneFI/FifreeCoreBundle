@@ -18,14 +18,9 @@ class GrigliaDatiPrecondizioniUtils
         $regoleprecondizioni = array();
         $filtri = json_decode($request->get('filters'), true);
         /* dal filtro prende il tipo di operatore (AND o OR sono i due fin qui gestiti) */
-        $tipof = $filtri['groupOp'];
+        $operatorelogicofiltrigriglia = $filtri['groupOp'];
         /* prende un vettore con tutte le ricerche */
         $regolegriglia = isset($filtri['rules']) ? $filtri['rules'] : array();
-        foreach ($regolegriglia as $key => $regola) {
-            $regolegriglia[$key]["typof"] = $tipof;
-        }
-
-
         foreach ($precondizioniAvanzate as $elem) {
             $nometabellaprecondizione = '';
             $nomecampoprecondizione = '';
@@ -70,10 +65,14 @@ class GrigliaDatiPrecondizioniUtils
                 'data' => $valorecampoprecondizione,
                 'typof' => $operatorelogicoprecondizione);
         }
-        /**/
 
+        $regolefiltri = array_merge($regoleprecondizioni, $regolegriglia);
+
+        self::setOperatoreLogicoGlobale($regolefiltri, $operatorelogicofiltrigriglia);
+
+        /**/
         $regole = array(
-            'regole' => array_merge($regolegriglia, $regoleprecondizioni),
+            'regole' => $regolefiltri,
             'doctrine' => $doctrine,
             'nometabella' => $nometabella,
             'entityName' => $entityName,
@@ -81,6 +80,25 @@ class GrigliaDatiPrecondizioniUtils
         );
 
         GrigliaRegoleUtils::setRegole($q, $regole);
+    }
+
+    private static function setOperatoreLogicoGlobale(&$regolefiltri, $operatorelogicofiltrigriglia)
+    {
+        $operatore = 'AND';
+        if ($operatorelogicofiltrigriglia == 'OR') {
+            $operatore = 'OR';
+        } else {
+            //Se c'è anche una sola condizione in OR, diventano tutte in OR
+            foreach (array_keys($regolefiltri) as $key) {
+                if (isset($regolefiltri[$key]["typof"]) && $regolefiltri[$key]["typof"] == 'OR') {
+                    $operatore = 'OR';
+                    break;
+                }
+            }
+        }
+        foreach (array_keys($regolefiltri) as $key) {
+            $regolefiltri[$key]["typof"] = $operatore;
+        }
     }
 
     private static function elaboravalorecampo($type, $valuepre)
@@ -125,5 +143,4 @@ class GrigliaDatiPrecondizioniUtils
         }
         return $precondizioniAvanzate;
     }
-
 }
