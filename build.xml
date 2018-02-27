@@ -2,7 +2,20 @@
 
 <project name="Fifree2 CoreBundle" default="build">
     <target name="build"
-            depends="prepare, php-lint-ci, phpmd-ci, phpcs-ci, phpcpd-ci, php-security-checker, phpunit-ci, phpunit-ci-pa,phpunit-ci-functional, phpunit-ci-pa-functional, phpunit-clover"/>
+            depends="prepare,
+                    drop-database,
+                    install-fifreecorebundle,
+                    php-lint-ci, 
+                    phpmd-ci, 
+                    phpcs-ci, 
+                    phpcpd-ci, 
+                    php-security-checker, 
+                    phpunit-ci, 
+                    phpunit-ci-pa,
+                    phpunit-ci-functional, 
+                    phpunit-ci-pa-functional, 
+                    phpunit-clover"
+    />
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="build/artifacts/coverage"/>
@@ -37,6 +50,18 @@
         </exec>
     </target>
 
+    <target name="drop-database">
+        <exec executable="php" failonerror="true">
+            <arg line="tests/bin/console fifree2:dropdatabase --force --env=test"/>
+        </exec>
+    </target>
+    
+    <target name="install-fifreecorebundle">
+        <exec executable="php" failonerror="true">
+            <arg line="tests/bin/console fifree2:install admin admin admin@admin.it --env=test"/>
+        </exec>
+    </target>
+  
     <target name="get-changeset.php.raw"
             description="creates a list of changed php files separated by newline">
         <pathconvert property="changeset.php.raw" pathsep="${line.separator}">
