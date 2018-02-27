@@ -91,11 +91,15 @@ class GrigliaDatiPrecondizioniUtils
         }
     }
 
-    public static function precondizioniToPrecondizioniAvanzate($precondizioni, &$precondizioniAvanzate, $nometabella)
+    public static function precondizioniToPrecondizioniAvanzate($parametri)
     {
+        $precondizioni = GrigliaDatiUtils::getDatiPrecondizioni($parametri);
+
+        $precondizioniAvanzate = GrigliaDatiUtils::getDatiPrecondizioniAvanzate($parametri);
+        
         foreach ($precondizioni as $campoprecondizione => $valoreprecondizione) {
             if (strpos($campoprecondizione, ".") === false) {
-                $nometabellaprecondizione = $nometabella;
+                $nometabellaprecondizione = $parametri['nometabella'];
                 $nomecampoprecondizione = $campoprecondizione;
             } else {
                 $nometabellaprecondizione = substr($campoprecondizione, 0, strrpos($campoprecondizione, '.'));
@@ -106,5 +110,6 @@ class GrigliaDatiPrecondizioniUtils
                 'operatore' => '=',
                 'valorecampo' => $valoreprecondizione);
         }
+        return $precondizioniAvanzate;
     }
 }

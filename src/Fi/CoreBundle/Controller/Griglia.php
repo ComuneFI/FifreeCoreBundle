@@ -120,10 +120,6 @@ class Griglia extends Controller
 
         $tabellej = GrigliaDatiUtils::getTabellejNormalizzate($parametri);
 
-        $precondizioni = GrigliaDatiUtils::getDatiPrecondizioni($parametri);
-
-        $precondizioniAvanzate = GrigliaDatiUtils::getDatiPrecondizioniAvanzate($parametri);
-
         $campiextra = GrigliaDatiUtils::getDatiCampiExtra($parametri);
         /* inserisco i filtri passati in un vettore */
 
@@ -159,7 +155,7 @@ class Griglia extends Controller
         $primo = true;
 
         /* se ci sono delle precondizioni le imposta qui */
-        GrigliaDatiPrecondizioniUtils::precondizioniToPrecondizioniAvanzate($precondizioni, $precondizioniAvanzate, $nometabella);
+        $precondizioniAvanzate = GrigliaDatiPrecondizioniUtils::precondizioniToPrecondizioniAvanzate($parametri);
 
         /* se ci sono delle precondizioni avanzate le imposta qui */
         if ($precondizioniAvanzate) {
