@@ -104,8 +104,8 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
   - composer install
-  - php tests/bin/console fifree2:dropdatabase --force --env=test
-  - php tests/bin/console fifree2:install admin admin admin@admin.it --env=test
+  - tests/bin/console fifree2:dropdatabase --force --env=test
+  - tests/bin/console fifree2:install admin admin admin@admin.it --env=test
 
   
 
