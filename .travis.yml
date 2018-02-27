@@ -53,7 +53,7 @@ before_script:
   - if [[ $TRAVIS_PHP_VERSION == "5.6" ]]; then yes | pecl install -f apcu-4.0.8; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]]; then yes | pecl install -f apcu; fi
   - if [[ $TRAVIS_PHP_VERSION != "hhvm" ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
-  - echo "extension=apc.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"
+  - echo "extension=apc.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - phpenv rehash
   - if [[ $TRAVIS_PHP_VERSION != "hhvm" ]]; then echo 'date.timezone = "Europe/Rome"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
   - if [[ $TRAVIS_PHP_VERSION != "hhvm" ]]; then sudo apt-get install -y --force-yes php5-dev php-pear php5-mysql php5-curl php5-gd php5-json php5-sqlite php5-pgsql; fi
