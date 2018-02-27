@@ -241,17 +241,15 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
     private function executeUpdate($entityclass, $record, $objrecord)
     {
+        unset($record["id"]);
         foreach ($record as $key => $value) {
-            if ($key == 'id') {
-                continue;
-            }
             $propertyEntity = $this->entityutility->getEntityProperties($key, $objrecord);
             $getfieldname = $propertyEntity["get"];
             $setfieldname = $propertyEntity["set"];
             $cambiato = $this->dbutility->isRecordChanged($entityclass, $key, $objrecord->$getfieldname(), $value);
             if (!$cambiato) {
                 if ($this->verboso) {
-                    $msginfo = "<info>" . $entityclass . " con id " . $record["id"]
+                    $msginfo = "<info>" . $entityclass . " con id " . $objrecord->getId()
                             . " per campo " . $key . " non modificato perchè già "
                             . $value . "</info>";
                     $this->output->writeln($msginfo);
@@ -262,7 +260,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                     if ($fieldtype === 'boolean') {
                         $newval = FieldTypeUtility::getBooleanValue($value);
 
-                        $msgok = "<info>" . $entityclass . " con id " . $record["id"]
+                        $msgok = "<info>Modifica " . $entityclass . " con id " . $objrecord->getId()
                                 . " per campo " . $key . " cambio valore da "
                                 . var_export($objrecord->$getfieldname(), true)
                                 . " a " . var_export($newval, true) . " in formato Boolean</info>";
@@ -277,7 +275,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
 
                     if ($fieldtype === 'datetime' || $fieldtype === 'date') {
                         $date = FieldTypeUtility::getDateTimeValueFromTimestamp($value);
-                        $msgok = "<info>" . $entityclass . " con id " . $record["id"]
+                        $msgok = "<info>Modifica " . $entityclass . " con id " . $objrecord->getId()
                                 . " per campo " . $key . " cambio valore da "
                                 //. (!is_null($objrecord->$getfieldname())) ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "(null)"
                                 . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "NULL")
@@ -287,7 +285,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                         continue;
                     }
                     if (is_array($value)) {
-                        $msgarray = "<info>" . $entityclass . " con id " . $record["id"]
+                        $msgarray = "<info>Modifica " . $entityclass . " con id " . $objrecord->getId()
                                 . " per campo " . $key . " cambio valore da "
                                 . json_encode($objrecord->$getfieldname()) . " a "
                                 . json_encode($value) . " in formato array" . "</info>";
@@ -300,7 +298,7 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                     $joincolumnproperty = $this->entityutility->getJoinTableFieldProperty($entityclass, $key);
                     if ($joincolumn && $joincolumnproperty) {
                         $joincolumnobj = $this->em->getRepository($joincolumn)->find($value);
-                        $msgok = "<info>Modifica " . $entityclass . " con id " . $record["id"]
+                        $msgok = "<info>Modifica " . $entityclass . " con id " . $objrecord->getId()
                                 . " per campo " . $key . " cambio valore da " . print_r($objrecord->$getfieldname(), true)
                                 . " a " . print_r($value, true) . " tramite entity find</info>";
                         $this->output->writeln($msgok);
@@ -310,13 +308,13 @@ class Fifree2configuratorimportCommand extends ContainerAwareCommand
                         continue;
                     }
 
-                    $msgok = "<info>Modifica " . $entityclass . " con id " . $record["id"]
+                    $msgok = "<info>Modifica " . $entityclass . " con id " . $objrecord->getId()
                             . " per campo " . $key . " cambio valore da " . print_r($objrecord->$getfieldname(), true)
                             . " a " . print_r($value, true) . "</info>";
                     $this->output->writeln($msgok);
                     $objrecord->$setfieldname($value);
                 } catch (\Exception $exc) {
-                    $msgerr = "<error>" . $entityclass . " con id " . $record["id"]
+                    $msgerr = "<error>Modifica " . $entityclass . " con id " . $objrecord->getId()
                             . " per campo " . $key . ", ERRORE: " . $exc->getMessage()
                             . " alla riga " . $exc->getLine() . "</error>";
                     $this->output->writeln($msgerr);
