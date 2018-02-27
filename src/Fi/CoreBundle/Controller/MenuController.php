@@ -194,5 +194,4 @@ class MenuController extends FiCoreController
 
         return $exist;
     }
-
 }
