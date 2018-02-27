@@ -29,7 +29,7 @@ class OpzioniTabellaRepository extends EntityRepository
         $qb->where('t.nometabella = :tabella');
         $qb->andWhere("t.nomecampo is null or t.nomecampo = ''");
         $qb->setParameter('tabella', $controller);
-        $opzioni = $qb->getQuery()->getResult();
+        $opzioni = $qb->getQuery()->useQueryCache(true)->useResultCache(true)->getResult();
         foreach ($opzioni as $opzione) {
             $testatagriglia[$opzione->getParametro()] = $opzione->getValore();
         }

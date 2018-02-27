@@ -381,7 +381,7 @@ class GrigliaUtils
         $qb->andWhere("t.nomecampo is null or t.nomecampo = ''");
         $qb->orderBy('t.nometabella');
         $qb->setParameter('tabella', $nometabella);
-        $opzioni = $qb->getQuery()->getResult();
+        $opzioni = $qb->getQuery()->useQueryCache(true)->useResultCache(true)->getResult();
         foreach ($opzioni as $opzione) {
             $testata[$opzione->getParametro()] = str_replace('%tabella%', $nometabella, $opzione->getValore());
         }
