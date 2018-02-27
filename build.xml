@@ -51,7 +51,7 @@
             <arg line="composer.phar install"/>
         </exec>
     </target>
-
+  
     <target name="fifreecorebundle-drop-database">
         <exec executable="php" failonerror="true">
             <arg line="tests/bin/console fifree2:dropdatabase --force --env=test"/>
