@@ -7,10 +7,10 @@ use Fi\CoreBundle\Controller\FiUtilita;
 class GrigliaDatiPrecondizioniUtils
 {
 
-    public static function setPrecondizioniAvanzate(&$q, $parametri = array())
+    public static function setPrecondizioni(&$q, $parametri = array())
     {
         $request = $parametri['request'];
-        $precondizioniAvanzate = GrigliaDatiPrecondizioniUtils::precondizioniToPrecondizioniAvanzate($parametri);
+        $precondizioniAvanzate = GrigliaDatiPrecondizioniUtils::mergePrecondizioni($parametri);
         $doctrine = GrigliaParametriUtils::getDoctrineByEm($parametri);
         $bundle = $parametri['nomebundle'];
         $nometabella = $parametri['nometabella'];
@@ -122,7 +122,7 @@ class GrigliaDatiPrecondizioniUtils
         }
     }
 
-    public static function precondizioniToPrecondizioniAvanzate($parametri)
+    public static function mergePrecondizioni($parametri)
     {
         $precondizioni = GrigliaDatiUtils::getDatiPrecondizioni($parametri);
 

@@ -123,7 +123,6 @@ class Griglia extends Controller
         $campiextra = GrigliaDatiUtils::getDatiCampiExtra($parametri);
         /* inserisco i filtri passati in un vettore */
 
-        $filtri = json_decode($request->get('filters'), true);
         /* inserisco i parametri che sono passati nella $request all'interno di
           apposite variabili in che pagina siamo */
         /* direzione dell'ordinamento */
@@ -148,9 +147,8 @@ class Griglia extends Controller
         GrigliaUtils::init();
 
         /* se ci sono delle precondizioni le imposta qui */
-
-        GrigliaDatiPrecondizioniUtils::setPrecondizioniAvanzate($q, $parametri);
-        /* se ci sono delle precondizioni avanzate le imposta qui */
+        GrigliaDatiPrecondizioniUtils::setPrecondizioni($q, $parametri);
+        
         /* scorro ogni singola regola */
         $quanti = 0;
         GrigliaDatiMultiUtils::prepareQuery($parametri, $q, $sidx, $sord, $page, $limit, $quanti);
@@ -162,7 +160,7 @@ class Griglia extends Controller
         $vettorerisposta['page'] = $page;
         $vettorerisposta['total'] = $total_pages;
         $vettorerisposta['records'] = $quanti;
-        $vettorerisposta['filtri'] = $filtri;
+        $vettorerisposta['filtri'] = json_decode($request->get('filters'), true);
         $indice = 0;
 
         $escludere = GrigliaParametriUtils::getDatiEscludere($parametri);
