@@ -33,7 +33,7 @@ class MenuController extends FiCoreController
         $qb->setParameter('attivo', true);
         $qb->orderBy('a.padre', 'ASC');
         $qb->orderBy('a.ordine', 'ASC');
-        $menu = $qb->getQuery()->useQueryCache(true)->useResultCache(true, null, 'menu')->getResult();
+        $menu = $qb->getQuery()->useQueryCache(true)->useResultCache(true, null, 'MenuApplicazione')->getResult();
 
         $risposta = array_merge($rispostahome, $this->getMenu($menu));
         $webdir = $this->get('kernel')->getRootDir() . '/../web';
@@ -88,7 +88,7 @@ class MenuController extends FiCoreController
                 $qb->orderBy('a.ordine', 'ASC');
                 $qb->setParameter('padre_id', $item->getId());
                 $qb->setParameter('attivo', true);
-                $submenu = $qb->getQuery()->useQueryCache(true)->useResultCache(true, null, 'menu')->getResult();
+                $submenu = $qb->getQuery()->useQueryCache(true)->useResultCache(true, null, 'MenuApplicazione')->getResult();
 
                 $sottomenutabelle = $this->getSubMenu($submenu);
 

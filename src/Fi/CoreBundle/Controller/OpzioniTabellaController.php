@@ -151,7 +151,7 @@ class OpzioniTabellaController extends FiCoreController
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-            $em->getConfiguration()->getResultCacheImpl()->delete("opzionitabella");
+            $em->getConfiguration()->getResultCacheImpl()->delete($controller);
 
             $continua = (int) $request->get('continua');
             if ($continua === 0) {
@@ -219,7 +219,7 @@ class OpzioniTabellaController extends FiCoreController
 
             $em->persist($entity);
             $em->flush();
-            $em->getConfiguration()->getResultCacheImpl()->delete("opzionitabella");
+            $em->getConfiguration()->getResultCacheImpl()->delete($controller);
 
             $newData = $em->getUnitOfWork()->getOriginalEntityData($entity);
             $changes = $repoStorico->isRecordChanged($nomebundle, $controller, $originalData, $newData);
@@ -273,7 +273,7 @@ class OpzioniTabellaController extends FiCoreController
 
             $query = $qb->getQuery();
             $query->execute();
-            $em->getConfiguration()->getResultCacheImpl()->delete("opzionitabella");
+            $em->getConfiguration()->getResultCacheImpl()->delete($controller);
         } catch (\Exception $e) {
             $response = new Response();
             $response->setStatusCode('200');
