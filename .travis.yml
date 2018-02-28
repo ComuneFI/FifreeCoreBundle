@@ -59,8 +59,8 @@ before_script:
   
   - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - cat ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  - sed '/extension="apc.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - sed '/extension="apcu.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - sed -i '1d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - sed -i '1d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   #- if [[ $TRAVIS_PHP_VERSION != "hhvm" ]]; then sudo apt-get install -y --force-yes php5-dev php-pear php5-mysql php5-curl php5-gd php5-json php5-sqlite php5-pgsql; fi
   - if [[ $TRAVIS_PHP_VERSION != "hhvm" ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi
