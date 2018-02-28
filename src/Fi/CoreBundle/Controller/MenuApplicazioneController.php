@@ -11,7 +11,98 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class MenuApplicazioneController extends FiCoreController
 {
+    /**
+     * Displays a form to create a new table entity.
+     */
+    public function newAction(Request $request)
+    {
+        $this->setup($request);
+        $namespace = $this->getNamespace();
+        $bundle = $this->getBundle();
+        $controller = $this->getController();
 
+        if (!self::$canCreate) {
+            throw new AccessDeniedException("Non si hanno i permessi per creare questo contenuto");
+        }
+
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $classbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Entity\\' . $controller;
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
+        $formType = $formbundle . 'Type';
+
+        $entity = new $classbundle();
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(
+            $formType,
+            $entity,
+            array('entity_manager' => $em, 'attr' => array(
+                'id' => 'formdati' . $controller,
+                ),
+                'action' => $this->generateUrl($controller . '_create'),
+                )
+        );
+
+        return $this->render(
+            $nomebundle . ':' . $controller . ':new.html.twig',
+            array(
+                    'nomecontroller' => $controller,
+                    'entity' => $entity,
+                    'form' => $form->createView(),
+                        )
+        );
+    }
+    /**
+     * Displays a form to edit an existing table entity.
+     */
+    public function editAction(Request $request, $id)
+    {
+        /* @var $em \Doctrine\ORM\EntityManager */
+        $this->setup($request);
+        $namespace = $this->getNamespace();
+        $bundle = $this->getBundle();
+        $controller = $this->getController();
+
+        if (!self::$canUpdate) {
+            throw new AccessDeniedException("Non si hanno i permessi per modificare questo contenuto");
+        }
+
+        $nomebundle = $namespace . $bundle . 'Bundle';
+        $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
+        $formType = $formbundle . 'Type';
+
+        $elencomodifiche = $this->elencoModifiche($controller, $id);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository($nomebundle . ':' . $controller)->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find ' . $controller . ' entity.');
+        }
+
+        $editForm = $this->createForm(
+            $formType,
+            $entity,
+            array('entity_manager' => $em, 'attr' => array(
+                'id' => 'formdati' . $controller,
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                )
+        );
+
+        $deleteForm = $this->createDeleteForm($id);
+
+        return $this->render(
+            $nomebundle . ':' . $controller . ':edit.html.twig',
+            array(
+                    'entity' => $entity,
+                    'nomecontroller' => $controller,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
+                    'elencomodifiche' => $elencomodifiche,
+                        )
+        );
+    }
     /**
      * Creates a new table entity.
      */
@@ -32,11 +123,11 @@ class MenuApplicazioneController extends FiCoreController
 
         $entity = new $classbundle();
         $formType = $formbundle . 'Type';
-
+        $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(
             $formType,
             $entity,
-            array('attr' => array(
+            array('entity_manager' => $em, 'attr' => array(
                 'id' => 'formdati' . $controller,
                 ),
                 'action' => $this->generateUrl($controller . '_create'),
@@ -68,7 +159,6 @@ class MenuApplicazioneController extends FiCoreController
                         )
         );
     }
-
     /**
      * Edits an existing table entity.
      */
@@ -103,7 +193,7 @@ class MenuApplicazioneController extends FiCoreController
         $editForm = $this->createForm(
             $formType,
             $entity,
-            array('attr' => array(
+            array('entity_manager' => $em, 'attr' => array(
                 'id' => 'formdati' . $controller,
                 ),
                 'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
@@ -144,7 +234,6 @@ class MenuApplicazioneController extends FiCoreController
                         )
         );
     }
-
     /**
      * Deletes a table entity.
      */
@@ -164,7 +253,7 @@ class MenuApplicazioneController extends FiCoreController
         try {
             $em = $this->getDoctrine()->getManager();
             $qb = $em->createQueryBuilder();
-            $ids = explode(',', $request->get('id'));
+            $ids = explode(', ', $request->get('id'));
             $qb->delete($nomebundle . ':' . $controller, 'u')
                     ->andWhere('u.id IN (:ids)')
                     ->setParameter('ids', $ids);
