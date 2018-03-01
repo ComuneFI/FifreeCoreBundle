@@ -58,73 +58,73 @@ input.span-24, textarea.span-24 {width:938px!important;}
 
 
 html, body {
-  margin: 0;			/* Remove body margin/padding */
-  padding: 0;
-  /*overflow: hidden;*/	/* Remove scroll bars on browser window */	
-  font-size: 75%;
-  /*width: 1280px;
-  height: 850px; */
+    margin: 0;			/* Remove body margin/padding */
+    padding: 0;
+    /*overflow: hidden;*/	/* Remove scroll bars on browser window */	
+    font-size: 75%;
+    /*width: 1280px;
+    height: 850px; */
 }
 
 #dialog {
-/*   z-index: 99999 !important;  */
+    /*   z-index: 99999 !important;  */
 }
 
 .ui-dialog {
-/*  z-index: 99999 !important;  */
+    /*  z-index: 99999 !important;  */
 }
 
 #dettaglio {
-/*  z-index: 999 !important;*/
+    /*  z-index: 999 !important;*/
 }
 
 .bordo_sottile {
-  border-style: solid !important;
-  border-width: thin  !important;
-  border-color: #cccccc !important; 
+    border-style: solid !important;
+    border-width: thin  !important;
+    border-color: #cccccc !important; 
 }
 
 #dettaglioconf {
-/*  z-index: 999 !important;*/
-  background-color: transparent !important; 
-  border-color: transparent !important; 
+    /*  z-index: 999 !important;*/
+    background-color: transparent !important; 
+    border-color: transparent !important; 
 }
 
 #delmodlist1
 {
-/*  z-index: 99999 !important;*/
+    /*  z-index: 99999 !important;*/
 } 
 
 .acapo {
-  clear:both;
+    clear:both;
 }
 
 .cornici {
-  float:left; 
-  margin: 10px; 
+    float:left; 
+    margin: 10px; 
 }
 
 .numeric {
-  text-align: right; 
-  width:50px;
+    text-align: right; 
+    width:50px;
 
 }
 
 .integer {
-  width:30px;
+    width:30px;
 }
 
 .giorno {
-  width:60px;
+    width:60px;
 }
 
 .ui-draggable .ui-dialog-titlebar {
-  cursor: none !important; 
+    cursor: none !important; 
 }
 
 .tabella {
-  left: -25px; 
-  top: -45px; 
+    left: -25px; 
+    top: -45px; 
 }
 
 /*per far vedere la lista di un autocomplete altrimenti va dietro a gli altri oggetti e non si vede*/
@@ -135,7 +135,7 @@ html, body {
 
 /*per far vedere che il programma e' in caricamento*/
 .waiting_div {
-/*    z-index:    1000;*/
+    /*    z-index:    1000;*/
     height:     32px;
     width:      100%;
     bottom:     0;
@@ -154,7 +154,7 @@ html, body {
     bottom:0px;
     left:0px;
     right:0px;
-/*    z-index:100;*/
+    /*    z-index:100;*/
     cursor:pointer;
     /*Trasperenza cross browser*/
     opacity: .7; filter: alpha(opacity=70);
@@ -173,4 +173,8 @@ html, body {
     position: relative;
     vertical-align: text-top;
     white-space: normal !important;
+}
+
+.error_list {
+    color: red;   
 }

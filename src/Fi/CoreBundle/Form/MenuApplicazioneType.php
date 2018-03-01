@@ -21,7 +21,7 @@ class MenuApplicazioneType extends AbstractType
                 ->add('nome')
                 ->add('percorso')
                 ->add("padre", ChoiceType::class, array("label" => "Padre",
-                    "choices" => $this->getAllMenu($em)
+                    "choices" => $this->getAllMenuApplicazione($em)
                 ))
                 ->add('ordine')
                 ->add('attivo')
@@ -43,7 +43,7 @@ class MenuApplicazioneType extends AbstractType
     {
         $resolver->setRequired('entity_manager');
     }
-    private function getAllMenu($em)
+    private function getAllMenuApplicazione($em)
     {
         $menus = array();
         if ($em->getRepository('FiCoreBundle:MenuApplicazione')) {
