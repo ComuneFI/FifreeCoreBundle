@@ -6,13 +6,13 @@ use Fi\CoreBundle\Form\MenuApplicazioneType;
 
 class MenuApplicazioneTypeTest extends TypeTestCase
 {
-
     public function testSubmitValidData()
     {
+        $menuapplicazione = "MenuApplicazione";
         $formData = array(
             'nome' => 'nome',
             'percorso' => 'percorso',
-            'padre' => 'padre',
+            'padre' => 4,
             'ordine' => 10,
             'attivo' => true,
             'target' => '_blank',
@@ -28,14 +28,26 @@ class MenuApplicazioneTypeTest extends TypeTestCase
         $object->setNome("nome");
         $object->setNotifiche("menu");
         $object->setOrdine(10);
-        $object->setPadre("padre");
+        $object->setPadre(4);
         $object->setPercorso("percorso");
         $object->setPercorsonotifiche("percorsonotifiche");
         $object->setTag("tag");
         $object->setTarget("_blank");
 
+        $em = $this->getMockBuilder('\Doctrine\ORM\EntityManager')
+                ->disableOriginalConstructor()
+                ->getMock();
 
-        $form = $this->factory->create(MenuApplicazioneType::class);
+        $router = $this->getMockBuilder('\Symfony\Bundle\FrameworkBundle\Routing\Router')
+                ->disableOriginalConstructor()
+                ->setMethods(['generate', 'supports', 'exists'])
+                ->getMockForAbstractClass();
+
+        $form = $this->factory->create(MenuApplicazioneType::class, $object, array('entity_manager' => $em, 'attr' => array(
+                'id' => 'formdati' . $menuapplicazione,
+            ),
+            'action' => $router->generate($menuapplicazione . '_create'),
+        ));
         $form->submit($formData);
         $this->assertTrue($form->isSynchronized());
         //$this->assertEquals($object, $form->getData());
@@ -47,5 +59,4 @@ class MenuApplicazioneTypeTest extends TypeTestCase
             $this->assertArrayHasKey($key, $children);
         }
     }
-
 }

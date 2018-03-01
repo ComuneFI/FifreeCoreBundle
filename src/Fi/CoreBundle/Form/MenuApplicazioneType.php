@@ -45,14 +45,14 @@ class MenuApplicazioneType extends AbstractType
     }
     private function getAllMenu($em)
     {
+        $menus = array();
+        if ($em->getRepository('FiCoreBundle:MenuApplicazione')) {
+            $results = $em->getRepository('FiCoreBundle:MenuApplicazione')->findBy([], ['nome' => 'ASC']);
 
-        $results = $em->createQueryBuilder()->select('e')
-                        ->from("FiCoreBundle:MenuApplicazione", 'e')
-                        ->orderBy('e.nome', 'ASC')->getQuery()->getResult();
-
-        $menus = array("" => null);
-        foreach ($results as $bu) {
-            $menus[$bu->getNome()] = $bu->getId();
+            $menus = array("" => null);
+            foreach ($results as $bu) {
+                $menus[$bu->getNome()] = $bu->getId();
+            }
         }
 
         return $menus;
