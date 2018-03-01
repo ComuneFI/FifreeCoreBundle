@@ -1,6 +1,14 @@
-test su ordinamento campi definiti da utente
-test su stampa campi definiti da utente
+Tests:
+    test su ordinamento campi definiti da utente
+    test su stampa campi definiti da utente
 
-funzionalità:
+Funzionalità:
 
+
+Upgrade:
+    Php 7.2
+    Silex
+    MakerBundle
+    Jquery + Jquery-ui + griglia
+    excel -> PHPOffice/PhpSpreadsheet
 
