@@ -71,11 +71,17 @@ abstract class FacebookDriverTester extends WebTestCase
                 break;
             case "chrome":
                 $desired_capabilities = DesiredCapabilities::chrome();
+                $chromeOptions = new ChromeOptions();
+                $chromeopt = array();
+                $chromeopt[] = 'window-size=1024,768';
+                $chromeopt[] = '--no-sandbox';
 
                 if ($browserHeadless) {
-                    $chromeOptions = (new ChromeOptions)->addArguments(['headless', 'disable-gpu']);
-                    $desired_capabilities->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
+                    $chromeopt[] = 'disable-gpu';
+                    $chromeopt[] = 'headless';
                 }
+                $chromeOptions->addArguments($chromeopt);
+                $desired_capabilities->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
                 break;
             default:
                 throw new \Exception("Driver non supportato " . $this->seleniumDriverType . ", selezionare firefox o chrome");
