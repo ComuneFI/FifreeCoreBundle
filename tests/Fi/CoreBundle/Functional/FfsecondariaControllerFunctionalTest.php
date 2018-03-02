@@ -312,13 +312,16 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         //reset filtri
 
+        $this->ajaxWait();
         $this->clickElement('search_list1');
         $this->ajaxWait();
 
+        $this->ajaxWait();
         $this->clickElement('fbox_list1_reset');
         $this->ajaxWait();
 
         /* Ricerca 4 */
+        $this->ajaxWait();
         $this->clickElement('search_list1');
         $this->ajaxWait();
         /**/
