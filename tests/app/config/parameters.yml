@@ -13,5 +13,5 @@ parameters:
     mailer_password: null
     locale: it
     secret: ThisTokenIsNotSoSecretChangeIt
-    temascelto: sunny
+    temascelto: redmond
     browser4test: firefox
