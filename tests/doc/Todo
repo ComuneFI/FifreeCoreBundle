@@ -1,5 +1,5 @@
 Dependencies:
-    remove twig/twig fixed to 1.35.0
+    remove twig/twig fixed to 1.35.0, error on 1.35.1
 
 Tests:
     test su ordinamento campi definiti da utente
