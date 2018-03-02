@@ -37,7 +37,7 @@ class PermessiUnhautorizedControllerTest extends FifreeTestUnauthorizedClient
         $clientobj = static::createClient();
         $client = $this->createUnauthorizedClient($clientobj, "usernoroles");
 
-        $crawler = $client->request('POST', '/Ffprincipale');
+        $crawler = $client->request('GET', '/Ffprincipale');
         $client->followRedirect();
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 403
@@ -121,7 +121,7 @@ class PermessiUnhautorizedControllerTest extends FifreeTestUnauthorizedClient
         $clientobj = static::createClient();
         $client = $this->createUnauthorizedClient($clientobj, "usernoroles");
 
-        $crawler = $client->request('POST', '/Ffprincipale');
+        $crawler = $client->request('GET', '/Ffprincipale');
         $client->followRedirect();
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 403
@@ -205,7 +205,7 @@ class PermessiUnhautorizedControllerTest extends FifreeTestUnauthorizedClient
         $clientobj = static::createClient();
         $client = $this->createUnauthorizedClient($clientobj, "usernoroles");
 
-        $crawler = $client->request('POST', '/Ffprincipale');
+        $crawler = $client->request('GET', '/Ffprincipale');
         $client->followRedirect();
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 403
@@ -289,7 +289,7 @@ class PermessiUnhautorizedControllerTest extends FifreeTestUnauthorizedClient
         $clientobj = static::createClient();
         $client = $this->createUnauthorizedClient($clientobj, "usernoroles");
 
-        $crawler = $client->request('POST', '/Ffprincipale');
+        $crawler = $client->request('GET', '/Ffprincipale');
         $client->followRedirect();
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 403
@@ -373,7 +373,7 @@ class PermessiUnhautorizedControllerTest extends FifreeTestUnauthorizedClient
         $clientobj = static::createClient();
         $client = $this->createUnauthorizedClient($clientobj, "usernoroles");
 
-        $crawler = $client->request('POST', '/Ffprincipale');
+        $crawler = $client->request('GET', '/Ffprincipale');
         $client->followRedirect();
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 403
