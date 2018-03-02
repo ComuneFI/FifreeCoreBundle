@@ -1,6 +1,8 @@
 <?php
 
 namespace Fi\CoreBundle\Twig\Extension;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class PermessiTwigExtension extends \Twig_Extension
 {
@@ -8,7 +10,7 @@ class PermessiTwigExtension extends \Twig_Extension
     protected $requeststack;
     protected $container;
 
-    public function __construct($container, $request_stack)
+    public function __construct(ContainerInterface $container, RequestStack $request_stack)
     {
         $this->container = $container;
         $this->requeststack = $request_stack;

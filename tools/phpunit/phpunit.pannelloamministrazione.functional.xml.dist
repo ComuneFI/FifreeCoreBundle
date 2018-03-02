@@ -23,14 +23,16 @@
         <server name="KERNEL_CLASS" value="AppKernel" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="99" />
         <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
-        <const name="WEB_SERVER_HOST" value="localhost" />
-        <const name="WEB_SERVER_PORT" value="8000" />
-        <const name="WEB_SERVER_DOCROOT" value="./../../tests/web" />
     </php>
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory>./../../src</directory>
+            <exclude>
+                <directory>./../../src/*Bundle/Resources</directory>
+                <directory>./../../src/*/*Bundle/Resources</directory>
+                <directory>./../../src/*/Bundle/*Bundle/Resources</directory>
+            </exclude>
         </whitelist>
     </filter>
     

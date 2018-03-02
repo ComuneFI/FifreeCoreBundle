@@ -2,22 +2,10 @@
 
 namespace Fi\CoreBundle\Twig\Extension;
 
-use Fi\CoreBundle\Controller\fiUtilita;
+use Fi\CoreBundle\Controller\FiUtilita;
 
 class UtilitaExtension extends \Twig_Extension
 {
-    protected $loader;
-    protected $controller;
-
-    public function __construct(\Twig_LoaderInterface $loader)
-    {
-        $this->loader = $loader;
-    }
-
-    public function setController($controller)
-    {
-        $this->controller = $controller;
-    }
 
     /**
      * {@inheritdoc}
@@ -28,11 +16,10 @@ class UtilitaExtension extends \Twig_Extension
             new \Twig_SimpleFunction('db2data', array($this, 'getDb2data', 'is_safe' => array('html'))),
         );
     }
-
     public function getDb2data($giorno)
     {
         // highlight_string highlights php code only if '<?php' tag is present.
 
-        return fiUtilita::db2data($giorno, true);
+        return FiUtilita::db2data($giorno, true);
     }
 }
