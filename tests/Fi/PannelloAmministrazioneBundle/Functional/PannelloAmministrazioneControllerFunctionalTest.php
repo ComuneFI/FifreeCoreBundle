@@ -50,7 +50,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         $this->executeScript($javascript);
         $this->pressButton('adminpanelgeneratebundle');
 
-        $this->pressButton('/html/body/div[12]/div[3]/div/button[1]');
+        $this->pressButton('yesdialogbutton');
         //$scriptrun = "function(){ $('button:contains(\"Si\")').click();";
         //$this->executeScript($scriptrun);
         $this->ajaxWait();
@@ -102,7 +102,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
         $this->pressButton('adminpanelgenerateentity');
 
-        $this->pressButton('/html/body/div[12]/div[3]/div/button[1]');
+        $this->pressButton('yesdialogbutton');
 
         /* $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
           $this->executeScript($scriptrun); */
@@ -111,14 +111,14 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
         /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
           $this->executeScript($scriptclose); */
-        $this->pressButton('/html/body/div[11]/div[3]/div/button');
+        $this->pressButton('closedialogbutton');
 
 
         $this->pressButton('adminpanelgenerateclassentity');
         /* $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
           $this->executeScript($scriptrun); */
 
-        $this->pressButton('/html/body/div[12]/div[3]/div/button[1]');
+        $this->pressButton('yesdialogbutton');
 
         $this->ajaxWait();
 
@@ -130,7 +130,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
           $this->executeScript($scriptclose);
          */
-        $this->pressButton('/html/body/div[11]/div[11]/div/button');
+        $this->pressButton('closedialogbutton');
 
         $this->assertTrue(file_exists($checkentityprova));
 
@@ -168,7 +168,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
           $this->executeScript($scriptdb);
          */
 
-        $this->pressButton('/html/body/div[12]/div[3]/div/button[1]');
+        $this->pressButton('yesdialogbutton');
 
         $this->ajaxWait();
         /**/
@@ -181,7 +181,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
           $this->executeScript($scriptclose);
          */
-        $this->pressButton('/html/body/div[11]/div[3]/div/button');
+        $this->pressButton('closedialogbutton');
 
         //passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
 
@@ -215,7 +215,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         /* $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
           $this->executeScript($scriptrun); */
 
-        $this->pressButton('/html/body/div[12]/div[3]/div/button[1]');
+        $this->pressButton('yesdialogbutton');
 
         $this->ajaxWait();
 
@@ -234,7 +234,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
         /*$scriptclose = 'function(){ $("#risultato").dialog("close");}()';
         $this->executeScript($scriptclose);*/
-        $this->pressButton('/html/body/div[11]/div[3]/div/button');
+        $this->pressButton('closedialogbutton');
         
 
         /* $this->pressButton('adminpanelcc');
