@@ -3,7 +3,7 @@
 //ws
 // Command that starts the built-in web server
 $commandws = sprintf(
-        'php -S %s:%d -t %s > %s 2>&1 & echo $!', WEB_SERVER_HOST, WEB_SERVER_PORT, WEB_SERVER_DOCROOT, __DIR__ . '/../../build/artifacts/logs/webserver.log'
+        'php %s %s %s > %s 2>&1 & echo $!', 'tests/bin/console server:run', '--docroot=tests/web', '--env=test', __DIR__ . '/../../build/artifacts/logs/webserver.log'
 );
 
 echo $commandws . "\n";
@@ -15,13 +15,14 @@ exec($commandws, $outputws);
 $pidws = (int) $outputws[0];
 
 echo sprintf(
-        '%s - Web server started on %s:%d with PID %d', date('r'), WEB_SERVER_HOST, WEB_SERVER_PORT, $pidws
+        '%s - Web server started with PID %d', date('r'), $pidws
 ) . PHP_EOL;
 
 //Selenium
 // Command that starts the built-in web server
+$driverspath = realpath(__DIR__ . '/../../vendor') . "/bin/";
 $commandse = sprintf(
-        'sh %s > %s 2>&1 & echo $!', __DIR__ . '/../../vendor/bin/selenium-server-standalone', __DIR__ . '/../../build/artifacts/logs/selenium2.log'
+        'PATH=$PATH:%s && sh %s > %s 2>&1 & echo $!', $driverspath, __DIR__ . '/../../vendor/bin/selenium-server-standalone', __DIR__ . '/../../build/artifacts/logs/selenium2.log'
 );
 
 echo $commandse . "\n";
