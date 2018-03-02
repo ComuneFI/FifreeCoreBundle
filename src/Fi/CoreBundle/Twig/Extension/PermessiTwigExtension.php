@@ -1,6 +1,7 @@
 <?php
 
 namespace Fi\CoreBundle\Twig\Extension;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
