@@ -1,3 +1,6 @@
+Dependencies:
+    remove twig/twig fixed to 1.35.0
+
 Tests:
     test su ordinamento campi definiti da utente
     test su stampa campi definiti da utente
