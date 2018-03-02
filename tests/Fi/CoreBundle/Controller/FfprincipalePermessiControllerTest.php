@@ -37,7 +37,7 @@ class FfprincipalePermessiControllerTest extends FifreeTestUnauthorizedClient
         $clientobj = static::createClient();
         $client = $this->createUnauthorizedClient($clientobj, "ffprincipalec");
 
-        $crawler = $client->request('POST', '/Ffprincipale');
+        $crawler = $client->request('GET', '/Ffprincipale');
         $client->followRedirect();
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 403
@@ -121,7 +121,7 @@ class FfprincipalePermessiControllerTest extends FifreeTestUnauthorizedClient
         $clientobj = static::createClient();
         $client = $this->createUnauthorizedClient($clientobj, "ffprincipaler");
 
-        $crawler = $client->request('POST', '/Ffprincipale');
+        $crawler = $client->request('GET', '/Ffprincipale');
         $client->followRedirect();
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 200
@@ -205,7 +205,7 @@ class FfprincipalePermessiControllerTest extends FifreeTestUnauthorizedClient
         $clientobj = static::createClient();
         $client = $this->createUnauthorizedClient($clientobj, "ffprincipaleu");
 
-        $crawler = $client->request('POST', '/Ffprincipale');
+        $crawler = $client->request('GET', '/Ffprincipale');
         $client->followRedirect();
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 403
@@ -297,7 +297,7 @@ class FfprincipalePermessiControllerTest extends FifreeTestUnauthorizedClient
         $clientobj = static::createClient();
         $client = $this->createUnauthorizedClient($clientobj, "ffprincipaled");
 
-        $crawler = $client->request('POST', '/Ffprincipale');
+        $crawler = $client->request('GET', '/Ffprincipale');
         $client->followRedirect();
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 403
@@ -381,7 +381,7 @@ class FfprincipalePermessiControllerTest extends FifreeTestUnauthorizedClient
         $clientobj = static::createClient();
         $client = $this->createUnauthorizedClient($clientobj, "ffprincipale");
 
-        $crawler = $client->request('POST', '/Ffprincipale');
+        $crawler = $client->request('GET', '/Ffprincipale');
         $client->followRedirect();
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 200

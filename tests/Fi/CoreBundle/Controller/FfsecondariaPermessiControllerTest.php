@@ -37,7 +37,7 @@ class FfsecondariaPermessiControllerTest extends FifreeTestUnauthorizedClient
         $clientobj = static::createClient();
         $client = $this->createUnauthorizedClient($clientobj, "ffsecondariac");
 
-        $crawler = $client->request('POST', '/Ffprincipale');
+        $crawler = $client->request('GET', '/Ffprincipale');
         $client->followRedirect();
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 403
@@ -205,7 +205,7 @@ class FfsecondariaPermessiControllerTest extends FifreeTestUnauthorizedClient
         $clientobj = static::createClient();
         $client = $this->createUnauthorizedClient($clientobj, "ffsecondariau");
 
-        $crawler = $client->request('POST', '/Ffprincipale');
+        $crawler = $client->request('GET', '/Ffprincipale');
         $client->followRedirect();
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 403
@@ -306,7 +306,7 @@ class FfsecondariaPermessiControllerTest extends FifreeTestUnauthorizedClient
         $clientobj = static::createClient();
         $client = $this->createUnauthorizedClient($clientobj, "ffsecondariad");
 
-        $crawler = $client->request('POST', '/Ffprincipale');
+        $crawler = $client->request('GET', '/Ffprincipale');
         $client->followRedirect();
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 403
@@ -390,7 +390,7 @@ class FfsecondariaPermessiControllerTest extends FifreeTestUnauthorizedClient
         $clientobj = static::createClient();
         $client = $this->createUnauthorizedClient($clientobj, "ffsecondaria");
 
-        $crawler = $client->request('POST', '/Ffprincipale');
+        $crawler = $client->request('GET', '/Ffprincipale');
         $client->followRedirect();
         $this->assertTrue(
                 $client->getResponse()->getStatusCode() === 403
