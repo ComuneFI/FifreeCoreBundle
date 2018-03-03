@@ -11,7 +11,7 @@ class DatabaseInfoDataCollectorTest extends WebTestCase
 
         // Enable the profiler for the next request
         // (it does nothing if the profiler is not available)
-        $client->enableProfiler();
+        //$client->enableProfiler();
 
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $client->getKernel()->getContainer()->get("doctrine")->getManager();
@@ -21,7 +21,7 @@ class DatabaseInfoDataCollectorTest extends WebTestCase
         $dbpwdconnection = $em->getConnection()->getPassword();
         $dbuserconnection = $em->getConnection()->getUsername();
 
-        $crawler = $client->request('GET', '/');
+        $crawler = $client->request('GET', '/login');
 
         if ($profile = $client->getProfile()) {
             $profilerinfo = $profile->getCollector('databaseInfo');
