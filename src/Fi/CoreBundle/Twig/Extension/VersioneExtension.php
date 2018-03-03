@@ -2,13 +2,14 @@
 
 namespace Fi\CoreBundle\Twig\Extension;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Fi\CoreBundle\Controller\FiVersioneController;
 
 class VersioneExtension extends \Twig_Extension
 {
     protected $container;
 
-    public function __construct($container = null)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }

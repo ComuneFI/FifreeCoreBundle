@@ -5,11 +5,6 @@ parameters:
   maintenanceLockFilePath: "%kernel.cache_dir%/maintenance.lock"  
   
 services:
-    fi.twig.fi_versione_extension:
-        class: Fi\CoreBundle\Twig\Extension\VersioneExtension
-        arguments: ['@service_container']
-        tags:
-          - { name: twig.extension }
 
     #Informazioni connessione database su Web Debug Toolbar
     data_collector.databaseinfo:
