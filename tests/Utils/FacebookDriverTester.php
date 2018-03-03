@@ -10,6 +10,7 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
 use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 
 abstract class FacebookDriverTester extends WebTestCase
 {
@@ -147,7 +148,7 @@ abstract class FacebookDriverTester extends WebTestCase
     }
     private function getElementBySelector($selector)
     {
-        return $this->getWebDriverBy($selector);
+        return $this->getElementByWebDriverBy($selector);
     }
     private function getElementByWebDriver($webdriverby)
     {
@@ -158,7 +159,7 @@ abstract class FacebookDriverTester extends WebTestCase
             return $elements[0];
         }
     }
-    private function getWebDriverBy($selector)
+    private function getElementByWebDriverBy($selector)
     {
         $element = $this->getElementByWebDriver(WebDriverBy::id($selector));
         if ($element) {
@@ -187,6 +188,39 @@ abstract class FacebookDriverTester extends WebTestCase
         $element = $this->getElementByWebDriver(WebDriverBy::tagName($selector));
         if ($element) {
             return $element;
+        }
+
+        return null;
+    }
+    private function getWebDriverBy($selector)
+    {
+        $element = $this->getElementByWebDriver(WebDriverBy::id($selector));
+        if ($element) {
+            return WebDriverBy::id($selector);
+        }
+        $element = $this->getElementByWebDriver(WebDriverBy::cssSelector($selector));
+        if ($element) {
+            return WebDriverBy::cssSelector($selector);
+        }
+        $element = $this->getElementByWebDriver(WebDriverBy::name($selector));
+        if ($element) {
+            return WebDriverBy::name($selector);
+        }
+        $element = $this->getElementByWebDriver(WebDriverBy::className($selector));
+        if ($element) {
+            return WebDriverBy::className($selector);
+        }
+        $element = $this->getElementByWebDriver(WebDriverBy::linkText($selector));
+        if ($element) {
+            return WebDriverBy::linkText($selector);
+        }
+        $element = $this->getElementByWebDriver(WebDriverBy::xpath($selector));
+        if ($element) {
+            return WebDriverBy::xpath($selector);
+        }
+        $element = $this->getElementByWebDriver(WebDriverBy::tagName($selector));
+        if ($element) {
+            return WebDriverBy::tagName($selector);
         }
 
         return null;
@@ -325,6 +359,12 @@ abstract class FacebookDriverTester extends WebTestCase
             try {
                 $this->ajaxWait();
                 $button = $this->getElementBySelector($selector);
+                if (!$button) {
+                    ++$i;
+                    sleep(1);
+                    continue;
+                }
+                $this->facebookDriver->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable($this->getWebDriverBy($selector)));
                 $button->click();
                 $this->ajaxWait();
                 return;
@@ -392,6 +432,7 @@ abstract class FacebookDriverTester extends WebTestCase
                     sleep(1);
                     continue;
                 }
+                $this->facebookDriver->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable($this->getWebDriverBy($selector)));
                 $element->click();
                 $this->ajaxWait();
                 return;
