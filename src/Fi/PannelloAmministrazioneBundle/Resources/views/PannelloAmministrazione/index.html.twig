@@ -162,6 +162,7 @@
                             opendialogrisultato();
                             $("#risultato").slideDown("slow");
                         }).fail(function (jqXHR, textStatus) {
+                            opendialogrisultato();
                             $("#risultato").html(jqXHR.responseText);
                             $("#risultato").show();
                             msgbox("Si è verificato un errore!");
@@ -240,6 +241,7 @@
                                 opendialogrisultato();
                                 $("#risultato").slideDown("slow");
                             }).fail(function (jqXHR, textStatus) {
+                                opendialogrisultato();
                                 $("#risultato").html(jqXHR.responseText);
                                 $("#risultato").show();
                                 msgbox("Si è verificato un errore!");
@@ -267,6 +269,7 @@
                                 opendialogrisultato();
                                 $("#risultato").slideDown("slow");
                             }).fail(function (jqXHR, textStatus) {
+                                opendialogrisultato();
                                 $("#risultato").html(jqXHR.responseText);
                                 $("#risultato").show();
                                 msgbox("Si è verificato un errore!");
@@ -293,6 +296,7 @@
                                 opendialogrisultato();
                                 $("#risultato").slideDown("slow");
                             }).fail(function (jqXHR, textStatus) {
+                                opendialogrisultato();
                                 $("#risultato").html(jqXHR.responseText);
                                 $("#risultato").show();
                                 msgbox("Si è verificato un errore!");
@@ -319,6 +323,7 @@
                                 opendialogrisultato();
                                 $("#risultato").slideDown("slow");
                             }).fail(function (jqXHR, textStatus) {
+                                opendialogrisultato();
                                 $("#risultato").html(jqXHR.responseText);
                                 $("#risultato").show();
                                 msgbox("Si è verificato un errore!");
@@ -346,6 +351,7 @@
                                 opendialogrisultato();
                                 $("#risultato").slideDown("slow");
                             }).fail(function (jqXHR, textStatus) {
+                                opendialogrisultato();
                                 $("#risultato").html(jqXHR.responseText);
                                 $("#risultato").show();
                                 msgbox("Si è verificato un errore!");
@@ -374,6 +380,7 @@
                                 $("#risultato").slideDown("slow");
                                 //msgbox("Controllare il log, e in caso di routing.yml non aggiornabile automaticamente, inserire a mano la parte suggerita tenendo conto nell'indentazione");
                             }).fail(function (jqXHR, textStatus) {
+                                opendialogrisultato();
                                 $("#risultato").html(jqXHR.responseText);
                                 $("#risultato").show();
                                 msgbox("Si è verificato un errore!");
@@ -398,6 +405,7 @@
                                 opendialogrisultato();
                                 $("#risultato").slideDown("slow");
                             }).fail(function (jqXHR, textStatus) {
+                                opendialogrisultato();
                                 $("#risultato").html(jqXHR.responseText);
                                 $("#risultato").show();
                                 msgbox("Si è verificato un errore!");
@@ -428,6 +436,7 @@
                                 opendialogrisultato();
                                 $("#risultato").slideDown("slow");
                             }).fail(function (jqXHR, textStatus) {
+                                opendialogrisultato();
                                 $("#risultato").html(jqXHR.responseText);
                                 $("#risultato").show();
                                 msgbox("Si è verificato un errore!");
@@ -455,10 +464,11 @@
                                 data: {unixcommand: unixcommand},
                                 context: document.body
                             }).done(function (data) {
-                                $("#risultato").html(data);
                                 opendialogrisultato();
+                                $("#risultato").html(data);
                                 $("#risultato").slideDown("slow");
                             }).fail(function (jqXHR, textStatus) {
+                                opendialogrisultato();
                                 $("#risultato").html(jqXHR.responseText);
                                 $("#risultato").show();
                                 msgbox("Si è verificato un errore!");
@@ -485,6 +495,7 @@
                                 opendialogrisultato();
                                 $("#risultato").slideDown("slow");
                             }).fail(function (jqXHR, textStatus) {
+                                opendialogrisultato();
                                 $("#risultato").html(jqXHR.responseText);
                                 $("#risultato").show();
                                 msgbox("Si è verificato un errore!");
