@@ -66,5 +66,7 @@ register_shutdown_function(function() use ($pidws) {
 register_shutdown_function(function() use ($pidse) {
     echo sprintf('%s - Killing process with ID %d', date('r'), $pidse) . PHP_EOL;
     exec('kill ' . $pidse);
+    exec('killall geckodriver');
+    exec('killall chromedriver');
     sleep(3);
 });
