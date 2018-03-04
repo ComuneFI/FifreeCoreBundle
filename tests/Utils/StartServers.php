@@ -22,7 +22,7 @@ echo sprintf(
 // Command that starts the built-in web server
 $driverspath = realpath(__DIR__ . '/../../vendor') . "/bin/";
 $commandse = sprintf(
-        'PATH=$PATH:%s && sh %s > %s 2>&1 & echo $!', $driverspath, __DIR__ . '/../../vendor/bin/selenium-server-standalone', __DIR__ . '/../../build/artifacts/logs/selenium2.log'
+        'PATH=$PATH:%s && sh %s %s > %s 2>&1 & echo $!', $driverspath, __DIR__ . '/../../vendor/bin/selenium-server-standalone', '-enablePassThrough false', __DIR__ . '/../../build/artifacts/logs/selenium2.log'
 );
 
 echo $commandse . "\n";
@@ -43,7 +43,7 @@ sleep(3);
 register_shutdown_function(function() use ($pidws) {
 // Command that starts the built-in web server
     $commandws = sprintf(
-            'php %s %s > %s 2>&1 & echo $!', 'tests/bin/console server:stop', '--env=test', __DIR__ . '/../../build/artifacts/logs/webserver.log'
+            'php %s %s >> %s 2>&1 & echo $!', 'tests/bin/console server:stop', '--env=test', __DIR__ . '/../../build/artifacts/logs/webserver.log'
     );
 
     echo $commandws . "\n";
