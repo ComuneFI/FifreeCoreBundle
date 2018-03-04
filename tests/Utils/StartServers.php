@@ -3,7 +3,7 @@
 //ws
 // Command that starts the built-in web server
 $commandws = sprintf(
-        'php %s %s %s > %s 2>&1 & echo $!', 'tests/bin/console server:run', '--docroot=tests/web', '--env=test', __DIR__ . '/../../build/artifacts/logs/webserver.log'
+        'php %s %s %s > %s 2>&1 & echo $!', 'tests/bin/console server:start', '--docroot=tests/web', '--env=test', __DIR__ . '/../../build/artifacts/logs/webserver.log'
 );
 
 echo $commandws . "\n";
@@ -41,8 +41,24 @@ sleep(2);
 
 // Kill the web server when the process ends
 register_shutdown_function(function() use ($pidws) {
-    echo sprintf('%s - Killing process with ID %d', date('r'), $pidws) . PHP_EOL;
-    exec('kill ' . $pidws);
+// Command that starts the built-in web server
+    $commandws = sprintf(
+            'php %s %s > %s 2>&1 & echo $!', 'tests/bin/console server:stop', '--env=test', __DIR__ . '/../../build/artifacts/logs/webserver.log'
+    );
+
+    echo $commandws . "\n";
+
+// Execute the command and store the process ID
+    $outputws = array();
+    exec($commandws, $outputws);
+//var_dump($output);
+    $pidwstop = (int) $outputws[0];
+
+    echo sprintf(
+            '%s - Web server stopped with PID %d -> %d', date('r'), $pidws, $pidwstop
+    ) . PHP_EOL;
+    //echo sprintf('%s - Killing process with ID %d', date('r'), $pidws) . PHP_EOL;
+    //exec('kill ' . $pidws);
 });
 
 // Kill the web server when the process ends
