@@ -5,7 +5,7 @@ php:
   #- 7.0
   #- 7.1
   - 7.2
-  #- hhvm
+  - hhvm
 
 services:
   - mysql
@@ -13,7 +13,7 @@ services:
   
 matrix:
     allow_failures:
-       # - php: hhvm
+        - php: hhvm
        # - php: 5.6
        #   env: BROWSER=chrome
        # - php: 7.0
@@ -49,21 +49,18 @@ addons:
 before_script:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi make
-  
   - if [[ $TRAVIS_PHP_VERSION != "hhvm" ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION != "hhvm" ]] ; then pecl channel-update pecl.php.net; fi;
-  - if [[ $TRAVIS_PHP_VERSION != "hhvm" ]]; then echo 'date.timezone = "Europe/Rome"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then echo "yes" | pecl install channel://pecl.php.net/apcu || true; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then echo "yes" | pecl install channel://pecl.php.net/apcu_bc || true; fi
   - if [[ $TRAVIS_PHP_VERSION == "5.6" ]] ; then echo "yes" | pecl install apcu-4.0.11 || true; fi
-  - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - cat ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then sed -i '/extension="apc.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then sed -i '/extension="apcu.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then phpenv config-add ./tests/build/ini/apc-7.ini; fi
   - if [[ $TRAVIS_PHP_VERSION == "5.6" ]] ; then phpenv config-add ./tests/build/ini/apc-5.6.ini; fi
-  - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  #- if [[ $TRAVIS_PHP_VERSION != "hhvm" ]]; then sudo apt-get install -y --force-yes php5-dev php-pear php5-mysql php5-curl php5-gd php5-json php5-sqlite php5-pgsql; fi
+  #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - if [[ $TRAVIS_PHP_VERSION != "hhvm" ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.0" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.1" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
@@ -86,7 +83,6 @@ before_script:
   - if [[ "$DB" == "pgsql" ]]; then psql -c "GRANT ALL PRIVILEGES ON DATABASE unittest TO fifreeuser;" -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "ALTER USER fifreeuser CREATEDB;" -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "alter role fifreeuser superuser;" -U postgres; fi
-  
   
   - if [[ "$DB" == "mysql" ]]; then echo "PROVISIONING WITH MySQL"; fi
   - if [[ "$DB" == "mysql" ]]; then cp -f ./tests/build/parameters.mysql.yml $TRAVIS_BUILD_DIR/tests/app/config/parameters.yml; fi
