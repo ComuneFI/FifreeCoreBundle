@@ -101,6 +101,8 @@ before_script:
   - if [[ "$DB" == "sqlite3" ]]; then echo "PROVISIONING WITH Sqlite3"; fi
   - if [[ "$DB" == "sqlite3" ]]; then cp -f ./tests/build/parameters.sqlite.yml $TRAVIS_BUILD_DIR/tests/app/config/parameters.yml; fi
   
+  - if [[ "$TRAVIS_PHP_VERSION" == "hhvm-3.24" ]]; then cp -f ./tests/build/build.hhvm.xml $TRAVIS_BUILD_DIR/build.xml; fi
+  
   - if [[ "$BROWSER" == "chrome" ]]; then sudo sed -i 's/firefox/chrome/' $TRAVIS_BUILD_DIR/tests/app/config/parameters.yml; fi
   #- if [[ "$BROWSER" == "chrome" ]]; then sudo cat $TRAVIS_BUILD_DIR/tests/app/config/parameters.yml; fi
   #- if [[ "$BROWSER" == "chrome" ]]; then wget https://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip && unzip chromedriver_linux64.zip && sudo mv chromedriver /usr/local/bin; fi
