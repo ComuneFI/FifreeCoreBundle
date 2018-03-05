@@ -53,7 +53,7 @@ composer require fi/fifreecorebundle
 
     ##Start server
     #php tests/bin/console server:stop --env=test > /dev/null 2>&1 &
-    #php tests/bin/console server:run  --docroot=tests/web --env=test 2>&1 &
+    #php tests/bin/console server:start  --docroot=tests/web --env=test 2>&1 &
     #sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
 
     #Lanciare i test
