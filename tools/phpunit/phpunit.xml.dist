@@ -24,11 +24,22 @@
             <directory suffix=".php">./../../tests/Fi/CoreBundle/Utils</directory>
             <directory suffix=".php">./../../tests/Fi/CoreBundle/Listener</directory>
         </testsuite>
+        <testsuite name="Pannelloamministrazionebundle">
+            <directory suffix=".php">./../../tests/Fi/PannelloAmministrazioneBundle/Command</directory>
+            <directory suffix=".php">./../../tests/Fi/PannelloAmministrazioneBundle/Controller</directory>
+            <directory suffix=".php">./../../tests/Fi/PannelloAmministrazioneBundle/DependencyInjection</directory>
+        </testsuite>
+        <testsuite name="Corebundle Functional">
+            <directory suffix=".php">./../../tests/Fi/CoreBundle/Functional</directory>
+        </testsuite>
+        <testsuite name="Pannelloamministrazionebundle Functional">
+            <directory suffix=".php">./../../tests/Fi/PannelloAmministrazioneBundle/Functional</directory>
+        </testsuite>
     </testsuites>
     
     <php>
         <server name="KERNEL_CLASS" value="AppKernel" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="36" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="81" />
         <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
     </php>
 

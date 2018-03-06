@@ -12,11 +12,7 @@
                     phpcs-ci, 
                     phpcpd-ci, 
                     php-security-checker, 
-                    phpunit-ci, 
-                    phpunit-ci-pa,
-                    phpunit-ci-functional, 
-                    phpunit-ci-pa-functional, 
-                    phpunit-clover"
+                    phpunit-ci"
     />
 
     <target name="clean" description="Cleanup build artifacts">
@@ -159,34 +155,7 @@
     <target name="phpunit-ci" description="Run unit tests with PHPUnit">
         <exec executable="vendor/bin/simple-phpunit" failonerror="true">
             <arg line="--configuration=${basedir}/tools/phpunit/phpunit.xml.dist"/>
-            <arg line="--coverage-php=${basedir}/build/artifacts/coverage/clover_core.cov"/>
-        </exec>
-    </target>
-
-    <target name="phpunit-ci-pa" description="Run unit tests with PHPUnit Pannello amministrazione">
-        <exec executable="vendor/bin/simple-phpunit" failonerror="true">
-            <arg line="--configuration=${basedir}/tools/phpunit/phpunit.pannelloamministrazione.xml.dist"/>
-            <arg line="--coverage-php=${basedir}/build/artifacts/coverage/clover_pa.cov"/>
-        </exec>
-    </target>
-
-    <target name="phpunit-ci-functional" description="Run unit tests with PHPUnit">
-        <exec executable="vendor/bin/simple-phpunit" failonerror="true">
-            <arg line="--configuration=${basedir}/tools/phpunit/phpunit.functional.xml.dist"/>
-            <arg line="--coverage-php=${basedir}/build/artifacts/coverage/clover_core_functional.cov"/>
-        </exec>
-    </target>
-
-    <target name="phpunit-ci-pa-functional" description="Run unit tests with PHPUnit Pannello amministrazione">
-        <exec executable="vendor/bin/simple-phpunit" failonerror="true">
-            <arg line="--configuration=${basedir}/tools/phpunit/phpunit.pannelloamministrazione.functional.xml.dist"/>
-            <arg line="--coverage-php=${basedir}/build/artifacts/coverage/clover_pa_functional.cov"/>
-        </exec>
-    </target>
-
-    <target name="phpunit-clover" description="Run unit tests with PHPUnit Clover">
-        <exec executable="vendor/bin/phpcov" failonerror="false">
-            <arg line="merge --clover=${basedir}/build/artifacts/coverage/clover.xml ${basedir}/build/artifacts/coverage"/>
+            <arg line="coverage-clover=${basedir}/build/artifacts/coverage/clover.xml"/>
         </exec>
     </target>
 </project>

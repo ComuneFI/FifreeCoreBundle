@@ -12,8 +12,7 @@
                     phpcs-ci, 
                     phpcpd-ci, 
                     php-security-checker, 
-                    phpunit-ci, 
-                    phpunit-ci-pa"
+                    phpunit-ci"
     />
 
     <target name="clean" description="Cleanup build artifacts">
@@ -155,15 +154,7 @@
 
     <target name="phpunit-ci" description="Run unit tests with PHPUnit">
         <exec executable="vendor/bin/simple-phpunit" failonerror="true">
-            <arg line="--configuration=${basedir}/tools/phpunit/phpunit.xml.dist"/>
-            <arg line="--coverage-php=${basedir}/build/artifacts/coverage/clover_core.cov"/>
-        </exec>
-    </target>
-
-    <target name="phpunit-ci-pa" description="Run unit tests with PHPUnit Pannello amministrazione">
-        <exec executable="vendor/bin/simple-phpunit" failonerror="true">
-            <arg line="--configuration=${basedir}/tools/phpunit/phpunit.pannelloamministrazione.xml.dist"/>
-            <arg line="--coverage-php=${basedir}/build/artifacts/coverage/clover_pa.cov"/>
+            <arg line="--configuration=${basedir}/tools/phpunit/phpunit-hhvm.xml.dist"/>
         </exec>
     </target>
 </project>

@@ -14,14 +14,26 @@
     bootstrap                   = "./../../tests/bootstrap.php" >
 
     <testsuites>
-        <testsuite name="Pannelloamministrazionebundle Functional">
-            <directory suffix=".php">./../../tests/Fi/PannelloAmministrazioneBundle/Functional</directory>
+        <testsuite name="Corebundle">
+            <directory suffix=".php">./../../tests/Fi/CoreBundle/Collector</directory>
+            <directory suffix=".php">./../../tests/Fi/CoreBundle/Command</directory>
+            <directory suffix=".php">./../../tests/Fi/CoreBundle/Controller</directory>
+            <directory suffix=".php">./../../tests/Fi/CoreBundle/DependencyInjection</directory>
+            <directory suffix=".php">./../../tests/Fi/CoreBundle/Entity</directory>
+            <directory suffix=".php">./../../tests/Fi/CoreBundle/Form</directory>
+            <directory suffix=".php">./../../tests/Fi/CoreBundle/Utils</directory>
+            <directory suffix=".php">./../../tests/Fi/CoreBundle/Listener</directory>
+        </testsuite>
+        <testsuite name="Pannelloamministrazionebundle">
+            <directory suffix=".php">./../../tests/Fi/PannelloAmministrazioneBundle/Command</directory>
+            <directory suffix=".php">./../../tests/Fi/PannelloAmministrazioneBundle/Controller</directory>
+            <directory suffix=".php">./../../tests/Fi/PannelloAmministrazioneBundle/DependencyInjection</directory>
         </testsuite>
     </testsuites>
     
     <php>
         <server name="KERNEL_CLASS" value="AppKernel" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="99" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="81" />
         <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
     </php>
 
