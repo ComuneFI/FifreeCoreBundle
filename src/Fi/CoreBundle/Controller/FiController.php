@@ -32,8 +32,8 @@ class FiController extends FiCrudController
         $this->setup($request);
         $this->setParametriGriglia(array('request' => $request));
         $paricevuti = self::$parametrigriglia;
-
-        return new Response(Griglia::datiPerGriglia($paricevuti));
+        $griglia = $this->get("ficorebundle.griglia");
+        return new Response($griglia->datiPerGriglia($paricevuti));
     }
 
     protected function elencoModifiche($controller, $id)

@@ -42,6 +42,12 @@ services:
         public: true
         arguments: [ '@service_container', '@security.token_storage', '@doctrine.orm.entity_manager' ]
             
+    #Gestione permessi
+    ficorebundle.griglia:
+        class: Fi\CoreBundle\DependencyInjection\Griglia
+        public: true
+        arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
+            
     #Utility database
     ficorebundle.database.utility:
         class: Fi\CoreBundle\DependencyInjection\DatabaseUtility

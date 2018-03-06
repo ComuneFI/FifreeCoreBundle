@@ -58,13 +58,14 @@ class FiCoreController extends FiController
 
         $parametripertestatagriglia = $this->getParametersTestataPerGriglia($request, $container, $em, $paricevuti);
 
-        $testatagriglia = Griglia::testataPerGriglia($parametripertestatagriglia);
+        $griglia = $this->get("ficorebundle.griglia");
+        $testatagriglia = $griglia->testataPerGriglia($parametripertestatagriglia);
 
         if ($request->get('titolo')) {
             $testatagriglia['titolo'] = $request->get('titolo');
         }
         $parametridatipergriglia = $this->getParametersDatiPerGriglia($request, $container, $em, $paricevuti);
-        $corpogriglia = Griglia::datiPerGriglia($parametridatipergriglia);
+        $corpogriglia = $griglia->datiPerGriglia($parametridatipergriglia);
 
         $parametri = array('request' => $request, 'testata' => $testatagriglia, 'griglia' => $corpogriglia);
         return $parametri;

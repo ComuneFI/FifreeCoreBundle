@@ -6,7 +6,6 @@ use Behat\Mink\Session;
 
 class GrigliaControllerTest extends FifreeTestAuthorizedClient
 {
-
     /**
      * @test
      */
@@ -48,9 +47,9 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
             'container' => $container
         );
 
-        $testatagriglia = Griglia::testataPerGriglia($paricevuti);
+        $griglia = $container->get("ficorebundle.griglia");
+        $testatagriglia = $griglia->testataPerGriglia($paricevuti);
 
-        $tabellagriglia = $testatagriglia['tabella'];
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
         $FfsecondariaController = new \Fi\CoreBundle\Controller\FfsecondariaController();
         $FfsecondariaController->setContainer($container);
@@ -84,7 +83,6 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $this->assertTrue($rows[0]->id == 2);
         $this->assertTrue($rows[8]->id == 7);
     }
-
     /**
      * @test
      */
@@ -126,9 +124,9 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
             'container' => $container
         );
 
-        $testatagriglia = Griglia::testataPerGriglia($paricevuti);
+        $griglia = $container->get("ficorebundle.griglia");
+        $testatagriglia = $griglia->testataPerGriglia($paricevuti);
 
-        $tabellagriglia = $testatagriglia['tabella'];
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
         $FfsecondariaController = new \Fi\CoreBundle\Controller\FfsecondariaController();
         $FfsecondariaController->setContainer($container);
@@ -162,7 +160,6 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $this->assertTrue($rows[0]->id == 7);
         $this->assertTrue($rows[8]->id == 2);
     }
-
     /**
      * @test
      */
@@ -205,12 +202,11 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
                 "filterarray" => $test["filterarray"]
             );
 
-            $datigriglia = $this->getDatiGriglia($paricevuti);
+            $datigriglia = $this->getDatiGriglia($paricevuti, $container);
             $this->assertEquals($test["resultrows"], $datigriglia['total'], $test["descrizionetest"]);
             $this->assertEquals($test["resultrows"], $datigriglia['records'], $test["descrizionetest"]);
         }
     }
-
     private function getAllTests()
     {
         $tests = array();
@@ -995,8 +991,7 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
 
         return $tests;
     }
-
-    private function getDatiGriglia($paricevuti)
+    private function getDatiGriglia($paricevuti,$container)
     {
 
         $requestarray = array(
@@ -1011,10 +1006,11 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
 
         $newrequest = new \Symfony\Component\HttpFoundation\Request($requestarray);
         $parametrigriglia = array_merge(array("request" => $newrequest), $paricevuti);
-        $datigriglia = json_decode(Griglia::datiPerGriglia($parametrigriglia), true);
+        $griglia = $container->get("ficorebundle.griglia");
+        $datigriglia = json_decode($griglia->datiPerGriglia($parametrigriglia), true);
+
         return $datigriglia;
     }
-
     /**
      * @test
      */
@@ -1056,7 +1052,8 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
             'container' => $container
         );
 
-        $testatagriglia = Griglia::testataPerGriglia($paricevuti);
+        $griglia = $container->get("ficorebundle.griglia");
+        $testatagriglia = $griglia->testataPerGriglia($paricevuti);
         $modellocolonne = $testatagriglia['modellocolonne'];
         $this->assertEquals(9, count($modellocolonne));
 
@@ -1208,7 +1205,6 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
             }
         }
     }
-
     /**
      * @test
      */
@@ -1257,7 +1253,8 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         );
 
 
-        $testatagriglia = Griglia::testataPerGriglia($paricevuti);
+        $griglia = $container->get("ficorebundle.griglia");
+        $testatagriglia = $griglia->testataPerGriglia($paricevuti);
         $modellocolonne = $testatagriglia['modellocolonne'];
         $this->assertEquals(8, count($modellocolonne));
 
@@ -1301,7 +1298,7 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $this->assertEquals(500, $modellocolonne[7]['width']);
         $this->assertEquals('string', $modellocolonne[7]['tipocampo']);
 
-        $datigriglia = $this->getDatiGriglia($paricevuti);
+        $datigriglia = $this->getDatiGriglia($paricevuti, $container);
 
         $this->assertTrue($datigriglia["rows"][8]["cell"][0]);
 
@@ -1314,5 +1311,4 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $this->assertTrue(DateTime::createFromFormat('d/m/Y', $datigriglia["rows"][9]["cell"][6]) !== false);
         $this->assertEquals($datigriglia["rows"][9]["cell"][7], "Nota 10° altra ffsecondaria");
     }
-
 }

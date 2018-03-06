@@ -144,7 +144,8 @@ class TabelleController extends FiCoreController
 
         $paricevuti['escludere'] = array('nometabella', 'operatori_id');
 
-        $testata = Griglia::testataPerGriglia($paricevuti);
+        $griglia = $this->get("ficorebundle.griglia");
+        $testata = $griglia->testataPerGriglia($paricevuti);
 
         $testata['titolo'] = sprintf("Configurazione colonne per tabella %s", $nometabella);
         $testata['multisearch'] = 0;
@@ -202,7 +203,8 @@ class TabelleController extends FiCoreController
         $paricevuti['escludere'] = array('nometabella', 'operatori_id');
         $paricevuti['precondizioni'] = array('Tabelle.nometabella' => $chiamante, 'Tabelle.operatori_id' => $operatore['id']);
 
-        return new Response(Griglia::datiPerGriglia($paricevuti));
+        $griglia = $this->get("ficorebundle.griglia");
+        return new Response($griglia->datiPerGriglia($paricevuti));
     }
 
     protected function setParametriGriglia($prepar = array())

@@ -41,7 +41,8 @@ class OperatoriController extends FiCoreController
             'dettaglij' => $dettaglij,
             'container' => $container,);
 
-        $testatagriglia = Griglia::testataPerGriglia($paricevuti);
+        $griglia = $this->get("ficorebundle.griglia");
+        $testatagriglia = $griglia->testataPerGriglia($paricevuti);
 
         $testatagriglia['multisearch'] = 1;
         $testatagriglia['showconfig'] = 1;

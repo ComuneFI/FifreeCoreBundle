@@ -1,22 +1,20 @@
 <?php
 
-namespace Fi\CoreBundle\Controller;
+namespace Fi\CoreBundle\DependencyInjection;
 
 use Fi\CoreBundle\Utils\GridDati;
 use Fi\CoreBundle\Utils\GridTestata;
 use Fi\CoreBundle\Utils\GrigliaParametriUtils;
 use Fi\CoreBundle\Utils\GrigliaUtils;
-use Fi\CoreBundle\Utils\GrigliaRegoleUtils;
 use Fi\CoreBundle\Utils\GrigliaCampiExtraUtils;
 use Fi\CoreBundle\Utils\GrigliaColonneUtils;
 use Fi\CoreBundle\Utils\GrigliaDatiUtils;
 use Fi\CoreBundle\Utils\GrigliaDatiPrecondizioniUtils;
 use Fi\CoreBundle\Utils\GrigliaExtraFunzioniUtils;
 use Fi\CoreBundle\Utils\GrigliaDatiMultiUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class Griglia extends Controller
+class Griglia
 {
 
     /**
@@ -44,7 +42,7 @@ class Griglia extends Controller
      *
      * @return array contentente i dati di testata per la griglia
      */
-    public static function testataPerGriglia($paricevuti = array())
+    public function testataPerGriglia($paricevuti = [])
     {
         $nometabella = $paricevuti['nometabella'];
         $nomebundle = $paricevuti['nomebundle'];
@@ -104,7 +102,7 @@ class Griglia extends Controller
      *
      * @return array in formato JSON con i dati richiesti
      */
-    public static function datiPerGriglia($parametri = array())
+    public function datiPerGriglia($parametri = [])
     {
         $request = $parametri['request'];
         $container = $parametri['container'];

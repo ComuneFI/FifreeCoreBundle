@@ -53,7 +53,8 @@ class PermessiController extends FiCoreController
             'dettaglij' => $dettaglij,
             'container' => $container,);
 
-        $testatagriglia = Griglia::testataPerGriglia($paricevuti);
+        $griglia = $this->get("ficorebundle.griglia");
+        $testatagriglia = $griglia->testataPerGriglia($paricevuti);
 
         $testata = json_encode($testatagriglia);
         $twigparms = array(

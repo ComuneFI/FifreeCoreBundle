@@ -1,7 +1,6 @@
 <?php
 
 use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
-use Fi\CoreBundle\Controller\Griglia;
 
 class FfprincipaleUserControllerTest extends FifreeTestAuthorizedClient
 {
@@ -59,7 +58,8 @@ class FfprincipaleUserControllerTest extends FifreeTestAuthorizedClient
             'container' => $container
         );
 
-        $testatagriglia = Griglia::testataPerGriglia($paricevuti);
+        $griglia = $container->get("ficorebundle.griglia");
+        $testatagriglia = $griglia->testataPerGriglia($paricevuti);
         $modellocolonne = $testatagriglia['modellocolonne'];
         $this->assertEquals(9, count($modellocolonne));
 

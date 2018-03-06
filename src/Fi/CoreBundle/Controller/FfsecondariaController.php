@@ -10,7 +10,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class FfsecondariaController extends FiCoreController
 {
-
     public function indexAction(Request $request)
     {
 
@@ -53,9 +52,10 @@ class FfsecondariaController extends FiCoreController
             'campiextra' => $campiextra,
             'escludere' => $escludi,
             'container' => $container,
-            /*"ordinecolonne" => array("ffprincipale_id", "descsec", "importo", "intero")*/);
+                /* "ordinecolonne" => array("ffprincipale_id", "descsec", "importo", "intero") */                );
 
-        $testatagriglia = Griglia::testataPerGriglia($paricevuti);
+        $griglia = $this->get("ficorebundle.griglia");
+        $testatagriglia = $griglia->testataPerGriglia($paricevuti);
 
         $this->setDefaultGridSettings($testatagriglia);
 
@@ -79,7 +79,6 @@ class FfsecondariaController extends FiCoreController
             return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
         }
     }
-
     private function setDefaultGridSettings(&$testatagriglia)
     {
         $testatagriglia['multisearch'] = 1;
@@ -95,7 +94,6 @@ class FfsecondariaController extends FiCoreController
         $testatagriglia["sortname"] = "data, descsec";
         $testatagriglia["sortorder"] = "desc";
     }
-
     private function getComboSelectFfprincipale()
     {
         $em = $this->getDoctrine()->getManager();
@@ -119,7 +117,6 @@ class FfsecondariaController extends FiCoreController
         }
         return $ffprincipaleSelect;
     }
-
     public function setParametriGriglia($prepar = array())
     {
         $this->setup($prepar['request']);
@@ -217,7 +214,7 @@ class FfsecondariaController extends FiCoreController
             'escludere' => $escludi,
             'precondizioni' => $precondizioni,
             'precondizioniAvanzate' => $precondizioniAvanzate,
-            /*"ordinecolonne" => array("ffprincipale_id", "descsec", "importo", "intero")*/
+                /* "ordinecolonne" => array("ffprincipale_id", "descsec", "importo", "intero") */
         );
 
         if (!empty($prepar)) {
