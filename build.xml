@@ -155,7 +155,7 @@
     <target name="phpunit-ci" description="Run unit tests with PHPUnit">
         <exec executable="vendor/bin/simple-phpunit" failonerror="true">
             <arg line="--configuration=${basedir}/tools/phpunit/phpunit.xml.dist"/>
-            <arg line="--coverage-clover=${basedir}/build/artifacts/coverage"/>
+            <arg line="--coverage-clover=${basedir}/build/artifacts/coverage/clover.xml"/>
         </exec>
     </target>
 </project>
