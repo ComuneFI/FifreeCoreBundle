@@ -51,7 +51,7 @@ before_script:
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\ndate.timezone = "Europe/Rome"' | sudo tee -a /etc/hhvm/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\nhhvm.enable_hip_hop_syntax = true' | sudo tee -a /etc/hhvm/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar; fi
-  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo 'hhvm.php7.all = 1' >> /etc/hhvm/php.ini; fi
+  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\nhhvm.php7.all = 1' | sudo tee -a /etc/hhvm/php.ini; fi
 
   - if [[ ! $TRAVIS_PHP_VERSION =~ hhvm ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ hhvm ]] ; then pecl channel-update pecl.php.net; fi;

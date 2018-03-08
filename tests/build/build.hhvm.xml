@@ -7,7 +7,6 @@
                     composer-run-install,
                     fifreecorebundle-drop-database,
                     fifreecorebundle-install,
-                    fifreecorebundle-assets,
                     php-lint-ci, 
                     phpmd-ci, 
                     phpcs-ci, 
@@ -58,12 +57,6 @@
     <target name="fifreecorebundle-install">
         <exec executable="php" failonerror="true">
             <arg line="tests/bin/console fifree2:install admin admin admin@admin.it --env=test"/>
-        </exec>
-    </target>
-  
-    <target name="fifreecorebundle-assets">
-        <exec executable="php" failonerror="true">
-            <arg line="bin/console assets:install --symlink --relative tests/public"/>
         </exec>
     </target>
   
