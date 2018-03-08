@@ -122,14 +122,14 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
         $this->pressButton('adminpanelgenerateformcrud');
 
-        $screenshot = $this->facebookDriver->takeScreenshot();
-        file_put_contents('/tmp/screenshot.png', base64_encode($screenshot));
-        echo $page->getPageSource();
-        
         $this->pressButton('yesdialogbutton');
 
         $this->ajaxWait();
 
+        $screenshot = $this->facebookDriver->takeScreenshot();
+        file_put_contents('/tmp/screenshot.png', base64_encode($screenshot));
+        echo $page->getPageSource();
+        
         $this->assertTrue(file_exists($checktypeprova));
         $this->assertTrue(file_exists($checkviewsprova));
         $this->assertTrue(file_exists($checkindexprova));
