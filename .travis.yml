@@ -50,11 +50,11 @@ before_script:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi make
   
-  - if [[ "$TRAVIS_PHP_VERSION" == "hhvm-3.24" ]]; then echo -e '\nhhvm.libxml.ext_entity_whitelist = "file,http,https"' | sudo tee -a /etc/hhvm/php.ini; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == "hhvm-3.24" ]]; then echo -e '\nhhvm.enable_zend_compat=true' | sudo tee -a /etc/hhvm/php.ini; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == "hhvm-3.24" ]]; then echo -e '\ndate.timezone = "Europe/Rome"' | sudo tee -a /etc/hhvm/php.ini; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == "hhvm-3.24" ]]; then echo -e '\nhhvm.enable_hip_hop_syntax = true' | sudo tee -a /etc/hhvm/php.ini; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == "hhvm-3.24" ]]; then curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar; fi
+  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\nhhvm.libxml.ext_entity_whitelist = "file,http,https"' | sudo tee -a /etc/hhvm/php.ini; fi
+  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\nhhvm.enable_zend_compat=true' | sudo tee -a /etc/hhvm/php.ini; fi
+  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\ndate.timezone = "Europe/Rome"' | sudo tee -a /etc/hhvm/php.ini; fi
+  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\nhhvm.enable_hip_hop_syntax = true' | sudo tee -a /etc/hhvm/php.ini; fi
+  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar; fi
 
   - if [[ $TRAVIS_PHP_VERSION != "hhvm-3.24" ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION != "hhvm-3.24" ]] ; then pecl channel-update pecl.php.net; fi;
@@ -73,12 +73,12 @@ before_script:
   - if [[ $TRAVIS_PHP_VERSION == "7.1" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
   - sudo a2enmod rewrite actions fastcgi alias
-  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm-3.24" ]]; then echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
-  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm-3.24" ]]; then sudo sed -i -e "s,www-data,travis,g" /etc/apache2/envvars; fi
-  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm-3.24" ]]; then sudo chown -R travis:travis /var/lib/apache2/fastcgi; fi
-  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm-3.24" ]]; then ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm; fi
-  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm-3.24" ]]; then sudo cp -f ./tests/build/travis-ci-apache /etc/apache2/sites-available/000-default.conf; fi
-  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm-3.24" ]]; then sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo sed -i -e "s,www-data,travis,g" /etc/apache2/envvars; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo chown -R travis:travis /var/lib/apache2/fastcgi; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo cp -f ./tests/build/travis-ci-apache /etc/apache2/sites-available/000-default.conf; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf; fi
   - sudo sed -i 's/Listen 80/Listen 8000/' /etc/apache2/ports.conf
   - sudo sed -i 's/NameVirtualHost \*:80/NameVirtualHost \*:8000/' /etc/apache2/ports.conf
   - sudo service apache2 restart
@@ -101,7 +101,7 @@ before_script:
   - if [[ "$DB" == "sqlite3" ]]; then echo "PROVISIONING WITH Sqlite3"; fi
   - if [[ "$DB" == "sqlite3" ]]; then cp -f ./tests/build/parameters.sqlite.yml $TRAVIS_BUILD_DIR/tests/app/config/parameters.yml; fi
   
-  - if [[ "$TRAVIS_PHP_VERSION" == "hhvm-3.24" ]]; then cp -f ./tests/build/build.hhvm.xml $TRAVIS_BUILD_DIR/build.xml; fi
+  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then cp -f ./tests/build/build.hhvm.xml $TRAVIS_BUILD_DIR/build.xml; fi
   
   - if [[ "$BROWSER" == "chrome" ]]; then sudo sed -i 's/firefox/chrome/' $TRAVIS_BUILD_DIR/tests/app/config/parameters.yml; fi
   #- if [[ "$BROWSER" == "chrome" ]]; then sudo cat $TRAVIS_BUILD_DIR/tests/app/config/parameters.yml; fi
@@ -117,13 +117,13 @@ before_script:
   
 
 script:
-  #- if [[ "$TRAVIS_PHP_VERSION" != "hhvm-3.24" ]]; then ant; fi
+  #- if [[ ! $TRAVIS_PHP_VERSION=~ ^hhvm ]]; then ant; fi
   - ant
 
 after_success:
-  - if [ "$TRAVIS_PHP_VERSION" != "hhvm-3.24" ]; then php vendor/bin/php-coveralls -v; fi
-  - if [ "$TRAVIS_PHP_VERSION" != "hhvm-3.24" ]; then wget https://scrutinizer-ci.com/ocular.phar -t 3; fi;
-  - if [ "$TRAVIS_PHP_VERSION" != "hhvm-3.24" ]; then php ocular.phar code-coverage:upload --format=php-clover build/artifacts/coverage/clover.xml; fi;
+  - if [  ! $TRAVIS_PHP_VERSION=~ ^hhvm ]; then php vendor/bin/php-coveralls -v; fi
+  - if [  ! $TRAVIS_PHP_VERSION=~ ^hhvm ]; then wget https://scrutinizer-ci.com/ocular.phar -t 3; fi;
+  - if [  ! $TRAVIS_PHP_VERSION=~ ^hhvm ]; then php ocular.phar code-coverage:upload --format=php-clover build/artifacts/coverage/clover.xml; fi;
   - sudo cat $TRAVIS_BUILD_DIR/build/artifacts/logs/selenium2.log
   - sudo cat $TRAVIS_BUILD_DIR/build/artifacts/logs/webserver.log
   - rm tests/var/cache/dbtest.sqlite
