@@ -63,7 +63,7 @@ class PannelloamministrazioneCommands
         $result = $this->pammutils->runSymfonyCommand('generate:bundle', $commandparms);
         $bundlePath = $srcPath . DIRECTORY_SEPARATOR . $bundleName;
         if ($fs->exists($bundlePath)) {
-            $addmessage = 'Per abilitare il nuovo bundle nel kernel controllare che sia presente in app/AppKernel.php, '
+            $addmessage = 'Per abilitare il nuovo bundle nel kernel controllare che sia presente in app/Kernel.php, '
                     . 'pulire la cache e aggiornare la pagina';
             $ret = array('errcode' => 0, 'command' => 'generate:bundle', 'message' => $result["message"] . $addmessage);
         } else {

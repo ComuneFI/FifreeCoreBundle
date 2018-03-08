@@ -3,7 +3,7 @@
 //ws
 // Command that starts the built-in web server
 $commandws = sprintf(
-        'php %s %s %s > %s 2>&1 & echo $!', 'bin/console server:start', '--docroot=tests/public', '--env=test', __DIR__ . '/../../build/artifacts/logs/webserver.log'
+        'php %s %s > %s 2>&1 & echo $!', 'bin/console server:start', '--docroot=tests/public', __DIR__ . '/../../build/artifacts/logs/webserver.log'
 );
 
 echo $commandws . "\n";

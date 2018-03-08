@@ -62,8 +62,8 @@ function cleanFilesystem()
     $DELETE = "new Fi\ProvaBundle\FiProvaBundle(),";
     $vendorDir = dirname(dirname(__FILE__) . '/tests');
     $kernelfile = $vendorDir . '/app/Kernel.php';
-    deleteLineFromFile($kernelfile, $DELETE);
-    $routingfile = $vendorDir . '/app/config/routing.yml';
+    //deleteLineFromFile($kernelfile, $DELETE);
+    $routingfile = $vendorDir . '/app/config/routes.yaml';
     $line = fgets(fopen($routingfile, 'r'));
     if (substr($line, 0, -1) == 'fi_prova:') {
         for ($index = 0; $index < 4; ++$index) {
@@ -71,9 +71,9 @@ function cleanFilesystem()
         }
     }
 
-    $configfile = $vendorDir . '/app/config/config.yml';
-    $remove = '- { resource: "@FiProvaBundle/Resources/config/services.yml" }';
-    deleteLineFromFile($configfile, $remove);
+    //$configfile = $vendorDir . '/app/config/config.yml';
+    //$remove = '- { resource: "@FiProvaBundle/Resources/config/services.yml" }';
+    //deleteLineFromFile($configfile, $remove);
 
 
     $bundledir = $vendorDir . '/src/Fi/ProvaBundle';

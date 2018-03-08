@@ -36,12 +36,13 @@ class ProjectPath
 
     public function getBinPath()
     {
-        $bindir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'bin';
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            if (!file_exists($bindir)) {
-                $bindir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'vendor' .
-                        DIRECTORY_SEPARATOR . 'bin';
-            }
+        $bindir = $this->getProjectPath() . '/bin';
+        if (!file_exists($bindir)) {
+            $bindir = $this->getProjectPath() . '/../bin';
+        }
+        if (!file_exists($bindir)) {
+            $bindir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'vendor' .
+                    DIRECTORY_SEPARATOR . 'bin';
         }
         if (!file_exists($bindir)) {
             throw new \Exception("Cartella Bin non trovata", -100);
@@ -115,12 +116,10 @@ class ProjectPath
 
     public function getConsole()
     {
-        $console = $this->getAppPath() . DIRECTORY_SEPARATOR . 'console';
+        $console = $this->getBinPath() . DIRECTORY_SEPARATOR . 'console';
         // Questo codice per versioni che usano un symfony 2 o 3
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            if (!file_exists($console)) {
-                $console = $this->getBinPath() . DIRECTORY_SEPARATOR . 'console';
-            }
+        if (!file_exists($console)) {
+            $console = $this->getAppPath() . DIRECTORY_SEPARATOR . 'console';
         }
         if (!file_exists($console)) {
             throw new \Exception("Console non trovata", -100);
