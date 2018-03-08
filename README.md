@@ -34,7 +34,8 @@ composer require fi/fifreecorebundle
 - Test
 
 ```
-    rm -rf vendor/ composer.lock
+    rm -rf composer.lock
+    rm -rf vendor
     #Scarico dipendenze
     composer install
 

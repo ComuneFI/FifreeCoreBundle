@@ -45,6 +45,7 @@ class PannelloamministrazioneCommands
         $fs = new Filesystem();
 
         $srcPath = $this->apppaths->getSrcPath();
+        $appPath = $this->apppaths->getAppPath();
 
         $bundlePath = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundleName;
 
@@ -63,6 +64,13 @@ class PannelloamministrazioneCommands
         $result = $this->pammutils->runSymfonyCommand('generate:bundle', $commandparms);
         $bundlePath = $srcPath . DIRECTORY_SEPARATOR . $bundleName;
         if ($fs->exists($bundlePath)) {
+            $routesyaml = $appPath . "/config/routes.yaml";
+            if (file_exists($routesyaml)) {
+                $bundlestr = strtolower(str_replace("/", "_", $bundleName));
+                $routingstr = $bundlestr . ":\n    resource: \"@FiProvaBundle/Resources/config/routing.yml\"\n    prefix:   /\n\n";
+                $file_data = $routingstr . file_get_contents($routesyaml);
+                file_put_contents($routesyaml, $file_data);
+            }
             $addmessage = 'Per abilitare il nuovo bundle nel kernel controllare che sia presente in app/Kernel.php, '
                     . 'pulire la cache e aggiornare la pagina';
             $ret = array('errcode' => 0, 'command' => 'generate:bundle', 'message' => $result["message"] . $addmessage);

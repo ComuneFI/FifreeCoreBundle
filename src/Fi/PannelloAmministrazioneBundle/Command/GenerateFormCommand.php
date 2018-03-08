@@ -40,8 +40,6 @@ class GenerateFormCommand extends ContainerAwareCommand
                 . ' --env=' . $this->getContainer()->get('kernel')->getEnvironment()
                 . ' --with-write --format=yml --no-interaction'; // --no-debug
 
-        $phpPath = OsFunctions::getPHPExecutableFromPath();
-
         $resultcrud = $pammutils->runCommand($this->apppaths->getConsole() . ' doctrine:generate:crud ' . $crudparms);
 
         if ($resultcrud['errcode'] == 0) {

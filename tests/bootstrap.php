@@ -59,13 +59,12 @@ function getErrorText($process, $command)
 
 function cleanFilesystem()
 {
-    $DELETE = "new Fi\ProvaBundle\FiProvaBundle(),";
     $vendorDir = dirname(dirname(__FILE__) . '/tests');
     $kernelfile = $vendorDir . '/app/Kernel.php';
     //deleteLineFromFile($kernelfile, $DELETE);
     $routingfile = $vendorDir . '/app/config/routes.yaml';
     $line = fgets(fopen($routingfile, 'r'));
-    if (substr($line, 0, -1) == 'fi_prova:') {
+    if (substr($line, 0, -1) == 'fi_provabundle:') {
         for ($index = 0; $index < 4; ++$index) {
             deleteFirstLineFile($routingfile);
         }
