@@ -1,9 +1,6 @@
 language: php
 
 php:
-  - 5.6
-  #- 7.0
-  #- 7.1
   - 7.2
   - hhvm-3.24
 
@@ -60,13 +57,11 @@ before_script:
   - if [[ $TRAVIS_PHP_VERSION != "hhvm-3.24" ]] ; then pecl channel-update pecl.php.net; fi;
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then echo "yes" | pecl install channel://pecl.php.net/apcu || true; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then echo "yes" | pecl install channel://pecl.php.net/apcu_bc || true; fi
-  - if [[ $TRAVIS_PHP_VERSION == "5.6" ]] ; then echo "yes" | pecl install apcu-4.0.11 || true; fi
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then sed -i '/extension="apc.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then sed -i '/extension="apcu.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then phpenv config-add ./tests/build/ini/apc-7.ini; fi
-  - if [[ $TRAVIS_PHP_VERSION == "5.6" ]] ; then phpenv config-add ./tests/build/ini/apc-5.6.ini; fi
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - if [[ $TRAVIS_PHP_VERSION != "hhvm-3.24" ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.0" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
