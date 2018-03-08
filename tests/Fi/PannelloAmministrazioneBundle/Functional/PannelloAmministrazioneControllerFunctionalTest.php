@@ -126,9 +126,9 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
         $this->ajaxWait();
 
-        $screenshot = $this->facebookDriver->takeScreenshot();
-        file_put_contents('/tmp/screenshot.png', base64_encode($screenshot));
-        echo $page->getPageSource();
+        //$screenshot = $this->facebookDriver->takeScreenshot();
+        //file_put_contents('/tmp/screenshot.png', base64_encode($screenshot));
+        //echo $page->getPageSource();
         
         $this->assertTrue(file_exists($checktypeprova));
         $this->assertTrue(file_exists($checkviewsprova));
@@ -156,27 +156,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
         $session->quit();
     }
-
-    /*
-     * @test
-     */
-
-    /* public function test100PannelloAmministrazioneMain()
-      {
-      $container = $this->getClientAutorizzato()->getContainer();
-      // @var $userManager \FOS\UserBundle\Doctrine\UserManager
-      $userManager = $container->get('fifree.fos_user.user_manager');
-      // @var $loginManager \FOS\UserBundle\Security\LoginManager
-      $loginManager = $container->get('fifree.fos_user.security.login_manager');
-      $firewallName = $container->getParameter('fos_user.firewall_name');
-      $username4test = $container->getParameter('user4test');
-      $user = $userManager->findUserBy(array('username' => $username4test));
-      $loginManager->loginUser($firewallName, $user);
-
-      // save the login token into the session and put it in a cookie
-      $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
-      $container->get('session')->save();
-      } */
 
     private function crudoperation($session, $page)
     {
