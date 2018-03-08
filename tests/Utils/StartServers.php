@@ -1,9 +1,10 @@
 <?php
 
+$consolepath = realpath(__DIR__ . '/../../bin/console');
 //ws
 // Command that starts the built-in web server
 $commandws = sprintf(
-        'php %s %s > %s 2>&1 & echo $!', 'bin/console server:start', '--docroot=tests/public', __DIR__ . '/../../build/artifacts/logs/webserver.log'
+        '%s %s > %s 2>&1 & echo $!', $consolepath, 'server:start --docroot=tests/public', __DIR__ . '/../../build/artifacts/logs/webserver.log'
 );
 
 echo $commandws . "\n";
@@ -41,9 +42,10 @@ sleep(3);
 
 // Kill the web server when the process ends
 register_shutdown_function(function() use ($pidws) {
+    $consolepath = realpath(__DIR__ . '/../../bin/console');
 // Command that starts the built-in web server
     $commandws = sprintf(
-            'php %s %s >> %s 2>&1 & echo $!', 'bin/console server:stop', '--env=test', __DIR__ . '/../../build/artifacts/logs/webserver.log'
+            '%s %s >> %s 2>&1 & echo $!', $consolepath, 'server:stop', __DIR__ . '/../../build/artifacts/logs/webserver.log'
     );
 
     echo $commandws . "\n";
@@ -66,7 +68,7 @@ register_shutdown_function(function() use ($pidws) {
 register_shutdown_function(function() use ($pidse) {
     echo sprintf('%s - Killing process with ID %d', date('r'), $pidse) . PHP_EOL;
     exec('kill ' . $pidse);
-    exec('killall geckodriver');
-    exec('killall chromedriver');
+    exec('killall geckodriver > /dev/null 2>&1');
+    exec('killall chromedriver > /dev/null 2>&1');
     sleep(3);
 });

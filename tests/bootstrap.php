@@ -17,7 +17,7 @@ date_default_timezone_set('Europe/Rome');
 function clearcache()
 {
     passthru(sprintf(
-                    'php "%s/console" cache:clear --no-warmup --env=%s  > /dev/null 2>&1', __DIR__ . '/../bin/', "test"
+                    '"%s/console" cache:clear > /dev/null 2>&1', __DIR__ . '/../bin'
     ));
 }
 
@@ -26,7 +26,7 @@ function clearcache()
 function cachewarmup()
 {
     passthru(sprintf(
-                    'php "%s/console" cache:warmup --env=%s > /dev/null 2>&1', __DIR__ . '/../tests/bin/', "test"
+                    '"%s/console" cache:warmup > /dev/null 2>&1', __DIR__ . '/../tests/bin'
     ));
     #sleep(1);
 }
@@ -34,7 +34,7 @@ function cachewarmup()
 function removecache()
 {
     $vendorDir = dirname(dirname(__FILE__));
-    $testcache = $vendorDir . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'test';
+    $testcache = $vendorDir . '/tests/var/cache/test';
     if (file_exists($testcache)) {
         $command = 'rm -rf ' . $testcache;
         $process = new Process($command);
@@ -43,7 +43,7 @@ function removecache()
         if (!$process->isSuccessful()) {
             echo getErrorText($process, $command);
         } else {
-            //echo $process->getOutput();
+            echo $process->getOutput();
         }
     } else {
         //echo $testcache . " not found";

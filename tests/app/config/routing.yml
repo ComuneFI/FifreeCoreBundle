@@ -1,0 +1,8 @@
+fi_demo:
+    resource: "@FiDemoBundle/Resources/config/routing.yml"
+    prefix:   /
+
+fi_prova:
+    resource: "@FiProvaBundle/Resources/config/routing.yml"
+    prefix:   /
+

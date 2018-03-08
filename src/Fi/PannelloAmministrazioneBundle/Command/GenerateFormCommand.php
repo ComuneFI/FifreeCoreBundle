@@ -42,7 +42,7 @@ class GenerateFormCommand extends ContainerAwareCommand
 
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
-        $resultcrud = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' doctrine:generate:crud ' . $crudparms);
+        $resultcrud = $pammutils->runCommand($this->apppaths->getConsole() . ' doctrine:generate:crud ' . $crudparms);
 
         if ($resultcrud['errcode'] == 0) {
             $fs = new Filesystem();
