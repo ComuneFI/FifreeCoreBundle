@@ -35,6 +35,7 @@ composer require fi/fifreecorebundle
 
 ```
     rm -rf vendor/ composer.lock
+    rm -rf vendor
     #Scarico dipendenze
     composer install
 
@@ -43,17 +44,18 @@ composer require fi/fifreecorebundle
     rm -rf test/var/cache/prod
     rm -rf test/var/cache/dev
     rm -rf test/var/cache/test
-    php tests/bin/console cache:clear --no-warmup --env=test
-    php tests/bin/console fifree:dropdatabase --force --env=test
-    php tests/bin/console fifree:install admin admin admin@admin.it --env=test
+    php bin/console cache:clear --no-warmup
+    php bin/console fifree:dropdatabase --force
+    php bin/console fifree:install admin admin admin@admin.it
     chmod 666 tests/var/cache/dbtest.sqlite
 
     #Assets install
-    php tests/bin/console assets:install tests/web --env=test
+    php bin/console assets:install --symlink --relative tests/public
+                        
 
-    ##Start server
-    #php tests/bin/console server:stop --env=test > /dev/null 2>&1 &
-    #php tests/bin/console server:start  --docroot=tests/web --env=test 2>&1 &
+    ##Start server 
+    #php bin/console server:stop --env=test > /dev/null 2>&1 &
+    #php bin/console server:start  --docroot=tests/public 2>&1 &
     #sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
 
     #Lanciare i test

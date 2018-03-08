@@ -3,7 +3,7 @@
 //ws
 // Command that starts the built-in web server
 $commandws = sprintf(
-        'php %s %s %s > %s 2>&1 & echo $!', 'tests/bin/console server:start', '--docroot=tests/web', '--env=test', __DIR__ . '/../../build/artifacts/logs/webserver.log'
+        'php %s %s %s > %s 2>&1 & echo $!', 'bin/console server:start', '--docroot=tests/public', '--env=test', __DIR__ . '/../../build/artifacts/logs/webserver.log'
 );
 
 echo $commandws . "\n";
@@ -43,7 +43,7 @@ sleep(3);
 register_shutdown_function(function() use ($pidws) {
 // Command that starts the built-in web server
     $commandws = sprintf(
-            'php %s %s >> %s 2>&1 & echo $!', 'tests/bin/console server:stop', '--env=test', __DIR__ . '/../../build/artifacts/logs/webserver.log'
+            'php %s %s >> %s 2>&1 & echo $!', 'bin/console server:stop', '--env=test', __DIR__ . '/../../build/artifacts/logs/webserver.log'
     );
 
     echo $commandws . "\n";

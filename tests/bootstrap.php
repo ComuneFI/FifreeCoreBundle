@@ -17,7 +17,7 @@ date_default_timezone_set('Europe/Rome');
 function clearcache()
 {
     passthru(sprintf(
-                    'php "%s/console" cache:clear --no-warmup --env=%s  > /dev/null 2>&1', __DIR__ . '/../tests/bin/', "test"
+                    'php "%s/console" cache:clear --no-warmup --env=%s  > /dev/null 2>&1', __DIR__ . '/../bin/', "test"
     ));
 }
 
@@ -61,7 +61,7 @@ function cleanFilesystem()
 {
     $DELETE = "new Fi\ProvaBundle\FiProvaBundle(),";
     $vendorDir = dirname(dirname(__FILE__) . '/tests');
-    $kernelfile = $vendorDir . '/app/AppKernel.php';
+    $kernelfile = $vendorDir . '/app/Kernel.php';
     deleteLineFromFile($kernelfile, $DELETE);
     $routingfile = $vendorDir . '/app/config/routing.yml';
     $line = fgets(fopen($routingfile, 'r'));

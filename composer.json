@@ -38,82 +38,89 @@
             "Fi\\ProvaBundle\\": "tests/src/Fi/ProvaBundle"
         },
         "classmap": [
-            "tests/app/AppKernel.php",
-            "tests/app/AppCache.php"
-        ],
-        "files": [
-            "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
+            "tests/app/Kernel.php"
         ]
     },
     "require": {
-        "php": ">=5.6",
+        "php": ">=7.2",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
         "fi/osbundle": "~2.0",
+        "friendsofsymfony/user-bundle": "~2.0",
         "mysql-workbench-schema-exporter/doctrine2-exporter": "^3.0",
         "mysql-workbench-schema-exporter/mysql-workbench-schema-exporter": "^3.0",
-        "incenteev/composer-parameter-handler": "^2.0",
         "sensio/distribution-bundle": "^5.0.19",
-        "sensio/framework-extra-bundle": "^5.0.0",
-        "symfony/swiftmailer-bundle": "^2.6.4",
-        "symfony/monolog-bundle": "^3.1.0",
-        "symfony/polyfill-apcu": "^1.0",
-        "symfony/symfony": "3.4.*",
-        "twig/twig": "^1.0|^2.0",
-        "friendsofsymfony/user-bundle": "~2.0"
+        "sensio/framework-extra-bundle": "^5.1",
+        "symfony/asset": "3.4.*",
+        "symfony/console": "3.4.*",
+        "symfony/flex": "^1.0",
+        "symfony/form": "3.4.*",
+        "symfony/framework-bundle": "3.4.*",
+        "symfony/lock": "3.4.*",
+        "symfony/monolog-bundle": "^3.2",
+        "symfony/orm-pack": "^1.0",
+        "symfony/security-bundle": "3.4.*",
+        "symfony/swiftmailer-bundle": "^3.2",
+        "symfony/translation": "3.4.*",
+        "symfony/twig-bundle": "3.4.*",
+        "symfony/validator": "3.4.*"
     },
     "require-dev": {
-        "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0|^4.0",
-        "sensiolabs/security-checker": "^4.0",
-        "se/selenium-server-standalone": "3.8.*",
-        "symfony/web-server-bundle": "3.4.*",
-        "facebook/webdriver": "^1.5",
+        "doctrine/doctrine-fixtures-bundle": "^3.0",
         "enm1989/chromedriver": "^2.35",
         "enm1989/geckodriver": "^0.19.1",
+        "facebook/webdriver": "^1.5",
         "mockery/mockery": "^0.9.5",
+        "phpmd/phpmd": "^2.6",
         "phpoffice/phpexcel": "^1.8",
         "phpoffice/phpword": "^0.13.0",
-        "sebastian/phpcpd": "^2.0",
-        "phpmd/phpmd": "^2.4",
-        "squizlabs/php_codesniffer": "^2.7",
         "satooshi/php-coveralls": "^2.0",
+        "se/selenium-server-standalone": "3.8.*",
+        "sebastian/phpcpd": "^2.0",
+        "sensio/generator-bundle": "^3.0",
+        "sensiolabs/security-checker": "^4.0",
+        "squizlabs/php_codesniffer": "^2.7",
+        "symfony/browser-kit": "3.4.*",
+        "symfony/css-selector": "3.4.*",
+        "symfony/dotenv": "3.4.*",
+        "symfony/maker-bundle": "^1.1",
+        "symfony/phpunit-bridge": "^3.0|^4.0",
+        "symfony/profiler-pack": "^1.0",
+        "symfony/var-dumper": "3.4.*",
+        "symfony/web-server-bundle": "3.4.*",
         "tecnickcom/tcpdf": "^6.2"
+    },
+    "conflict": {
+        "symfony/symfony": "*"
     },
     "suggest": {
         "ext-apcu": "The extension required to use cache"
     },
     "scripts": {
-        "symfony-scripts": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
-        ],
         "post-install-cmd": [
-            "@symfony-scripts"
+            "@auto-scripts"
         ],
         "post-update-cmd": [
-            "@symfony-scripts"
-        ]
+            "@auto-scripts"
+        ],
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install --symlink --relative tests/%PUBLIC_DIR%": "symfony-cmd",
+            "security-checker security:check": "script"
+        }
     },
     "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
         "sort-packages": true
     },
     "bin": ["check-src"],
     "extra": {
         "symfony-app-dir": "tests/app",
         "symfony-bin-dir": "tests/bin",
-        "symfony-var-dir": "tests/var",
         "symfony-web-dir": "tests/web",
         "symfony-tests-dir": "tests",
-        "symfony-assets-install": "relative",
-        "incenteev-parameters": {
-            "file": "tests/app/config/parameters.yml",
-            "keep-outdated": true
-        },
         "branch-alias": {
             "dev-master": "3.4-dev"
         }

@@ -13,4 +13,3 @@ homepage:
     defaults: { _controller: FiCoreBundle:Ffprincipale:index }
     requirements:
       methods:  GET
-
