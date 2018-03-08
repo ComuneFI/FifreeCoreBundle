@@ -103,10 +103,6 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
-  - php -v
-  - which php
-  - echo $PATH
-
   
 
 script:
@@ -131,7 +127,7 @@ after_failure:
   - sudo cat /var/log/apache2/fifree_access.log
   - sudo cat $TRAVIS_BUILD_DIR/build/artifacts/logs/selenium2.log
   - sudo cat $TRAVIS_BUILD_DIR/build/artifacts/logs/webserver.log
-  - sudo cat /tmp/screenshot.png
+  #- sudo cat /tmp/screenshot.png
   #- sudo cat $TRAVIS_BUILD_DIR/tests/var/logs/test/test.log
 
 notifications:
