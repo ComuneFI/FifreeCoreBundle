@@ -18,9 +18,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
     public function test20AdminpanelGenerateBundle()
     {
-        //passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-warmup --env=test ");
-        //
-        //url da testare
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->container);
         $fileprovabundle = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle";
         $checkentityprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
@@ -45,10 +42,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         $url = $this->router->generate('fi_pannello_amministrazione_homepage');
         $this->visit($url);
         $this->login('admin', 'admin');
-        $session = $this->getSession();
-        $page = $this->getCurrentPage();
-
-
 
         $this->fillField('bundlename', 'Fi/ProvaBundle');
 
@@ -57,43 +50,16 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         $this->pressButton('adminpanelgeneratebundle');
 
         $this->pressButton('yesdialogbutton');
-        //$scriptrun = "function(){ $('button:contains(\"Si\")').click();";
-        //$this->executeScript($scriptrun);
         $this->ajaxWait();
 
         $scriptrun = "$('button:contains(\"Chiudi\")').click();";
         $this->executeScript($scriptrun);
-        //parent::ajaxWait($session, 60000);
-        //$session->getDriver()->getWebDriverSession()->accept_alert();
-        //echo $session->getPage()->getHtml();
-        /**/
         //$screenshot = $driver->getWebDriverSession()->screenshot();
         //file_put_contents('/tmp/test1.png', base64_decode($screenshot));
-        /**/
-        //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
-        //$scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        //$this->executeScript($scriptclose);
-        //echo passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
-        /* qui */
-        //removecache();
-        //clearcache();
-        //$driver->reload();
-
-        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-          $this->executeScript($scriptclose); */
-
-        //***************************************************************************************************************
-        //$urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        //$url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;
-        //$page->fillField('username', 'admin');
-        //$page->fillField('password', 'admin');
-        //$this->pressButton('_submit');
         clearcache();
 
         $this->visit($url);
         $this->login('admin', 'admin');
-        $session = $this->getSession();
-        $page = $this->getCurrentPage();
 
 
         $this->visit($url);
@@ -110,54 +76,24 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
         $this->pressButton('yesdialogbutton');
 
-        /* $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-          $this->executeScript($scriptrun); */
         $this->ajaxWait();
 
 
-        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-          $this->executeScript($scriptclose); */
         $this->pressButton('closedialogbutton');
 
 
         $this->pressButton('adminpanelgenerateclassentity');
-        /* $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-          $this->executeScript($scriptrun); */
 
         $this->pressButton('yesdialogbutton');
 
         $this->ajaxWait();
 
-        //echo $session->getPage()->getHtml();
-        /**/
-        //$screenshot = $driver->getWebDriverSession()->screenshot();
-        //file_put_contents('/tmp/test3.png', base64_decode($screenshot));
-        /**/
-        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-          $this->executeScript($scriptclose);
-         */
         $this->pressButton('closedialogbutton');
 
         $this->assertTrue(file_exists($checkentityprova));
 
         $this->assertTrue(file_exists($checkresourceprova));
 
-        /* $this->pressButton('adminpanelcc');
-          $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-          $this->executeScript($scriptrun);
-          parent::ajaxWait($session, 60000);
-         */
-        //echo $session->getPage()->getHtml(); 
-        /**/
-        //$screenshot = $driver->getWebDriverSession()->screenshot();
-        //file_put_contents('/tmp/test4.png', base64_decode($screenshot));
-        /**/
-        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
-        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-          $this->executeScript($scriptclose); */
-
-        /* qui */
-        //removecache();
         clearcache();
         //$driver->reload();
         $this->visit($url);
@@ -170,91 +106,38 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
 
         $this->pressButton('adminpanelaggiornadatabase');
-        /* $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
-          $this->executeScript($scriptdb);
-         */
 
         $this->pressButton('yesdialogbutton');
 
         $this->ajaxWait();
-        /**/
-        //$screenshot = $driver->getWebDriverSession()->screenshot();
-        //file_put_contents('/tmp/test5.png', base64_decode($screenshot));
-        /**/
 
-        //echo $session->getPage()->getHtml();
-        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
-        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-          $this->executeScript($scriptclose);
-         */
         $this->pressButton('closedialogbutton');
-
-        //passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
-
-        /* $session->visit($url);
-          $page = $session->getPage();
-
-          //echo $session->getPage()->getHtml();
-          //Login
-          $page->fillField('username', 'admin');
-          $page->fillField('password', 'admin');
-          $this->pressButton('_submit');
-
-
-          $session->visit($url);
-          $page = $session->getPage();
-
-         */
 
         clearcache();
         $this->visit($url);
         $this->login('admin', 'admin');
-        $session = $this->getSession();
-        $page = $this->getCurrentPage();
-
-
 
         $this->fillField('bundlename', 'Fi/ProvaBundle');
         $this->fillField('entityform', 'Prova');
 
         $this->pressButton('adminpanelgenerateformcrud');
-        /* $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-          $this->executeScript($scriptrun); */
 
+        $screenshot = $this->facebookDriver->takeScreenshot();
+        file_put_contents('/tmp/screenshot.png', base64_encode($screenshot));
+        echo $page->getPageSource();
+        
         $this->pressButton('yesdialogbutton');
 
         $this->ajaxWait();
 
-        //echo $page->getHtml();
-        dump($checktypeprova);
-        dump(exec("ls -all ".$checktypeprova));
         $this->assertTrue(file_exists($checktypeprova));
         $this->assertTrue(file_exists($checkviewsprova));
         $this->assertTrue(file_exists($checkindexprova));
-        /**/
-        //$screenshot = $driver->getWebDriverSession()->screenshot();
-        //file_put_contents('/tmp/test6.png', base64_decode($screenshot));
-        /**/
 
-
-
-        //echo $session->getPage()->getHtml();
-        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
-        /*$scriptclose = 'function(){ $("#risultato").dialog("close");}()';
-        $this->executeScript($scriptclose);*/
         $this->pressButton('closedialogbutton');
         
-
-        /* $this->pressButton('adminpanelcc');
-          $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
-          $this->executeScript($scriptrun);
-          parent::ajaxWait($session, 60000); */
-        //echo passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
-
-        /* qui */
-        //removecache();
         clearcache();
-        //$driver->reload();
+
         //***************************************************************************************************************
         try {
             $urlRouting = $this->router->generate('Prova_container');
@@ -267,12 +150,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
         $this->visit($url);
         $this->login('admin', 'admin');
-        $session = $this->getSession();
-        $page = $this->getCurrentPage();
-
-
-
-        //echo $page->getHtml();
 
         $this->crudoperation($session, $page);
 
