@@ -105,6 +105,7 @@ before_script:
   - sleep 3 # give xvfb some time to start
   - php -v
   - which php
+  - echo $PATH
 
   
 
