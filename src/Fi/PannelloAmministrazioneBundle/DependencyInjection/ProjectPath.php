@@ -116,10 +116,17 @@ class ProjectPath
 
     public function getConsole()
     {
-        $console = $this->getBinPath() . DIRECTORY_SEPARATOR . 'console';
+        $console = $this->getBinPath() . '/console';
         // Questo codice per versioni che usano un symfony 2 o 3
         if (!file_exists($console)) {
-            $console = $this->getAppPath() . DIRECTORY_SEPARATOR . 'console';
+            $console = $this->getProjectPath() . '/bin/console';
+            if (!file_exists($console)) {
+                $console = $this->getProjectPath() . '/../bin/console';
+            }
+            if (!file_exists($console)) {
+                $console = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'vendor' .
+                        DIRECTORY_SEPARATOR . 'bin/console';
+            }
         }
         if (!file_exists($console)) {
             throw new \Exception("Console non trovata", -100);
