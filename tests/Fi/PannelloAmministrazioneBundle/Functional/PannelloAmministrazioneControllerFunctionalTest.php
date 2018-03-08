@@ -35,7 +35,13 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         $checkindexprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
                 DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "Prova" .
                 DIRECTORY_SEPARATOR . "index.html.twig";
-
+        
+        $this->assertFalse(file_exists($checkentityprova));
+        $this->assertFalse(file_exists($checkresourceprova));
+        $this->assertFalse(file_exists($checktypeprova));
+        $this->assertFalse(file_exists($checkviewsprova));
+        $this->assertFalse(file_exists($checkindexprova));
+        
         $url = $this->router->generate('fi_pannello_amministrazione_homepage');
         $this->visit($url);
         $this->login('admin', 'admin');
@@ -220,6 +226,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         $this->ajaxWait();
 
         //echo $page->getHtml();
+        dump($checktypeprova);
+        dump(exec("ls -all ".$checktypeprova));
         $this->assertTrue(file_exists($checktypeprova));
         $this->assertTrue(file_exists($checkviewsprova));
         $this->assertTrue(file_exists($checkindexprova));
