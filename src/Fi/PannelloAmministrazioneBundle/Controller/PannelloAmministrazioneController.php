@@ -35,7 +35,7 @@ class PannelloAmministrazioneController extends Controller
         $this->apppaths = $this->get("pannelloamministrazione.projectpath");
 
         $projectDir = $this->apppaths->getRootPath();
-        $bundlelists = $this->container->getParameter('kernel.bundles');
+        $bundlelists = $this->getParameter('kernel.bundles');
         $bundles = array();
         foreach ($bundlelists as $bundle) {
             if (substr($bundle, 0, 2) === 'Fi') {
@@ -122,7 +122,7 @@ class PannelloAmministrazioneController extends Controller
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $command = $this->container->get("pannelloamministrazione.commands");
+            $command = $this->get("pannelloamministrazione.commands");
             $result = $command->aggiornaSchemaDatabase();
 
             $this->locksystem->release();
@@ -144,7 +144,7 @@ class PannelloAmministrazioneController extends Controller
 
             $this->locksystem->acquire();
 
-            $command = $this->container->get("pannelloamministrazione.commands");
+            $command = $this->get("pannelloamministrazione.commands");
             $ret = $command->generateFormCrud($bundlename, $entityform);
 
             $this->locksystem->release();
@@ -152,7 +152,7 @@ class PannelloAmministrazioneController extends Controller
             if ($ret['errcode'] < 0) {
                 return new Response($ret['message']);
             } else {
-                //$retcc = $command->clearCacheEnv($this->container->get('kernel')->getEnvironment());
+                //$retcc = $command->clearCacheEnv($this->get('kernel')->getEnvironment());
             }
             $twigparms = array('errcode' => $ret['errcode'], 'command' => $ret['command'], 'message' => $ret['message']);
 
@@ -170,7 +170,7 @@ class PannelloAmministrazioneController extends Controller
             $this->locksystem->acquire();
             $wbFile = $request->get('file');
             $bundlePath = $request->get('bundle');
-            $command = $this->container->get("pannelloamministrazione.commands");
+            $command = $this->get("pannelloamministrazione.commands");
             $ret = $command->generateEntity($wbFile, $bundlePath);
             $this->locksystem->release();
             return new Response($ret['message']);
@@ -186,7 +186,7 @@ class PannelloAmministrazioneController extends Controller
         } else {
             $this->locksystem->acquire();
             $bundlePath = $request->get('bundle');
-            $command = $this->container->get("pannelloamministrazione.commands");
+            $command = $this->get("pannelloamministrazione.commands");
             $ret = $command->generateEntityClass($bundlePath);
             $this->locksystem->release();
 
@@ -203,7 +203,7 @@ class PannelloAmministrazioneController extends Controller
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $command = $this->container->get("pannelloamministrazione.commands");
+            $command = $this->get("pannelloamministrazione.commands");
             $bundleName = $request->get('bundlename');
             $result = $command->generateBundle($bundleName);
             if ($result["errcode"] >= 0) {
@@ -230,7 +230,7 @@ class PannelloAmministrazioneController extends Controller
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $command = $this->container->get("pannelloamministrazione.commands");
+            $command = $this->get("pannelloamministrazione.commands");
             $result = $command->getVcs();
             $this->locksystem->release();
             if ($result['errcode'] < 0) {
@@ -259,7 +259,7 @@ class PannelloAmministrazioneController extends Controller
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $command = $this->container->get("pannelloamministrazione.commands");
+            $command = $this->get("pannelloamministrazione.commands");
             $result = $command->clearcache();
 
             $this->locksystem->release();
