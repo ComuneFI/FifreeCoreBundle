@@ -8,6 +8,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
     public static function setUpBeforeClass()
     {
         cleanFilesystem();
+        databaseinit();
         removecache();
         clearcache();
     }

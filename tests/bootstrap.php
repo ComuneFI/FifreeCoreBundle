@@ -13,14 +13,12 @@ require __DIR__ . '/Utils/FacebookDriverTester.php';
 require __DIR__ . '/Utils/StartServers.php';
 
 date_default_timezone_set('Europe/Rome');
-
 function clearcache()
 {
     passthru(sprintf(
                     '"%s/console" cache:clear > /dev/null 2>&1', __DIR__ . '/../bin'
     ));
 }
-
 // More bootstrap code
 
 function cachewarmup()
@@ -30,7 +28,17 @@ function cachewarmup()
     ));
     #sleep(1);
 }
+function databaseinit()
+{
+    passthru(sprintf(
+                    '"%s/console" fifree:dropdatabase --force > /dev/null 2>&1', __DIR__ . '/../tests/bin'
+    ));
+    passthru(sprintf(
+                    '"%s/console" fifree:install admin admin admin@admin.it > /dev/null 2>&1', __DIR__ . '/../tests/bin'
+    ));
 
+    #sleep(1);
+}
 function removecache()
 {
     $vendorDir = dirname(dirname(__FILE__));
@@ -49,14 +57,12 @@ function removecache()
         //echo $testcache . " not found";
     }
 }
-
 function getErrorText($process, $command)
 {
     $error = ($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput());
 
     return 'Errore nel comando ' . $command . ' ' . $error . ' ';
 }
-
 function cleanFilesystem()
 {
     $vendorDir = dirname(dirname(__FILE__) . '/tests');
@@ -93,7 +99,6 @@ function cleanFilesystem()
         $fs->remove($bundlesrcdir, true);
     }
 }
-
 function deleteFirstLineFile($file)
 {
     $handle = fopen($file, 'r');
@@ -108,7 +113,6 @@ function deleteFirstLineFile($file)
     fclose($o);
     rename($outfile, $file);
 }
-
 function deleteLineFromFile($file, $DELETE)
 {
     $data = file($file);
@@ -129,7 +133,6 @@ function deleteLineFromFile($file, $DELETE)
     flock($fp, LOCK_UN);
     fclose($fp);
 }
-
 function writestdout($buffer)
 {
     fwrite(STDOUT, print_r($buffer . "\n", TRUE));
