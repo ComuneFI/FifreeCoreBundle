@@ -44,7 +44,7 @@
 
     <target name="composer-run-install" depends="composer-self-update">
         <exec executable="php" failonerror="true">
-            <arg line="composer.phar install --ignore-platform-reqs"/>
+            <arg line="composer.phar install"/>
         </exec>
     </target>
   
