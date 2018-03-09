@@ -42,6 +42,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         $url = $this->router->generate('fi_pannello_amministrazione_homepage');
         $this->visit($url);
         $this->login('admin', 'admin');
+        $session = $this->getSession();
+        $page = $this->getCurrentPage();
 
         $this->fillField('bundlename', 'Fi/ProvaBundle');
 
@@ -102,8 +104,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         //$driver->reload();
         $this->visit($url);
         $this->login('admin', 'admin');
-        $session = $this->getSession();
-        $page = $this->getCurrentPage();
 
 
         $this->visit($url);
