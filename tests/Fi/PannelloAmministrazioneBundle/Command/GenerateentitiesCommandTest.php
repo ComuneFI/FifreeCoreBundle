@@ -181,9 +181,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $commandTester->execute(
                 array(
                     'bundlename' => $bundlename,
-                    'entityform' => $entityform,
-                    '--env' => 'test',
-                    '--no-debug'
+                    'entityform' => $entityform
                 )
         );
         //dump($commandTester->getDisplay());
