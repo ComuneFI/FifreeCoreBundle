@@ -16,7 +16,7 @@ date_default_timezone_set('Europe/Rome');
 function clearcache()
 {
     passthru(sprintf(
-                    '"%s/console" cache:clear > /dev/null 2>&1', __DIR__ . '/../bin'
+                    '"%s/console" cache:clear', __DIR__ . '/../bin'
     ));
 }
 // More bootstrap code
@@ -24,17 +24,17 @@ function clearcache()
 function cachewarmup()
 {
     passthru(sprintf(
-                    '"%s/console" cache:warmup > /dev/null 2>&1', __DIR__ . '/../tests/bin'
+                    '"%s/console" cache:warmup', __DIR__ . '/../bin'
     ));
     #sleep(1);
 }
 function databaseinit()
 {
     passthru(sprintf(
-                    '"%s/console" fifree:dropdatabase --force > /dev/null 2>&1', __DIR__ . '/../tests/bin'
+                    '"%s/console" fifree:dropdatabase --force', __DIR__ . '/../bin'
     ));
     passthru(sprintf(
-                    '"%s/console" fifree:install admin admin admin@admin.it > /dev/null 2>&1', __DIR__ . '/../tests/bin'
+                    '"%s/console" fifree:install admin admin admin@admin.it', __DIR__ . '/../bin'
     ));
 
     #sleep(1);
