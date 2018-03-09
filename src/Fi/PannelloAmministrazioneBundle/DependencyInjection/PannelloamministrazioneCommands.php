@@ -133,13 +133,14 @@ class PannelloamministrazioneCommands
         if ($resultchk["errcode"] != 0) {
             return $resultchk;
         }
-        $console = $this->apppaths->getConsole();
-        $retmsggenerateform = $this->pammutils->runCommand($console . ' pannelloamministrazione:generateformcrud ' . $bundlename . ' ' . $entityform);
+        $formcrudparms = array("bundlename" => $bundlename, "entityform" => $entityform);
+
+        $retmsggenerateform = $this->pammutils->runSymfonyCommand('pannelloamministrazione:generateformcrud', $formcrudparms);
 
         $retmsg = array(
             'errcode' => $retmsggenerateform['errcode'],
             'command' => $retmsggenerateform['command'],
-            'message' => $retmsggenerateform['errmsg'],
+            'message' => $retmsggenerateform['message'],
         );
 
         return $retmsg;

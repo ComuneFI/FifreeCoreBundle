@@ -91,7 +91,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         $this->ajaxWait();
 
         $screenshot = $this->facebookDriver->takeScreenshot();
-        file_put_contents('/tmp/screenshot.png', base64_encode($screenshot)."\n\n", FILE_APPEND);
+        file_put_contents('/tmp/screenshot.txt', base64_encode($screenshot)."\n\n", FILE_APPEND);
         echo $page->getPageSource();
         
         $this->pressButton('closedialogbutton');
@@ -116,7 +116,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         $this->ajaxWait();
 
         $screenshot = $this->facebookDriver->takeScreenshot();
-        file_put_contents('/tmp/screenshot.png', base64_encode($screenshot)."\n\n", FILE_APPEND);
+        file_put_contents('/tmp/screenshot.txt', base64_encode($screenshot)."\n\n", FILE_APPEND);
         echo $page->getPageSource();
         
         $this->pressButton('closedialogbutton');
@@ -135,7 +135,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         $this->ajaxWait();
 
         $screenshot = $this->facebookDriver->takeScreenshot();
-        file_put_contents('/tmp/screenshot.png', base64_encode($screenshot)."\n\n", FILE_APPEND);
+        file_put_contents('/tmp/screenshot.txt', base64_encode($screenshot)."\n\n", FILE_APPEND);
         echo $page->getPageSource();
         
         $this->assertTrue(file_exists($checktypeprova));
