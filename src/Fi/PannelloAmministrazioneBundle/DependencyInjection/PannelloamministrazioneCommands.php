@@ -57,9 +57,7 @@ class PannelloamministrazioneCommands
             '--namespace' => $bundleName,
             '--dir' => $srcPath . DIRECTORY_SEPARATOR,
             '--format' => 'yml',
-            '--env' => $this->container->get('kernel')->getEnvironment(),
             '--no-interaction' => true,
-            '--no-debug' => true,
         );
         $result = $this->pammutils->runSymfonyCommand('generate:bundle', $commandparms);
         $bundlePath = $srcPath . DIRECTORY_SEPARATOR . $bundleName;
