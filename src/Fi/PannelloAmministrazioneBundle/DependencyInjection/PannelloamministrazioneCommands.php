@@ -61,10 +61,10 @@ class PannelloamministrazioneCommands
             $command . '</i><br/>' . str_replace("\n", '<br/>', $result["message"]) . '</pre>',);
     }
 
-    public function generateEntityClass($bundlePath)
+    public function generateEntityClass()
     {
         $command = "pannelloamministrazione:generateentities";
-        $result = $this->pammutils->runSymfonyCommand($command, array('bundlename' => $bundlePath));
+        $result = $this->pammutils->runSymfonyCommand($command, array());
 
         if ($result["errcode"] != 0) {
             return array(
@@ -73,7 +73,7 @@ class PannelloamministrazioneCommands
                 $command . '</i><br/><i style="color: red;">' .
                 str_replace("\n", '<br/>', $result["message"]) .
                 'in caso di errori eseguire il comando symfony non da web: pannelloamministrazione:generateentities ' .
-                $bundlePath . '<br/>Opzione --schemaupdate oer aggiornare anche lo schema database</i>',
+                '<br/>Opzione --schemaupdate oer aggiornare anche lo schema database</i>',
             );
         }
 
