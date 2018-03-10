@@ -15,7 +15,6 @@ $bundles = [
     Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
     Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
-    Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
     Fi\CoreBundle\FiCoreBundle::class => ['all' => true],
     Fi\PannelloAmministrazioneBundle\PannelloAmministrazioneBundle::class => ['all' => true],

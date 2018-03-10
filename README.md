@@ -55,16 +55,15 @@ composer require fi/fifreecorebundle
 
     ##Start server 
     #bin/console server:stop --env=test > /dev/null 2>&1 &
-    #bin/console server:start --docroot=tests/public 2>&1 &
-    #sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
-
+    bin/console server:start --docroot=tests/public 2>&1 &
+    
     #Lanciare i test
     ant
-
-    vendor/bin/simple-phpunit
+    #oppure
+    #vendor/bin/simple-phpunit
 
     #stop server
-    php bin/console server:stop > /dev/null 2>&1 &
-    sudo kill `ps -ef | grep selenium | awk '{ print $2 }'`
+    #php bin/console server:stop > /dev/null 2>&1 &
+    #sudo kill `ps -ef | grep selenium | awk '{ print $2 }'`
    
 ```
