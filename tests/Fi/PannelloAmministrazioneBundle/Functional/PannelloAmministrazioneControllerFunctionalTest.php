@@ -100,7 +100,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         $this->assertTrue(file_exists($checkentityprova));
 
         $this->assertTrue(file_exists($checkresourceprova));
-
+        removecache();
         clearcache();
         //$driver->reload();
         $this->visit($url);
@@ -122,6 +122,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         
         $this->pressButton('closedialogbutton');
 
+        removecache();
         clearcache();
         $this->visit($url);
         $this->login('admin', 'admin');

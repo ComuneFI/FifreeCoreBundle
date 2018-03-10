@@ -13,56 +13,65 @@ require __DIR__ . '/Utils/FacebookDriverTester.php';
 require __DIR__ . '/Utils/StartServers.php';
 
 date_default_timezone_set('Europe/Rome');
+
 function clearcache()
 {
     passthru(sprintf(
-                    '"%s/console" cache:clear', __DIR__ . '/../bin'
+            '"%s/console" cache:clear', __DIR__ . '/../bin'
     ));
 }
+
 // More bootstrap code
 
 function cachewarmup()
 {
     passthru(sprintf(
-                    '"%s/console" cache:warmup', __DIR__ . '/../bin'
+            '"%s/console" cache:warmup', __DIR__ . '/../bin'
     ));
     #sleep(1);
 }
+
 function databaseinit()
 {
     passthru(sprintf(
-                    '"%s/console" fifree:dropdatabase --force', __DIR__ . '/../bin'
+            '"%s/console" fifree:dropdatabase --force', __DIR__ . '/../bin'
     ));
     passthru(sprintf(
-                    '"%s/console" fifree:install admin admin admin@admin.it', __DIR__ . '/../bin'
+            '"%s/console" fifree:install admin admin admin@admin.it', __DIR__ . '/../bin'
     ));
 
     #sleep(1);
 }
+
 function removecache()
 {
     $vendorDir = dirname(dirname(__FILE__));
-    $testcache = $vendorDir . '/tests/var/cache/test';
-    if (file_exists($testcache)) {
-        $command = 'rm -rf ' . $testcache;
-        $process = new Process($command);
-        $process->setTimeout(60 * 100);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            echo getErrorText($process, $command);
+    $envs = ["test", "dev", "prod"];
+    foreach ($envs as $env) {
+        $cachedir = $vendorDir . '/tests/var/cache/' . $env;
+        if (file_exists($cachedir)) {
+            $command = 'rm -rf ' . $cachedir;
+            $process = new Process($command);
+            $process->setTimeout(60 * 100);
+            $process->run();
+            if (!$process->isSuccessful()) {
+                echo getErrorText($process, $command);
+            } else {
+                echo $process->getOutput();
+            }
         } else {
-            echo $process->getOutput();
+            //echo $testcache . " not found";
         }
-    } else {
-        //echo $testcache . " not found";
     }
 }
+
 function getErrorText($process, $command)
 {
     $error = ($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput());
 
     return 'Errore nel comando ' . $command . ' ' . $error . ' ';
 }
+
 function cleanFilesystem()
 {
     $vendorDir = dirname(dirname(__FILE__) . '/tests');
@@ -99,6 +108,7 @@ function cleanFilesystem()
         $fs->remove($bundlesrcdir, true);
     }
 }
+
 function deleteFirstLineFile($file)
 {
     $handle = fopen($file, 'r');
@@ -113,6 +123,7 @@ function deleteFirstLineFile($file)
     fclose($o);
     rename($outfile, $file);
 }
+
 function deleteLineFromFile($file, $DELETE)
 {
     $data = file($file);
@@ -133,6 +144,7 @@ function deleteLineFromFile($file, $DELETE)
     flock($fp, LOCK_UN);
     fclose($fp);
 }
+
 function writestdout($buffer)
 {
     fwrite(STDOUT, print_r($buffer . "\n", TRUE));
