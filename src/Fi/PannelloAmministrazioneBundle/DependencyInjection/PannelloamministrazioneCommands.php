@@ -91,7 +91,7 @@ class PannelloamministrazioneCommands
                 $command . '</i><br/><i style="color: red;">' .
                 str_replace("\n", '<br/>', $result["message"]) .
                 'in caso di errori eseguire il comando symfony non da web: pannelloamministrazione:generateymlentities ' .
-                $wbFile . ' ' . $bundlePath . '<br/></i>',
+                $wbFile . '<br/></i>',
             );
         }
 
