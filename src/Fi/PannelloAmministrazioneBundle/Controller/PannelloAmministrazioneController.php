@@ -169,9 +169,8 @@ class PannelloAmministrazioneController extends Controller
         } else {
             $this->locksystem->acquire();
             $wbFile = $request->get('file');
-            $bundlePath = $request->get('bundle');
             $command = $this->get("pannelloamministrazione.commands");
-            $ret = $command->generateEntity($wbFile, $bundlePath);
+            $ret = $command->generateEntity($wbFile);
             $this->locksystem->release();
             return new Response($ret['message']);
         }
