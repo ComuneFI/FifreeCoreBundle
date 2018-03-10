@@ -26,7 +26,6 @@ class GenerateFormCommand extends ContainerAwareCommand
                 ->addArgument('bundlename', InputArgument::REQUIRED, 'Nome del bundle, Fi/CoreBundle')
                 ->addArgument('entityform', InputArgument::REQUIRED, 'Il nome entity del form da creare');
     }
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
@@ -37,10 +36,11 @@ class GenerateFormCommand extends ContainerAwareCommand
         $entityform = $input->getArgument('entityform');
 
         $crudparms = str_replace('/', '', $bundlename) . ':' . $entityform . ' --route-prefix=' . $entityform
-                . ' --env=' . $this->getContainer()->get('kernel')->getEnvironment()
                 . ' --with-write --format=yml --no-interaction'; // --no-debug
 
-        $resultcrud = $pammutils->runCommand($this->apppaths->getConsole() . ' doctrine:generate:crud ' . $crudparms);
+        $phpPath = OsFunctions::getPHPExecutableFromPath();
+
+        $resultcrud = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' doctrine:generate:crud ' . $crudparms);
 
         if ($resultcrud['errcode'] == 0) {
             $fs = new Filesystem();
@@ -72,7 +72,6 @@ class GenerateFormCommand extends ContainerAwareCommand
             return 1;
         }
     }
-
     private function generateFormRouting($bundlename, $entityform)
     {
         //Routing del form
@@ -106,7 +105,6 @@ class GenerateFormCommand extends ContainerAwareCommand
 
         return $retmsg;
     }
-
     private function generateFormWiew($bundlename, $entityform, $view)
     {
         $fs = new Filesystem();
@@ -117,7 +115,6 @@ class GenerateFormCommand extends ContainerAwareCommand
         $fs->mkdir($folderview);
         file_put_contents($dest, "{% include 'FiCoreBundle:Standard:" . $view . ".html.twig' %}");
     }
-
     private function generateFormsDefaultTableValues($entityform)
     {
         //Si inserisce il record di default nella tabella permessi
@@ -136,7 +133,6 @@ class GenerateFormCommand extends ContainerAwareCommand
         $em->persist($tabelle);
         $em->flush();
     }
-
     private function getControllerCode($bundlename, $tabella)
     {
         $codeTemplate = <<<EOF
@@ -165,7 +161,6 @@ EOF;
 
         return $code;
     }
-
     private function getRoutingCode($bundlename, $tabella)
     {
         $codeTemplate = <<<'EOF'
