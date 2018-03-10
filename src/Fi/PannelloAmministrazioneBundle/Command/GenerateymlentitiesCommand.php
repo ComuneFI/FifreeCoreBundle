@@ -30,7 +30,7 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
         $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
         $this->genhelper = $this->getContainer()->get("pannelloamministrazione.generatorhelper");
         $this->pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
-        $bundlename = $this->apppaths->getSrcPath();
+        $bundlename = "";
         $mwbfile = $input->getArgument('mwbfile');
 
         $wbFile = $this->apppaths->getDocPath() . DIRECTORY_SEPARATOR . $mwbfile;
