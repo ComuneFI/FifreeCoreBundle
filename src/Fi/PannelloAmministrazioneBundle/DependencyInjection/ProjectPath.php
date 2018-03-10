@@ -88,12 +88,7 @@ class ProjectPath
 
     public function getCachePath()
     {
-        $cachedir = $this->getAppPath() . DIRECTORY_SEPARATOR . 'cache';
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            if (!file_exists($cachedir)) {
-                $cachedir = $this->getVarPath() . DIRECTORY_SEPARATOR . 'cache';
-            }
-        }
+        $cachedir = $this->container->get('kernel')->getCacheDir();
         if (!file_exists($cachedir)) {
             throw new \Exception("Cache non trovata", -100);
         }
@@ -102,12 +97,7 @@ class ProjectPath
 
     public function getLogsPath()
     {
-        $logsdir = $this->getAppPath() . DIRECTORY_SEPARATOR . 'logs';
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            if (!file_exists($logsdir)) {
-                $logsdir = $this->getVarPath() . DIRECTORY_SEPARATOR . 'logs';
-            }
-        }
+        $logsdir = $this->container->get('kernel')->getLogDir();
         if (!file_exists($logsdir)) {
             throw new \Exception("Logs non trovata", -100);
         }
