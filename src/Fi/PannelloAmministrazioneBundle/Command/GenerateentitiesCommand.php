@@ -83,9 +83,8 @@ class GenerateentitiesCommand extends ContainerAwareCommand
         $scriptGenerator = $console . ' doctrine:generate:entities';
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
-        //$command = $phpPath . ' ' . $scriptGenerator . ' --no-backup --path=' . $this->apppaths->getSrcPath() . "/App App";
-        $command = $phpPath . ' ' . $scriptGenerator . ' --no-backup';
-
+        $command = $phpPath . ' ' . $scriptGenerator . ' --no-backup --path=' . $this->apppaths->getSrcPath() . " App";
+        
         $generateentitiesresult = $this->pammutils->runCommand($command);
         if ($generateentitiesresult["errcode"] < 0) {
             $output->writeln($generateentitiesresult["errmsg"]);
