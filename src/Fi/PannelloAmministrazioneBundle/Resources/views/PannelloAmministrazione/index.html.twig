@@ -247,7 +247,7 @@
                 });
                 $("#adminpanelgenerateentity").click(function () {
                     var entityfile = $("#entityfile").val();
-                    var domanda = "Vuoi creare i fle di coonfigurazione per le entità partendo dal file: " + entityfile;
+                    var domanda = "Vuoi creare i fle di configurazione per le entità partendo dal file: " + entityfile;
                     conferma(domanda).then(function (answer) {
                         if ((String(answer) == "true")) {
                             $("#risultato").hide();
@@ -273,15 +273,14 @@
                     });
                 });
                 $("#adminpanelgenerateclassentity").click(function () {
-                    var entitybundle = $("#entitybundle").val();
-                    var domanda = "Vuoi creare le classi per le entità del bundle: " + entitybundle;
+                    var domanda = "Vuoi creare le classi per le entità";
                     conferma(domanda).then(function (answer) {
                         if ((String(answer) == "true")) {
                             $("#risultato").hide();
                             $("#risultato").html("");
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_generateentityclass") }}",
-                                data: {bundle: entitybundle},
+                                //data: {bundle: entitybundle},
                                 context: document.body
                             }).done(function (data) {
                                 $("#risultato").html(data);

@@ -40,9 +40,9 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
             return -1;
         }
 
-        $destinationPath = $this->genhelper->getDestinationEntityYmlPath($bundlename);
+        $destinationPath = $this->genhelper->getDestinationEntityYmlPath();
 
-        $command = $this->getExportJsonCommand($bundlename, $wbFile);
+        $command = $this->getExportJsonCommand($wbFile);
 
         $schemaupdateresult = $this->pammutils->runCommand($command);
         if ($schemaupdateresult["errcode"] < 0) {
@@ -70,13 +70,14 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
           } */
         return 0;
     }
-    private function getExportJsonCommand($bundlePath, $wbFile)
+    private function getExportJsonCommand($wbFile)
     {
         $exportJson = $this->genhelper->getExportJsonFile();
         $scriptGenerator = $this->genhelper->getScriptGenerator();
-        $destinationPathEscaped = str_replace('/', "\/", str_replace('\\', '/', $this->genhelper->getDestinationEntityYmlPath($bundlePath)));
-        $bundlePathEscaped = str_replace('\\', '\\\\', str_replace('/', '\\', $bundlePath));
-
+        //$destinationPathEscaped = str_replace('/', "\/", str_replace('\\', '/', $this->genhelper->getDestinationEntityYmlPath($bundlePath)));
+        $destinationPathEscaped = str_replace('/', "\/", str_replace('\\', '/', $this->genhelper->getDestinationEntityYmlPath()));
+        //$bundlePathEscaped = str_replace('\\', '\\\\', str_replace('/', '\\', $bundlePath));
+        $bundlePathEscaped = "App";
         $exportjsonfile = $this->genhelper->getJsonMwbGenerator();
 
         $bundlejson = str_replace('[bundle]', str_replace('/', '', $bundlePathEscaped), $exportjsonfile);
