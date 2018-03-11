@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
+use Symfony\Component\Filesystem\Filesystem;
 
 class GenerateentitiesCommand extends ContainerAwareCommand
 {
@@ -51,13 +52,27 @@ class GenerateentitiesCommand extends ContainerAwareCommand
           } else {
           $output->writeln($generateentitiesresult["errmsg"]);
           } */
-
+        $this->prepare();
         $generatecheck = $this->generateentities($emdest, $schemaupdate, $output);
+        $this->finish();
         if ($generatecheck < 0) {
             return 1;
         }
 
         return 0;
+    }
+    private function prepare()
+    {
+        $fs = new Filesystem();
+        $path = $this->apppaths->getSrcPath();
+        $fs->mkdir($path . "/App");
+    }
+    private function finish()
+    {
+        $fs = new Filesystem();
+        $path = $this->apppaths->getSrcPath();
+        //$fs->remove($path . "/App");
+        
     }
     private function generateentities($emdest, $schemaupdate, $output)
     {
@@ -68,7 +83,7 @@ class GenerateentitiesCommand extends ContainerAwareCommand
         $scriptGenerator = $console . ' doctrine:generate:entities';
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
-        $command = $phpPath . ' ' . $scriptGenerator . ' --no-backup --path=' . $this->apppaths->getSrcPath() . " App";
+        $command = $phpPath . ' ' . $scriptGenerator . ' --no-backup --path=' . $this->apppaths->getSrcPath() . "/App App";
 
         $generateentitiesresult = $this->pammutils->runCommand($command);
         if ($generateentitiesresult["errcode"] < 0) {
