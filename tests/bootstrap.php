@@ -84,12 +84,12 @@ function cleanFilesystem()
 
     $fs = new Filesystem();
 
-    $bundletestdir = $vendorDir . '/tests';
-    $entityfile = $bundletestdir . "/App/Entity/Prova.php";
+    $entityfile = $vendorDir . "/src/App/Entity/Prova.php";
+    
     if ($fs->exists($entityfile)) {
         $fs->remove($entityfile);
     }
-    $resources = $bundletestdir . "/App/Resources";
+    $resources = $vendorDir . "/src/App/Resources";
     if ($fs->exists($resources)) {
         $fs->remove($resources, true);
     }
