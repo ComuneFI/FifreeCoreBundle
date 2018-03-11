@@ -18,7 +18,6 @@ class PannelloamministrazioneCommands
         $this->apppaths = $container->get("pannelloamministrazione.projectpath");
         $this->pammutils = $container->get("pannelloamministrazione.utils");
     }
-
     public function getVcs()
     {
         $fs = new Filesystem();
@@ -38,7 +37,6 @@ class PannelloamministrazioneCommands
         $command = 'cd ' . $projectDir . $sepchr . $vcscommand;
         return $this->pammutils->runCommand($command);
     }
-
     public function generateEntity($wbFile)
     {
         $command = "pannelloamministrazione:generateymlentities";
@@ -60,7 +58,6 @@ class PannelloamministrazioneCommands
             'message' => '<pre>Eseguito comando: <i style = "color: white;">' .
             $command . '</i><br/>' . str_replace("\n", '<br/>', $result["message"]) . '</pre>',);
     }
-
     public function generateEntityClass()
     {
         $command = "pannelloamministrazione:generateentities";
@@ -82,16 +79,15 @@ class PannelloamministrazioneCommands
             'message' => '<pre>Eseguito comando: <i style = "color: white;">' .
             $command . '</i><br/>' . str_replace("\n", '<br/>', $result["message"]) . '</pre>',);
     }
-
-    public function generateFormCrud($bundlename, $entityform)
+    public function generateFormCrud($entityform)
     {
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
-        $resultchk = $this->checkFormCrud($bundlename, $entityform);
+        $resultchk = $this->checkFormCrud($entityform);
 
         if ($resultchk["errcode"] != 0) {
             return $resultchk;
         }
-        $formcrudparms = array("bundlename" => $bundlename, "entityform" => $entityform);
+        $formcrudparms = array("entityform" => $entityform);
 
         $retmsggenerateform = $this->pammutils->runSymfonyCommand('pannelloamministrazione:generateformcrud', $formcrudparms);
 
@@ -103,32 +99,28 @@ class PannelloamministrazioneCommands
 
         return $retmsg;
     }
-
-    public function checkFormCrud($bundlename, $entityform)
+    public function checkFormCrud($entityform)
     {
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
         $fs = new Filesystem();
         $srcPath = $this->apppaths->getSrcPath();
-        $appPath = $this->apppaths->getAppPath();
+        $appPath = $srcPath . "/App";
         if (!is_writable($appPath)) {
             return array('errcode' => -1, 'message' => $appPath . ' non scrivibile');
         }
-        $formPath = $srcPath . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
-                'Form' . DIRECTORY_SEPARATOR . $entityform . 'Type.php';
+        $formPath = $appPath . '/Form/' . $entityform . 'Type.php';
 
         if ($fs->exists($formPath)) {
             return array('errcode' => -1, 'message' => $formPath . ' esistente');
         }
 
-        $controllerPath = $srcPath . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
-                'Controller' . DIRECTORY_SEPARATOR . $entityform . 'Controller.php';
+        $controllerPath = $appPath . '/Controller' . DIRECTORY_SEPARATOR . $entityform . 'Controller.php';
 
         if ($fs->exists($controllerPath)) {
             return array('errcode' => -1, 'message' => $controllerPath . ' esistente');
         }
 
-        $viewPathSrc = $srcPath . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
-                'Resources' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $entityform;
+        $viewPathSrc = $appPath . '/Resources/views/' . $entityform;
 
         if ($fs->exists($viewPathSrc)) {
             return array('errcode' => -1, 'message' => $viewPathSrc . ' esistente');
@@ -136,7 +128,6 @@ class PannelloamministrazioneCommands
 
         return array('errcode' => 0, 'message' => 'OK');
     }
-
     public function clearcache()
     {
         $cmdoutput = "";
@@ -148,14 +139,12 @@ class PannelloamministrazioneCommands
 
         return $cmdoutput;
     }
-
     public function clearcacheEnv($env)
     {
         $ret = $this->pammutils->clearcache($env);
 
         return $ret["errmsg"];
     }
-
     public function aggiornaSchemaDatabase()
     {
         $result = $this->pammutils->runSymfonyCommand('doctrine:schema:update', array('--force' => true));

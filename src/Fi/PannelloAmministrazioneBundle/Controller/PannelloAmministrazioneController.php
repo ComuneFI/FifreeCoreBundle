@@ -139,13 +139,12 @@ class PannelloAmministrazioneController extends Controller
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
         } else {
-            $bundlename = $request->get('bundlename');
             $entityform = $request->get('entityform');
 
             $this->locksystem->acquire();
 
             $command = $this->get("pannelloamministrazione.commands");
-            $ret = $command->generateFormCrud($bundlename, $entityform);
+            $ret = $command->generateFormCrud($entityform);
 
             $this->locksystem->release();
             //$retcc = '';
