@@ -25,7 +25,6 @@ class GenerateentitiesCommand extends ContainerAwareCommand
                 ->addArgument('em', InputArgument::OPTIONAL, 'Entity manager, default = default')
                 ->addOption('schemaupdate', null, InputOption::VALUE_NONE, 'Se settato fa anche lo schema update sul db');
     }
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
@@ -60,7 +59,6 @@ class GenerateentitiesCommand extends ContainerAwareCommand
 
         return 0;
     }
-
     private function generateentities($emdest, $schemaupdate, $output)
     {
         /* GENERATE ENTITIES */
@@ -70,7 +68,7 @@ class GenerateentitiesCommand extends ContainerAwareCommand
         $scriptGenerator = $console . ' doctrine:generate:entities';
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
-        $command = $phpPath . ' ' . $scriptGenerator . ' --no-backup ' . " App";
+        $command = $phpPath . ' ' . $scriptGenerator . ' --no-backup --path=' . $this->apppaths->getSrcPath() . " App";
 
         $generateentitiesresult = $this->pammutils->runCommand($command);
         if ($generateentitiesresult["errcode"] < 0) {
