@@ -28,7 +28,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "": "tests/src",
+            "App\\": "tests/src/",
             "Fi\\CoreBundle\\": "src/Fi/CoreBundle",
             "Fi\\PannelloAmministrazioneBundle\\": "src/Fi/PannelloAmministrazioneBundle"
         }
@@ -39,7 +39,7 @@
             "Fi\\ProvaBundle\\": "tests/src/Fi/ProvaBundle"
         },
         "classmap": [
-            "tests/app/Kernel.php"
+            "tests/src/Kernel.php"
         ]
     },
     "require": {

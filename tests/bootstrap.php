@@ -3,7 +3,7 @@
 use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 
-require __DIR__ . '/app/autoload.php';
+require __DIR__ . '/src/autoload.php';
 require __DIR__ . '/Utils/FifreeTestAuthorizedClient.php';
 require __DIR__ . '/Utils/FifreeTestUnauthorizedClient.php';
 require __DIR__ . '/Utils/FifreeUserTestUtil.php';
@@ -75,9 +75,8 @@ function getErrorText($process, $command)
 function cleanFilesystem()
 {
     $vendorDir = dirname(dirname(__FILE__) . '/tests');
-    $kernelfile = $vendorDir . '/app/Kernel.php';
     //deleteLineFromFile($kernelfile, $DELETE);
-    $routingfile = $vendorDir . '/app/config/routes.yaml';
+    $routingfile = $vendorDir . '/src/config/routes.yaml';
     $line = fgets(fopen($routingfile, 'r'));
     if (substr($line, 0, -1) == 'fi_provabundle:') {
         for ($index = 0; $index < 4; ++$index) {
@@ -102,11 +101,11 @@ function cleanFilesystem()
     if ($fs->exists($bundletestdir)) {
         $fs->remove($bundletestdir, true);
     }
-    $bundlesrcdir = $vendorDir . '/src';
+    /*$bundlesrcdir = $vendorDir . '/src';
 
     if ($fs->exists($bundlesrcdir)) {
         $fs->remove($bundlesrcdir, true);
-    }
+    }*/
 }
 
 function deleteFirstLineFile($file)

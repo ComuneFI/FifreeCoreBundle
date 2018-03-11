@@ -18,7 +18,7 @@ $bundles = [
     Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
     Fi\CoreBundle\FiCoreBundle::class => ['all' => true],
     Fi\PannelloAmministrazioneBundle\PannelloAmministrazioneBundle::class => ['all' => true],
-    AppBundle::class => ['all' => true],
+    App\AppBundle::class => ['all' => true],
 ];
 $currentDir = dirname(dirname(__FILE__)) . '/../';
 
