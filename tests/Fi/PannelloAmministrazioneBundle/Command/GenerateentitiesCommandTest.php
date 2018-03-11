@@ -123,8 +123,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(
                 array(
-                    'mwbfile' => 'wbadmintest.mwb',
-                    'bundlename' => 'Fi/ProvaBundle'
+                    'mwbfile' => 'wbadmintest.mwb'
                 )
         );
 
@@ -142,7 +141,6 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(
                 array(
-                    'bundlename' => 'Fi/ProvaBundle',
                     '--schemaupdate' => true
                 )
         );
