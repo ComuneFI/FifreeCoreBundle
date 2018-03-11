@@ -37,8 +37,6 @@ class GenerateFormCommand extends ContainerAwareCommand
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
         $resultcrud = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' --env=dev make:form ' . $entityform . "Type");
-        dump($resultcrud);
-        exit;
         if ($resultcrud['errcode'] == 0) {
             $fs = new Filesystem();
             //Controller
