@@ -28,7 +28,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "App\\": "tests/src",
+            "": "tests/src",
             "Fi\\CoreBundle\\": "src/Fi/CoreBundle",
             "Fi\\PannelloAmministrazioneBundle\\": "src/Fi/PannelloAmministrazioneBundle"
         }
