@@ -34,7 +34,8 @@ composer require fi/fifreecorebundle
 - Test
 
 ```
-    rm -rf vendor/ composer.lock
+    rm -rf composer.lock
+    rm -rf vendor
     #Scarico dipendenze
     composer install
 
@@ -43,26 +44,26 @@ composer require fi/fifreecorebundle
     rm -rf test/var/cache/prod
     rm -rf test/var/cache/dev
     rm -rf test/var/cache/test
-    php tests/bin/console cache:clear --no-warmup --env=test
-    php tests/bin/console fifree:dropdatabase --force --env=test
-    php tests/bin/console fifree:install admin admin admin@admin.it --env=test
+    bin/console cache:clear --no-warmup
+    bin/console fifree:dropdatabase --force
+    bin/console fifree:install admin admin admin@admin.it
     chmod 666 tests/var/cache/dbtest.sqlite
 
     #Assets install
-    php tests/bin/console assets:install tests/web --env=test
+    bin/console assets:install --symlink --relative tests/public
+                        
 
-    ##Start server
-    #php tests/bin/console server:stop --env=test > /dev/null 2>&1 &
-    #php tests/bin/console server:start  --docroot=tests/web --env=test 2>&1 &
-    #sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
-
+    ##Start server 
+    #bin/console server:stop --env=test > /dev/null 2>&1 &
+    bin/console server:start --docroot=tests/public 2>&1 &
+    
     #Lanciare i test
     ant
-
-    vendor/bin/simple-phpunit
+    #oppure
+    #vendor/bin/simple-phpunit
 
     #stop server
-    php tests/bin/console server:stop --env=test > /dev/null 2>&1 &
-    sudo kill `ps -ef | grep selenium | awk '{ print $2 }'`
+    #php bin/console server:stop > /dev/null 2>&1 &
+    #sudo kill `ps -ef | grep selenium | awk '{ print $2 }'`
    
 ```

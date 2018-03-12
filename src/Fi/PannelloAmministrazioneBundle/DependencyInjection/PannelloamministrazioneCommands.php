@@ -18,7 +18,6 @@ class PannelloamministrazioneCommands
         $this->apppaths = $container->get("pannelloamministrazione.projectpath");
         $this->pammutils = $container->get("pannelloamministrazione.utils");
     }
-
     public function getVcs()
     {
         $fs = new Filesystem();
@@ -38,45 +37,10 @@ class PannelloamministrazioneCommands
         $command = 'cd ' . $projectDir . $sepchr . $vcscommand;
         return $this->pammutils->runCommand($command);
     }
-
-    public function generateBundle($bundleName)
-    {
-        /* @var $fs \Symfony\Component\Filesystem\Filesystem */
-        $fs = new Filesystem();
-
-        $srcPath = $this->apppaths->getSrcPath();
-
-        $bundlePath = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundleName;
-
-        if ($fs->exists($bundlePath)) {
-            return array('errcode' => -1, 'command' => 'generate:bundle', 'message' => sprintf("Il bundle esiste gia' in %s", $bundlePath));
-        }
-
-        $commandparms = array(
-            '--namespace' => $bundleName,
-            '--dir' => $srcPath . DIRECTORY_SEPARATOR,
-            '--format' => 'yml',
-            '--env' => $this->container->get('kernel')->getEnvironment(),
-            '--no-interaction' => true,
-            '--no-debug' => true,
-        );
-        $result = $this->pammutils->runSymfonyCommand('generate:bundle', $commandparms);
-        $bundlePath = $srcPath . DIRECTORY_SEPARATOR . $bundleName;
-        if ($fs->exists($bundlePath)) {
-            $addmessage = 'Per abilitare il nuovo bundle nel kernel controllare che sia presente in app/AppKernel.php, '
-                    . 'pulire la cache e aggiornare la pagina';
-            $ret = array('errcode' => 0, 'command' => 'generate:bundle', 'message' => $result["message"] . $addmessage);
-        } else {
-            $addmessage = "Non e' stato creato il bundle in $bundlePath";
-            $ret = array('errcode' => -1, 'command' => 'generate:bundle', 'message' => $result["message"] . $addmessage);
-        }
-        return $ret;
-    }
-
-    public function generateEntity($wbFile, $bundlePath)
+    public function generateEntity($wbFile)
     {
         $command = "pannelloamministrazione:generateymlentities";
-        $result = $this->pammutils->runSymfonyCommand($command, array('mwbfile' => $wbFile, 'bundlename' => $bundlePath));
+        $result = $this->pammutils->runSymfonyCommand($command, array('mwbfile' => $wbFile));
 
         if ($result["errcode"] != 0) {
             return array(
@@ -85,7 +49,7 @@ class PannelloamministrazioneCommands
                 $command . '</i><br/><i style="color: red;">' .
                 str_replace("\n", '<br/>', $result["message"]) .
                 'in caso di errori eseguire il comando symfony non da web: pannelloamministrazione:generateymlentities ' .
-                $wbFile . ' ' . $bundlePath . '<br/></i>',
+                $wbFile . '<br/></i>',
             );
         }
 
@@ -94,11 +58,10 @@ class PannelloamministrazioneCommands
             'message' => '<pre>Eseguito comando: <i style = "color: white;">' .
             $command . '</i><br/>' . str_replace("\n", '<br/>', $result["message"]) . '</pre>',);
     }
-
-    public function generateEntityClass($bundlePath)
+    public function generateEntityClass()
     {
         $command = "pannelloamministrazione:generateentities";
-        $result = $this->pammutils->runSymfonyCommand($command, array('bundlename' => $bundlePath));
+        $result = $this->pammutils->runSymfonyCommand($command, array());
 
         if ($result["errcode"] != 0) {
             return array(
@@ -107,7 +70,7 @@ class PannelloamministrazioneCommands
                 $command . '</i><br/><i style="color: red;">' .
                 str_replace("\n", '<br/>', $result["message"]) .
                 'in caso di errori eseguire il comando symfony non da web: pannelloamministrazione:generateentities ' .
-                $bundlePath . '<br/>Opzione --schemaupdate oer aggiornare anche lo schema database</i>',
+                '<br/>Opzione --schemaupdate oer aggiornare anche lo schema database</i>',
             );
         }
 
@@ -116,16 +79,15 @@ class PannelloamministrazioneCommands
             'message' => '<pre>Eseguito comando: <i style = "color: white;">' .
             $command . '</i><br/>' . str_replace("\n", '<br/>', $result["message"]) . '</pre>',);
     }
-
-    public function generateFormCrud($bundlename, $entityform)
+    public function generateFormCrud($entityform)
     {
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
-        $resultchk = $this->checkFormCrud($bundlename, $entityform);
+        $resultchk = $this->checkFormCrud($entityform);
 
         if ($resultchk["errcode"] != 0) {
             return $resultchk;
         }
-        $formcrudparms = array("bundlename" => $bundlename, "entityform" => $entityform);
+        $formcrudparms = array("entityform" => $entityform);
 
         $retmsggenerateform = $this->pammutils->runSymfonyCommand('pannelloamministrazione:generateformcrud', $formcrudparms);
 
@@ -137,32 +99,28 @@ class PannelloamministrazioneCommands
 
         return $retmsg;
     }
-
-    public function checkFormCrud($bundlename, $entityform)
+    public function checkFormCrud($entityform)
     {
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
         $fs = new Filesystem();
         $srcPath = $this->apppaths->getSrcPath();
-        $appPath = $this->apppaths->getAppPath();
+        $appPath = $srcPath . "/App";
         if (!is_writable($appPath)) {
             return array('errcode' => -1, 'message' => $appPath . ' non scrivibile');
         }
-        $formPath = $srcPath . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
-                'Form' . DIRECTORY_SEPARATOR . $entityform . 'Type.php';
+        $formPath = $appPath . '/Form/' . $entityform . 'Type.php';
 
         if ($fs->exists($formPath)) {
             return array('errcode' => -1, 'message' => $formPath . ' esistente');
         }
 
-        $controllerPath = $srcPath . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
-                'Controller' . DIRECTORY_SEPARATOR . $entityform . 'Controller.php';
+        $controllerPath = $appPath . '/Controller' . DIRECTORY_SEPARATOR . $entityform . 'Controller.php';
 
         if ($fs->exists($controllerPath)) {
             return array('errcode' => -1, 'message' => $controllerPath . ' esistente');
         }
 
-        $viewPathSrc = $srcPath . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
-                'Resources' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $entityform;
+        $viewPathSrc = $appPath . '/Resources/views/' . $entityform;
 
         if ($fs->exists($viewPathSrc)) {
             return array('errcode' => -1, 'message' => $viewPathSrc . ' esistente');
@@ -170,7 +128,6 @@ class PannelloamministrazioneCommands
 
         return array('errcode' => 0, 'message' => 'OK');
     }
-
     public function clearcache()
     {
         $cmdoutput = "";
@@ -182,14 +139,12 @@ class PannelloamministrazioneCommands
 
         return $cmdoutput;
     }
-
     public function clearcacheEnv($env)
     {
         $ret = $this->pammutils->clearcache($env);
 
         return $ret["errmsg"];
     }
-
     public function aggiornaSchemaDatabase()
     {
         $result = $this->pammutils->runSymfonyCommand('doctrine:schema:update', array('--force' => true));

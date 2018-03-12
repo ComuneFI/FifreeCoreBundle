@@ -23,33 +23,24 @@ class GenerateFormCommand extends ContainerAwareCommand
                 ->setName('pannelloamministrazione:generateformcrud')
                 ->setDescription('Genera le views per il crud')
                 ->setHelp('Genera le views per il crud, <br/>fifree.mwb Fi/CoreBundle default [--schemaupdate]<br/>')
-                ->addArgument('bundlename', InputArgument::REQUIRED, 'Nome del bundle, Fi/CoreBundle')
                 ->addArgument('entityform', InputArgument::REQUIRED, 'Il nome entity del form da creare');
     }
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
         $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
         $pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
 
-        $bundlename = $input->getArgument('bundlename');
+        $bundlename = "AppBundle";
         $entityform = $input->getArgument('entityform');
-
-        $crudparms = str_replace('/', '', $bundlename) . ':' . $entityform . ' --route-prefix=' . $entityform
-                . ' --env=' . $this->getContainer()->get('kernel')->getEnvironment()
-                . ' --with-write --format=yml --no-interaction'; // --no-debug
 
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
-        $resultcrud = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' doctrine:generate:crud ' . $crudparms);
-
+        $resultcrud = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' --env=dev make:form ' . $entityform . "Type");
         if ($resultcrud['errcode'] == 0) {
             $fs = new Filesystem();
             //Controller
-            $controlleFile = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR .
-                    $bundlename . DIRECTORY_SEPARATOR . 'Controller' . DIRECTORY_SEPARATOR .
-                    $entityform . 'Controller.php';
+            $controlleFile = $this->apppaths->getSrcPath() . 'App/Controller/' . $entityform . 'Controller.php';
             $code = $this->getControllerCode(str_replace('/', '\\', $bundlename), $entityform);
             $fs->dumpFile($controlleFile, $code);
             $output->writeln("<info>Creato " . $controlleFile . "</info>");
@@ -60,11 +51,6 @@ class GenerateFormCommand extends ContainerAwareCommand
             $this->generateFormWiew($bundlename, $entityform, 'edit');
             $this->generateFormWiew($bundlename, $entityform, 'index');
             $this->generateFormWiew($bundlename, $entityform, 'new');
-            $appviews = $this->apppaths->getAppPath() . DIRECTORY_SEPARATOR . 'Resources'
-                    . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . strtolower($entityform);
-
-            $fs->remove($appviews);
-            $output->writeln("<info>Rimosso " . $appviews . "</info>");
 
             $this->generateFormsDefaultTableValues($entityform);
             $output->writeln("<info>" . $retmsg . "</info>");
@@ -74,7 +60,6 @@ class GenerateFormCommand extends ContainerAwareCommand
             return 1;
         }
     }
-
     private function generateFormRouting($bundlename, $entityform)
     {
         //Routing del form
@@ -108,7 +93,6 @@ class GenerateFormCommand extends ContainerAwareCommand
 
         return $retmsg;
     }
-
     private function generateFormWiew($bundlename, $entityform, $view)
     {
         $fs = new Filesystem();
@@ -119,7 +103,6 @@ class GenerateFormCommand extends ContainerAwareCommand
         $fs->mkdir($folderview);
         file_put_contents($dest, "{% include 'FiCoreBundle:Standard:" . $view . ".html.twig' %}");
     }
-
     private function generateFormsDefaultTableValues($entityform)
     {
         //Si inserisce il record di default nella tabella permessi
@@ -138,7 +121,6 @@ class GenerateFormCommand extends ContainerAwareCommand
         $em->persist($tabelle);
         $em->flush();
     }
-
     private function getControllerCode($bundlename, $tabella)
     {
         $codeTemplate = <<<EOF
@@ -167,7 +149,6 @@ EOF;
 
         return $code;
     }
-
     private function getRoutingCode($bundlename, $tabella)
     {
         $codeTemplate = <<<'EOF'
