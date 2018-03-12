@@ -115,7 +115,7 @@
             "keep-outdated": true
         },
         "branch-alias": {
-            "dev-master": "3.4-dev"
+            "dev-master": "3.0-dev"
         }
     }
 }
