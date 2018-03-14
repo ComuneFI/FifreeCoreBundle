@@ -355,15 +355,14 @@
                 });
                 $("#adminpanelgenerateformcrud").click(function () {
                     var entityform = $("#entityform").val();
-                    var bundlename = $("#bundlename").val();
-                    var domanda = "Vuoi creare il crud per il form " + entityform + " nel bundle: " + bundlename;
+                    var domanda = "Vuoi creare il crud per il form " + entityform;
                     conferma(domanda).then(function (answer) {
                         if ((String(answer) == "true")) {
                             $("#risultato").hide();
                             $("#risultato").html("");
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_generateformcrud") }}",
-                                data: {entityform: entityform, bundlename: bundlename},
+                                data: {entityform: entityform},
                                 context: document.body
                             }).done(function (data) {
                                 $("#risultato").html(data);

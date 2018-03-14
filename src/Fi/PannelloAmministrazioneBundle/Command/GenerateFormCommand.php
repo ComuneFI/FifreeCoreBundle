@@ -25,22 +25,23 @@ class GenerateFormCommand extends ContainerAwareCommand
                 ->setHelp('Genera le views per il crud, <br/>fifree.mwb Fi/CoreBundle default [--schemaupdate]<br/>')
                 ->addArgument('entityform', InputArgument::REQUIRED, 'Il nome entity del form da creare');
     }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
         $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
         $pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
 
-        $bundlename = "AppBundle";
+        $bundlename = "App";
         $entityform = $input->getArgument('entityform');
 
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
-        $resultcrud = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' --env=dev make:form ' . $entityform . "Type");
+        $resultcrud = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' --env=dev make:form ' . $entityform . "Type" . " " . $entityform);
         if ($resultcrud['errcode'] == 0) {
             $fs = new Filesystem();
             //Controller
-            $controlleFile = $this->apppaths->getSrcPath() . 'App/Controller/' . $entityform . 'Controller.php';
+            $controlleFile = $this->apppaths->getSrcPath() . '/' . $bundlename . '/Controller/' . $entityform . 'Controller.php';
             $code = $this->getControllerCode(str_replace('/', '\\', $bundlename), $entityform);
             $fs->dumpFile($controlleFile, $code);
             $output->writeln("<info>Creato " . $controlleFile . "</info>");
@@ -60,6 +61,7 @@ class GenerateFormCommand extends ContainerAwareCommand
             return 1;
         }
     }
+
     private function generateFormRouting($bundlename, $entityform)
     {
         //Routing del form
@@ -74,8 +76,7 @@ class GenerateFormCommand extends ContainerAwareCommand
         //Fixed: Adesso questa parte la fa da solo symfony (05/2015)
         //Refixed dalla versione 2.8 non lo fa più (04/2016)
 
-        $dest = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
-                'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'routing.yml';
+        $dest = $this->apppaths->getSrcPath() . '/config/routes.yaml';
 
         $routingContext = "\n" . str_replace('/', '', $bundlename) . '_' . $entityform . ': ' . "\n" .
                 '  resource: "@' . str_replace('/', '', $bundlename) . '/Resources/config/routing/' . strtolower($entityform) . '.yml"' . "\n" .
@@ -93,6 +94,7 @@ class GenerateFormCommand extends ContainerAwareCommand
 
         return $retmsg;
     }
+
     private function generateFormWiew($bundlename, $entityform, $view)
     {
         $fs = new Filesystem();
@@ -103,6 +105,7 @@ class GenerateFormCommand extends ContainerAwareCommand
         $fs->mkdir($folderview);
         file_put_contents($dest, "{% include 'FiCoreBundle:Standard:" . $view . ".html.twig' %}");
     }
+
     private function generateFormsDefaultTableValues($entityform)
     {
         //Si inserisce il record di default nella tabella permessi
@@ -121,6 +124,7 @@ class GenerateFormCommand extends ContainerAwareCommand
         $em->persist($tabelle);
         $em->flush();
     }
+
     private function getControllerCode($bundlename, $tabella)
     {
         $codeTemplate = <<<EOF
@@ -149,6 +153,7 @@ EOF;
 
         return $code;
     }
+
     private function getRoutingCode($bundlename, $tabella)
     {
         $codeTemplate = <<<'EOF'
@@ -199,4 +204,5 @@ EOF;
 
         return $code;
     }
+
 }
