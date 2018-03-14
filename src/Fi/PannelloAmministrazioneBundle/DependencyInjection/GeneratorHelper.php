@@ -20,7 +20,7 @@ class GeneratorHelper
 
     public function getDestinationEntityYmlPath()
     {
-        return $this->apppaths->getSrcPath() .'/App/Resources/config/doctrine/';
+        return $this->apppaths->getSrcPath() .'/AppBundle/Resources/config/doctrine/';
     }
 
     public function checktables($destinationPath, $wbFile, $output)
@@ -80,7 +80,7 @@ class GeneratorHelper
         $bundlePath = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundlename;
 
         $viewsPath = $bundlePath .
-                DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR;
+                DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR;
         $entityPath = $bundlePath .
                 DIRECTORY_SEPARATOR . 'Entity' . DIRECTORY_SEPARATOR;
         $formPath = $bundlePath .
