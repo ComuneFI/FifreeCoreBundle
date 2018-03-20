@@ -11,6 +11,6 @@ Upgrade:
     Php 7.2
     Silex
     MakerBundle
-    Jquery + Jquery-ui + griglia
+    Jquery + Jquery-ui + griglia (http://ng-table.com)
     excel -> PHPOffice/PhpSpreadsheet
 
