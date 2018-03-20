@@ -80,10 +80,10 @@ class GenerateentitiesCommand extends ContainerAwareCommand
         $output->writeln('Creazione entities class');
 
         $console = $this->apppaths->getConsole();
-        $scriptGenerator = $console . ' doctrine:generate:entities';
+        $scriptGenerator = $console . ' make:entity';
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
-        $command = $phpPath . ' ' . $scriptGenerator . ' --no-backup --path=' . $this->apppaths->getSrcPath() . " App";
+        $command = $phpPath . ' ' . $scriptGenerator . ' --regenerate App';
         
         $generateentitiesresult = $this->pammutils->runCommand($command);
         if ($generateentitiesresult["errcode"] < 0) {
