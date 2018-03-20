@@ -122,7 +122,7 @@
         "symfony-web-dir": "tests/web",
         "symfony-tests-dir": "tests",
         "branch-alias": {
-            "dev-master": "3.4-dev"
+            "dev-master": "3.1-dev"
         }
     }
 }
