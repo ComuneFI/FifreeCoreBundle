@@ -31,7 +31,7 @@ class GenerateFormCommand extends ContainerAwareCommand
         $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
         $pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
 
-        $bundlename = "AppBundle";
+        $bundlename = "App";
         $entityform = $input->getArgument('entityform');
 
         $phpPath = OsFunctions::getPHPExecutableFromPath();
@@ -40,7 +40,7 @@ class GenerateFormCommand extends ContainerAwareCommand
         if ($resultcrud['errcode'] == 0) {
             $fs = new Filesystem();
             //Controller
-            $controlleFile = $this->apppaths->getSrcPath() . 'App/Controller/' . $entityform . 'Controller.php';
+            $controlleFile = $this->apppaths->getSrcPath() . '/App/Controller/' . $entityform . 'Controller.php';
             $code = $this->getControllerCode(str_replace('/', '\\', $bundlename), $entityform);
             $fs->dumpFile($controlleFile, $code);
             $output->writeln("<info>Creato " . $controlleFile . "</info>");
@@ -74,11 +74,10 @@ class GenerateFormCommand extends ContainerAwareCommand
         //Fixed: Adesso questa parte la fa da solo symfony (05/2015)
         //Refixed dalla versione 2.8 non lo fa più (04/2016)
 
-        $dest = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
-                'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'routing.yml';
+        $dest = $this->apppaths->getSrcPath() . '/config/routes.yaml';
 
         $routingContext = "\n" . str_replace('/', '', $bundlename) . '_' . $entityform . ': ' . "\n" .
-                '  resource: "@' . str_replace('/', '', $bundlename) . '/Resources/config/routing/' . strtolower($entityform) . '.yml"' . "\n" .
+                '  resource: "@' . str_replace('/', '', $bundlename) . 'Bundle/Resources/config/routing/' . strtolower($entityform) . '.yml"' . "\n" .
                 '  prefix: /' . $entityform . "\n";
 
         //Si fa l'append nel file routing del bundle per aggiungerci le rotte della tabella che stiamo gestendo
@@ -194,7 +193,7 @@ EOF;
     defaults: { _controller: "[bundle]:[tabella]:Griglia" }
     requirements: { methods: get|post }
 EOF;
-        $codebundle = str_replace('[bundle]', $bundlename, $codeTemplate);
+        $codebundle = str_replace('[bundle]', $bundlename."Bundle", $codeTemplate);
         $code = str_replace('[tabella]', $tabella, $codebundle);
 
         return $code;

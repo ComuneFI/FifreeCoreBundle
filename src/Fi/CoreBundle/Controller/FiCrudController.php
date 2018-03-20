@@ -27,18 +27,21 @@ class FiCrudController extends Controller
 
         preg_match('/(.*)\\\(.*)Bundle\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
 
+        if (count($matches) == 0) {
+            preg_match('/(.*)(.*)\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
+        }
+        
         self::$namespace = $matches[1];
         self::$bundle = $matches[2];
         self::$controller = $matches[3];
         self::$action = substr($request->attributes->get('_controller'), strrpos($request->attributes->get('_controller'), ':') + 1);
-        
+
         $gestionepermessi = $this->get('ficorebundle.gestionepermessi');
         self::$canRead = ($gestionepermessi->leggere(array('modulo' => self::$controller)) ? 1 : 0);
         self::$canDelete = ($gestionepermessi->cancellare(array('modulo' => self::$controller)) ? 1 : 0);
         self::$canCreate = ($gestionepermessi->creare(array('modulo' => self::$controller)) ? 1 : 0);
         self::$canUpdate = ($gestionepermessi->aggiornare(array('modulo' => self::$controller)) ? 1 : 0);
     }
-
     /**
      * Lists all tables entities.
      */
@@ -83,8 +86,7 @@ class FiCrudController extends Controller
 
         $testata = $repotabelle->editTestataFormTabelle($testatagriglia, $controller, $container);
         return $this->render(
-            $nomebundle . ':' . $controller . ':index.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':index.html.twig', array(
                     'nomecontroller' => $controller,
                     'testata' => $testata,
                     'canread' => self::$canRead,
@@ -92,7 +94,6 @@ class FiCrudController extends Controller
                         )
         );
     }
-
     /**
      * Creates a new table entity.
      */
@@ -115,12 +116,10 @@ class FiCrudController extends Controller
         $formType = $formbundle . 'Type';
 
         $form = $this->createForm(
-            $formType,
-            $entity,
-            array('attr' => array(
+                $formType, $entity, array('attr' => array(
                 'id' => 'formdati' . $controller,
-                ),
-                'action' => $this->generateUrl($controller . '_create'),
+            ),
+            'action' => $this->generateUrl($controller . '_create'),
                 )
         );
 
@@ -131,7 +130,7 @@ class FiCrudController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            $continua = (int)$request->get('continua');
+            $continua = (int) $request->get('continua');
             if ($continua === 0) {
                 return new Response('OK');
             } else {
@@ -140,15 +139,13 @@ class FiCrudController extends Controller
         }
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':new.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':new.html.twig', array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
                         )
         );
     }
-
     /**
      * Displays a form to create a new table entity.
      */
@@ -171,25 +168,21 @@ class FiCrudController extends Controller
         $entity = new $classbundle();
 
         $form = $this->createForm(
-            $formType,
-            $entity,
-            array('attr' => array(
+                $formType, $entity, array('attr' => array(
                 'id' => 'formdati' . $controller,
-                ),
-                'action' => $this->generateUrl($controller . '_create'),
+            ),
+            'action' => $this->generateUrl($controller . '_create'),
                 )
         );
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':new.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':new.html.twig', array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
                         )
         );
     }
-
     /**
      * Displays a form to edit an existing table entity.
      */
@@ -220,20 +213,17 @@ class FiCrudController extends Controller
         }
 
         $editForm = $this->createForm(
-            $formType,
-            $entity,
-            array('attr' => array(
+                $formType, $entity, array('attr' => array(
                 'id' => 'formdati' . $controller,
-                ),
-                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+            ),
+            'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                 )
         );
 
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':edit.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':edit.html.twig', array(
                     'entity' => $entity,
                     'nomecontroller' => $controller,
                     'edit_form' => $editForm->createView(),
@@ -242,7 +232,6 @@ class FiCrudController extends Controller
                         )
         );
     }
-
     /**
      * Edits an existing table entity.
      */
@@ -275,12 +264,10 @@ class FiCrudController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         $editForm = $this->createForm(
-            $formType,
-            $entity,
-            array('attr' => array(
+                $formType, $entity, array('attr' => array(
                 'id' => 'formdati' . $controller,
-                ),
-                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+            ),
+            'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                 )
         );
 
@@ -299,7 +286,7 @@ class FiCrudController extends Controller
                 $repoStorico->saveHistory($controller, $changes, $id, $this->getUser());
             }
 
-            $continua = (int)$request->get('continua');
+            $continua = (int) $request->get('continua');
             if ($continua === 0) {
                 return new Response('OK');
             } else {
@@ -308,8 +295,7 @@ class FiCrudController extends Controller
         }
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':edit.html.twig',
-            array(
+                        $nomebundle . ':' . $controller . ':edit.html.twig', array(
                     'entity' => $entity,
                     'edit_form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
@@ -317,7 +303,6 @@ class FiCrudController extends Controller
                         )
         );
     }
-
     /**
      * Edits an existing table entity.
      */
@@ -350,7 +335,6 @@ class FiCrudController extends Controller
                 . '/'
                 . $controller);
     }
-
     /**
      * Deletes a table entity.
      */
@@ -386,7 +370,6 @@ class FiCrudController extends Controller
 
         return new Response('OK');
     }
-
     /**
      * Creates a form to delete a table entity by id.
      *
@@ -400,22 +383,18 @@ class FiCrudController extends Controller
                         ->add('id', get_class(new \Symfony\Component\Form\Extension\Core\Type\HiddenType()))
                         ->getForm();
     }
-
     protected function getNamespace()
     {
         return self::$namespace;
     }
-
     protected function getBundle()
     {
         return self::$bundle;
     }
-
     protected function getController()
     {
         return self::$controller;
     }
-
     protected function getAction()
     {
         return self::$action;
