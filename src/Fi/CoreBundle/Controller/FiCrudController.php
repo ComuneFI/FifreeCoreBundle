@@ -30,7 +30,7 @@ class FiCrudController extends Controller
         if (count($matches) == 0) {
             preg_match('/(.*)(.*)\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
         }
-        
+
         self::$namespace = $matches[1];
         self::$bundle = $matches[2];
         self::$controller = $matches[3];
@@ -111,7 +111,11 @@ class FiCrudController extends Controller
         $nomebundle = $namespace . $bundle . 'Bundle';
         $classbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Entity\\' . $controller;
         $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
-
+        if (!class_exists($formbundle)) {
+            $nomebundle = $namespace . $bundle;
+            $classbundle = $namespace . '\\Entity\\' . $controller;
+            $formbundle = $namespace . '\\Form\\' . $controller;
+        }
         $entity = new $classbundle();
         $formType = $formbundle . 'Type';
 
@@ -164,6 +168,12 @@ class FiCrudController extends Controller
         $classbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Entity\\' . $controller;
         $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
         $formType = $formbundle . 'Type';
+        if (!class_exists($classbundle)) {
+            $nomebundle = $namespace . $bundle;
+            $classbundle = $namespace . '\\Entity\\' . $controller;
+            $formbundle = $namespace . '\\Form\\' . $controller;
+            $formType = $formbundle . 'Type';
+        }
 
         $entity = new $classbundle();
 
