@@ -36,7 +36,7 @@ class GenerateFormCommand extends ContainerAwareCommand
 
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
-        $resultcrud = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' --env=dev make:form ' . $entityform . "Type " .$entityform);
+        $resultcrud = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' --env=dev make:form ' . $entityform . "Type " . $entityform);
         if ($resultcrud['errcode'] == 0) {
             $fs = new Filesystem();
             //Controller
@@ -96,7 +96,7 @@ class GenerateFormCommand extends ContainerAwareCommand
     {
         $fs = new Filesystem();
         $folderview = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
-                'Resources' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR .
+                'templates' . DIRECTORY_SEPARATOR .
                 $entityform . DIRECTORY_SEPARATOR;
         $dest = $folderview . $view . '.html.twig';
         $fs->mkdir($folderview);
@@ -193,7 +193,7 @@ EOF;
     defaults: { _controller: "[bundle]:[tabella]:Griglia" }
     requirements: { methods: get|post }
 EOF;
-        $codebundle = str_replace('[bundle]', $bundlename."Bundle", $codeTemplate);
+        $codebundle = str_replace('[bundle]', $bundlename . "Bundle", $codeTemplate);
         $code = str_replace('[tabella]', $tabella, $codebundle);
 
         return $code;

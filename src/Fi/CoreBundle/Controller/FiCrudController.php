@@ -86,7 +86,7 @@ class FiCrudController extends Controller
 
         $testata = $repotabelle->editTestataFormTabelle($testatagriglia, $controller, $container);
         return $this->render(
-                        $nomebundle . ':' . $controller . ':index.html.twig', array(
+                    $nomebundle . ':' . $controller . ':index.html.twig', array(
                     'nomecontroller' => $controller,
                     'testata' => $testata,
                     'canread' => self::$canRead,
