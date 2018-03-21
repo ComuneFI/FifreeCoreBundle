@@ -96,7 +96,7 @@ class GenerateFormCommand extends ContainerAwareCommand
     private function generateFormWiew($bundlename, $entityform, $view)
     {
         $fs = new Filesystem();
-        $folderview = $this->apppaths->getSrcPath() . '/templates/' . $entityform . DIRECTORY_SEPARATOR;
+        $folderview = $this->apppaths->getSrcPath() . '/../templates/' . $entityform . DIRECTORY_SEPARATOR;
         $dest = $folderview . $view . '.html.twig';
         $fs->mkdir($folderview);
         file_put_contents($dest, "{% include 'FiCoreBundle:Standard:" . $view . ".html.twig' %}");
