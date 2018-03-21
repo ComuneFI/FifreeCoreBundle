@@ -77,7 +77,7 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
         //$destinationPathEscaped = str_replace('/', "\/", str_replace('\\', '/', $this->genhelper->getDestinationEntityYmlPath($bundlePath)));
         $destinationPathEscaped = str_replace('/', "\/", str_replace('\\', '/', $this->genhelper->getDestinationEntityYmlPath()));
         //$bundlePathEscaped = str_replace('\\', '\\\\', str_replace('/', '\\', $bundlePath));
-        $bundlePathEscaped = "";
+        $bundlePathEscaped = "App";
         $exportjsonfile = $this->genhelper->getJsonMwbGenerator();
 
         $bundlejson = str_replace('[bundle]', str_replace('/', '', $bundlePathEscaped), $exportjsonfile);

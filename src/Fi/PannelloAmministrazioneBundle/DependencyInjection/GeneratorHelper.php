@@ -20,7 +20,7 @@ class GeneratorHelper
 
     public function getDestinationEntityYmlPath()
     {
-        return $this->apppaths->getSrcPath() .'/config/doctrine/';
+        return $this->apppaths->getSrcPath() .'/../config/doctrine/';
     }
 
     public function checktables($destinationPath, $wbFile, $output)
