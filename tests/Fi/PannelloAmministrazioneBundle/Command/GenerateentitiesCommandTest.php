@@ -102,9 +102,9 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $container = $this->application->getKernel()->getContainer();
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($container);
 
-        $checkent = $apppath->getSrcPath() . "/App/Entity/Prova.php";
+        $checkent = $apppath->getSrcPath() . "/Entity/Prova.php";
 
-        $checkres = $apppath->getSrcPath() . "/App/Resources/config/doctrine/Prova.orm.yml";
+        $checkres = $apppath->getSrcPath() . "/../config/doctrine/Prova.orm.yml";
 
         $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand());
         $command = $this->application->find('pannelloamministrazione:generateymlentities');
@@ -156,7 +156,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $entityform = 'Prova';
         $container = $this->application->getKernel()->getContainer();
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($container);
-        $checkform = $apppath->getSrcPath() . "/App/Form/ProvaType.php";
+        $checkform = $apppath->getSrcPath() . "/Form/ProvaType.php";
 
         $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateFormCommand());
         $command = $this->application->find('pannelloamministrazione:generateformcrud');

@@ -95,10 +95,10 @@ function cleanFilesystem()
 {
     $vendorDir = dirname(dirname(__FILE__) . '/tests');
     //deleteLineFromFile($kernelfile, $DELETE);
-    $routingfile = $vendorDir . '/src/config/routes.yaml';
+    $routingfile = $vendorDir . '/config/routes.yaml';
     $line = fgets(fopen($routingfile, 'r'));
-    if (substr($line, 0, -1) == 'fi_provabundle:') {
-        for ($index = 0; $index < 4; ++$index) {
+    if (substr($line, 0, -1) == 'App_Prova') {
+        for ($index = 0; $index < 3; ++$index) {
             deleteFirstLineFile($routingfile);
         }
     }
@@ -109,14 +109,34 @@ function cleanFilesystem()
 
     $fs = new Filesystem();
 
-    $entityfile = $vendorDir . "/src/App/Entity/Prova.php";
+    $entityfile = $vendorDir . "/src/Entity/Prova.php";
 
     if ($fs->exists($entityfile)) {
         $fs->remove($entityfile);
     }
-    $resources = $vendorDir . "/src/App/Resources";
+    $routingfile = $vendorDir . "/config/routes/prova.yml";
+
+    if ($fs->exists($routingfile)) {
+        $fs->remove($routingfile);
+    }
+    $ormyml = $vendorDir . "/config/doctrine/Prova.orm.yml";
+
+    if ($fs->exists($ormyml)) {
+        $fs->remove($ormyml);
+    }
+    $resources = $vendorDir . "/templates/Prova";
     if ($fs->exists($resources)) {
         $fs->remove($resources, true);
+    }
+
+    $form = $vendorDir . "/src/Form/ProvaType.php";
+    if ($fs->exists($form)) {
+        $fs->remove($form, true);
+    }
+
+    $controller = $vendorDir . "/src/Controller/ProvaController.php";
+    if ($fs->exists($controller)) {
+        $fs->remove($controller, true);
     }
     /* $bundlesrcdir = $vendorDir . '/src';
 
