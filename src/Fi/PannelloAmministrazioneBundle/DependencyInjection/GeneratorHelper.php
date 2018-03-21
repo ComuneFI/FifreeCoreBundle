@@ -77,7 +77,7 @@ class GeneratorHelper
         $fs = new Filesystem();
 
         $wbFile = $this->apppaths->getDocPath() . DIRECTORY_SEPARATOR . $mwbfile;
-        $bundlePath = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundlename;
+        $bundlePath = $this->apppaths->getSrcPath();
 
         $viewsPath = $bundlePath .
                 DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR;
