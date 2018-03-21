@@ -122,6 +122,9 @@
     "mysql-workbench-schema-exporter/mysql-workbench-schema-exporter": {
         "version": "v3.0.3"
     },
+    "nikic/php-parser": {
+        "version": "v4.0.0"
+    },
     "ocramius/package-versions": {
         "version": "1.3.0"
     },

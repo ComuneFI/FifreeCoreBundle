@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bundle;
+namespace Fi\AppBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
