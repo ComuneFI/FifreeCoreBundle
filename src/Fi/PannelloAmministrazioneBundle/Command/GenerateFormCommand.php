@@ -41,7 +41,7 @@ class GenerateFormCommand extends ContainerAwareCommand
         if ($resultcrud['errcode'] == 0) {
             $fs = new Filesystem();
             //Controller
-            $controlleFile = $this->apppaths->getSrcPath() . '/' . $bundlename . '/Controller/' . $entityform . 'Controller.php';
+            $controlleFile = $this->apppaths->getSrcPath() . '/Controller/' . $entityform . 'Controller.php';
             $code = $this->getControllerCode(str_replace('/', '\\', $bundlename), $entityform);
             $fs->dumpFile($controlleFile, $code);
             $output->writeln("<info>Creato " . $controlleFile . "</info>");
@@ -66,9 +66,7 @@ class GenerateFormCommand extends ContainerAwareCommand
     {
         //Routing del form
         $fs = new Filesystem();
-        $routingFile = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundlename .
-                DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'config' .
-                DIRECTORY_SEPARATOR . 'routing' . DIRECTORY_SEPARATOR . strtolower($entityform) . '.yml';
+        $routingFile = $this->apppaths->getSrcPath() . '/../config/routes/' . strtolower($entityform) . '.yml';
 
         $code = $this->getRoutingCode(str_replace('/', '', $bundlename), $entityform);
         $fs->dumpFile($routingFile, $code);
@@ -76,10 +74,10 @@ class GenerateFormCommand extends ContainerAwareCommand
         //Fixed: Adesso questa parte la fa da solo symfony (05/2015)
         //Refixed dalla versione 2.8 non lo fa più (04/2016)
 
-        $dest = $this->apppaths->getSrcPath() . '/config/routes.yaml';
+        $dest = $this->apppaths->getSrcPath() . '/../config/routes.yaml';
 
         $routingContext = "\n" . str_replace('/', '', $bundlename) . '_' . $entityform . ': ' . "\n" .
-                '  resource: "@' . str_replace('/', '', $bundlename) . '/Resources/config/routing/' . strtolower($entityform) . '.yml"' . "\n" .
+                '  resource: config/routes/' . strtolower($entityform) . '.yml"' . "\n" .
                 '  prefix: /' . $entityform . "\n";
 
         //Si fa l'append nel file routing del bundle per aggiungerci le rotte della tabella che stiamo gestendo
@@ -98,9 +96,7 @@ class GenerateFormCommand extends ContainerAwareCommand
     private function generateFormWiew($bundlename, $entityform, $view)
     {
         $fs = new Filesystem();
-        $folderview = $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR . $bundlename . DIRECTORY_SEPARATOR .
-                'Resources' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR .
-                $entityform . DIRECTORY_SEPARATOR;
+        $folderview = $this->apppaths->getSrcPath() . '/templates/' . $entityform . DIRECTORY_SEPARATOR;
         $dest = $folderview . $view . '.html.twig';
         $fs->mkdir($folderview);
         file_put_contents($dest, "{% include 'FiCoreBundle:Standard:" . $view . ".html.twig' %}");

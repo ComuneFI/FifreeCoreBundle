@@ -104,7 +104,7 @@ class PannelloamministrazioneCommands
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
         $fs = new Filesystem();
         $srcPath = $this->apppaths->getSrcPath();
-        $appPath = $srcPath . "/App";
+        $appPath = $srcPath;
         if (!is_writable($appPath)) {
             return array('errcode' => -1, 'message' => $appPath . ' non scrivibile');
         }

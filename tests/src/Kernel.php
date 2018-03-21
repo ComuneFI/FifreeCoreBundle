@@ -22,7 +22,7 @@ class Kernel extends BaseKernel
 
     public function getLogDir()
     {
-        return $this->getProjectDir().'/tests/var/log';
+        return $this->getProjectDir().'/tests/var/logs';
     }
 
     public function registerBundles()
