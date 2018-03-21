@@ -1,9 +1,28 @@
 <?php
 
+use App\Kernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Debug\Debug;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 
-require __DIR__ . '/src/autoload.php';
+set_time_limit(0);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+if (!class_exists(Application::class)) {
+    throw new \RuntimeException('You need to add "symfony/framework-bundle" as a Composer dependency.');
+}
+
+if (!isset($_SERVER['APP_ENV'])) {
+    if (!class_exists(Dotenv::class)) {
+        throw new \RuntimeException('APP_ENV environment variable is not defined. You need to define environment variables for configuration or add "symfony/dotenv" as a Composer dependency to load variables from a .env file.');
+    }
+    (new Dotenv())->load(__DIR__ . '/../tests/.env');
+}
+
 require __DIR__ . '/Utils/FifreeTestAuthorizedClient.php';
 require __DIR__ . '/Utils/FifreeTestUnauthorizedClient.php';
 require __DIR__ . '/Utils/FifreeUserTestUtil.php';
@@ -13,12 +32,14 @@ require __DIR__ . '/Utils/FacebookDriverTester.php';
 require __DIR__ . '/Utils/StartServers.php';
 
 date_default_timezone_set('Europe/Rome');
+
 function clearcache()
 {
     passthru(sprintf(
                     '"%s/console" cache:clear', __DIR__ . '/../bin'
     ));
 }
+
 // More bootstrap code
 
 function cachewarmup()
@@ -28,6 +49,7 @@ function cachewarmup()
     ));
     #sleep(1);
 }
+
 function databaseinit()
 {
     passthru(sprintf(
@@ -39,6 +61,7 @@ function databaseinit()
 
     #sleep(1);
 }
+
 function removecache()
 {
     $vendorDir = dirname(dirname(__FILE__));
@@ -60,12 +83,14 @@ function removecache()
         }
     }
 }
+
 function getErrorText($process, $command)
 {
     $error = ($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput());
 
     return 'Errore nel comando ' . $command . ' ' . $error . ' ';
 }
+
 function cleanFilesystem()
 {
     $vendorDir = dirname(dirname(__FILE__) . '/tests');
@@ -85,7 +110,7 @@ function cleanFilesystem()
     $fs = new Filesystem();
 
     $entityfile = $vendorDir . "/src/App/Entity/Prova.php";
-    
+
     if ($fs->exists($entityfile)) {
         $fs->remove($entityfile);
     }
@@ -99,6 +124,7 @@ function cleanFilesystem()
       $fs->remove($bundlesrcdir, true);
       } */
 }
+
 function deleteFirstLineFile($file)
 {
     $handle = fopen($file, 'r');
@@ -113,6 +139,7 @@ function deleteFirstLineFile($file)
     fclose($o);
     rename($outfile, $file);
 }
+
 function deleteLineFromFile($file, $DELETE)
 {
     $data = file($file);
@@ -133,6 +160,7 @@ function deleteLineFromFile($file, $DELETE)
     flock($fp, LOCK_UN);
     fclose($fp);
 }
+
 function writestdout($buffer)
 {
     fwrite(STDOUT, print_r($buffer . "\n", TRUE));
