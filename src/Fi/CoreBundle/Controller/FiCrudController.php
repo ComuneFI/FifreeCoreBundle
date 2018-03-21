@@ -90,7 +90,8 @@ class FiCrudController extends Controller
 
         $testata = $repotabelle->editTestataFormTabelle($testatagriglia, $controller, $container);
         return $this->render(
-                        $template, array(
+            $template,
+            array(
                     'nomecontroller' => $controller,
                     'testata' => $testata,
                     'canread' => self::$canRead,
@@ -130,10 +131,12 @@ class FiCrudController extends Controller
         $formType = $formbundle . 'Type';
 
         $form = $this->createForm(
-                $formType, $entity, array('attr' => array(
+            $formType,
+            $entity,
+            array('attr' => array(
                 'id' => 'formdati' . $controller,
-            ),
-            'action' => $this->generateUrl($controller . '_create'),
+                ),
+                'action' => $this->generateUrl($controller . '_create'),
                 )
         );
 
@@ -153,7 +156,8 @@ class FiCrudController extends Controller
         }
 
         return $this->render(
-                        $template, array(
+            $template,
+            array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
@@ -191,15 +195,18 @@ class FiCrudController extends Controller
         $entity = new $classbundle();
 
         $form = $this->createForm(
-                $formType, $entity, array('attr' => array(
+            $formType,
+            $entity,
+            array('attr' => array(
                 'id' => 'formdati' . $controller,
-            ),
-            'action' => $this->generateUrl($controller . '_create'),
+                ),
+                'action' => $this->generateUrl($controller . '_create'),
                 )
         );
 
         return $this->render(
-                        $template, array(
+            $template,
+            array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
                     'form' => $form->createView(),
@@ -245,17 +252,20 @@ class FiCrudController extends Controller
         }
 
         $editForm = $this->createForm(
-                $formType, $entity, array('attr' => array(
+            $formType,
+            $entity,
+            array('attr' => array(
                 'id' => 'formdati' . $controller,
-            ),
-            'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                 )
         );
 
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render(
-                        $template, array(
+            $template,
+            array(
                     'entity' => $entity,
                     'nomecontroller' => $controller,
                     'edit_form' => $editForm->createView(),
@@ -306,10 +316,12 @@ class FiCrudController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         $editForm = $this->createForm(
-                $formType, $entity, array('attr' => array(
+            $formType,
+            $entity,
+            array('attr' => array(
                 'id' => 'formdati' . $controller,
-            ),
-            'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                 )
         );
 
@@ -337,7 +349,8 @@ class FiCrudController extends Controller
         }
 
         return $this->render(
-                        $template, array(
+            $template,
+            array(
                     'entity' => $entity,
                     'edit_form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
@@ -448,5 +461,4 @@ class FiCrudController extends Controller
     {
         return self::$action;
     }
-
 }
