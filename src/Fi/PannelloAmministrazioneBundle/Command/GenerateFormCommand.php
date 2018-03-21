@@ -25,7 +25,6 @@ class GenerateFormCommand extends ContainerAwareCommand
                 ->setHelp('Genera le views per il crud, <br/>fifree.mwb Fi/CoreBundle default [--schemaupdate]<br/>')
                 ->addArgument('entityform', InputArgument::REQUIRED, 'Il nome entity del form da creare');
     }
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
@@ -61,7 +60,6 @@ class GenerateFormCommand extends ContainerAwareCommand
             return 1;
         }
     }
-
     private function generateFormRouting($bundlename, $entityform)
     {
         //Routing del form
@@ -76,15 +74,14 @@ class GenerateFormCommand extends ContainerAwareCommand
 
         $dest = $this->apppaths->getSrcPath() . '/../config/routes.yaml';
 
-        $routingContext = "\n" . str_replace('/', '', $bundlename) . '_' . $entityform . ': ' . "\n" .
+        $routingContext = str_replace('/', '', $bundlename) . '_' . $entityform . ':' . "\n" .
                 '  resource: routes/' . strtolower($entityform) . '.yml' . "\n" .
-                '  prefix: /' . $entityform . "\n";
+                '  prefix: /' . $entityform . "\n\n";
 
         //Si fa l'append nel file routing del bundle per aggiungerci le rotte della tabella che stiamo gestendo
-        $fh = fopen($dest, 'a');
+        $fh = file_get_contents($dest);
         if ($fh !== false) {
-            fwrite($fh, $routingContext);
-            fclose($fh);
+            file_put_contents($dest, $routingContext . $fh);
             $retmsg = 'Routing ' . $dest . " generato automaticamente da pannelloammonistrazionebundle\n\n* * * * CLEAR CACHE * * * *\n";
         } else {
             $retmsg = 'Impossibile generare il ruoting automaticamente da pannelloammonistrazionebundle\n';
@@ -92,7 +89,6 @@ class GenerateFormCommand extends ContainerAwareCommand
 
         return $retmsg;
     }
-
     private function generateFormWiew($bundlename, $entityform, $view)
     {
         $fs = new Filesystem();
@@ -101,7 +97,6 @@ class GenerateFormCommand extends ContainerAwareCommand
         $fs->mkdir($folderview);
         file_put_contents($dest, "{% include 'FiCoreBundle:Standard:" . $view . ".html.twig' %}");
     }
-
     private function generateFormsDefaultTableValues($entityform)
     {
         //Si inserisce il record di default nella tabella permessi
@@ -120,7 +115,6 @@ class GenerateFormCommand extends ContainerAwareCommand
         $em->persist($tabelle);
         $em->flush();
     }
-
     private function getControllerCode($bundlename, $tabella)
     {
         $codeTemplate = <<<EOF
@@ -149,7 +143,6 @@ EOF;
 
         return $code;
     }
-
     private function getRoutingCode($bundlename, $tabella)
     {
         $codeTemplate = <<<'EOF'

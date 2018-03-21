@@ -1,9 +1,6 @@
 <?php
 
-use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Debug\Debug;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
@@ -96,8 +93,9 @@ function cleanFilesystem()
     $vendorDir = dirname(dirname(__FILE__) . '/tests');
     //deleteLineFromFile($kernelfile, $DELETE);
     $routingfile = $vendorDir . '/config/routes.yaml';
+    
     $line = fgets(fopen($routingfile, 'r'));
-    if (substr($line, 0, -1) == 'App_Prova') {
+    if (substr($line, 0, -1) == 'App_Prova:') {
         for ($index = 0; $index < 3; ++$index) {
             deleteFirstLineFile($routingfile);
         }

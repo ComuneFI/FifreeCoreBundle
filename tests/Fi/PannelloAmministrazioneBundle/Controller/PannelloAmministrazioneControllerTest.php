@@ -52,11 +52,11 @@ class PannelloAmministrazioneControllerTest extends FifreeTestAuthorizedClient
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($client->getContainer());
-        $checkentityprova = $apppath->getSrcPath() . "/App/Entity/Prova.php";
-        $checkresourceprova = $apppath->getSrcPath() . "/App/Resources/config/doctrineProva.orm.yml";
-        $checktypeprova = $apppath->getSrcPath() . "/App/Form/ProvaType.php";
-        $checkviewsprova = $apppath->getSrcPath() . "App/tempolates/Prova";
-        $checkindexprova = $apppath->getSrcPath() . "App/tempolates/Prova/index.html.twig";
+        $checkentityprova = $apppath->getSrcPath() . "/Entity/Prova.php";
+        $checkresourceprova = $apppath->getSrcPath() . "/../config/doctrine/Prova.orm.yml";
+        $checktypeprova = $apppath->getSrcPath() . "/Form/ProvaType.php";
+        $checkviewsprova = $apppath->getSrcPath() . "/../templates/Prova";
+        $checkindexprova = $apppath->getSrcPath() . "/../templates/Prova/index.html.twig";
 
         $this->assertTrue(file_exists($checkresourceprova));
         $this->assertTrue(file_exists($checkentityprova));
