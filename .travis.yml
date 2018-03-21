@@ -98,6 +98,7 @@ before_script:
   - if [[ "$DB" == "sqlite3" ]]; then cp -f ./tests/build/.env.sqlite $TRAVIS_BUILD_DIR/.env; fi
   
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then cp -f ./tests/build/build.hhvm.xml $TRAVIS_BUILD_DIR/build.xml; fi
+  - cp -f $TRAVIS_BUILD_DIR/tests/.env.dist $TRAVIS_BUILD_DIR/tests/.env
   
   - if [[ "$BROWSER" == "chrome" ]]; then sudo sed -i 's/firefox/chrome/' $TRAVIS_BUILD_DIR/.env; fi
   - chmod +x bin/console
