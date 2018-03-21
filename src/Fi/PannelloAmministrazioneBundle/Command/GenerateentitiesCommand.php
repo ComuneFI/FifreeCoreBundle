@@ -68,7 +68,7 @@ class GenerateentitiesCommand extends ContainerAwareCommand
         $phpPath = OsFunctions::getPHPExecutableFromPath();
 
         //$command = $phpPath . ' ' . $scriptGenerator . ' --no-backup --path=' . $this->apppaths->getSrcPath() . " App";
-        $command = $phpPath . ' ' . $scriptGenerator . " AppBundle";
+        $command = $phpPath . ' ' . $scriptGenerator . " App";
         
         $generateentitiesresult = $this->pammutils->runCommand($command);
         if ($generateentitiesresult["errcode"] < 0) {
