@@ -152,47 +152,48 @@ EOF;
 
     private function getRoutingCode($bundlename, $tabella)
     {
+        
         $codeTemplate = <<<'EOF'
 [tabella]_container:
     path:  /
-    defaults: { _controller: "[bundle]:[tabella]:index" }
+    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::indexAction' }
 
 [tabella]_new:
     path:  /new
-    defaults: { _controller: "[bundle]:[tabella]:new" }
+    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::newAction' }
 
 [tabella]_create:
     path:  /create
-    defaults: { _controller: "[bundle]:[tabella]:create" }
+    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::createAction' }
     requirements: { methods: post }
 
 [tabella]_edit:
     path:  /{id}/edit
-    defaults: { _controller: "[bundle]:[tabella]:edit" }
+    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::editAction' }
 
 [tabella]_update:
     path:  /{id}/update
-    defaults: { _controller: "[bundle]:[tabella]:update" }
+    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::updateAction' }
     requirements: { methods: post|put }
 
 [tabella]_aggiorna:
     path:  /aggiorna
-    defaults: { _controller: "[bundle]:[tabella]:aggiorna" }
+    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::aggiornaAction' }
     requirements: { methods: post|put }
 
 [tabella]_delete:
     path:  /{id}/delete
-    defaults: { _controller: "[bundle]:[tabella]:delete" }
+    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::deleteAction' }
     requirements: { methods: post|delete }
 
 [tabella]_deletemultiple:
     path:  /delete
-    defaults: { _controller: "[bundle]:[tabella]:delete" }
+    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::deleteAction' }
     requirements: { methods: post|delete }
 
 [tabella]_griglia:
     path:  /griglia
-    defaults: { _controller: "[bundle]:[tabella]:Griglia" }
+    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::GrigliaAction' }
     requirements: { methods: get|post }
 EOF;
         $codebundle = str_replace('[bundle]', $bundlename, $codeTemplate);
