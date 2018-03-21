@@ -32,6 +32,7 @@ doctrine:
                 type: yml
                 dir: '%kernel.project_dir%/tests/config/doctrine'
                 prefix: 'App\Entity'
+                alias: AppBundle
         #query_cache_driver: apcu
         #metadata_cache_driver: apcu
         result_cache_driver: apcu
