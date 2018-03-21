@@ -77,7 +77,7 @@ class GenerateFormCommand extends ContainerAwareCommand
         $dest = $this->apppaths->getSrcPath() . '/../config/routes.yaml';
 
         $routingContext = "\n" . str_replace('/', '', $bundlename) . '_' . $entityform . ': ' . "\n" .
-                '  resource: config/routes/' . strtolower($entityform) . '.yml"' . "\n" .
+                '  resource: routes/' . strtolower($entityform) . '.yml' . "\n" .
                 '  prefix: /' . $entityform . "\n";
 
         //Si fa l'append nel file routing del bundle per aggiungerci le rotte della tabella che stiamo gestendo
