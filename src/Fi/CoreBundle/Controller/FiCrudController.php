@@ -40,7 +40,6 @@ class FiCrudController extends Controller
         self::$canCreate = ($gestionepermessi->creare(array('modulo' => self::$controller)) ? 1 : 0);
         self::$canUpdate = ($gestionepermessi->aggiornare(array('modulo' => self::$controller)) ? 1 : 0);
     }
-
     /**
      * Lists all tables entities.
      */
@@ -93,7 +92,6 @@ class FiCrudController extends Controller
                         )
         );
     }
-
     /**
      * Creates a new table entity.
      */
@@ -155,7 +153,6 @@ class FiCrudController extends Controller
                         )
         );
     }
-
     /**
      * Displays a form to create a new table entity.
      */
@@ -201,7 +198,6 @@ class FiCrudController extends Controller
                         )
         );
     }
-
     /**
      * Displays a form to edit an existing table entity.
      */
@@ -259,7 +255,6 @@ class FiCrudController extends Controller
                         )
         );
     }
-
     /**
      * Edits an existing table entity.
      */
@@ -340,7 +335,6 @@ class FiCrudController extends Controller
                         )
         );
     }
-
     /**
      * Edits an existing table entity.
      */
@@ -373,7 +367,6 @@ class FiCrudController extends Controller
                 . '/'
                 . $controller);
     }
-
     /**
      * Deletes a table entity.
      */
@@ -409,7 +402,6 @@ class FiCrudController extends Controller
 
         return new Response('OK');
     }
-
     /**
      * Creates a form to delete a table entity by id.
      *
@@ -423,22 +415,18 @@ class FiCrudController extends Controller
                         ->add('id', get_class(new \Symfony\Component\Form\Extension\Core\Type\HiddenType()))
                         ->getForm();
     }
-
     protected function getNamespace()
     {
         return self::$namespace;
     }
-
     protected function getBundle()
     {
         return self::$bundle;
     }
-
     protected function getController()
     {
         return self::$controller;
     }
-
     protected function getAction()
     {
         return self::$action;

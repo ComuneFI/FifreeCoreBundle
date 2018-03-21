@@ -30,7 +30,7 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
         $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
         $this->genhelper = $this->getContainer()->get("pannelloamministrazione.generatorhelper");
         $this->pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
-        $bundlename = "";
+        $bundlename = "App";
         $mwbfile = $input->getArgument('mwbfile');
 
         $wbFile = $this->apppaths->getDocPath() . DIRECTORY_SEPARATOR . $mwbfile;
@@ -43,7 +43,7 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
         $destinationPath = $this->genhelper->getDestinationEntityYmlPath();
 
         $command = $this->getExportJsonCommand($wbFile);
-
+        
         $schemaupdateresult = $this->pammutils->runCommand($command);
         if ($schemaupdateresult["errcode"] < 0) {
             $output->writeln($schemaupdateresult["errmsg"]);
