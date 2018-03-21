@@ -152,7 +152,6 @@ EOF;
 
     private function getRoutingCode($bundlename, $tabella)
     {
-        
         $codeTemplate = <<<'EOF'
 [tabella]_container:
     path:  /
@@ -196,7 +195,7 @@ EOF;
     defaults: { _controller: '[bundle]\Controller\[tabella]Controller::GrigliaAction' }
     requirements: { methods: get|post }
 EOF;
-        $codebundle = str_replace('[bundle]', $bundlename . "Bundle", $codeTemplate);
+        $codebundle = str_replace('[bundle]', $bundlename, $codeTemplate);
         $code = str_replace('[tabella]', $tabella, $codebundle);
 
         return $code;
