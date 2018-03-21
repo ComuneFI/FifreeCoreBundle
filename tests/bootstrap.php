@@ -96,7 +96,7 @@ function cleanFilesystem()
     
     $line = fgets(fopen($routingfile, 'r'));
     if (substr($line, 0, -1) == 'App_Prova:') {
-        for ($index = 0; $index < 3; ++$index) {
+        for ($index = 0; $index < 4; ++$index) {
             deleteFirstLineFile($routingfile);
         }
     }
