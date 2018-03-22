@@ -521,7 +521,7 @@ abstract class FacebookDriverTester extends WebTestCase
     }
     public function logout()
     {
-        $this->visit("logout");
+        $this->visit("/logout");
     }
     public function tearDown()
     {

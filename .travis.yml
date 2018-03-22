@@ -1,11 +1,8 @@
 language: php
 
 php:
-  - 5.6
-  #- 7.0
-  #- 7.1
   - 7.2
-  - hhvm-3.24
+  #- hhvm-3.24
 
 services:
   - mysql
@@ -55,20 +52,19 @@ before_script:
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\ndate.timezone = "Europe/Rome"' | sudo tee -a /etc/hhvm/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\nhhvm.enable_hip_hop_syntax = true' | sudo tee -a /etc/hhvm/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar; fi
+  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\nhhvm.php7.all = 1' | sudo tee -a /etc/hhvm/php.ini; fi
 
-  - if [[ $TRAVIS_PHP_VERSION != "hhvm-3.24" ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
-  - if [[ $TRAVIS_PHP_VERSION != "hhvm-3.24" ]] ; then pecl channel-update pecl.php.net; fi;
+  - if [[ ! $TRAVIS_PHP_VERSION =~ hhvm ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ hhvm ]] ; then pecl channel-update pecl.php.net; fi;
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then echo "yes" | pecl install channel://pecl.php.net/apcu || true; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then echo "yes" | pecl install channel://pecl.php.net/apcu_bc || true; fi
-  - if [[ $TRAVIS_PHP_VERSION == "5.6" ]] ; then echo "yes" | pecl install apcu-4.0.11 || true; fi
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then sed -i '/extension="apc.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then sed -i '/extension="apcu.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then phpenv config-add ./tests/build/ini/apc-7.ini; fi
-  - if [[ $TRAVIS_PHP_VERSION == "5.6" ]] ; then phpenv config-add ./tests/build/ini/apc-5.6.ini; fi
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - if [[ $TRAVIS_PHP_VERSION != "hhvm-3.24" ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.0" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.1" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
@@ -84,7 +80,7 @@ before_script:
   - sudo service apache2 restart
   
   - if [[ "$DB" == "pgsql" ]]; then echo "PROVISIONING WITH PostgreSQL"; fi
-  - if [[ "$DB" == "pgsql" ]]; then cp -f ./tests/build/parameters.pgsql.yml $TRAVIS_BUILD_DIR/tests/app/config/parameters.yml; fi
+  - if [[ "$DB" == "pgsql" ]]; then cp -f ./tests/build/.env.pgsql $TRAVIS_BUILD_DIR/.env; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c 'create database unittest;' -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "CREATE USER fifreeuser WITH PASSWORD 'fifreeuserpwd';" -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "GRANT ALL PRIVILEGES ON DATABASE unittest TO fifreeuser;" -U postgres; fi
@@ -92,28 +88,23 @@ before_script:
   - if [[ "$DB" == "pgsql" ]]; then psql -c "alter role fifreeuser superuser;" -U postgres; fi
   
   - if [[ "$DB" == "mysql" ]]; then echo "PROVISIONING WITH MySQL"; fi
-  - if [[ "$DB" == "mysql" ]]; then cp -f ./tests/build/parameters.mysql.yml $TRAVIS_BUILD_DIR/tests/app/config/parameters.yml; fi
+  - if [[ "$DB" == "mysql" ]]; then cp -f ./tests/build/.env.mysql $TRAVIS_BUILD_DIR/.env; fi
   - if [[ "$DB" == "mysql" ]]; then mysql --version; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -e "CREATE DATABASE unittest;" -uroot; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -u root -e "CREATE USER 'fifreeuser'@'localhost' IDENTIFIED BY 'fifreeuserpwd';"; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -u root -e "GRANT ALL ON unittest.* TO 'fifreeuser'@'localhost';"; fi
   
   - if [[ "$DB" == "sqlite3" ]]; then echo "PROVISIONING WITH Sqlite3"; fi
-  - if [[ "$DB" == "sqlite3" ]]; then cp -f ./tests/build/parameters.sqlite.yml $TRAVIS_BUILD_DIR/tests/app/config/parameters.yml; fi
+  - if [[ "$DB" == "sqlite3" ]]; then cp -f ./tests/build/.env.sqlite $TRAVIS_BUILD_DIR/.env; fi
   
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then cp -f ./tests/build/build.hhvm.xml $TRAVIS_BUILD_DIR/build.xml; fi
+  - cp -f $TRAVIS_BUILD_DIR/tests/.env.dist $TRAVIS_BUILD_DIR/tests/.env
   
-  - if [[ "$BROWSER" == "chrome" ]]; then sudo sed -i 's/firefox/chrome/' $TRAVIS_BUILD_DIR/tests/app/config/parameters.yml; fi
-  #- if [[ "$BROWSER" == "chrome" ]]; then sudo cat $TRAVIS_BUILD_DIR/tests/app/config/parameters.yml; fi
-  #- if [[ "$BROWSER" == "chrome" ]]; then wget https://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip && unzip chromedriver_linux64.zip && sudo mv chromedriver /usr/local/bin; fi
-  
-  #- if [[ "$BROWSER" == "firefox" ]]; then wget https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz && tar -xzf geckodriver-v0.19.1-linux64.tar.gz && sudo mv geckodriver /usr/local/bin; fi
-
-  
+  - if [[ "$BROWSER" == "chrome" ]]; then sudo sed -i 's/firefox/chrome/' $TRAVIS_BUILD_DIR/.env; fi
+  - chmod +x bin/console
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
-
   
 
 script:
@@ -138,6 +129,7 @@ after_failure:
   - sudo cat /var/log/apache2/fifree_access.log
   - sudo cat $TRAVIS_BUILD_DIR/build/artifacts/logs/selenium2.log
   - sudo cat $TRAVIS_BUILD_DIR/build/artifacts/logs/webserver.log
+  - sudo cat /tmp/screenshot.txt
   #- sudo cat $TRAVIS_BUILD_DIR/tests/var/logs/test/test.log
 
 notifications:
