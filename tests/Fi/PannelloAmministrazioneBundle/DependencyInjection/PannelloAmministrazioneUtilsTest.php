@@ -10,10 +10,11 @@ class PannelloAmministrazioneUtilsTest extends FifreeTestAuthorizedClient
         $client = $this->getClient();
         $container = $client->getContainer();
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($container);
-        $cachepath = $apppath->getCachePath();
+        $cachepath = $apppath->getCachePath() . "/prod";
+
 
         $pa = new Fi\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils($container);
-        $pa->clearcache();
+        $pa->clearcache("prod");
         $this->assertTrue(file_exists($cachepath));
     }
 

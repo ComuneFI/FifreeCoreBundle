@@ -73,11 +73,11 @@ $("#entityfile").focusin(
             currentfunction = "";
         }
 );
-/*$("#entitybundle").focusin(
+$("#entitybundle").focusin(
         function () {
             currentfunction = "";
         }
-);*/
+);
 
 $("#unixcommand").focusout(
         function () {

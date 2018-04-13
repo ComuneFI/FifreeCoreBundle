@@ -1,7 +1,7 @@
 <VirtualHost *:8000>
-    DocumentRoot %TRAVIS_BUILD_DIR%/tests/public
+    DocumentRoot %TRAVIS_BUILD_DIR%/tests/web
 
-    <Directory "%TRAVIS_BUILD_DIR%/tests/public">
+    <Directory "%TRAVIS_BUILD_DIR%/tests/web">
         Options FollowSymLinks ExecCGI
         AllowOverride All
         Require all granted
@@ -10,7 +10,7 @@
             Options -MultiViews
             RewriteEngine On
             RewriteCond %{REQUEST_FILENAME} !-f
-            RewriteRule ^(.*)$ index.php [QSA,L]
+            RewriteRule ^(.*)$ app.php [QSA,L]
         </IfModule>
     </Directory>
 

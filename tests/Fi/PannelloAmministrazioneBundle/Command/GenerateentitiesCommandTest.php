@@ -6,6 +6,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class GenerateentitiesCommandTest extends KernelTestCase
 {
+
     public static function setUpBeforeClass()
     {
         cleanFilesystem();
@@ -36,6 +37,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         $this->application = new Application($kernel);
     }
+
     public function test10InstallFifree()
     {
         /* $application = new Application($this->kernel);
@@ -96,22 +98,35 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $recorddelete = $record2[0];
         $this->assertEquals($recorddelete->getUsername(), $username4test);
     }
+
     public function test20GenerateEntity()
     {
 
         $container = $this->application->getKernel()->getContainer();
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($container);
 
-        $checkent = $apppath->getSrcPath() . "/Entity/Prova.php";
+        $checkent = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
 
-        $checkres = $apppath->getSrcPath() . "/../config/doctrine/Prova.orm.yml";
+        $checkres = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR .
+                "doctrine" . DIRECTORY_SEPARATOR . "Prova.orm.yml";
+
+        //dump("Generate bundle");
+        $console = __DIR__ . '/../../../bin/console';
+        $cmd = "php " . $console . " generate:bundle  --namespace=Fi/ProvaBundle --dir=src/ --no-interaction --format=yml  -n --env=test --no-debug > /dev/null 2>&1";
+        passthru($cmd);
+        //dump("Generated bundle");
 
         $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand());
         $command = $this->application->find('pannelloamministrazione:generateymlentities');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
                 array(
-                    'mwbfile' => 'wbadmintest.mwb'
+                    'mwbfile' => 'wbadmintest.mwb',
+                    'bundlename' => 'Fi/ProvaBundle',
+                    '--env' => 'test',
+                    '--no-debug'
                 )
         );
 
@@ -129,7 +144,10 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(
                 array(
-                    '--schemaupdate' => true
+                    'bundlename' => 'Fi/ProvaBundle',
+                    '--schemaupdate' => true,
+                    '--env' => 'test',
+                    '--no-debug'
                 )
         );
 
@@ -153,17 +171,23 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $this->assertTrue(file_exists($checkres));
         /* Genera form */
 
-        $entityform = 'Prova';
+        $bundlename = "Fi/ProvaBundle";
+        $entityform = "Prova";
+
         $container = $this->application->getKernel()->getContainer();
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($container);
-        $checkform = $apppath->getSrcPath() . "/Form/ProvaType.php";
+        $checkform = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Form" . DIRECTORY_SEPARATOR . "ProvaType.php";
 
         $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateFormCommand());
         $command = $this->application->find('pannelloamministrazione:generateformcrud');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
                 array(
-                    'entityform' => $entityform
+                    'bundlename' => $bundlename,
+                    'entityform' => $entityform,
+                    '--env' => 'test',
+                    '--no-debug'
                 )
         );
         //dump($commandTester->getDisplay());
@@ -172,6 +196,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         $this->assertTrue(file_exists($checkform));
     }
+
     protected function tearDown()
     {
         parent::tearDown();
@@ -180,4 +205,5 @@ class GenerateentitiesCommandTest extends KernelTestCase
         clearcache();
         cachewarmup();
     }
+
 }

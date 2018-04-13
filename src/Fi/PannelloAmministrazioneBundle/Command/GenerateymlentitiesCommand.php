@@ -22,15 +22,17 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
                 ->setDescription('Genera le entities partendo da un modello workbeanch mwb')
                 ->setHelp('Genera i ifle yml per le entities partendo da un modello workbeanch mwb, <br/>fifree.mwb Fi/CoreBundle default<br/>')
                 ->addArgument('mwbfile', InputArgument::REQUIRED, 'Nome file mwb, fifree.mwb')
-        ;
+                ->addArgument('bundlename', InputArgument::REQUIRED, 'Nome del bundle, Fi/CoreBundle');
     }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
         $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
         $this->genhelper = $this->getContainer()->get("pannelloamministrazione.generatorhelper");
         $this->pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
-        $bundlename = "App";
+
+        $bundlename = $input->getArgument('bundlename');
         $mwbfile = $input->getArgument('mwbfile');
 
         $wbFile = $this->apppaths->getDocPath() . DIRECTORY_SEPARATOR . $mwbfile;
@@ -40,10 +42,10 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
             return -1;
         }
 
-        $destinationPath = $this->genhelper->getDestinationEntityYmlPath();
+        $destinationPath = $this->genhelper->getDestinationEntityYmlPath($bundlename);
 
-        $command = $this->getExportJsonCommand($wbFile);
-        
+        $command = $this->getExportJsonCommand($bundlename, $wbFile);
+
         $schemaupdateresult = $this->pammutils->runCommand($command);
         if ($schemaupdateresult["errcode"] < 0) {
             $output->writeln($schemaupdateresult["errmsg"]);
@@ -70,14 +72,14 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
           } */
         return 0;
     }
-    private function getExportJsonCommand($wbFile)
+
+    private function getExportJsonCommand($bundlePath, $wbFile)
     {
         $exportJson = $this->genhelper->getExportJsonFile();
         $scriptGenerator = $this->genhelper->getScriptGenerator();
-        //$destinationPathEscaped = str_replace('/', "\/", str_replace('\\', '/', $this->genhelper->getDestinationEntityYmlPath($bundlePath)));
-        $destinationPathEscaped = str_replace('/', "\/", str_replace('\\', '/', $this->genhelper->getDestinationEntityYmlPath()));
-        //$bundlePathEscaped = str_replace('\\', '\\\\', str_replace('/', '\\', $bundlePath));
-        $bundlePathEscaped = "App";
+        $destinationPathEscaped = str_replace('/', "\/", str_replace('\\', '/', $this->genhelper->getDestinationEntityYmlPath($bundlePath)));
+        $bundlePathEscaped = str_replace('\\', '\\\\', str_replace('/', '\\', $bundlePath));
+
         $exportjsonfile = $this->genhelper->getJsonMwbGenerator();
 
         $bundlejson = str_replace('[bundle]', str_replace('/', '', $bundlePathEscaped), $exportjsonfile);
