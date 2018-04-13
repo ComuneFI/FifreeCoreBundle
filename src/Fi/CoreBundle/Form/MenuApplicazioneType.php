@@ -35,7 +35,7 @@ class MenuApplicazioneType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                    'data_class' => 'Fi\CoreBundle\Entity\menuApplicazione',
+                    'data_class' => 'Fi\CoreBundle\Entity\MenuApplicazione',
                 )
         );
     }

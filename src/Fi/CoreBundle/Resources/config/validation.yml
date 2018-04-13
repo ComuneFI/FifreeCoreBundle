@@ -29,7 +29,7 @@ Fi\CoreBundle\Entity\Ffsecondaria:
         #data:
         #    - GreaterThan: today
 
-Fi\CoreBundle\Entity\menuApplicazione:
+Fi\CoreBundle\Entity\MenuApplicazione:
     properties:
         nome:
             - NotBlank: ~
