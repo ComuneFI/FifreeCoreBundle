@@ -19,8 +19,8 @@ class OperatoriCreateCommandTest extends WebTestCase
     public function testAddOperatore()
     {
         $userprova = 'utenteprova';
-        $console = __DIR__ . '/../../../bin/console';
-        $cmd = "php " . $console . " fos:user:create $userprova $userprova@domain.it passwordprova --env=test > /dev/null 2>&1";
+        $console = __DIR__ . '/../../../../bin/console';
+        $cmd = $console . " fos:user:create $userprova $userprova@domain.it passwordprova > /dev/null 2>&1";
         passthru($cmd);
 //        $kernel = static::$kernel;
 //        $application = new Application($kernel);

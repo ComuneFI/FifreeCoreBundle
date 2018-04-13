@@ -50,13 +50,13 @@
   
     <target name="fifreecorebundle-drop-database">
         <exec executable="php" failonerror="true">
-            <arg line="tests/bin/console fifree2:dropdatabase --force --env=test"/>
+            <arg line="bin/console fifree2:dropdatabase --force"/>
         </exec>
     </target>
     
     <target name="fifreecorebundle-install">
         <exec executable="php" failonerror="true">
-            <arg line="tests/bin/console fifree2:install admin admin admin@admin.it --env=test"/>
+            <arg line="bin/console fifree2:install admin admin admin@admin.it"/>
         </exec>
     </target>
   
@@ -100,7 +100,7 @@
     </target>
 
     <target name="php-security-checker" description="Check your composer dependencies for insecure components">
-        <exec executable="vendor/bin/security-checker" failonerror="true">
+        <exec executable="vendor/bin/security-checker" failonerror="false">
             <arg value="security:check"/>
             <arg value="--verbose"/>
             <arg value="--end-point=http://security.sensiolabs.org/check_lock"/>

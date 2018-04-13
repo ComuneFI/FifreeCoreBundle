@@ -26,12 +26,14 @@ class FiCrudController extends Controller
         $controllo = new \ReflectionClass(get_class($this));
 
         preg_match('/(.*)\\\(.*)Bundle\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
-
+        if (count($matches) == 0) {
+            preg_match('/(.*)(.*)\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
+        }
         self::$namespace = $matches[1];
         self::$bundle = $matches[2];
         self::$controller = $matches[3];
         self::$action = substr($request->attributes->get('_controller'), strrpos($request->attributes->get('_controller'), ':') + 1);
-        
+
         $gestionepermessi = $this->get('ficorebundle.gestionepermessi');
         self::$canRead = ($gestionepermessi->leggere(array('modulo' => self::$controller)) ? 1 : 0);
         self::$canDelete = ($gestionepermessi->cancellare(array('modulo' => self::$controller)) ? 1 : 0);
@@ -81,9 +83,14 @@ class FiCrudController extends Controller
         $this->setParametriGriglia(array('request' => $request));
         $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
 
+        $template = $nomebundle . ':' . $controller . ':index.html.twig';
+        if (!$this->get('templating')->exists($template)) {
+            $template = $controller . '/index.html.twig';
+        }
+
         $testata = $repotabelle->editTestataFormTabelle($testatagriglia, $controller, $container);
         return $this->render(
-            $nomebundle . ':' . $controller . ':index.html.twig',
+            $template,
             array(
                     'nomecontroller' => $controller,
                     'testata' => $testata,
@@ -111,6 +118,15 @@ class FiCrudController extends Controller
         $classbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Entity\\' . $controller;
         $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
 
+        if (!class_exists($classbundle)) {
+            $nomebundle = $namespace . $bundle . 'Bundle';
+            $classbundle = $namespace . '\\Entity\\' . $controller;
+            $formbundle = $namespace . '\\Form\\' . $controller;
+            $template = $controller . '/new.html.twig';
+        } else {
+            $template = $nomebundle . ':' . $controller . ':new.html.twig';
+        }
+
         $entity = new $classbundle();
         $formType = $formbundle . 'Type';
 
@@ -131,7 +147,7 @@ class FiCrudController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            $continua = (int)$request->get('continua');
+            $continua = (int) $request->get('continua');
             if ($continua === 0) {
                 return new Response('OK');
             } else {
@@ -140,7 +156,7 @@ class FiCrudController extends Controller
         }
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':new.html.twig',
+            $template,
             array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
@@ -167,7 +183,15 @@ class FiCrudController extends Controller
         $classbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Entity\\' . $controller;
         $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
         $formType = $formbundle . 'Type';
-
+        if (!class_exists($classbundle)) {
+            $nomebundle = $namespace . $bundle . 'Bundle';
+            $classbundle = $namespace . '\\Entity\\' . $controller;
+            $formbundle = $namespace . '\\Form\\' . $controller;
+            $formType = $formbundle . 'Type';
+            $template = $controller . '/new.html.twig';
+        } else {
+            $template = $nomebundle . ':' . $controller . ':new.html.twig';
+        }
         $entity = new $classbundle();
 
         $form = $this->createForm(
@@ -181,7 +205,7 @@ class FiCrudController extends Controller
         );
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':new.html.twig',
+            $template,
             array(
                     'nomecontroller' => $controller,
                     'entity' => $entity,
@@ -208,6 +232,14 @@ class FiCrudController extends Controller
         $nomebundle = $namespace . $bundle . 'Bundle';
         $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
         $formType = $formbundle . 'Type';
+        if (!class_exists($formType)) {
+            $nomebundle = $namespace . $bundle . 'Bundle';
+            $formbundle = $namespace . '\\Form\\' . $controller;
+            $formType = $formbundle . 'Type';
+            $template = $controller . '/edit.html.twig';
+        } else {
+            $template = $nomebundle . ':' . $controller . ':edit.html.twig';
+        }
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
@@ -232,7 +264,7 @@ class FiCrudController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':edit.html.twig',
+            $template,
             array(
                     'entity' => $entity,
                     'nomecontroller' => $controller,
@@ -261,6 +293,15 @@ class FiCrudController extends Controller
         $nomebundle = $namespace . $bundle . 'Bundle';
         $formbundle = $namespace . '\\' . $bundle . 'Bundle' . '\\Form\\' . $controller;
         $formType = $formbundle . 'Type';
+
+        if (!class_exists($formType)) {
+            $nomebundle = $namespace . $bundle . 'Bundle';
+            $formbundle = $namespace . '\\Form\\' . $controller;
+            $formType = $formbundle . 'Type';
+            $template = $controller . '/edit.html.twig';
+        } else {
+            $template = $nomebundle . ':' . $controller . ':edit.html.twig';
+        }
 
         $repoStorico = $this->container->get('Storicomodifiche_repository');
 
@@ -299,7 +340,7 @@ class FiCrudController extends Controller
                 $repoStorico->saveHistory($controller, $changes, $id, $this->getUser());
             }
 
-            $continua = (int)$request->get('continua');
+            $continua = (int) $request->get('continua');
             if ($continua === 0) {
                 return new Response('OK');
             } else {
@@ -308,7 +349,7 @@ class FiCrudController extends Controller
         }
 
         return $this->render(
-            $nomebundle . ':' . $controller . ':edit.html.twig',
+            $template,
             array(
                     'entity' => $entity,
                     'edit_form' => $editForm->createView(),
