@@ -90,7 +90,6 @@ class GeneratorHelper
 
         $destinationPath = $this->getDestinationEntityYmlPath($bundlename);
         $output->writeln('Creazione entities yml in ' . $destinationPath . ' da file ' . $mwbfile);
-        $destinationPath = $destinationPath . 'doctrine' . DIRECTORY_SEPARATOR;
 
         if (!$fs->exists($bundlePath)) {
             $output->writeln('<error>Non esiste la cartella del bundle ' . $bundlePath . '</error>');
