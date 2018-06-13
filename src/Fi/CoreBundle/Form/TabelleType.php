@@ -29,7 +29,7 @@ class TabelleType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-            'data_class' => 'Fi\CoreBundle\Entity\tabelle',
+            'data_class' => 'Fi\CoreBundle\Entity\Tabelle',
             )
         );
     }
