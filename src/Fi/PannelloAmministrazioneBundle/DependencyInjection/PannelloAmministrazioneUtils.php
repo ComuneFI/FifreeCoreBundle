@@ -47,7 +47,7 @@ class PannelloAmministrazioneUtils
     {
         /* @var $process \Symfony\Component\Process\Process */
         $process = new Process($command);
-        $process->setTimeout(60 * 100);
+        $process->setTimeout(60 * 60 * 24);
         $process->run();
 
         if (!$process->isSuccessful()) {
