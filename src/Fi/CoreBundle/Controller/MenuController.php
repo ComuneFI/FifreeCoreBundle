@@ -20,7 +20,7 @@ class MenuController extends FiCoreController
         $router = $this->get('router')->match('/')['_route'];
         $rispostahome = array();
         $rispostahome[] = array('percorso' => $this->getUrlObject($this->container->getParameter('appname'), $router, ''),
-            'nome' => $this->container->getParameter('appname'),
+            'nome' => 'Home',
             'target' => '',
         );
 
