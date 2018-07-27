@@ -2,6 +2,7 @@
 
 use Symfony\Component\DomCrawler\Crawler;
 use Fi\CoreBundle\DependencyInjection\FifreeTestAuthorizedClient;
+use Symfony\Component\Routing\Route;
 
 class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
 {
@@ -13,12 +14,14 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
      */
     public function testIndexFfprincipale()
     {
+        /* @var $client \Symfony\Bundle\FrameworkBundle\Client */
         $client = $this->getClient();
-        $url = $client->getContainer()->get('router')->generate('Ffprincipale');
+        $url = $this->getRoute('Ffprincipale');
         $em = $this->getEntityManager();
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
 
         $client->request('GET', $url);
+
         $crawler = new Crawler($client->getResponse()->getContent());
         $this->assertTrue($client->getResponse()->isSuccessful());
         $body = $crawler->filter('div[id="Ffprincipale"]');
@@ -102,10 +105,11 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
     public function testExcelFfprincipale()
     {
         $client = $this->getClient();
-        //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
-        $url = $client->getContainer()->get('router')->generate('Tabelle_esportaexceltabella', array('nometabella' => 'Ffprincipale'));
+        $url = $this->getRoute('Tabelle_esportaexceltabella', array('nometabella' => 'Ffprincipale'));
 
+        
         $client->request('GET', $url);
+        
         $this->assertTrue(
                 $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
         );
@@ -124,7 +128,7 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
     {
         $client = $this->getClient();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
-        $url = $client->getContainer()->get('router')->generate('Tabelle_stampatabella', array('nometabella' => 'Ffprincipale'));
+        $url = $this->getRoute('Tabelle_stampatabella', array('nometabella' => 'Ffprincipale'));
         ob_start();
         $client->request('GET', $url);
         $pdfcontents = ob_get_clean();

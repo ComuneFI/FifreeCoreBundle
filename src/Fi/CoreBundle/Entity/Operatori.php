@@ -3,6 +3,8 @@
 namespace Fi\CoreBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Fi\CoreBundle\Entity\OperatoriRepository")
@@ -11,8 +13,9 @@ use FOS\UserBundle\Model\User as BaseUser;
 /**
  * Operatori.
  */
-class Operatori extends BaseUser
+class Operatori extends BaseUser implements EquatableInterface
 {
+
     /**
      * @var int
      */
@@ -160,8 +163,7 @@ class Operatori extends BaseUser
         return $this->storicomodifiches;
     }
 
-    
-        /**
+    /**
      * Add storicomodifiches.
      *
      * @param \Fi\CoreBundle\Entity\storicomodifiche $storicomodifiches
@@ -285,5 +287,22 @@ class Operatori extends BaseUser
     public function getStoricomodifiches()
     {
         return $this->storicomodifiches;
+    }
+
+    public function isEqualTo(UserInterface $user)
+    {
+        if ($this->password !== $user->getPassword()) {
+            return false;
+        }
+
+        if ($this->salt !== $user->getSalt()) {
+            return false;
+        }
+
+        if ($this->username !== $user->getUsername()) {
+            return false;
+        }
+
+        return true;
     }
 }

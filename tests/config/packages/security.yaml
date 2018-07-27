@@ -16,12 +16,10 @@ security:
         sso_esclusioni:
             pattern:  ^/(_(profiler|wdt)|css|images|js|accedi)/
             security: false
-            logout_on_user_change: true
             
         sso_login:
             pattern:  ^/autenticazione/*
             security: false
-            logout_on_user_change: true
             
         main:
           pattern: ^/
