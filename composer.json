@@ -71,7 +71,7 @@
         "facebook/webdriver": "^1.5",
         "mockery/mockery": "^0.9.5",
         "phpmd/phpmd": "^2.6",
-        "satooshi/php-coveralls": "^2.0",
+        "php-coveralls/php-coveralls": "^2.0",
         "se/selenium-server-standalone": "3.8.*",
         "sebastian/phpcpd": "^2.0",
         "sensiolabs/security-checker": "^4.0",
@@ -100,8 +100,9 @@
             "cache:clear": "symfony-cmd",
             "assets:install --symlink --relative tests/%PUBLIC_DIR%": "symfony-cmd",
             "security-checker security:check --end-point=http://security.sensiolabs.org/check_lock": "script",
+            "security-checker security:check": "script",
             "assets:install tests/%PUBLIC_DIR%": "symfony-cmd",
-            "security-checker security:check": "script"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         }
     },
     "config": {
