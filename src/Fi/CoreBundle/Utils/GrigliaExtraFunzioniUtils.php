@@ -25,4 +25,57 @@ class GrigliaExtraFunzioniUtils
             }
         }
     }
+    public static function valorizzaColonna(&$vettoreriga, $parametri)
+    {
+        $tabella = $parametri['tabella'];
+        $nomecampo = $parametri['nomecampo'];
+        $doctrine = $parametri['doctrine'];
+        $decodifiche = $parametri['decodifiche'];
+
+        $vettoreparcampi = $doctrine->getMetadataFactory()->getMetadataFor($tabella)->fieldMappings;
+
+        if (is_object($vettoreparcampi)) {
+            $vettoreparcampi = get_object_vars($vettoreparcampi);
+        }
+
+        $singolocampo = $parametri['singolocampo'];
+
+        if (isset($decodifiche[$nomecampo]) && isset($decodifiche[$nomecampo][$singolocampo])) {
+            $ordinecampo = $parametri['ordinecampo'];
+            if (isset($ordinecampo)) {
+                $vettoreriga[$ordinecampo] = $decodifiche[$nomecampo][$singolocampo];
+            } else {
+                $vettoreriga[] = $decodifiche[$nomecampo][$singolocampo];
+            }
+        } else {
+            $vettoretype = isset($vettoreparcampi[$nomecampo]['type']) ? $vettoreparcampi[$nomecampo]['type'] : null;
+            self::valorizzaVettoreType($vettoreparcampi, $vettoreriga, $vettoretype, $parametri);
+        }
+    }
+    
+    public static function valorizzaVettoreType(&$vettoreparcampi, &$vettoreriga, $vettoretype, $parametri)
+    {
+        $nomecampo = $parametri['nomecampo'];
+        $ordinecampo = $parametri['ordinecampo'];
+        $singolocampo = $parametri['singolocampo'];
+        if (isset($vettoretype) && ($vettoretype == 'date' || $vettoretype == 'datetime') && $singolocampo) {
+            if (isset($ordinecampo)) {
+                $vettoreriga[$ordinecampo] = $singolocampo->format('d/m/Y');
+            } else {
+                $vettoreriga[] = $singolocampo->format('d/m/Y');
+            }
+        } elseif (isset($vettoretype) && ($vettoreparcampi[$nomecampo]['type'] == 'time') && $singolocampo) {
+            if (isset($ordinecampo)) {
+                $vettoreriga[$ordinecampo] = $singolocampo->format('H:i');
+            } else {
+                $vettoreriga[] = $singolocampo->format('H:i');
+            }
+        } else {
+            if (isset($ordinecampo)) {
+                $vettoreriga[$ordinecampo] = $singolocampo;
+            } else {
+                $vettoreriga[] = $singolocampo;
+            }
+        }
+    }
 }
