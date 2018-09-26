@@ -418,11 +418,12 @@ class FiCrudController extends Controller
 
             $query = $qb->getQuery();
             $query->execute();
-        } catch (\Exception $e) {
-            $response = new Response();
-            $response->setStatusCode('200');
-
+        } catch (\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e) {
             return new Response('404');
+        } catch (\Exception $e) {
+            $response = new Response($e->getMessage());
+            $response->setStatusCode('200');
+            return $response;
         }
 
         return new Response('OK');
