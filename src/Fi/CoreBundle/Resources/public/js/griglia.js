@@ -1454,7 +1454,7 @@ function eliminaDettaglio(parametri) {
                     });
                     jQuery(nometestodialog).html("Impossibile cancellare la riga (per esempio potrebbe essere usata in altre tabelle).");
                     jQuery(nomedialog).show();
-                } else if (responseText.status === 200 && responseText.statusText !== "OK") {
+                } else if (responseText.status === 200 && responseText.responseText !== "OK") {
                     jQuery(nomedialog).dialog({
                         title: 'Attenzione',
                         buttons: {
@@ -1464,7 +1464,7 @@ function eliminaDettaglio(parametri) {
                         },
                         modal: true
                     });
-                    jQuery(nometestodialog).html(responseText.statusText);
+                    jQuery(nometestodialog).html(responseText.responseText);
                     jQuery(nomedialog).show();
                 } else {
                     jQuery(list).trigger("reloadGrid", [{
