@@ -350,7 +350,7 @@ function caricaGriglia(parametrijs) {
                 }
             });
             if (funzionedaeseguireloadcomplete != null) {
-                funzionedaeseguireloadcomplete();
+                window[funzionedaeseguireloadcomplete]();
             }
         }
     });
@@ -1339,7 +1339,7 @@ function salvaDettaglio(parametri) {
         }
 
         if (funzionedaeseguireloadcomplete != null) {
-            funzionedaeseguireloadcomplete();
+            window[funzionedaeseguireloadcomplete]();
         }
 
         if (refreshgrid === 1) {
