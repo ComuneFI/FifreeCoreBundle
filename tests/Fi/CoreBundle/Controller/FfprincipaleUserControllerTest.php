@@ -61,7 +61,7 @@ class FfprincipaleUserControllerTest extends FifreeTestAuthorizedClient
         $griglia = $container->get("ficorebundle.griglia");
         $testatagriglia = $griglia->testataPerGriglia($paricevuti);
         $modellocolonne = $testatagriglia['modellocolonne'];
-        $this->assertEquals(9, count($modellocolonne));
+        $this->assertEquals(10, count($modellocolonne));
 
         $this->assertEquals('id', $modellocolonne[0]['name']);
         $this->assertEquals('id', $modellocolonne[0]['id']);

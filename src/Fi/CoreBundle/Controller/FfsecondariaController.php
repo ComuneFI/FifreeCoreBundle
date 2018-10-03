@@ -22,7 +22,8 @@ class FfsecondariaController extends FiCoreController
         $nomebundle = $namespace . $bundle . 'Bundle';
 
         $ffprincipaleSelect = $this->getComboSelectFfprincipale();
-
+        $giornodellasettimanaSelect = $this->getComboSelectGiornodellasettimana();
+        
         $dettaglij = array(
             'descsec' => array(
                 array('nomecampo' => 'descsec',
@@ -35,6 +36,14 @@ class FfsecondariaController extends FiCoreController
                     'descrizione' => 'Descrizione record principale',
                     'tipo' => 'select',
                     'valoricombo' => $ffprincipaleSelect
+                ),
+            ),
+            'giornodellasettimana' => array(
+                array('nomecampo' => 'giornodellasettimana',
+                    'lunghezza' => '200',
+                    'descrizione' => 'Giorno della settimana',
+                    'tipo' => 'select',
+                    'valoricombo' => $giornodellasettimanaSelect
                 ),
             ),
         );
@@ -86,9 +95,10 @@ class FfsecondariaController extends FiCoreController
         $testatagriglia['showadd'] = 1;
         $testatagriglia['showedit'] = 1;
         $testatagriglia['showdel'] = 1;
-
         $testatagriglia['showexcel'] = 1;
 
+        $testatagriglia['overlayopen'] = 1;
+        
         $testatagriglia["filterToolbar_searchOnEnter"] = true;
         $testatagriglia["filterToolbar_searchOperators"] = true;
         $testatagriglia["sortname"] = "data, descsec";
@@ -117,6 +127,24 @@ class FfsecondariaController extends FiCoreController
         }
         return $ffprincipaleSelect;
     }
+    
+    private function getComboSelectGiornodellasettimana()
+    {
+        $giornodellasettimanaSelect = array();
+        //Imposta il filtro a TUTTI come default
+        $giornodellasettimanaSelect[] = array("valore" => "", "descrizione" => "Tutti", "default" => true);
+        for ($index = 1; $index < 8; $index++) {
+            $format = new \IntlDateFormatter('it_IT', \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, "EEEE");
+            $giornodellasettimanaSelect[] = array(
+                "valore" => $index,
+                "descrizione" => ucfirst($format->format(strtotime('next Sunday +' . $index . ' days'))),
+                "default" => false);
+        }
+        
+
+        return $giornodellasettimanaSelect;
+    }
+            
     public function setParametriGriglia($prepar = array())
     {
         $this->setup($prepar['request']);
@@ -138,6 +166,12 @@ class FfsecondariaController extends FiCoreController
 
         $campiextra = array(array('lunghezzanota'), array('attivoToString'));
 
+        $decodifiche = array();
+        for ($index = 1; $index < 8; $index++) {
+            $format = new \IntlDateFormatter('it_IT', \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, "EEEE");
+            $decodifiche["giornodellasettimana"][$index] = ucfirst($format->format(strtotime('next Sunday +' . $index . ' days')));
+        }
+        
         /* $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
           'nomecampo' => 'intero',
           'operatore' => '>=',
@@ -146,7 +180,6 @@ class FfsecondariaController extends FiCoreController
 
         //$precondizioni = array('ffprincipale_id' => '1');
         $precondizioni = array();
-        $precondizioniAvanzate = array();
 
         /* $precondizioniAvanzate[] = array('nometabella' => 'Ffsecondaria',
           'nomecampo' => 'descsec',
@@ -212,6 +245,7 @@ class FfsecondariaController extends FiCoreController
             'nometabella' => $controller,
             'campiextra' => $campiextra,
             'escludere' => $escludi,
+            'decodifiche' => $decodifiche,
             'precondizioni' => $precondizioni,
             'precondizioniAvanzate' => $precondizioniAvanzate,
                 /* "ordinecolonne" => array("ffprincipale_id", "descsec", "importo", "intero") */

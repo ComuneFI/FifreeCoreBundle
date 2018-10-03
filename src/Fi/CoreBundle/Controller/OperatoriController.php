@@ -46,6 +46,7 @@ class OperatoriController extends FiCoreController
 
         $testatagriglia['multisearch'] = 1;
         $testatagriglia['showconfig'] = 1;
+        $testatagriglia['overlayopen'] = 1;
 
         $testata = json_encode($testatagriglia);
         $twigparms = array(
