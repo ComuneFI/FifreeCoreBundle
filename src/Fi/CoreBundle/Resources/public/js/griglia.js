@@ -1169,6 +1169,7 @@ function apriDettaglio(parametri) {
     var overlay = parametri['overlay'] || "#overlay";
     var open_new_window = parametri['open_new_window'] || 0;
     var funzionedaeseguireloadcomplete = parametri["funzionedaeseguireloadcomplete"] || null;
+    var funzionedaeseguireapridettagliocomplete = parametri["funzionedaeseguireapridettagliocomplete"] || null;
 
     var prossimozIndex = maxzIndex() + 10;
 
@@ -1232,6 +1233,10 @@ function apriDettaglio(parametri) {
                 }
                 //Funzione di overlay per ottenere l'effetto di finestra in backgroud trasparenti nel caso di sovrapposizione
                 trasparenzadiv();
+                if (funzionedaeseguireapridettagliocomplete != null) {
+                    funzionedaeseguireapridettagliocomplete();
+                }
+
             });
         } else {
             var editUrl = baseUrl + '/' + tabella + "?id=" + rowid;
