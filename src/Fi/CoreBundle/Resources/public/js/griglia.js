@@ -1168,7 +1168,7 @@ function apriDettaglio(parametri) {
     var nometestodialog = parametri['nometestodialog'] || "#testodialog";
     var overlay = parametri['overlay'] || "#overlay";
     var open_new_window = parametri['open_new_window'] || 0;
-
+    var funzionedaeseguireloadcomplete = parametri["funzionedaeseguireloadcomplete"] || null;
 
     var prossimozIndex = maxzIndex() + 10;
 
@@ -1257,6 +1257,9 @@ function apriDettaglio(parametri) {
         }
     }
 
+    if (funzionedaeseguireloadcomplete != null) {
+        funzionedaeseguireloadcomplete();
+    }
 }
 
 
