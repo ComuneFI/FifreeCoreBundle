@@ -22,6 +22,9 @@ Fi\CoreBundle\Entity\Ffsecondaria:
         intero:
             type: integer
             nullable: true
+        giornodellasettimana:
+            type: integer
+            nullable: true
         importo:
             type: float
             precision: 10
