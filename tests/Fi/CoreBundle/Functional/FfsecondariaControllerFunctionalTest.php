@@ -11,7 +11,6 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
      * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
      * @covers Fi\CoreBundle\Controller\FiController::<public>
      */
-
     public function testFfsecondaria()
     {
         //$url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $this->router->generate('Ffsecondaria');
@@ -37,7 +36,6 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         $session->quit();
     }
-
     private function crudoperation($session, $page)
     {
         $this->clickElement('buttonadd_list1');
@@ -85,12 +83,11 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         //Metto questo if perchè non è stato implementato per firefox con geckodriver ancora
         if ($iffindelementrightclick) {
             $this->clickElement('jqContextMenu');
+            $this->clickElement('ui-dialog-titlebar-close');
 
             //$this->pressButton('Ok');
-
-            $this->clickElement('ui-dialog-titlebar-close');
-            $this->clickElement('fi-default-chiudi');
         }
+        $this->clickElement('fi-default-chiudi');
 
         $this->searchmodifiche($descrizionetest1);
         /* Cancellazione */
@@ -99,7 +96,6 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $this->clickElement('buttondel_list1');
         $this->clickElement('dData');
     }
-
     private function configuratabelleoperation($session, $page)
     {
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
@@ -160,7 +156,6 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         $this->assertTrue($this->elementIsVisible("jqgh_list1_attivo"));
     }
-
     private function validationoperation($session, $page)
     {
         $this->clickElement('buttonadd_list1');
@@ -200,7 +195,6 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         $this->clickElement('dData');
     }
-
     private function searchoperation($session, $page)
     {
         /* Ricerca 0 */
@@ -391,7 +385,6 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $this->clickElement('fbox_list1_reset');
         $this->ajaxWait();
     }
-
     private function printoperations($session, $page)
     {
         /* Print pdf */
@@ -417,7 +410,6 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $lastwindow2 = end($windows2);
         $this->facebookDriver->switchTo()->window($lastwindow2);
     }
-
     private function searchmodifiche($valoreprecedente)
     {
         $em = $this->doctrine->getManager();
@@ -439,5 +431,4 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
                 ->getQuery()
                 ->execute();
     }
-
 }
