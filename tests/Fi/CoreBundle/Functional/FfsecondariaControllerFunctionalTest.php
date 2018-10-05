@@ -377,7 +377,29 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $this->assertEquals(3, $numrowsgrid5);
         $this->ajaxWait();
 
+        /* Ricerca 7 */
+        $this->clickElement('search_list1');
+        $this->ajaxWait();
+        /**/
+        $var7 = '"giornodellasettimana"';
+        $selector7 = '#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first';
+        $javascript7 = "$('" . $selector7 . ' option[value=' . $var7 . "]').attr('selected', 'selected').change();";
+        $this->ajaxWait();
+        $this->evaluateScript($javascript7);
+        $this->ajaxWait();
 
+        $var8 = '"2"';
+        $selector8 = '.input-elm';
+        $javascript8 = "$('" . $selector8 . ' option[value=' . $var8 . "]').attr('selected', 'selected').change();";
+        $this->ajaxWait();
+        $this->evaluateScript($javascript8);
+        $this->ajaxWait();
+        /**/
+        $this->clickElement('fbox_list1_search');
+        $this->ajaxWait();
+        /**/
+        
+        
         //reset filtri
         $this->clickElement('search_list1');
         //mi tocca rimettere questo sleep perchè schianta anche dopo il refactor
