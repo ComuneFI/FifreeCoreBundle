@@ -52,7 +52,7 @@ class TabelleControllerTest extends FifreeTestAuthorizedClient
 
         $client->request('POST', $url);
         $this->assertTrue($client->getResponse()->isSuccessful());
-        
+
         $url2 = $client->getContainer()->get('router')->generate('Tabelle_aggiorna', array(
             "etichettaindex" => "",
             "etichettastampa" => "",
@@ -75,6 +75,16 @@ class TabelleControllerTest extends FifreeTestAuthorizedClient
     {
         $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('Tabelle_grigliapopup', array("chiamante" => "Ffprincipale"));
+
+        $client->request('POST', $url);
+        $crawler = new Crawler($client->getResponse()->getContent());
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+    public function testListacampitabellaTabelle()
+    {
+        $client = $this->getClient();
+        $url = $client->getContainer()->get('router')->generate('Tabelle_listacampitabella', array("tabella" => "Ffprincipale", "escludiid" => array(1, 2)));
 
         $client->request('POST', $url);
         $crawler = new Crawler($client->getResponse()->getContent());
