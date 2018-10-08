@@ -6,7 +6,6 @@ use Symfony\Component\Routing\Route;
 
 class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
 {
-
     /**
      * @test
      * @covers Fi\CoreBundle\Controller\FiController::<public>
@@ -82,6 +81,13 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
         $recorddelete = $record2[0];
         $this->assertEquals($recorddelete->getDescrizione(), $valorenew);
 
+        //aggiorna
+        $crawler = $client->request('POST', '/Ffprincipale/aggiorna', array('id' => $recorddelete->getId()));
+        $this->assertTrue($client->getResponse()->getStatusCode() == '404');
+        $this->assertGreaterThan(
+                0, $crawler->filter('html:contains("Implementare a seconda")')->count()
+        );
+
         //delete
         $crawler = $client->request('GET', '/Ffprincipale/' . $recorddelete->getId() . '/edit');
         $this->assertTrue($crawler->filter('html:contains("formdatiFfprincipale")')->count() > 0);
@@ -93,7 +99,6 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
 
         $crawler = $client->request('GET', '/Ffprincipale/' . $recorddelete->getId() . '/delete');
     }
-
     /**
      * @test
      * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
@@ -108,14 +113,13 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
         $client = $this->getClient();
         $url = $this->getRoute('Tabelle_esportaexceltabella', array('nometabella' => 'Ffprincipale'));
 
-        
+
         $client->request('GET', $url);
-        
+
         $this->assertTrue(
                 $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
         );
     }
-
     /**
      * @test
      * 
@@ -139,5 +143,4 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
                 $client->getResponse()->getStatusCode() === 200
         );
     }
-
 }
