@@ -84,7 +84,7 @@ class TabelleControllerTest extends FifreeTestAuthorizedClient
     public function testListacampitabellaTabelle()
     {
         $client = $this->getClient();
-        $url = $client->getContainer()->get('router')->generate('Tabelle_listacampitabella', array("tabella" => "Ffprincipale", "escludiid" => array(1, 2)));
+        $url = $client->getContainer()->get('router')->generate('Tabelle_listacampitabella', array("tabella" => "Ffprincipale", "escludiid" => 1));
 
         $client->request('POST', $url);
         $crawler = new Crawler($client->getResponse()->getContent());
