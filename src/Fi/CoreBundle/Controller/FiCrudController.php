@@ -376,7 +376,7 @@ class FiCrudController extends Controller
 
         $nomebundle = $namespace . $bundle . 'Bundle';
 
-        $id = $this->get('request')->request->get('id');
+        $id = $request->get('id');
 
         $em = $this->getDoctrine()->getManager();
 
