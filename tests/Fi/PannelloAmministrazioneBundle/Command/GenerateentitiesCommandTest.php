@@ -54,6 +54,19 @@ class GenerateentitiesCommandTest extends KernelTestCase
          */
         $this->application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
 
+        $command = $this->application->find('fifree2:droptables');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(
+                array(
+                    '--force' => true,
+                    '--no-interaction' => true
+                )
+        );
+
+        $this->assertRegExp('/.../', $commandTester->getDisplay());
+
+                $this->application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
+
         $command = $this->application->find('fifree2:dropdatabase');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
