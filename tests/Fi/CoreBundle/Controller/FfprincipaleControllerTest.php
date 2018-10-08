@@ -123,6 +123,7 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
      * @covers Fi\CoreBundle\Controller\FiController::<public>
      * @covers Fi\CoreBundle\DependencyInjection\EsportaTabellaPdf::stampa
      * @covers Fi\CoreBundle\DependencyInjection\EsportaTabellaPdf::stampaTestata
+     * @covers Fi\CoreBundle\DependencyInjection\EsportaTabellaPdf::stampaDettaglio
      * 
      */
     public function testStampaFfprincipale()
