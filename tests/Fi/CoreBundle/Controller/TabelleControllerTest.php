@@ -71,4 +71,14 @@ class TabelleControllerTest extends FifreeTestAuthorizedClient
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
+    public function testGrigliapopupTabelle()
+    {
+        $client = $this->getClient();
+        $url = $client->getContainer()->get('router')->generate('Tabelle_grigliapopup', array("chiamante" => "Ffprincipale"));
+
+        $client->request('POST', $url);
+        $crawler = new Crawler($client->getResponse()->getContent());
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
 }
