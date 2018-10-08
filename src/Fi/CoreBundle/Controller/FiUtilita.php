@@ -45,46 +45,6 @@ class FiUtilita
         return $restotminuti;
     }
 
-    /**
-     * @param array  $parametri
-     * string $parametri["tipo"]
-     *
-     * @return Array("segnouno"=>"xx", "segnodue"=>"yy") dove segnodue non obbligatorio
-     */
-    public function operatoreQuery($parametri = array())
-    {
-        $risposta = array();
-
-        if (isset($parametri['tipo'])) {
-            $tipocampo = $parametri['tipo'];
-        } else {
-            return array('segnouno' => '=');
-        }
-
-        switch ($tipocampo) {
-            case 'date':
-            case 'integer':
-            case 'double':
-                $operatore = '>=';
-                $operatoredue = '<=';
-                break;
-            case 'string':
-            case 'text':
-                $operatore = 'LIKE';
-                break;
-            default:
-                $operatore = '=';
-                break;
-        }
-
-        $risposta['segnouno'] = $operatore;
-        if (isset($operatoredue)) {
-            $risposta['segnodue'] = $operatoredue;
-        }
-
-        return $risposta;
-    }
-
     public static function data2db($giorno, $invertito = false, $senzalinea = false)
     {
         if ($giorno == '') {
@@ -195,46 +155,5 @@ class FiUtilita
         $arrayritorno['nomedescrizione'] = (isset($parametri['nomedescrizione']) ? $parametri['nomedescrizione'] : 'descrizione');
 
         return $arrayritorno;
-    }
-
-    /**
-     * @param $parametri["vettore"]
-     * @param $parametri["chiave"]
-     * @param $parametri["valore"]
-     *
-     * @return $vettorenuovo
-     */
-    public function cancellaDaVettore($parametri = array())
-    {
-
-        //parametri obbligatori
-        if (isset($parametri['vettore'])) {
-            $vettore = $parametri['vettore'];
-        } else {
-            return false;
-        }
-
-        //parametri obbligatori
-        if (isset($parametri['chiave'])) {
-            $chiave = $parametri['chiave'];
-        } else {
-            return $vettore;
-        }
-
-        //parametri obbligatori
-        if (isset($parametri['valore'])) {
-            $valore = $parametri['valore'];
-        } else {
-            return $vettore;
-        }
-
-        $vettorenuovo = array();
-
-        foreach ($vettore as $elemento) {
-            if (!($elemento[$chiave] == $valore)) {
-                $vettorenuovo[] = $elemento;
-            }
-        }
-        return $vettorenuovo;
     }
 }
