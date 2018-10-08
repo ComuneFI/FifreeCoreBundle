@@ -44,6 +44,10 @@ class PannelloAmministrazioneControllerTest extends FifreeTestAuthorizedClient
         //dump($client->getResponse());
         $this->assertTrue($client->getResponse()->isSuccessful());
 
+        $urlct = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_changetheme');
+        $client->request('GET', $urlct, array("theme" => "cupertino"));
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($client->getContainer());
         $checkentityprova = $apppath->getSrcPath() . "/Entity/Prova.php";
         $checkresourceprova = $apppath->getSrcPath() . "/../config/doctrine/Prova.orm.yml";
