@@ -12,15 +12,8 @@ class PannelloAmministrazioneControllerTest extends FifreeTestAuthorizedClient
 
         $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
-        //$this->assertContains('DoctrineORMEntityManager', get_class($em));
-
         $client->request('GET', $url);
         $this->assertTrue($client->getResponse()->isSuccessful());
-
-        /* $urlcc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_clearcache');
-          $client->request('GET', $urlcc, array("env"=>"prod"));
-          dump($client->getResponse());exit;
-          $this->assertTrue($client->getResponse()->isSuccessful()); */
 
         $urlsc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_symfonycommand');
         $client->request('GET', $urlsc, array("symfonycommand" => "cache:clear --env=prod --no-debug"));
@@ -63,6 +56,10 @@ class PannelloAmministrazioneControllerTest extends FifreeTestAuthorizedClient
         $this->assertTrue(file_exists($checktypeprova));
         $this->assertTrue(file_exists($checkviewsprova));
         $this->assertTrue(file_exists($checkindexprova));
+
+        //Lo lancio per ultimo perchè ad oggi va in 500 per il mock della sessione, quindi qui non dovrebbe dare noia a nessuno
+        $urlcc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_clearcache');
+        $client->request('GET', $urlcc);
 
         cleanFilesystem();
         //dump($client->getResponse());

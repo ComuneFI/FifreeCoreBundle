@@ -194,32 +194,6 @@ class PannelloAmministrazioneController extends Controller
         }
     }
 
-    /* BUNDLE */
-
-    public function generateBundleAction(Request $request)
-    {
-        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
-        if (!$this->locksystem->acquire()) {
-            return new Response($this->getLockMessage());
-        } else {
-            $this->locksystem->acquire();
-            $command = $this->get("pannelloamministrazione.commands");
-            $bundleName = $request->get('bundlename');
-            $result = $command->generateBundle($bundleName);
-            if ($result["errcode"] >= 0) {
-                //$msg = "\nPer abilitare il nuovo bundle nel kernel pulire la cache e aggiornare la pagina";
-                //$alert = '<script type="text/javascript">alert("' . $msg . '");location.reload();</script>';
-                //$result['message'] = $result['message'] . $msg;
-            }
-            $this->locksystem->release();
-            //Uso exit perchè la render avendo creato un nuovo bundle schianta perchè non è caricato nel kernel il nuovo bundle ancora
-            //exit;
-            $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
-
-            return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
-        }
-    }
-
     /* VCS (GIT,SVN) */
 
     public function getVcsAction()

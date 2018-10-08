@@ -75,14 +75,6 @@
     <div class="adminpanel bundle">
         <fieldset class="groupbox" id="grpbundle">
             <legend>Bundle e Form</legend>
-            <!--<div>
-                <button id="adminpanelgeneratebundle" class="active btn btn-default" data-reactid=".3.0" type="button">Genera bundle</button>
-                <br/><br/>
-                <div class="inputbox">
-                    <label for='bundlename'>Nome Bundle:</label>
-                    <input class="form-control" type="text" id="bundlename" value="Fi/DemoBundle"/><br/>
-                </div>
-            </div>-->
             <div>
                 <button id="adminpanelgenerateformcrud" class="active btn btn-default" data-reactid=".3.0" type="button">Genera CRUD per il form</button>
                 <br/><br/>
@@ -291,33 +283,6 @@
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_generateentityclass") }}",
                                 //data: {bundle: entitybundle},
-                                context: document.body
-                            }).done(function (data) {
-                                $("#risultato").html(data);
-                                opendialogrisultato();
-                                $("#risultato").slideDown("slow");
-                            }).fail(function (jqXHR, textStatus) {
-                                opendialogrisultato();
-                                $("#risultato").html(jqXHR.responseText);
-                                $("#risultato").show();
-                                msgbox("Si è verificato un errore!");
-                                return false;
-                            });
-                        } else {
-                            //FALSE
-                        }
-                    });
-                });
-                $("#adminpanelgeneratebundle").click(function () {
-                    var bundlename = $("#bundlename").val();
-                    var domanda = "Vuoi creare il bundle: " + bundlename;
-                    conferma(domanda).then(function (answer) {
-                        if ((String(answer) == "true")) {
-                            $("#risultato").hide();
-                            $("#risultato").html("");
-                            $.ajax({
-                                url: "{{ path("fi_pannello_amministrazione_generatebundle") }}",
-                                data: {bundlename: bundlename},
                                 context: document.body
                             }).done(function (data) {
                                 $("#risultato").html(data);

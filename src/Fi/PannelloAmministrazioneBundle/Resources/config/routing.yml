@@ -34,10 +34,6 @@ fi_pannello_amministrazione_aggiornaschemadatabase:
     path:  /adminpanel/aggiornaschemadatabase
     defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:aggiornaSchemaDatabase }
 
-fi_pannello_amministrazione_generatebundle:
-    path:  /adminpanel/generateBundle
-    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:generateBundle }
-
 fi_pannello_amministrazione_generateform:
     path:  /adminpanel/generateForm
     defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:generateForm }
