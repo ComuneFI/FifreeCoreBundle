@@ -98,6 +98,7 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
      * @test
      * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
      * @covers Fi\CoreBundle\Controller\FiController::<public>
+     * @covers Fi\CoreBundle\DependencyInjection\EsportaTabellaXls::esportaexcel
      * @covers Fi\CoreBundle\DependencyInjection\EsportaTabellaXls::printHeaderXls
      * @covers Fi\CoreBundle\DependencyInjection\EsportaTabellaXls::printBodyXls
      * 
