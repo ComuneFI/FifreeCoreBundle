@@ -30,6 +30,9 @@ mailer_host=null
 mailer_user=user@mail.com
 mailer_password=null
 
+temascelto=redmond
+browser4test=firefox
+
 ###< doctrine/doctrine-bundle ###
 
 ###> symfony/swiftmailer-bundle ###
