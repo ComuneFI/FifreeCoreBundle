@@ -6,7 +6,7 @@ parameters:
     appid_applicativo: 999
     solosso: false
     
-    temascelto: redmond
+    temascelto: "%env(resolve:temascelto)%"
     browser4test: firefox
 
 fos_user:

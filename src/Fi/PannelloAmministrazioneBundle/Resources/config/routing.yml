@@ -57,3 +57,6 @@ fi_pannello_amministrazione_unixcommand:
 fi_pannello_amministrazione_phpunittest:
     path:  /adminpanel/phpunittest
     defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:phpunittest }
+fi_pannello_amministrazione_changetheme:
+    path:  /adminpanel/changetheme
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:changetheme }

@@ -47,6 +47,8 @@ class PannelloAmministrazioneController extends Controller
             }
         }
         $docDir = $this->apppaths->getDocPath();
+        $themes = array("sunny", "redmond", "cupertino", "blitzer", "lightness", "humanity",
+            "eggplant", "excitebyke", "flick", "images", "peppergrinder", "overcast", "lefrog", "southstreet", "start");
 
         $mwbs = array();
 
@@ -101,7 +103,8 @@ class PannelloAmministrazioneController extends Controller
 
         $twigparms = array('svn' => $svn, 'git' => $git, 'bundles' => $bundles, 'mwbs' => $mwbs,
             'rootdir' => $this->fixSlash($projectDir),
-            'comandishell' => $comandishell, 'iswindows' => $windows,);
+            'comandishell' => $comandishell, 'iswindows' => $windows,
+            'themes' => $themes);
 
         return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:index.html.twig', $twigparms);
     }
@@ -388,6 +391,27 @@ class PannelloAmministrazioneController extends Controller
             } else {
                 return new Response('Non previsto in ambiente windows!');
             }
+        }
+    }
+
+    public function changethemeAction(Request $request)
+    {
+        set_time_limit(0);
+        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
+        $temascelto = $request->get("theme");
+        $envfile = $this->apppaths->getRootPath() . '/.env';
+        if (!$this->locksystem->acquire()) {
+            return new Response($this->getLockMessage());
+        } else {
+            $this->locksystem->acquire();
+            $replacedenv = preg_replace('~^temascelto=.*$~m', "temascelto=" . $temascelto, file_get_contents($envfile));
+            file_put_contents($envfile, $replacedenv);
+
+            $this->locksystem->release();
+            $responseout = '<pre>Thema selezionato: <i style = "color: white;">' . $temascelto . '</i>' .
+                    '<br/>Aggiorna la pagina per renderlo effettivo<br/></pre>';
+
+            return new Response($responseout);
         }
     }
 }

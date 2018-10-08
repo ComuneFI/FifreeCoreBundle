@@ -36,6 +36,16 @@
                 <label for='unixcommand'>Comando shell:</label><br/>
                 <input class="form-control" type="text" id="unixcommand" value="" /><br/>
                 <button id="adminpanelunixcommand" class="active btn btn-danger" data-reactid=".3.0" type="button">Esegue comando da shell</button>
+                <br/><br/>
+                <div class="inputbox">
+                    <label for='changetheme'>Cambio tema:</label>
+                    <select class="form-control" id="changetheme">
+                        {% for theme in themes %}
+                            <option value="{{theme}}">{{theme}}</option>
+                        {% endfor %}
+                    </select>
+                    <br/>
+                </div>
 
             </fieldset>
         </div>
@@ -494,6 +504,24 @@
                         } else {
                             //FALSE
                         }
+                    });
+                });
+                //Cambio tema
+                $("#changetheme").change(function () {
+                    var temascelto = $(this).val();
+                    $.ajax({
+                        url: "{{ path("fi_pannello_amministrazione_changetheme") }}?theme="+temascelto,
+                        context: document.body
+                    }).done(function (data) {
+                        $("#risultato").html(data);
+                        opendialogrisultato();
+                        $("#risultato").slideDown("slow");
+                    }).fail(function (jqXHR, textStatus) {
+                        opendialogrisultato();
+                        $("#risultato").html(jqXHR.responseText);
+                        $("#risultato").show();
+                        msgbox("Si è verificato un errore!");
+                        return false;
                     });
                 });
                 function msgbox(text, title)
