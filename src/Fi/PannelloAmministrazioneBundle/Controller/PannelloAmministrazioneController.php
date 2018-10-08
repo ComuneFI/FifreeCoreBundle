@@ -195,7 +195,9 @@ class PannelloAmministrazioneController extends Controller
     }
 
     /* VCS (GIT,SVN) */
-
+    /**
+     * @codeCoverageIgnore
+    */
     public function getVcsAction()
     {
         set_time_limit(0);
@@ -326,6 +328,9 @@ class PannelloAmministrazioneController extends Controller
         }
     }
 
+    /**
+     * @codeCoverageIgnore
+    */
     public function phpunittestAction(Request $request)
     {
         set_time_limit(0);
