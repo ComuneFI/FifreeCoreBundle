@@ -40,7 +40,6 @@
     },
     "require": {
         "php": ">=7.2",
-        "doctrine/doctrine-bundle": "^1.9",
         "fi/osbundle": "~2.0",
         "friendsofsymfony/user-bundle": "~2.0",
         "mysql-workbench-schema-exporter/doctrine2-exporter": "^3.0",
@@ -65,11 +64,9 @@
         "tecnickcom/tcpdf": "^6.2"
     },
     "require-dev": {
-        "doctrine/doctrine-fixtures-bundle": "^3.0",
         "enm1989/chromedriver": "^2.42",
         "enm1989/geckodriver": "^0.20.0",
         "facebook/webdriver": "^1.6",
-        "mockery/mockery": "^0.9.5",
         "php-coveralls/php-coveralls": "^2.0",
         "phpmd/phpmd": "^2.6",
         "se/selenium-server-standalone": "3.8.*",

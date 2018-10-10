@@ -16,7 +16,7 @@ class FiController extends FiCrudController
         $controller = $this->getController();
 
         $nomebundle = $namespace . $bundle . 'Bundle';
-        $escludi = array();
+        $escludi = array("discr");
 
         $paricevuti = array('container' => $this->container, 'nomebundle' => $nomebundle, 'nometabella' => $controller, 'escludere' => $escludi);
 
