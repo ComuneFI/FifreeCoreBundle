@@ -30,10 +30,6 @@ class PannelloAmministrazioneControllerTest extends FifreeTestAuthorizedClient
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $client->reload();
-        $urlgc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_generateentityclass');
-        $client->request('GET', $urlgc, array());
-        $this->assertTrue($client->getResponse()->isSuccessful());
-
         $urlas = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_aggiornaschemadatabase');
         $client->request('GET', $urlas);
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -50,13 +46,17 @@ class PannelloAmministrazioneControllerTest extends FifreeTestAuthorizedClient
 
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($client->getContainer());
         $checkentityprova = $apppath->getSrcPath() . "/Entity/Prova.php";
-        $checkresourceprova = $apppath->getSrcPath() . "/../config/doctrine/Prova.orm.yml";
+        $checkbaseentityprova = $apppath->getSrcPath() . "/Entity/BaseProva.php";
+        $checkentitycollegataprova = $apppath->getSrcPath() . "/Entity/Tabellacollegata.php";
+        $checkbaseentitycollegataprova = $apppath->getSrcPath() . "/Entity/BaseTabellacollegata.php";
         $checktypeprova = $apppath->getSrcPath() . "/Form/ProvaType.php";
         $checkviewsprova = $apppath->getSrcPath() . "/../templates/Prova";
         $checkindexprova = $apppath->getSrcPath() . "/../templates/Prova/index.html.twig";
 
-        $this->assertTrue(file_exists($checkresourceprova));
+        $this->assertTrue(file_exists($checkbaseentityprova));
         $this->assertTrue(file_exists($checkentityprova));
+        $this->assertTrue(file_exists($checkentitycollegataprova));
+        $this->assertTrue(file_exists($checkbaseentitycollegataprova));
         $this->assertTrue(file_exists($checktypeprova));
         $this->assertTrue(file_exists($checkviewsprova));
         $this->assertTrue(file_exists($checkindexprova));

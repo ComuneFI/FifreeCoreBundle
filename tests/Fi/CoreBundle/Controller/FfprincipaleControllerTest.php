@@ -6,6 +6,7 @@ use Symfony\Component\Routing\Route;
 
 class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
 {
+
     /**
      * @test
      * @covers Fi\CoreBundle\Controller\FiController::<public>
@@ -31,12 +32,7 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
         $crawler = $client->request('GET', '/Ffprincipale/new');
         $this->assertTrue($crawler->filter('html:contains("formdatiFfprincipale")')->count() > 0);
         $descrizione = "descrizione";
-        /* Inserimento */
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $fieldprefix = 'ffprincipale';
-        } else {
-            $fieldprefix = 'fi_corebundle_ffprincipaletype';
-        }
+        $fieldprefix = 'ffprincipale';
         $valore = "provacrawler";
         $campodescrizione = $fieldprefix . "[" . $descrizione . "]";
         $form = $crawler->filter('form[id=formdatiFfprincipale]')->form(array("$campodescrizione" => $valore));
@@ -99,6 +95,7 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
 
         $crawler = $client->request('GET', '/Ffprincipale/' . $recorddelete->getId() . '/delete');
     }
+
     /**
      * @test
      * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
@@ -120,6 +117,7 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
                 $client->getResponse()->headers->contains('Content-Type', 'text/csv; charset=UTF-8')
         );
     }
+
     /**
      * @test
      * 
@@ -143,4 +141,5 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
                 $client->getResponse()->getStatusCode() === 200
         );
     }
+
 }

@@ -112,15 +112,25 @@ function cleanFilesystem()
     if ($fs->exists($entityfile)) {
         $fs->remove($entityfile);
     }
+    $entityfile2 = $vendorDir . "/src/Entity/BaseProva.php";
+
+    if ($fs->exists($entityfile2)) {
+        $fs->remove($entityfile2);
+    }
+    $entityfile3 = $vendorDir . "/src/Entity/BaseTabellacollegata.php";
+
+    if ($fs->exists($entityfile3)) {
+        $fs->remove($entityfile3);
+    }
+    $entityfile4 = $vendorDir . "/src/Entity/Tabellacollegata.php";
+
+    if ($fs->exists($entityfile4)) {
+        $fs->remove($entityfile4);
+    }
     $routingfile = $vendorDir . "/config/routes/prova.yml";
 
     if ($fs->exists($routingfile)) {
         $fs->remove($routingfile);
-    }
-    $ormyml = $vendorDir . "/config/doctrine/Prova.orm.yml";
-
-    if ($fs->exists($ormyml)) {
-        $fs->remove($ormyml);
     }
     $resources = $vendorDir . "/templates/Prova";
     if ($fs->exists($resources)) {

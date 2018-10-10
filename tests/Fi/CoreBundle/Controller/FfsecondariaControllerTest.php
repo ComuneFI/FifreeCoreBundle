@@ -43,12 +43,7 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
         $crawler = $client->request('GET', $urlnew);
         $this->assertTrue($crawler->filter('html:contains("formdatiFfsecondaria")')->count() > 0);
         $descrizione = "descsec";
-        /* Inserimento */
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $fieldprefix = 'ffsecondaria';
-        } else {
-            $fieldprefix = 'fi_corebundle_ffsecondariatype';
-        }
+        $fieldprefix = 'ffsecondaria';
         $valore = "provacrawler";
         $campodescrizione = $fieldprefix . "[" . $descrizione . "]";
 

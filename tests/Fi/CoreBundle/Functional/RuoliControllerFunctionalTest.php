@@ -23,16 +23,12 @@ class RuoliControllerFunctionalTest extends FacebookDriverTester
     {
         $this->clickElement('buttonadd_list1');
         $this->ajaxWait();
-        
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $fieldprefix = 'ruoli_';
-        } else {
-            $fieldprefix = 'fi_corebundle_ruolitype_';
-        }
+
+        $fieldprefix = 'ruoli_';
         /* Inserimento */
         $this->ajaxWait();
         $descrizionetest1 = 'testruolo';
-        
+
         $this->fillField($fieldprefix . 'ruolo', $descrizionetest1);
         $this->checkboxSelect($fieldprefix . 'is_user', 1);
         $this->clickElement('sDataRuoliS');

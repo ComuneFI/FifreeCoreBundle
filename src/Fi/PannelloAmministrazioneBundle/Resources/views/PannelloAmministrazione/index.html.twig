@@ -65,8 +65,6 @@
                         <br/>
                     </div>
                 </div>
-                <button id="adminpanelgenerateclassentity" class="active btn btn-primary" data-reactid=".3.0" type="button">Genera le classi dalle entities</button>
-                <br/><br/>
                 <button id="adminpanelaggiornadatabase" class="active btn btn-danger" data-reactid=".3.0" type="button">Aggiorna schema database</button>
             </fieldset>
         </div>
@@ -257,32 +255,6 @@
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_generateentity") }}",
                                 data: {file: entityfile},
-                                context: document.body
-                            }).done(function (data) {
-                                $("#risultato").html(data);
-                                opendialogrisultato();
-                                $("#risultato").slideDown("slow");
-                            }).fail(function (jqXHR, textStatus) {
-                                opendialogrisultato();
-                                $("#risultato").html(jqXHR.responseText);
-                                $("#risultato").show();
-                                msgbox("Si è verificato un errore!");
-                                return false;
-                            });
-                        } else {
-                            //FALSE
-                        }
-                    });
-                });
-                $("#adminpanelgenerateclassentity").click(function () {
-                    var domanda = "Vuoi creare le classi per le entità";
-                    conferma(domanda).then(function (answer) {
-                        if ((String(answer) == "true")) {
-                            $("#risultato").hide();
-                            $("#risultato").html("");
-                            $.ajax({
-                                url: "{{ path("fi_pannello_amministrazione_generateentityclass") }}",
-                                //data: {bundle: entitybundle},
                                 context: document.body
                             }).done(function (data) {
                                 $("#risultato").html(data);

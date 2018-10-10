@@ -30,12 +30,7 @@ class MenuApplicazioneControllerTest extends FifreeTestAuthorizedClient
         $crawler = $client->request('GET', '/MenuApplicazione/new');
         $this->assertTrue($crawler->filter('html:contains("formdatiMenuApplicazione")')->count() > 0);
         $descrizione = "nome";
-        /* Inserimento */
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $fieldprefix = 'menu_applicazione';
-        } else {
-            $fieldprefix = 'fi_corebundle_menu_applicazionetype';
-        }
+        $fieldprefix = 'menu_applicazione';
         $valore = "provacrawler";
         $campodescrizione = $fieldprefix . "[" . $descrizione . "]";
         $form = $crawler->filter('form[id=formdatiMenuApplicazione]')->form(array("$campodescrizione" => $valore));

@@ -51,6 +51,7 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory>./../../src</directory>
             <exclude>
+                <directory>./../../tests</directory>
                 <directory>./../../src/*Bundle/Resources</directory>
                 <directory>./../../src/*/*Bundle/Resources</directory>
                 <directory>./../../src/*/Bundle/*Bundle/Resources</directory>

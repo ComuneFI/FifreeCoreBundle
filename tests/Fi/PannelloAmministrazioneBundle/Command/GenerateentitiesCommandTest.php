@@ -6,6 +6,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class GenerateentitiesCommandTest extends KernelTestCase
 {
+
     public static function setUpBeforeClass()
     {
         cleanFilesystem();
@@ -36,6 +37,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         $this->application = new Application($kernel);
     }
+
     public function test10InstallFifree()
     {
         /* $application = new Application($this->kernel);
@@ -65,7 +67,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         $this->assertRegExp('/.../', $commandTester->getDisplay());
 
-                $this->application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
+        $this->application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
 
         $command = $this->application->find('fifree2:dropdatabase');
         $commandTester = new CommandTester($command);
@@ -109,6 +111,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $recorddelete = $record2[0];
         $this->assertEquals($recorddelete->getUsername(), $username4test);
     }
+
     public function test20GenerateEntity()
     {
 
@@ -117,7 +120,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         $checkent = $apppath->getSrcPath() . "/Entity/Prova.php";
 
-        $checkres = $apppath->getSrcPath() . "/../config/doctrine/Prova.orm.yml";
+        $checkbaseent = $apppath->getSrcPath() . "/Entity/BaseProva.php";
 
         $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand());
         $command = $this->application->find('pannelloamministrazione:generateymlentities');
@@ -132,28 +135,14 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $this->assertRegExp('/.../', $commandTester->getDisplay());
         //dump($commandTester->getDisplay());
 
-        clearcache();
-        cachewarmup();
-
-        $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand());
-        $this->application->add(new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand());
         $this->application->add(new Doctrine\Bundle\DoctrineBundle\Command\Proxy\UpdateSchemaDoctrineCommand());
-        $command = $this->application->find('pannelloamministrazione:generateentities');
+        $command = $this->application->find('doctrine:schema:update');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
                 array(
-                    '--schemaupdate' => true
+                    '--force' => true
                 )
         );
-
-        /* $cmd = "php " . $console . " doctrine:cache:clear-metadata --env=test --no-debug >> /tmp/generate.log";
-          passthru($cmd);
-          $cmd = "php " . $console . " doctrine:cache:clear-metadata --flush --env=test --no-debug >> /tmp/generate.log";
-          passthru($cmd);
-          $cmd = "php " . $console . " doctrine:cache:clear-entity-region Fi\Prova --env=test --no-debug >> /tmp/generate.log";
-          passthru($cmd);
-          $cmd = "php " . $console . " doctrine:schema:update --force --env=test --no-debug >> /tmp/generate.log";
-          passthru($cmd); */
 
         //dump("Generated entities");
         $this->assertRegExp('/.../', $commandTester->getDisplay());
@@ -163,7 +152,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         cachewarmup();
 
         $this->assertTrue(file_exists($checkent));
-        $this->assertTrue(file_exists($checkres));
+        $this->assertTrue(file_exists($checkbaseent));
         /* Genera form */
 
         $entityform = 'Prova';
@@ -185,6 +174,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         $this->assertTrue(file_exists($checkform));
     }
+
     protected function tearDown()
     {
         parent::tearDown();
@@ -193,4 +183,5 @@ class GenerateentitiesCommandTest extends KernelTestCase
         clearcache();
         cachewarmup();
     }
+
 }

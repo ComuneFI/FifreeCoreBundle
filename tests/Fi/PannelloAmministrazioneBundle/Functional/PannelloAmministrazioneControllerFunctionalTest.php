@@ -4,6 +4,7 @@ use Tests\CoreBundle\FacebookDriver\FacebookDriverTester;
 
 class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTester
 {
+
     public static function setUpBeforeClass()
     {
         cleanFilesystem();
@@ -11,20 +12,26 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         removecache();
         clearcache();
     }
+
     /*
      * @test
      */
+
     public function test20AdminpanelGenerateBundle()
     {
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->container);
         $checkentityprova = $apppath->getSrcPath() . "/Entity/Prova.php";
-        $checkresourceprova = $apppath->getSrcPath() . "/../config/doctrine/Prova.orm.yml";
+        $checkentitybaseprova = $apppath->getSrcPath() . "/Entity/BaseProva.php";
+        $checkentitytabellacollegataprova = $apppath->getSrcPath() . "/Entity/Tabellacollegata.php";
+        $checkentitytabellacollegatabaseprova = $apppath->getSrcPath() . "/Entity/BaseTabellacollegata.php";
         $checktypeprova = $apppath->getSrcPath() . "/Form/ProvaType.php";
         $checkviewsprova = $apppath->getSrcPath() . "/../templates/Prova";
         $checkindexprova = $apppath->getSrcPath() . "/../templates/Prova/index.html.twig";
 
         $this->assertFalse(file_exists($checkentityprova));
-        $this->assertFalse(file_exists($checkresourceprova));
+        $this->assertFalse(file_exists($checkentitybaseprova));
+        $this->assertFalse(file_exists($checkentitytabellacollegataprova));
+        $this->assertFalse(file_exists($checkentitytabellacollegatabaseprova));
         $this->assertFalse(file_exists($checktypeprova));
         $this->assertFalse(file_exists($checkviewsprova));
         $this->assertFalse(file_exists($checkindexprova));
@@ -40,10 +47,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         $this->pressButton('adminpanelgenerateentity');
         $this->pressButton('yesdialogbutton');
         $this->ajaxWait();
-        $this->pressButton('closedialogbutton');
-        $this->pressButton('adminpanelgenerateclassentity');
-        $this->pressButton('yesdialogbutton');
-        $this->ajaxWait();
 
         //$screenshot = $this->facebookDriver->takeScreenshot();
         //file_put_contents('/tmp/screenshot.txt', base64_encode($screenshot)."\n\n", FILE_APPEND);
@@ -51,7 +54,9 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
         $this->pressButton('closedialogbutton');
         $this->assertTrue(file_exists($checkentityprova));
-        $this->assertTrue(file_exists($checkresourceprova));
+        $this->assertTrue(file_exists($checkentitybaseprova));
+        $this->assertTrue(file_exists($checkentitytabellacollegataprova));
+        $this->assertTrue(file_exists($checkentitytabellacollegatabaseprova));
 
         $this->pressButton('adminpanelaggiornadatabase');
         $this->pressButton('yesdialogbutton');
@@ -92,17 +97,14 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
         $session->quit();
     }
+
     private function crudoperation($session, $page)
     {
         $this->clickElement('buttonadd_list1');
 
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-//        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-//            $fieldhtml = 'prova_descrizione';
-//        } else {
         $fieldhtml = 'prova_descrizione';
-//        }
 
         $this->fillField($fieldhtml, $descrizionetest1);
 
@@ -132,6 +134,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
         $this->clickElement('dData');
     }
+
     /**
      * {@inheritdoc}
      */
@@ -142,4 +145,5 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         removecache();
         clearcache();
     }
+
 }

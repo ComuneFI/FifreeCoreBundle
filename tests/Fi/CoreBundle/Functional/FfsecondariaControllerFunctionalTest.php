@@ -11,6 +11,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
      * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
      * @covers Fi\CoreBundle\Controller\FiController::<public>
      */
+
     public function testFfsecondaria()
     {
         //$url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $this->router->generate('Ffsecondaria');
@@ -36,17 +37,13 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         $session->quit();
     }
+
     private function crudoperation($session, $page)
     {
         $this->clickElement('buttonadd_list1');
 
-        /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $fieldprefix = 'ffsecondaria_';
-        } else {
-            $fieldprefix = 'fi_corebundle_ffsecondariatype_';
-        }
+        $fieldprefix = 'ffsecondaria_';
 
         $this->fillField($fieldprefix . 'descsec', $descrizionetest1);
         $this->selectFieldOption($fieldprefix . 'ffprincipale', 1);
@@ -96,13 +93,9 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $this->clickElement('buttondel_list1');
         $this->clickElement('dData');
     }
+
     private function configuratabelleoperation($session, $page)
     {
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $fieldprefix = 'ffsecondaria_';
-        } else {
-            $fieldprefix = 'fi_corebundle_ffsecondariatype_';
-        }
         /**/
         $this->clickElement('buttonconfig_list1');
         $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowidcal);';
@@ -156,17 +149,14 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         $this->assertTrue($this->elementIsVisible("jqgh_list1_attivo"));
     }
+
     private function validationoperation($session, $page)
     {
         $this->clickElement('buttonadd_list1');
 
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $fieldprefix = 'ffsecondaria_';
-        } else {
-            $fieldprefix = 'fi_corebundle_ffsecondariatype_';
-        }
+        $fieldprefix = 'ffsecondaria_';
         $this->fillField($fieldprefix . 'descsec', $descrizionetest1);
         $this->selectFieldOption($fieldprefix . 'ffprincipale', 1);
         $this->selectFieldOption($fieldprefix . 'data_day', (int) date('d'));
@@ -195,6 +185,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         $this->clickElement('dData');
     }
+
     private function searchoperation($session, $page)
     {
         /* Ricerca 0 */
@@ -398,8 +389,8 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $this->clickElement('fbox_list1_search');
         $this->ajaxWait();
         /**/
-        
-        
+
+
         //reset filtri
         $this->clickElement('search_list1');
         //mi tocca rimettere questo sleep perchè schianta anche dopo il refactor
@@ -407,6 +398,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $this->clickElement('fbox_list1_reset');
         $this->ajaxWait();
     }
+
     private function printoperations($session, $page)
     {
         /* Print pdf */
@@ -432,6 +424,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $lastwindow2 = end($windows2);
         $this->facebookDriver->switchTo()->window($lastwindow2);
     }
+
     private function searchmodifiche($valoreprecedente)
     {
         $em = $this->doctrine->getManager();
@@ -453,4 +446,5 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
                 ->getQuery()
                 ->execute();
     }
+
 }

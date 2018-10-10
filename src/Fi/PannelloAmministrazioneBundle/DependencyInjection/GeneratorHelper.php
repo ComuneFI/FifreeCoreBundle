@@ -20,7 +20,7 @@ class GeneratorHelper
 
     public function getDestinationEntityYmlPath()
     {
-        return $this->apppaths->getSrcPath() .'/../config/doctrine/';
+        return $this->apppaths->getSrcPath() . '/../src/Entity/';
     }
 
     public function checktables($destinationPath, $wbFile, $output)
@@ -72,7 +72,7 @@ class GeneratorHelper
         }
     }
 
-    public function checkprerequisiti($bundlename, $mwbfile, $output)
+    public function checkprerequisiti($mwbfile, $output)
     {
         $fs = new Filesystem();
 
@@ -88,7 +88,7 @@ class GeneratorHelper
 
         $scriptGenerator = $this->getScriptGenerator();
 
-        $destinationPath = $this->getDestinationEntityYmlPath($bundlename);
+        $destinationPath = $this->getDestinationEntityYmlPath();
         $output->writeln('Creazione entities yml in ' . $destinationPath . ' da file ' . $mwbfile);
 
         if (!$fs->exists($bundlePath)) {
@@ -126,18 +126,7 @@ class GeneratorHelper
     public function getScriptGenerator()
     {
         $scriptGenerator = "";
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $scriptGenerator = $this->apppaths->getVendorBinPath() . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
-        } else {
-            try {
-                $scriptGenerator = $this->apppaths->getBinPath() . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
-            } catch (\Exception $exc) {
-                //echo $exc->getTraceAsString();
-                if (!file_exists($scriptGenerator)) {
-                    $scriptGenerator = $this->apppaths->getVendorBinPath() . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
-                }
-            }
-        }
+        $scriptGenerator = $this->apppaths->getVendorBinPath() . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
         if (!file_exists($scriptGenerator)) {
             $scriptGenerator = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
                     'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
@@ -170,25 +159,29 @@ class GeneratorHelper
     public static function getJsonMwbGenerator()
     {
         $jsonTemplate = <<<EOF
-{"export": "doctrine2-yaml", 
-  "zip": false, 
-  "dir": "[dir]", 
-  "params": 
-    {"indentation": 4, 
-    "useTabs": false, 
-    "filename": "%table%.orm.%extension%", 
-    "skipPluralNameChecking": true, 
-    "backupExistingFile": false, 
-    "addGeneratorInfoAsComment":false,
-    "useLoggedStorage": false, 
-    "enhanceManyToManyDetection": true, 
-    "logToConsole": false, 
-    "logFile": "", 
-    "bundleNamespace": "[bundle]", 
-    "entityNamespace": "Entity", 
-    "repositoryNamespace": "%entity%", 
-    "useAutomaticRepository": false, 
-    "extendTableNameWithSchemaName": false}}
+{"export": "doctrine2-annotation",
+    "zip": false,
+    "dir": "[dir]",
+    "params":
+            {"indentation": 4,
+                "useTabs": false, 
+                "filename": "%entity%.%extension%",
+                "skipPluralNameChecking": true,
+                "backupExistingFile": false,
+                "addGeneratorInfoAsComment": false,
+                "useLoggedStorage": false,
+                "enhanceManyToManyDetection": true,
+                "logToConsole": false,
+                "logFile": "",
+                "bundleNamespace": "App",
+                "entityNamespace": "Entity",
+                "repositoryNamespace": "App\\\\Entity",
+                "useAutomaticRepository": false,
+                "generateExtendableEntity": true,
+                "extendableEntityHasDiscriminator": false,
+                "extendTableNameWithSchemaName": false
+            }
+}
 EOF;
         return $jsonTemplate;
     }

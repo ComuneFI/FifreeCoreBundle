@@ -178,26 +178,11 @@ class PannelloAmministrazioneController extends Controller
         }
     }
 
-    /* ENTITIES */
-
-    public function generateEntityClassAction(Request $request)
-    {
-        if (!$this->locksystem->acquire()) {
-            return new Response($this->getLockMessage());
-        } else {
-            $this->locksystem->acquire();
-            $command = $this->get("pannelloamministrazione.commands");
-            $ret = $command->generateEntityClass();
-            $this->locksystem->release();
-
-            return new Response($ret['message']);
-        }
-    }
-
     /* VCS (GIT,SVN) */
+
     /**
      * @codeCoverageIgnore
-    */
+     */
     public function getVcsAction()
     {
         set_time_limit(0);
@@ -330,7 +315,7 @@ class PannelloAmministrazioneController extends Controller
 
     /**
      * @codeCoverageIgnore
-    */
+     */
     public function phpunittestAction(Request $request)
     {
         set_time_limit(0);
@@ -344,14 +329,8 @@ class PannelloAmministrazioneController extends Controller
                 $sepchr = OsFunctions::getSeparator();
                 $phpPath = OsFunctions::getPHPExecutableFromPath();
 
-                // Questo codice per versioni che usano un symfony 2 o 3
-                if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-                    $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr .
-                            $phpPath . ' ' . 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'phpunit';
-                } else {
-                    $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr .
-                            $phpPath . ' ' . 'bin' . DIRECTORY_SEPARATOR . 'phpunit -c app';
-                }
+                $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr .
+                        $phpPath . ' ' . 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'phpunit';
 
                 $process = new Process($command);
                 $process->run();

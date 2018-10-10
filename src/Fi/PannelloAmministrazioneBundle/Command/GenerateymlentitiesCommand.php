@@ -30,11 +30,10 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
         $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
         $this->genhelper = $this->getContainer()->get("pannelloamministrazione.generatorhelper");
         $this->pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
-        $bundlename = "App";
         $mwbfile = $input->getArgument('mwbfile');
 
         $wbFile = $this->apppaths->getDocPath() . DIRECTORY_SEPARATOR . $mwbfile;
-        $checkprerequisiti = $this->genhelper->checkprerequisiti($bundlename, $mwbfile, $output);
+        $checkprerequisiti = $this->genhelper->checkprerequisiti($mwbfile, $output);
 
         if ($checkprerequisiti < 0) {
             return -1;
@@ -61,38 +60,28 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
         }
 
         $output->writeln('<info>Entities yml create</info>');
-        /* $generateentitiesresult = $this->pammutils->clearCache();
-          if ($generateentitiesresult["errcode"] < 0) {
-          $output->writeln($generateentitiesresult["errmsg"]);
-          return 1;
-          } else {
-          $output->writeln($generateentitiesresult["errmsg"]);
-          } */
         return 0;
     }
     private function getExportJsonCommand($wbFile)
     {
         $exportJson = $this->genhelper->getExportJsonFile();
         $scriptGenerator = $this->genhelper->getScriptGenerator();
-        //$destinationPathEscaped = str_replace('/', "\/", str_replace('\\', '/', $this->genhelper->getDestinationEntityYmlPath($bundlePath)));
-        $destinationPathEscaped = str_replace('/', "\/", str_replace('\\', '/', $this->genhelper->getDestinationEntityYmlPath()));
-        //$bundlePathEscaped = str_replace('\\', '\\\\', str_replace('/', '\\', $bundlePath));
-        $bundlePathEscaped = "App";
+        $destinationPathEscaped = realpath($this->genhelper->getDestinationEntityYmlPath());
         $exportjsonfile = $this->genhelper->getJsonMwbGenerator();
-
-        $bundlejson = str_replace('[bundle]', str_replace('/', '', $bundlePathEscaped), $exportjsonfile);
-        $exportjsonreplaced = str_replace('[dir]', $destinationPathEscaped, $bundlejson);
+        
+        $exportjsonreplaced = str_replace('[dir]', $destinationPathEscaped, $exportjsonfile);
+        
         file_put_contents($exportJson, $exportjsonreplaced);
         $sepchr = OsFunctions::getSeparator();
         if (OsFunctions::isWindows()) {
             $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr
-                    . $scriptGenerator . '.bat --export=doctrine2-yaml '
+                    . $scriptGenerator . '.bat '
                     . ' --config=' .
                     $exportJson . ' ' . $wbFile . ' ' . $destinationPathEscaped;
         } else {
             $phpPath = OsFunctions::getPHPExecutableFromPath();
             $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr
-                    . $phpPath . ' ' . $scriptGenerator . ' --export=doctrine2-yaml '
+                    . $phpPath . ' ' . $scriptGenerator . ' '
                     . ' --config=' .
                     $exportJson . ' ' . $wbFile . ' ' . $destinationPathEscaped;
         }
