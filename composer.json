@@ -53,6 +53,7 @@
         "symfony/flex": "^1.0",
         "symfony/form": "3.4.*",
         "symfony/lock": "3.4.*",
+        "symfony/maker-bundle": "^1.7",
         "symfony/monolog-bundle": "^3.2",
         "symfony/orm-pack": "^1.0",
         "symfony/security-bundle": "3.4.*",
