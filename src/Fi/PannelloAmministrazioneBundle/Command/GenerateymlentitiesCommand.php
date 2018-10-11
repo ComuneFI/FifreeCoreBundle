@@ -66,7 +66,7 @@ class GenerateymlentitiesCommand extends ContainerAwareCommand
     {
         $exportJson = $this->genhelper->getExportJsonFile();
         $scriptGenerator = $this->genhelper->getScriptGenerator();
-        $destinationPathEscaped = realpath($this->genhelper->getDestinationEntityYmlPath());
+        $destinationPathEscaped = $this->genhelper->getDestinationEntityYmlPath();
         $exportjsonfile = $this->genhelper->getJsonMwbGenerator();
         
         $exportjsonreplaced = str_replace('[dir]', $destinationPathEscaped, $exportjsonfile);

@@ -20,7 +20,7 @@ class GeneratorHelper
 
     public function getDestinationEntityYmlPath()
     {
-        return $this->apppaths->getSrcPath() . '/../src/Entity/';
+        return str_replace('/', "\/", str_replace('\\', '/', realpath($this->apppaths->getSrcPath() . '/../src/Entity/')));
     }
 
     public function checktables($destinationPath, $wbFile, $output)
