@@ -247,11 +247,11 @@ class FfsecondariaPermessiControllerTest extends FifreeTestUnauthorizedClient
             "ffsecondaria[data][day]" => date("d"),
             "ffsecondaria[data][month]" => date("m"),
             "ffsecondaria[data][year]" => date("Y"),
-            "ffsecondaria[descsec]" => "1°+secondaria+legato+al+1°+record+PRINCIPALE",
+            "ffsecondaria[descsec]" => "1° secondaria legato al 1° record PRINCIPALE",
             "ffsecondaria[ffprincipale]" => 1,
             "ffsecondaria[importo]" => 12.34,
-            "ffsecondaria[intero]" => 100,
-            "ffsecondaria[nota]" => "Super+Nota+ffsecondaria"
+            "ffsecondaria[intero]" => 10,
+            "ffsecondaria[nota]" => "Super Nota ffsecondaria"
         ));
 
         //$client->setServerParameter("HTTP_X-Requested-With", "XMLHttpRequest");
@@ -430,11 +430,11 @@ class FfsecondariaPermessiControllerTest extends FifreeTestUnauthorizedClient
             "ffsecondaria[data][day]" => date("d"),
             "ffsecondaria[data][month]" => date("m"),
             "ffsecondaria[data][year]" => date("Y"),
-            "ffsecondaria[descsec]" => "1°+secondaria+legato+al+1°+record+PRINCIPALE",
+            "ffsecondaria[descsec]" => "1° secondaria legato al 1° record PRINCIPALE",
             "ffsecondaria[ffprincipale]" => 1,
             "ffsecondaria[importo]" => 12.34,
-            "ffsecondaria[intero]" => 100,
-            "ffsecondaria[nota]" => "Super+Nota+ffsecondaria"
+            "ffsecondaria[intero]" => 10,
+            "ffsecondaria[nota]" => "Super Nota ffsecondaria"
         ));
 
         //$client->setServerParameter("HTTP_X-Requested-With", "XMLHttpRequest");
