@@ -16,4 +16,5 @@ return [
     Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
     Fi\CoreBundle\FiCoreBundle::class => ['all' => true],
     Fi\PannelloAmministrazioneBundle\PannelloAmministrazioneBundle::class => ['all' => true],
+    Fi\BootstrapitaliaBundle\BootstrapitaliaBundle::class => ['all' => true],
 ];
