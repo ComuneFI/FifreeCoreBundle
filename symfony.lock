@@ -80,6 +80,9 @@
     "facebook/webdriver": {
         "version": "1.6.0"
     },
+    "fi/bootstrapitaliabundle": {
+        "version": "v0.1.0"
+    },
     "fi/osbundle": {
         "version": "2.0.5"
     },
@@ -95,17 +98,11 @@
     "guzzlehttp/psr7": {
         "version": "1.4.2"
     },
-    "hamcrest/hamcrest-php": {
-        "version": "v1.2.2"
-    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
     "markbaker/complex": {
         "version": "1.4.6"
-    },
-    "mockery/mockery": {
-        "version": "0.9.9"
     },
     "monolog/monolog": {
         "version": "1.23.0"
@@ -136,9 +133,6 @@
     },
     "phpmd/phpmd": {
         "version": "2.6.0"
-    },
-    "phpoffice/phpexcel": {
-        "version": "1.8.1"
     },
     "phpoffice/phpspreadsheet": {
         "version": "1.4.1"

@@ -41,6 +41,7 @@
     "require": {
         "php": ">=7.2",
         "fi/osbundle": "~2.0",
+        "fi/bootstrapitaliabundle": "~0.1",
         "friendsofsymfony/user-bundle": "~2.0",
         "mysql-workbench-schema-exporter/doctrine2-exporter": "^3.0",
         "mysql-workbench-schema-exporter/mysql-workbench-schema-exporter": "^3.0",
