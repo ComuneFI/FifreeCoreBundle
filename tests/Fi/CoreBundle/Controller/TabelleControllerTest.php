@@ -39,7 +39,7 @@ class TabelleControllerTest extends FifreeTestAuthorizedClient
         $url = $client->getContainer()->get('router')->generate('Tabelle_aggiorna', array(
             "etichettaindex" => "",
             "etichettastampa" => "",
-            "id" => "12",
+            "id" => "3",
             "larghezzaindex" => "",
             "larghezzastampa" => "",
             "mostraindex" => 1,
@@ -56,7 +56,7 @@ class TabelleControllerTest extends FifreeTestAuthorizedClient
         $url2 = $client->getContainer()->get('router')->generate('Tabelle_aggiorna', array(
             "etichettaindex" => "",
             "etichettastampa" => "",
-            "id" => "12",
+            "id" => "3",
             "larghezzaindex" => "",
             "larghezzastampa" => "",
             "mostraindex" => 1,
