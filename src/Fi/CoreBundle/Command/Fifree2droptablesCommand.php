@@ -21,14 +21,9 @@ class Fifree2droptablesCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /* @var $em \Doctrine\ORM\EntityManager */
+               /* @var $em \Doctrine\ORM\EntityManager */
         $em = $this->getContainer()->get('doctrine')->getManager();
-        $driver = $em->getConnection()->getDriver()->getName();
-
-        if ($driver == "pdo_sqlite") {
-            $output->writeln("Non previsto per driver: " . $driver);
-            return 1;
-        }
+        $driver = $em->getConnection()->getDatabasePlatform()->getName();
 
         $force = $input->getOption('force');
 
@@ -36,30 +31,33 @@ class Fifree2droptablesCommand extends ContainerAwareCommand
             $output->writeln("Specificare l'opzione --force per eseguire il comando");
             return 1;
         }
-        $addcascade = "";
-        if ($driver == "pdo_pgsql") {
-            $addcascade = " CASCADE";
-        }
 
         //Truncate tabelle
         $tables = $em->getConnection()->getSchemaManager()->listTables();
-        foreach ($tables as $table) {
-            $tableName = $table->getName();
-            $em->getConnection()->executeQuery(sprintf('TRUNCATE TABLE %s' . $addcascade, $tableName));
-        }
         //Cancellazione tabelle
         foreach ($tables as $table) {
             $tableName = $table->getName();
-            $em->getConnection()->executeQuery(sprintf('DROP TABLE %s' . $addcascade, $tableName));
-        }
-        if ($driver == "pdo_pgsql") {
-            //Cancellazione sequences
-            $sequences = $em->getConnection()->getSchemaManager()->listSequences();
-            foreach ($sequences as $sequence) {
-                $sequenceName = $sequence->getName();
-                $em->getConnection()->executeQuery(sprintf('DROP SEQUENCE %s', $sequenceName));
+            switch ($driver) {
+                case "postgresql":
+                    $em->getConnection()->executeQuery(sprintf('DROP TABLE %s CASCADE', $tableName));
+                    $sequences = $em->getConnection()->getSchemaManager()->listSequences();
+                    foreach ($sequences as $sequence) {
+                        $sequenceName = $sequence->getName();
+                        $em->getConnection()->executeQuery(sprintf('DROP SEQUENCE %s', $sequenceName));
+                    }
+                    break;
+                case "mysql":
+                    $em->getConnection()->executeQuery('SET FOREIGN_KEY_CHECKS=0');
+                    $em->getConnection()->executeQuery(sprintf('DROP TABLE %s', $tableName));
+                    $em->getConnection()->executeQuery('SET FOREIGN_KEY_CHECKS=1');
+                    break;
+                default:
+                    //$em->getConnection()->executeQuery(sprintf('DELETE FROM %s', $tableName));
+                    $em->getConnection()->executeQuery(sprintf('DROP TABLE %s', $tableName));
+                    break;
             }
         }
+
         $output->writeln("Done!");
     }
 }
