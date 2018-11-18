@@ -11,6 +11,12 @@ services:
 matrix:
     allow_failures:
         - php: hhvm-3.24
+        - php: 7.2
+          env: DB=mysql BROWSER=firefox
+        - php: 7.2
+          env: DB=pgsql BROWSER=firefox
+        - php: 7.2
+          env: DB=sqlite3 BROWSER=firefox
        # - php: 5.6
        #   env: BROWSER=chrome
        # - php: 7.0
@@ -80,7 +86,7 @@ before_script:
   - sudo service apache2 restart
   
   - if [[ "$DB" == "pgsql" ]]; then echo "PROVISIONING WITH PostgreSQL"; fi
-  - if [[ "$DB" == "pgsql" ]]; then cp -f ./tests/build/.env.pgsql $TRAVIS_BUILD_DIR/.env; fi
+  - if [[ "$DB" == "pgsql" ]]; then cp -f ./tests/build/.env.pgsql $TRAVIS_BUILD_DIR/tests/.env; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c 'create database unittest;' -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "CREATE USER fifreeuser WITH PASSWORD 'fifreeuserpwd';" -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "GRANT ALL PRIVILEGES ON DATABASE unittest TO fifreeuser;" -U postgres; fi
@@ -88,17 +94,16 @@ before_script:
   - if [[ "$DB" == "pgsql" ]]; then psql -c "alter role fifreeuser superuser;" -U postgres; fi
   
   - if [[ "$DB" == "mysql" ]]; then echo "PROVISIONING WITH MySQL"; fi
-  - if [[ "$DB" == "mysql" ]]; then cp -f ./tests/build/.env.mysql $TRAVIS_BUILD_DIR/.env; fi
+  - if [[ "$DB" == "mysql" ]]; then cp -f ./tests/build/.env.mysql $TRAVIS_BUILD_DIR/tests/.env; fi
   - if [[ "$DB" == "mysql" ]]; then mysql --version; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -e "CREATE DATABASE unittest;" -uroot; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -u root -e "CREATE USER 'fifreeuser'@'localhost' IDENTIFIED BY 'fifreeuserpwd';"; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -u root -e "GRANT ALL ON unittest.* TO 'fifreeuser'@'localhost';"; fi
   
   - if [[ "$DB" == "sqlite3" ]]; then echo "PROVISIONING WITH Sqlite3"; fi
-  - if [[ "$DB" == "sqlite3" ]]; then cp -f ./tests/build/.env.sqlite $TRAVIS_BUILD_DIR/.env; fi
+  - if [[ "$DB" == "sqlite3" ]]; then cp -f ./tests/build/.env.sqlite $TRAVIS_BUILD_DIR/tests/.env; fi
   
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then cp -f ./tests/build/build.hhvm.xml $TRAVIS_BUILD_DIR/build.xml; fi
-  - cp -f $TRAVIS_BUILD_DIR/tests/.env.dist $TRAVIS_BUILD_DIR/tests/.env
   
   - if [[ "$BROWSER" == "chrome" ]]; then sudo sed -i 's/firefox/chrome/' $TRAVIS_BUILD_DIR/tests/config/packages/test/testdriver.yaml; fi
   - chmod +x bin/console
