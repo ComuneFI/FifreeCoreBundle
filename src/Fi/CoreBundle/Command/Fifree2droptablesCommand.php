@@ -60,5 +60,6 @@ class Fifree2droptablesCommand extends ContainerAwareCommand
                 $em->getConnection()->executeQuery(sprintf('DROP SEQUENCE %s', $sequenceName));
             }
         }
+        $output->writeln("Done!");
     }
 }
