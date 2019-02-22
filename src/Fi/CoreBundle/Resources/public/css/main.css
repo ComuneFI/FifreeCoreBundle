@@ -154,7 +154,7 @@ html, body {
     bottom:0px;
     left:0px;
     right:0px;
-    /*    z-index:100;*/
+    z-index:2;
     cursor:pointer;
     /*Trasperenza cross browser*/
     opacity: .7; filter: alpha(opacity=70);

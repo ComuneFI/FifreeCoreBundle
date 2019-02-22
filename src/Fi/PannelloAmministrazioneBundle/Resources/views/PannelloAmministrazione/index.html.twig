@@ -36,28 +36,17 @@
                 <label for='unixcommand'>Comando shell:</label><br/>
                 <input class="form-control" type="text" id="unixcommand" value="" /><br/>
                 <button id="adminpanelunixcommand" class="active btn btn-danger" data-reactid=".3.0" type="button">Esegue comando da shell</button>
-
-            </fieldset>
-        </div>
-
-        <div class="adminpanel bundle">
-            <fieldset class="groupbox" id="grpbundle">
-                <legend>Bundle e Form</legend>
-                <div>
-                    <button id="adminpanelgeneratebundle" class="active btn btn-default" data-reactid=".3.0" type="button">Genera bundle</button>
-                    <br/><br/>
-                    <div class="inputbox">
-                        <label for='bundlename'>Nome Bundle:</label>
-                        <input class="form-control" type="text" id="bundlename" value="Fi/DemoBundle"/><br/>
-                    </div>
+                <br/><br/>
+                <div class="inputbox">
+                    <label for='changetheme'>Cambio tema:</label>
+                    <select class="form-control" id="changetheme">
+                        {% for theme in themes %}
+                            <option value="{{theme}}">{{theme}}</option>
+                        {% endfor %}
+                    </select>
+                    <br/>
                 </div>
-                <div>
-                    <button id="adminpanelgenerateformcrud" class="active btn btn-default" data-reactid=".3.0" type="button">Genera CRUD per il form</button>
-                    <!--<button id="adminpanelgenerateform" class="active btn btn-default" data-reactid=".3.0" type="button">Genera form</button>-->
-                    <br/><br/>
-                    <label for='entityform'>Entità:</label>
-                    <input class="form-control" type="text" id="entityform" value="ffprincipale"/><br/>
-                </div>
+
             </fieldset>
         </div>
 
@@ -74,21 +63,25 @@
                             {% endfor %}
                         </select>
                         <br/>
-                        <label for='entitybundle'>Bundle:</label><br/>
-                        <select class="form-control" id="entitybundle">
-                            {% for bundle in bundles %}
-                                <option value="{{bundle}}">{{bundle}}</option>
-                            {% endfor %}
-                        </select>
-                        <br/><br/>
                     </div>
                 </div>
-                <button id="adminpanelgenerateclassentity" class="active btn btn-primary" data-reactid=".3.0" type="button">Genera le classi dalle entities</button>
-                <br/><br/>
                 <button id="adminpanelaggiornadatabase" class="active btn btn-danger" data-reactid=".3.0" type="button">Aggiorna schema database</button>
             </fieldset>
         </div>
     </div>
+
+    <div class="adminpanel bundle">
+        <fieldset class="groupbox" id="grpbundle">
+            <legend>Bundle e Form</legend>
+            <div>
+                <button id="adminpanelgenerateformcrud" class="active btn btn-default" data-reactid=".3.0" type="button">Genera CRUD per il form</button>
+                <br/><br/>
+                <label for='entityform'>Entità:</label>
+                <input class="form-control" type="text" id="entityform" value="Ffprincipale"/><br/>
+            </div>
+        </fieldset>
+    </div>
+
     <div id="risultato"></div>
     {% block javascripts %}
         {%set userdir = rootdir | slice(0, rootdir|length - (appname|length) - 1)%}
@@ -253,70 +246,15 @@
                     });
                 });
                 $("#adminpanelgenerateentity").click(function () {
-                    var entitybundle = $("#entitybundle").val();
                     var entityfile = $("#entityfile").val();
-                    var domanda = "Vuoi creare le entità nel bundle: " + entitybundle + " partendo dal file: " + entityfile;
+                    var domanda = "Vuoi creare i fle di configurazione per le entità partendo dal file: " + entityfile;
                     conferma(domanda).then(function (answer) {
                         if ((String(answer) == "true")) {
                             $("#risultato").hide();
                             $("#risultato").html("");
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_generateentity") }}",
-                                data: {bundle: entitybundle, file: entityfile},
-                                context: document.body
-                            }).done(function (data) {
-                                $("#risultato").html(data);
-                                opendialogrisultato();
-                                $("#risultato").slideDown("slow");
-                            }).fail(function (jqXHR, textStatus) {
-                                opendialogrisultato();
-                                $("#risultato").html(jqXHR.responseText);
-                                $("#risultato").show();
-                                msgbox("Si è verificato un errore!");
-                                return false;
-                            });
-                        } else {
-                            //FALSE
-                        }
-                    });
-                });
-                $("#adminpanelgenerateclassentity").click(function () {
-                    var entitybundle = $("#entitybundle").val();
-                    var domanda = "Vuoi creare le classi per le entità del bundle: " + entitybundle;
-                    conferma(domanda).then(function (answer) {
-                        if ((String(answer) == "true")) {
-                            $("#risultato").hide();
-                            $("#risultato").html("");
-                            $.ajax({
-                                url: "{{ path("fi_pannello_amministrazione_generateentityclass") }}",
-                                data: {bundle: entitybundle},
-                                context: document.body
-                            }).done(function (data) {
-                                $("#risultato").html(data);
-                                opendialogrisultato();
-                                $("#risultato").slideDown("slow");
-                            }).fail(function (jqXHR, textStatus) {
-                                opendialogrisultato();
-                                $("#risultato").html(jqXHR.responseText);
-                                $("#risultato").show();
-                                msgbox("Si è verificato un errore!");
-                                return false;
-                            });
-                        } else {
-                            //FALSE
-                        }
-                    });
-                });
-                $("#adminpanelgeneratebundle").click(function () {
-                    var bundlename = $("#bundlename").val();
-                    var domanda = "Vuoi creare il bundle: " + bundlename;
-                    conferma(domanda).then(function (answer) {
-                        if ((String(answer) == "true")) {
-                            $("#risultato").hide();
-                            $("#risultato").html("");
-                            $.ajax({
-                                url: "{{ path("fi_pannello_amministrazione_generatebundle") }}",
-                                data: {bundlename: bundlename},
+                                data: {file: entityfile},
                                 context: document.body
                             }).done(function (data) {
                                 $("#risultato").html(data);
@@ -364,15 +302,14 @@
                 });
                 $("#adminpanelgenerateformcrud").click(function () {
                     var entityform = $("#entityform").val();
-                    var bundlename = $("#bundlename").val();
-                    var domanda = "Vuoi creare il crud per il form " + entityform + " nel bundle: " + bundlename;
+                    var domanda = "Vuoi creare il crud per il form " + entityform;
                     conferma(domanda).then(function (answer) {
                         if ((String(answer) == "true")) {
                             $("#risultato").hide();
                             $("#risultato").html("");
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_generateformcrud") }}",
-                                data: {entityform: entityform, bundlename: bundlename},
+                                data: {entityform: entityform},
                                 context: document.body
                             }).done(function (data) {
                                 $("#risultato").html(data);
@@ -504,6 +441,24 @@
                         } else {
                             //FALSE
                         }
+                    });
+                });
+                //Cambio tema
+                $("#changetheme").change(function () {
+                    var temascelto = $(this).val();
+                    $.ajax({
+                        url: "{{ path("fi_pannello_amministrazione_changetheme") }}?theme="+temascelto,
+                        context: document.body
+                    }).done(function (data) {
+                        $("#risultato").html(data);
+                        opendialogrisultato();
+                        $("#risultato").slideDown("slow");
+                    }).fail(function (jqXHR, textStatus) {
+                        opendialogrisultato();
+                        $("#risultato").html(jqXHR.responseText);
+                        $("#risultato").show();
+                        msgbox("Si è verificato un errore!");
+                        return false;
                     });
                 });
                 function msgbox(text, title)

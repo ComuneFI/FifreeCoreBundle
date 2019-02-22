@@ -36,12 +36,13 @@ class ProjectPath
 
     public function getBinPath()
     {
-        $bindir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'bin';
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            if (!file_exists($bindir)) {
-                $bindir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'vendor' .
-                        DIRECTORY_SEPARATOR . 'bin';
-            }
+        $bindir = $this->getProjectPath() . '/bin';
+        if (!file_exists($bindir)) {
+            $bindir = $this->getProjectPath() . '/../bin';
+        }
+        if (!file_exists($bindir)) {
+            $bindir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'vendor' .
+                    DIRECTORY_SEPARATOR . 'bin';
         }
         if (!file_exists($bindir)) {
             throw new \Exception("Cartella Bin non trovata", -100);
@@ -87,12 +88,7 @@ class ProjectPath
 
     public function getCachePath()
     {
-        $cachedir = $this->getAppPath() . DIRECTORY_SEPARATOR . 'cache';
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            if (!file_exists($cachedir)) {
-                $cachedir = $this->getVarPath() . DIRECTORY_SEPARATOR . 'cache';
-            }
-        }
+        $cachedir = $this->container->get('kernel')->getCacheDir();
         if (!file_exists($cachedir)) {
             throw new \Exception("Cache non trovata", -100);
         }
@@ -101,12 +97,7 @@ class ProjectPath
 
     public function getLogsPath()
     {
-        $logsdir = $this->getAppPath() . DIRECTORY_SEPARATOR . 'logs';
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            if (!file_exists($logsdir)) {
-                $logsdir = $this->getVarPath() . DIRECTORY_SEPARATOR . 'logs';
-            }
-        }
+        $logsdir = $this->container->get('kernel')->getLogDir();
         if (!file_exists($logsdir)) {
             throw new \Exception("Logs non trovata", -100);
         }
@@ -115,11 +106,16 @@ class ProjectPath
 
     public function getConsole()
     {
-        $console = $this->getAppPath() . DIRECTORY_SEPARATOR . 'console';
+        $console = $this->getBinPath() . '/console';
         // Questo codice per versioni che usano un symfony 2 o 3
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+        if (!file_exists($console)) {
+            $console = $this->getProjectPath() . '/bin/console';
             if (!file_exists($console)) {
-                $console = $this->getBinPath() . DIRECTORY_SEPARATOR . 'console';
+                $console = $this->getProjectPath() . '/../bin/console';
+            }
+            if (!file_exists($console)) {
+                $console = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'vendor' .
+                        DIRECTORY_SEPARATOR . 'bin/console';
             }
         }
         if (!file_exists($console)) {

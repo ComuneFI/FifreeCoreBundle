@@ -42,13 +42,8 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
     {
         $this->clickElement('buttonadd_list1');
 
-        /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $fieldprefix = 'ffsecondaria_';
-        } else {
-            $fieldprefix = 'fi_corebundle_ffsecondariatype_';
-        }
+        $fieldprefix = 'ffsecondaria_';
 
         $this->fillField($fieldprefix . 'descsec', $descrizionetest1);
         $this->selectFieldOption($fieldprefix . 'ffprincipale', 1);
@@ -85,12 +80,11 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         //Metto questo if perchè non è stato implementato per firefox con geckodriver ancora
         if ($iffindelementrightclick) {
             $this->clickElement('jqContextMenu');
+            $this->clickElement('ui-dialog-titlebar-close');
 
             //$this->pressButton('Ok');
-
-            $this->clickElement('ui-dialog-titlebar-close');
-            $this->clickElement('fi-default-chiudi');
         }
+        $this->clickElement('fi-default-chiudi');
 
         $this->searchmodifiche($descrizionetest1);
         /* Cancellazione */
@@ -102,11 +96,6 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
     private function configuratabelleoperation($session, $page)
     {
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $fieldprefix = 'ffsecondaria_';
-        } else {
-            $fieldprefix = 'fi_corebundle_ffsecondariatype_';
-        }
         /**/
         $this->clickElement('buttonconfig_list1');
         $jsSetFirstRow = '$("#listconfigura").jqGrid("setSelection", rowidcal);';
@@ -167,11 +156,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $fieldprefix = 'ffsecondaria_';
-        } else {
-            $fieldprefix = 'fi_corebundle_ffsecondariatype_';
-        }
+        $fieldprefix = 'ffsecondaria_';
         $this->fillField($fieldprefix . 'descsec', $descrizionetest1);
         $this->selectFieldOption($fieldprefix . 'ffprincipale', 1);
         $this->selectFieldOption($fieldprefix . 'data_day', (int) date('d'));
@@ -382,6 +367,28 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $numrowsgrid5 = $this->evaluateScript('return $("#list1").jqGrid("getGridParam", "records");');
         $this->assertEquals(3, $numrowsgrid5);
         $this->ajaxWait();
+
+        /* Ricerca 7 */
+        $this->clickElement('search_list1');
+        $this->ajaxWait();
+        /**/
+        $var7 = '"giornodellasettimana"';
+        $selector7 = '#fbox_list1.searchFilter table.group.ui-widget.ui-widget-content tbody tr td.columns select:first';
+        $javascript7 = "$('" . $selector7 . ' option[value=' . $var7 . "]').attr('selected', 'selected').change();";
+        $this->ajaxWait();
+        $this->evaluateScript($javascript7);
+        $this->ajaxWait();
+
+        $var8 = '"2"';
+        $selector8 = '.input-elm';
+        $javascript8 = "$('" . $selector8 . ' option[value=' . $var8 . "]').attr('selected', 'selected').change();";
+        $this->ajaxWait();
+        $this->evaluateScript($javascript8);
+        $this->ajaxWait();
+        /**/
+        $this->clickElement('fbox_list1_search');
+        $this->ajaxWait();
+        /**/
 
 
         //reset filtri

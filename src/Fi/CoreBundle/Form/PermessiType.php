@@ -21,7 +21,7 @@ class PermessiType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-            'data_class' => 'Fi\CoreBundle\Entity\Permessi',
+            'data_class' => 'Fi\CoreBundle\Entity\permessi',
             )
         );
     }

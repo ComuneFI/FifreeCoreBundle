@@ -22,7 +22,7 @@ class RuoliType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-            'data_class' => 'Fi\CoreBundle\Entity\Ruoli',
+            'data_class' => 'Fi\CoreBundle\Entity\ruoli',
             )
         );
     }

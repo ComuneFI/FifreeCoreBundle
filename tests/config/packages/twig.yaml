@@ -1,0 +1,12 @@
+twig:
+    paths: ['%kernel.project_dir%/tests/templates']
+    debug: '%kernel.debug%'
+    globals:
+        appname: "%appname%"
+        database_driver: "%env(resolve:database_driver)%"
+        database_host: "%env(resolve:database_host)%"
+        database_name: "%env(resolve:database_name)%"
+        database_user: "%env(resolve:database_user)%"
+        solosso: "%solosso%"
+    form_themes:
+        - FiCoreBundle:Standard:form_div_layout.html.twig

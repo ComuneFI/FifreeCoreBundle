@@ -48,6 +48,11 @@ class Ffsecondaria
     private $attivo;
 
     /**
+     * @var int
+     */
+    private $giornodellasettimana;
+
+    /**
      * Get id.
      *
      * @return int
@@ -245,6 +250,20 @@ class Ffsecondaria
     }
 
     /**
+     * Set giornodellasettimana.
+     *
+     * @param int $giornodellasettimana
+     *
+     * @return Ffsecondaria
+     */
+    public function setGiornodellasettimana($giornodellasettimana)
+    {
+        $this->giornodellasettimana = $giornodellasettimana;
+
+        return $this;
+    }
+
+    /**
      * Get intero.
      *
      * @return int
@@ -252,6 +271,16 @@ class Ffsecondaria
     public function getIntero()
     {
         return $this->intero;
+    }
+
+    /**
+     * Get giornodellasettimana.
+     *
+     * @return int
+     */
+    public function getGiornodellasettimana()
+    {
+        return $this->giornodellasettimana;
     }
 
     /**

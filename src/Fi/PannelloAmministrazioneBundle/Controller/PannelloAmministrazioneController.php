@@ -35,7 +35,7 @@ class PannelloAmministrazioneController extends Controller
         $this->apppaths = $this->get("pannelloamministrazione.projectpath");
 
         $projectDir = $this->apppaths->getRootPath();
-        $bundlelists = $this->container->getParameter('kernel.bundles');
+        $bundlelists = $this->getParameter('kernel.bundles');
         $bundles = array();
         foreach ($bundlelists as $bundle) {
             if (substr($bundle, 0, 2) === 'Fi') {
@@ -47,6 +47,8 @@ class PannelloAmministrazioneController extends Controller
             }
         }
         $docDir = $this->apppaths->getDocPath();
+        $themes = array("sunny", "redmond", "cupertino", "blitzer", "lightness", "humanity",
+            "eggplant", "excitebyke", "flick", "images", "peppergrinder", "overcast", "lefrog", "southstreet", "start");
 
         $mwbs = array();
 
@@ -101,7 +103,8 @@ class PannelloAmministrazioneController extends Controller
 
         $twigparms = array('svn' => $svn, 'git' => $git, 'bundles' => $bundles, 'mwbs' => $mwbs,
             'rootdir' => $this->fixSlash($projectDir),
-            'comandishell' => $comandishell, 'iswindows' => $windows,);
+            'comandishell' => $comandishell, 'iswindows' => $windows,
+            'themes' => $themes);
 
         return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:index.html.twig', $twigparms);
     }
@@ -122,7 +125,7 @@ class PannelloAmministrazioneController extends Controller
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $command = $this->container->get("pannelloamministrazione.commands");
+            $command = $this->get("pannelloamministrazione.commands");
             $result = $command->aggiornaSchemaDatabase();
 
             $this->locksystem->release();
@@ -139,20 +142,19 @@ class PannelloAmministrazioneController extends Controller
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
         } else {
-            $bundlename = $request->get('bundlename');
             $entityform = $request->get('entityform');
 
             $this->locksystem->acquire();
 
-            $command = $this->container->get("pannelloamministrazione.commands");
-            $ret = $command->generateFormCrud($bundlename, $entityform);
+            $command = $this->get("pannelloamministrazione.commands");
+            $ret = $command->generateFormCrud($entityform);
 
             $this->locksystem->release();
             //$retcc = '';
             if ($ret['errcode'] < 0) {
                 return new Response($ret['message']);
             } else {
-                //$retcc = $command->clearCacheEnv($this->container->get('kernel')->getEnvironment());
+                //$retcc = $command->clearCacheEnv($this->get('kernel')->getEnvironment());
             }
             $twigparms = array('errcode' => $ret['errcode'], 'command' => $ret['command'], 'message' => $ret['message']);
 
@@ -169,59 +171,18 @@ class PannelloAmministrazioneController extends Controller
         } else {
             $this->locksystem->acquire();
             $wbFile = $request->get('file');
-            $bundlePath = $request->get('bundle');
-            $command = $this->container->get("pannelloamministrazione.commands");
-            $ret = $command->generateEntity($wbFile, $bundlePath);
+            $command = $this->get("pannelloamministrazione.commands");
+            $ret = $command->generateEntity($wbFile);
             $this->locksystem->release();
             return new Response($ret['message']);
-        }
-    }
-
-    /* ENTITIES */
-
-    public function generateEntityClassAction(Request $request)
-    {
-        if (!$this->locksystem->acquire()) {
-            return new Response($this->getLockMessage());
-        } else {
-            $this->locksystem->acquire();
-            $bundlePath = $request->get('bundle');
-            $command = $this->container->get("pannelloamministrazione.commands");
-            $ret = $command->generateEntityClass($bundlePath);
-            $this->locksystem->release();
-
-            return new Response($ret['message']);
-        }
-    }
-
-    /* BUNDLE */
-
-    public function generateBundleAction(Request $request)
-    {
-        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
-        if (!$this->locksystem->acquire()) {
-            return new Response($this->getLockMessage());
-        } else {
-            $this->locksystem->acquire();
-            $command = $this->container->get("pannelloamministrazione.commands");
-            $bundleName = $request->get('bundlename');
-            $result = $command->generateBundle($bundleName);
-            if ($result["errcode"] >= 0) {
-                //$msg = "\nPer abilitare il nuovo bundle nel kernel pulire la cache e aggiornare la pagina";
-                //$alert = '<script type="text/javascript">alert("' . $msg . '");location.reload();</script>';
-                //$result['message'] = $result['message'] . $msg;
-            }
-            $this->locksystem->release();
-            //Uso exit perchè la render avendo creato un nuovo bundle schianta perchè non è caricato nel kernel il nuovo bundle ancora
-            //exit;
-            $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
-
-            return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
         }
     }
 
     /* VCS (GIT,SVN) */
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getVcsAction()
     {
         set_time_limit(0);
@@ -230,7 +191,7 @@ class PannelloAmministrazioneController extends Controller
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $command = $this->container->get("pannelloamministrazione.commands");
+            $command = $this->get("pannelloamministrazione.commands");
             $result = $command->getVcs();
             $this->locksystem->release();
             if ($result['errcode'] < 0) {
@@ -259,7 +220,7 @@ class PannelloAmministrazioneController extends Controller
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $command = $this->container->get("pannelloamministrazione.commands");
+            $command = $this->get("pannelloamministrazione.commands");
             $result = $command->clearcache();
 
             $this->locksystem->release();
@@ -352,6 +313,9 @@ class PannelloAmministrazioneController extends Controller
         }
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function phpunittestAction(Request $request)
     {
         set_time_limit(0);
@@ -365,14 +329,8 @@ class PannelloAmministrazioneController extends Controller
                 $sepchr = OsFunctions::getSeparator();
                 $phpPath = OsFunctions::getPHPExecutableFromPath();
 
-                // Questo codice per versioni che usano un symfony 2 o 3
-                if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-                    $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr .
-                            $phpPath . ' ' . 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'phpunit';
-                } else {
-                    $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr .
-                            $phpPath . ' ' . 'bin' . DIRECTORY_SEPARATOR . 'phpunit -c app';
-                }
+                $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr .
+                        $phpPath . ' ' . 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'phpunit';
 
                 $process = new Process($command);
                 $process->run();
@@ -391,6 +349,27 @@ class PannelloAmministrazioneController extends Controller
             } else {
                 return new Response('Non previsto in ambiente windows!');
             }
+        }
+    }
+
+    public function changethemeAction(Request $request)
+    {
+        set_time_limit(0);
+        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
+        $temascelto = $request->get("theme");
+        $envfile = $this->apppaths->getRootPath() . '/.env';
+        if (!$this->locksystem->acquire()) {
+            return new Response($this->getLockMessage());
+        } else {
+            $this->locksystem->acquire();
+            $replacedenv = preg_replace('~^temascelto=.*$~m', "temascelto=" . $temascelto, file_get_contents($envfile));
+            file_put_contents($envfile, $replacedenv);
+
+            $this->locksystem->release();
+            $responseout = '<pre>Thema selezionato: <i style = "color: white;">' . $temascelto . '</i>' .
+                    '<br/>Aggiorna la pagina per renderlo effettivo<br/></pre>';
+
+            return new Response($responseout);
         }
     }
 }

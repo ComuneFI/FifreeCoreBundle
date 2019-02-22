@@ -13,7 +13,7 @@ class PermessiControllerFunctionalTest extends FacebookDriverTester
         $this->login('admin', 'admin');
         $session = $this->getSession();
         $page = $this->getCurrentPage();
-     
+
         $this->crudoperation($session, $page);
 
         $session->quit();
@@ -22,11 +22,7 @@ class PermessiControllerFunctionalTest extends FacebookDriverTester
     public function crudoperation($session, $page)
     {
         $this->clickElement('buttonadd_list1');
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $fieldprefix = 'permessi_';
-        } else {
-            $fieldprefix = 'fi_corebundle_permessitype_';
-        }
+        $fieldprefix = 'permessi_';
         /* Inserimento */
         $this->ajaxWait();
         $descrizionetest1 = 'testmodulo';
@@ -47,9 +43,9 @@ class PermessiControllerFunctionalTest extends FacebookDriverTester
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $this->evaluateScript('var testselid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}(testselid)');
 
-        
+
         $this->clickElement('buttonedit_list1');
-        
+
         /* Modifica */
         $descrizionetest2 = 'testmodulo 2';
         $this->fillField($fieldprefix . 'modulo', $descrizionetest2);
@@ -59,9 +55,9 @@ class PermessiControllerFunctionalTest extends FacebookDriverTester
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $this->evaluateScript('var testselid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}(testselid)');
 
-        
+
         $this->clickElement('buttondel_list1');
-        
+
         $this->clickElement('dData');
     }
 

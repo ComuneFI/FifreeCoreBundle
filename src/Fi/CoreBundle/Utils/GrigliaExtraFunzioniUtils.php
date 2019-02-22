@@ -25,7 +25,6 @@ class GrigliaExtraFunzioniUtils
             }
         }
     }
-    
     public static function valorizzaColonna(&$vettoreriga, $parametri)
     {
         $tabella = $parametri['tabella'];
@@ -37,6 +36,9 @@ class GrigliaExtraFunzioniUtils
 
         if (is_object($vettoreparcampi)) {
             $vettoreparcampi = get_object_vars($vettoreparcampi);
+        }
+        if (is_object($decodifiche)) {
+            $decodifiche = json_decode(json_encode($decodifiche), true);
         }
 
         $singolocampo = $parametri['singolocampo'];

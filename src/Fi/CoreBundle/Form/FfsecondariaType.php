@@ -5,12 +5,20 @@ namespace Fi\CoreBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class FfsecondariaType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $giornidellasettimana = array();
+        $format = new \IntlDateFormatter('it_IT', \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, "EEEE");
+        for ($index = 1; $index < 8; $index++) {
+            $giornidellasettimana[ucfirst($format->format(strtotime('next Sunday +' . $index . ' days')))] = $index;
+        }
+        
         $builder
                 ->add('descsec', null, array(
                     'attr' => array(
@@ -22,7 +30,17 @@ class FfsecondariaType extends AbstractType
                         'class' => 'accessostorico'
                     )
                         ))
+                ->add('giornodellasettimana', ChoiceType::class, array(
+                    'choices' => $giornidellasettimana
+                        ))
                 ->add('data')
+                /*->add('data', DateTimeType::class, array(
+                    'input' => 'datetime',
+                    'widget' => 'single_text',
+                    'format' => 'dd/MM/yyyy HH:mm',
+                    'attr' => array('class' => 'ficorebundle_datetimepicker'),
+                    'required' => true,
+                    'label' => 'Data ora'))*/
                 ->add('intero')
                 ->add('importo')
                 ->add('nota')
