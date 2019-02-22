@@ -692,7 +692,6 @@ function caricaGriglia_inline(parametrijs, parametriaggiuntivi) {
     var percorsogriglia = parametrijs["percorsogriglia"];
     var datipost = parametrijs["datipost"] || {};
     var viewrownumbers = (parametrijs["viewrownumbers"] == 0) ? false : true;
-    var funzionedaeseguireloadcomplete = parametrijs["funzionedaeseguireloadcomplete"] || null;
 
     var stringapar = "";
     if (typeof parametriaggiuntivi != 'undefined') {
@@ -879,11 +878,6 @@ function caricaGriglia_inline(parametrijs, parametriaggiuntivi) {
             lastsel = id;
             if ((id) && (id !== lastsel)) {
                 jQuery(nomelist).restoreRow(lastsel);
-            }
-        },
-        loadComplete: function () {
-            if (funzionedaeseguireloadcomplete !== null) {
-                funzionedaeseguireloadcomplete();
             }
         }
     });
