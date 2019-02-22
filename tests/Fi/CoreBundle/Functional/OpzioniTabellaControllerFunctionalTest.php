@@ -27,7 +27,11 @@ class OpzioniTabellaControllerFunctionalTest extends FacebookDriverTester
 
         /* Inserimento */
         $descrizionetest1 = 'testtabella';
-        $fieldprefix = 'opzioni_tabella_';
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'opzioni_tabella_';
+        } else {
+            $fieldprefix = 'fi_corebundle_opzionitabellatype_';
+        }
         $this->fillField($fieldprefix . 'descrizione', $descrizionetest1);
         $this->selectFieldOption($fieldprefix . 'tabelle', 1);
 

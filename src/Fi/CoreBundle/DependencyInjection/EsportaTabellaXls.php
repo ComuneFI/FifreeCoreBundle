@@ -2,11 +2,6 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xls;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Style\Border;
-
 class EsportaTabellaXls
 {
     public function esportaexcel($parametri = array())
@@ -14,14 +9,18 @@ class EsportaTabellaXls
         set_time_limit(960);
         ini_set('memory_limit', '2048M');
 
+        $cacheMethod = \PHPExcel_CachedObjectStorageFactory::cache_to_phpTemp;
+        $cacheSettings = array('memoryCacheSize' => '8MB');
+        \PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+
         //Creare un nuovo file
-        $spreadsheet = new Spreadsheet();  /* ----Spreadsheet object----- */
-        $objPHPExcel = new Xls($spreadsheet);  /* ----- Excel (Xls) Object */
-        $spreadsheet->setActiveSheetIndex(0);
+        $objPHPExcel = new \PHPExcel();
+
+        $objPHPExcel->setActiveSheetIndex(0);
 
         // Set properties
-        $spreadsheet->getProperties()->setCreator('Comune di Firenze');
-        $spreadsheet->getProperties()->setLastModifiedBy('Comune di Firenze');
+        $objPHPExcel->getProperties()->setCreator('Comune di Firenze');
+        $objPHPExcel->getProperties()->setLastModifiedBy('Comune di Firenze');
 
         $testata = $parametri['testata'];
         $rispostaj = $parametri['griglia'];
@@ -29,7 +28,7 @@ class EsportaTabellaXls
         $modellicolonne = $testata['modellocolonne'];
 
         //Scrittura su file
-        $sheet = $spreadsheet->getActiveSheet();
+        $sheet = $objPHPExcel->getActiveSheet();
         $titolosheet = 'Esportazione ' . $testata['tabella'];
         $sheet->setTitle(substr($titolosheet, 0, 30));
         $sheet->getParent()->getDefaultStyle()->getFont()->setName('Verdana');
@@ -46,6 +45,7 @@ class EsportaTabellaXls
         $this->printBodyXls($righe, $modellicolonne, $sheet);
 
         //Si crea un oggetto
+        $objWriter = new \PHPExcel_Writer_Excel5($objPHPExcel);
         $todaydate = date('d-m-y');
 
         $filename = 'Exportazione_' . $testata['tabella'];
@@ -57,7 +57,7 @@ class EsportaTabellaXls
             unlink($filename);
         }
 
-        $objPHPExcel->save($filename);
+        $objWriter->save($filename);
 
         return $filename;
     }
@@ -67,7 +67,7 @@ class EsportaTabellaXls
         $letteracolonna = 0;
         foreach ($modellicolonne as $modellocolonna) {
             //Si imposta la larghezza delle colonne
-            $letteracolonna = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($indicecolonnaheader);
+            $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonnaheader);
             $width = (int) $modellocolonna['width'] / 7;
             $indicecolonnaheadertitle = $testata['nomicolonne'][$indicecolonnaheader];
             $coltitlecalc = isset($indicecolonnaheadertitle) ? $indicecolonnaheadertitle : $modellocolonna['name'];
@@ -83,12 +83,13 @@ class EsportaTabellaXls
             //Colore header
             $style_header = array(
                 'fill' => array(
-                    'type' => Fill::FILL_SOLID,
-                    'color' => array('rgb' => 'E5E4E2')
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID,
+                    'color' => array('rgb' => '0404B4'),
                 ),
                 'font' => array(
-                    'bold' => true
-                )
+                    'bold' => true,
+                    'color' => array('rgb' => 'FFFFFF'),
+                ),
             );
             $sheet->getStyle('A1:' . $letteracolonna . '1')->applyFromArray($style_header);
         }
@@ -103,7 +104,7 @@ class EsportaTabellaXls
                 $d = (int) substr($vettorecella, 0, 2);
                 $m = (int) substr($vettorecella, 3, 2);
                 $y = (int) substr($vettorecella, 6, 4);
-                $t_date = \PhpOffice\PhpSpreadsheet\Shared\Date::formattedPHPToExcel($y, $m, $d);
+                $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
                 $valore = $t_date;
                 break;
             case 'boolean':
@@ -136,22 +137,22 @@ class EsportaTabellaXls
 
         $indicecolonna = 0;
         foreach ($modellicolonne as $modellocolonna) {
-            $letteracolonna = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($indicecolonna);
+            $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonna);
             switch ($modellocolonna['tipocampo']) {
                 case 'text':
                     $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
-                            ->setFormatCode("@");
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
                     break;
                 case 'string':
                     $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
-                            ->setFormatCode("@");
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
                     break;
                 case 'integer':
                     $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
-                            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
                     break;
                 case 'float':
                     $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
@@ -164,20 +165,19 @@ class EsportaTabellaXls
                             ->setFormatCode('#,##0.00');
                     break;
                 case 'datetime':
-                    //\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYYSLASH
                     $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
-                            ->setFormatCode("dd/mm/yyyy");
+                            ->setFormatCode('dd/mm/yyyy');
                     break;
                 case 'date':
                     $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
-                            ->setFormatCode("dd/mm/yyyy");
+                            ->setFormatCode('dd/mm/yyyy');
                     break;
                 default:
                     $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
-                            ->setFormatCode("@");
+                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
                     break;
             }
 

@@ -1,25 +1,9 @@
 <?php
 
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
 
-set_time_limit(0);
-
-require __DIR__ . '/../vendor/autoload.php';
-
-if (!class_exists(Application::class)) {
-    throw new \RuntimeException('You need to add "symfony/framework-bundle" as a Composer dependency.');
-}
-
-if (!isset($_SERVER['APP_ENV'])) {
-    if (!class_exists(Dotenv::class)) {
-        throw new \RuntimeException('APP_ENV environment variable is not defined. You need to define environment variables for configuration or add "symfony/dotenv" as a Composer dependency to load variables from a .env file.');
-    }
-    (new Dotenv())->load(__DIR__ . '/../tests/.env');
-}
-
+require __DIR__ . '/app/autoload.php';
 require __DIR__ . '/Utils/FifreeTestAuthorizedClient.php';
 require __DIR__ . '/Utils/FifreeTestUnauthorizedClient.php';
 require __DIR__ . '/Utils/FifreeUserTestUtil.php';
@@ -33,7 +17,7 @@ date_default_timezone_set('Europe/Rome');
 function clearcache()
 {
     passthru(sprintf(
-                    '"%s/console" cache:clear', __DIR__ . '/../bin'
+                    'php "%s/console" cache:clear --no-warmup --env=%s  > /dev/null 2>&1', __DIR__ . '/../tests/bin/', "test"
     ));
 }
 
@@ -42,42 +26,27 @@ function clearcache()
 function cachewarmup()
 {
     passthru(sprintf(
-                    '"%s/console" cache:warmup', __DIR__ . '/../bin'
+                    'php "%s/console" cache:warmup --env=%s > /dev/null 2>&1', __DIR__ . '/../tests/bin/', "test"
     ));
-    #sleep(1);
-}
-
-function databaseinit()
-{
-    passthru(sprintf(
-                    '"%s/console" fifree:dropdatabase --force', __DIR__ . '/../bin'
-    ));
-    passthru(sprintf(
-                    '"%s/console" fifree:install admin admin admin@admin.it', __DIR__ . '/../bin'
-    ));
-
     #sleep(1);
 }
 
 function removecache()
 {
     $vendorDir = dirname(dirname(__FILE__));
-    $envs = ["test", "dev", "prod"];
-    foreach ($envs as $env) {
-        $cachedir = $vendorDir . '/tests/var/cache/' . $env;
-        if (file_exists($cachedir)) {
-            $command = 'rm -rf ' . $cachedir;
-            $process = new Process($command);
-            $process->setTimeout(60 * 100);
-            $process->run();
-            if (!$process->isSuccessful()) {
-                echo getErrorText($process, $command);
-            } else {
-                echo $process->getOutput();
-            }
+    $testcache = $vendorDir . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'test';
+    if (file_exists($testcache)) {
+        $command = 'rm -rf ' . $testcache;
+        $process = new Process($command);
+        $process->setTimeout(60 * 100);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            echo getErrorText($process, $command);
         } else {
-            //echo $testcache . " not found";
+            //echo $process->getOutput();
         }
+    } else {
+        //echo $testcache . " not found";
     }
 }
 
@@ -90,67 +59,40 @@ function getErrorText($process, $command)
 
 function cleanFilesystem()
 {
+    $DELETE = "new Fi\ProvaBundle\FiProvaBundle(),";
     $vendorDir = dirname(dirname(__FILE__) . '/tests');
-    //deleteLineFromFile($kernelfile, $DELETE);
-    $routingfile = $vendorDir . '/config/routes.yaml';
-    
+    $kernelfile = $vendorDir . '/app/AppKernel.php';
+    deleteLineFromFile($kernelfile, $DELETE);
+    $routingfile = $vendorDir . '/app/config/routing.yml';
     $line = fgets(fopen($routingfile, 'r'));
-    if (substr($line, 0, -1) == 'App_Prova:') {
+    if (substr($line, 0, -1) == 'fi_prova:') {
         for ($index = 0; $index < 4; ++$index) {
             deleteFirstLineFile($routingfile);
         }
     }
 
-    //$configfile = $vendorDir . '/app/config/config.yml';
-    //$remove = '- { resource: "@FiProvaBundle/Resources/config/services.yml" }';
-    //deleteLineFromFile($configfile, $remove);
+    $configfile = $vendorDir . '/app/config/config.yml';
+    $remove = '- { resource: "@FiProvaBundle/Resources/config/services.yml" }';
+    deleteLineFromFile($configfile, $remove);
+
+
+    $bundledir = $vendorDir . '/src/Fi/ProvaBundle';
 
     $fs = new Filesystem();
-
-    $entityfile = $vendorDir . "/src/Entity/Prova.php";
-
-    if ($fs->exists($entityfile)) {
-        $fs->remove($entityfile);
-    }
-    $entityfile2 = $vendorDir . "/src/Entity/BaseProva.php";
-
-    if ($fs->exists($entityfile2)) {
-        $fs->remove($entityfile2);
-    }
-    $entityfile3 = $vendorDir . "/src/Entity/BaseTabellacollegata.php";
-
-    if ($fs->exists($entityfile3)) {
-        $fs->remove($entityfile3);
-    }
-    $entityfile4 = $vendorDir . "/src/Entity/Tabellacollegata.php";
-
-    if ($fs->exists($entityfile4)) {
-        $fs->remove($entityfile4);
-    }
-    $routingfile = $vendorDir . "/config/routes/prova.yml";
-
-    if ($fs->exists($routingfile)) {
-        $fs->remove($routingfile);
-    }
-    $resources = $vendorDir . "/templates/Prova";
-    if ($fs->exists($resources)) {
-        $fs->remove($resources, true);
+    if ($fs->exists($bundledir)) {
+        $fs->remove($bundledir);
     }
 
-    $form = $vendorDir . "/src/Form/ProvaType.php";
-    if ($fs->exists($form)) {
-        $fs->remove($form, true);
-    }
+    $bundletestdir = $vendorDir . '/tests';
 
-    $controller = $vendorDir . "/src/Controller/ProvaController.php";
-    if ($fs->exists($controller)) {
-        $fs->remove($controller, true);
+    if ($fs->exists($bundletestdir)) {
+        $fs->remove($bundletestdir, true);
     }
-    /* $bundlesrcdir = $vendorDir . '/src';
+    $bundlesrcdir = $vendorDir . '/src';
 
-      if ($fs->exists($bundlesrcdir)) {
-      $fs->remove($bundlesrcdir, true);
-      } */
+    if ($fs->exists($bundlesrcdir)) {
+        $fs->remove($bundlesrcdir, true);
+    }
 }
 
 function deleteFirstLineFile($file)

@@ -1,10 +1,5 @@
-Fixed symfony/makerbundle 1.5.*, dalla 1.6.* non funziona più il regenerate entity
-
 Dependencies:
     "se/selenium-server-standalone": "3.8.*" -> 3.9.* don't support "-enablePassThrough false"
-    "enm1989/geckodriver" is abandoned, you should avoid using it. No replacement was suggested.
-    "phpoffice/phpexcel" is abandoned, you should avoid using it. Use phpoffice/phpspreadsheet instead.
-    
 Tests:
     test su ordinamento campi definiti da utente
     test su stampa campi definiti da utente
@@ -13,6 +8,9 @@ Funzionalità:
 
 
 Upgrade:
-    Jquery + Jquery-ui + griglia
+    Php 7.2
+    Silex
+    MakerBundle
+    Jquery + Jquery-ui + griglia (http://ng-table.com)
     excel -> PHPOffice/PhpSpreadsheet
 

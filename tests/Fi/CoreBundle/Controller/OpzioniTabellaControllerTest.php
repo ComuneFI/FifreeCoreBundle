@@ -28,11 +28,16 @@ class OpzioniTabellaControllerTest extends FifreeTestAuthorizedClient
         $crawler = $client->request('GET', '/OpzioniTabella/new');
         $this->assertTrue($crawler->filter('html:contains("formdatiOpzioniTabella")')->count() > 0);
         $descrizione = "descrizione";
-        $fieldprefix = 'opzioni_tabella';
+        /* Inserimento */
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'opzioni_tabella';
+        } else {
+            $fieldprefix = 'fi_corebundle_opzioni_tabellatype';
+        }
         $valore = "provacrawler";
         $campodescrizione = $fieldprefix . "[" . $descrizione . "]";
-        $campotabella = $fieldprefix . "[tabelle]";
-        $form = $crawler->filter('form[id=formdatiOpzioniTabella]')->form(array("$campodescrizione" => $valore, "$campotabella" => 1));
+        $campotabella= $fieldprefix . "[tabelle]";
+        $form = $crawler->filter('form[id=formdatiOpzioniTabella]')->form(array("$campodescrizione" => $valore,"$campotabella" => 1));
 
         // submit that form
         $crawler = $client->submit($form);

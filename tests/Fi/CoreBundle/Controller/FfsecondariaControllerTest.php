@@ -43,7 +43,12 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
         $crawler = $client->request('GET', $urlnew);
         $this->assertTrue($crawler->filter('html:contains("formdatiFfsecondaria")')->count() > 0);
         $descrizione = "descsec";
-        $fieldprefix = 'ffsecondaria';
+        /* Inserimento */
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'ffsecondaria';
+        } else {
+            $fieldprefix = 'fi_corebundle_ffsecondariatype';
+        }
         $valore = "provacrawler";
         $campodescrizione = $fieldprefix . "[" . $descrizione . "]";
 
@@ -183,7 +188,6 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
      * @covers Fi\CoreBundle\Controller\FiController::<public>
      * @covers Fi\CoreBundle\DependencyInjection\EsportaTabellaPdf::stampa
      * @covers Fi\CoreBundle\DependencyInjection\EsportaTabellaPdf::stampaTestata
-     * @covers Fi\CoreBundle\DependencyInjection\EsportaTabellaPdf::stampaDettaglio
      * 
      */
     public function testStampaFfprincipale()

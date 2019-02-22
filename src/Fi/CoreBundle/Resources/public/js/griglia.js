@@ -94,7 +94,7 @@ function caricaGriglia(parametrijs) {
         'parametritesta': parametritesta,
         'parametrigriglia': parametrigriglia,
         'indirizzoexcel': indirizzoexcel/*,
-         'importexcel': importexcel*/
+        'importexcel': importexcel*/
                 //'filtri': jQuery(nomelist).getGridParam("postData").filters
     };
 
@@ -589,19 +589,19 @@ function caricaGriglia(parametrijs) {
 
     //Se si hanno i diritti per stampare si imposta il pulsante e la funizonalità
     /*if (showimportexcel) {
-     jQuery(nomelist).navGrid(nomepager).navButtonAdd(nomepager, {
-     id: "buttonimportexcel_" + nomelist.substr(1),
-     caption: captionexcel,
-     buttonicon: ((captionexcel === "") ? "ui-icon-circle-arrow-n" : "none"),
-     onClickButton: function () {
-     importaexcel(parametriexcel);
-     },
-     position: "last",
-     title: "",
-     cursor: "pointer"
-     });
-     
-     }*/
+        jQuery(nomelist).navGrid(nomepager).navButtonAdd(nomepager, {
+            id: "buttonimportexcel_" + nomelist.substr(1),
+            caption: captionexcel,
+            buttonicon: ((captionexcel === "") ? "ui-icon-circle-arrow-n" : "none"),
+            onClickButton: function () {
+                importaexcel(parametriexcel);
+            },
+            position: "last",
+            title: "",
+            cursor: "pointer"
+        });
+
+    }*/
 
     //Se si hanno i diritti per modificare la configurazioen della griglia si imposta il pulsante e la funizonalità
     if (showconfig) {
@@ -947,8 +947,8 @@ function caricaGriglia_inline(parametrijs, parametriaggiuntivi) {
 
     if (larghezzagriglia >= 1000) {
         jQuery(nomelist).jqGrid("setGridWidth", "1000");
-        //} else if (larghezzagriglia <= 600) {
-        //    jQuery(nomelist).jqGrid("setGridWidth", "600");
+    //} else if (larghezzagriglia <= 600) {
+    //    jQuery(nomelist).jqGrid("setGridWidth", "600");
     } else
         jQuery(nomelist).jqGrid("setGridWidth", larghezzagriglia);
 
@@ -1091,63 +1091,63 @@ function esportaexcel(parametriexcel) {
 }
 
 /*function importaexcel(parametriexcel) {
- var indirizzoexcel = parametriexcel["importexcel"];
- jQuery("#formimportaexcel").remove();
- var creaformxls = jQuery("<form id='formimportaexcel' name='formimportaexcel' class='dropzone'></form>");
- if (!jQuery("#formesportaexcel").lenght) {
- jQuery("#Secondo").append(creaformxls);
- }
- 
- var tabella = parametriexcel["tabella"] || "";
- var nomelist = parametriexcel["nomelist"] || "#list1";
- 
- var filtro = jQuery(nomelist).getGridParam("postData");
- 
- var formxls = document.formimportaexcel;
- formxls.setAttribute("method", "post");
- formxls.setAttribute("action", baseUrl + '/' + indirizzoexcel);
- formxls.setAttribute("target", "_blank");
- 
- jQuery.each(parametriexcel, function (key, value) {
- if (!filtro[key]) {
- var hiddenField = document.createElement("input");
- hiddenField.setAttribute("name", key);
- hiddenField.setAttribute("value", value);
- hiddenField.setAttribute("type", "hidden");
- formxls.appendChild(hiddenField);
- }
- });
- 
- jQuery.each(filtro, function (key, value) {
- var hiddenField = document.createElement("input");
- hiddenField.setAttribute("name", key);
- hiddenField.setAttribute("value", value);
- hiddenField.setAttribute("type", "hidden");
- formxls.appendChild(hiddenField);
- 
- 
- });
- 
- document.body.appendChild(formxls);    // Not entirely sure if this is necessary
- $("#formimportaexcel").dropzone({
- success: function (file, response) {
- alert(response);
- }
- });
- Dropzone.options.filedrop = {
- init: function () {
- this.on("complete", function (file, errormessage, xhr) {
- if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
- jQuery("#formimportaexcel").remove();
- }
- //location.reload();
- });
- }
- };
- //document.formesportaexcel.submit();
- //jQuery("#formesportaexcel").remove();
- 
- }*/
+    var indirizzoexcel = parametriexcel["importexcel"];
+    jQuery("#formimportaexcel").remove();
+    var creaformxls = jQuery("<form id='formimportaexcel' name='formimportaexcel' class='dropzone'></form>");
+    if (!jQuery("#formesportaexcel").lenght) {
+        jQuery("#Secondo").append(creaformxls);
+    }
+
+    var tabella = parametriexcel["tabella"] || "";
+    var nomelist = parametriexcel["nomelist"] || "#list1";
+
+    var filtro = jQuery(nomelist).getGridParam("postData");
+
+    var formxls = document.formimportaexcel;
+    formxls.setAttribute("method", "post");
+    formxls.setAttribute("action", baseUrl + '/' + indirizzoexcel);
+    formxls.setAttribute("target", "_blank");
+
+    jQuery.each(parametriexcel, function (key, value) {
+        if (!filtro[key]) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", value);
+            hiddenField.setAttribute("type", "hidden");
+            formxls.appendChild(hiddenField);
+        }
+    });
+
+    jQuery.each(filtro, function (key, value) {
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("name", key);
+        hiddenField.setAttribute("value", value);
+        hiddenField.setAttribute("type", "hidden");
+        formxls.appendChild(hiddenField);
+
+
+    });
+
+    document.body.appendChild(formxls);    // Not entirely sure if this is necessary
+    $("#formimportaexcel").dropzone({
+        success: function (file, response) {
+            alert(response);
+        }
+    });
+    Dropzone.options.filedrop = {
+        init: function () {
+            this.on("complete", function (file, errormessage, xhr) {
+                if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                    jQuery("#formimportaexcel").remove();
+                }
+                //location.reload();
+            });
+        }
+    };
+    //document.formesportaexcel.submit();
+    //jQuery("#formesportaexcel").remove();
+
+}*/
 
 function apriDettaglio(parametri) {
     var tabella = parametri['tabella'];
@@ -1168,8 +1168,7 @@ function apriDettaglio(parametri) {
     var nometestodialog = parametri['nometestodialog'] || "#testodialog";
     var overlay = parametri['overlay'] || "#overlay";
     var open_new_window = parametri['open_new_window'] || 0;
-    var funzionedaeseguireloadcomplete = parametri["funzionedaeseguireloadcomplete"] || null;
-    var funzionedaeseguireapridettagliocomplete = parametri["funzionedaeseguireapridettagliocomplete"] || null;
+
 
     var prossimozIndex = maxzIndex() + 10;
 
@@ -1233,10 +1232,6 @@ function apriDettaglio(parametri) {
                 }
                 //Funzione di overlay per ottenere l'effetto di finestra in backgroud trasparenti nel caso di sovrapposizione
                 trasparenzadiv();
-                if (funzionedaeseguireapridettagliocomplete != null) {
-                    funzionedaeseguireapridettagliocomplete();
-                }
-
             });
         } else {
             var editUrl = baseUrl + '/' + tabella + "?id=" + rowid;
@@ -1262,20 +1257,12 @@ function apriDettaglio(parametri) {
         }
     }
 
-    if (funzionedaeseguireloadcomplete != null) {
-        funzionedaeseguireloadcomplete();
-    }
 }
 
 
 function chiudiDettaglio(parametri) {
     var div = parametri['div'] || "#dettaglio";
-    if (parametri["overlayclose"] === 0) {
-        overlayclose = 0;
-    } else {
-        overlayclose = 1;
-    }
-
+    var overlayclose = parametri['overlayclose'] || 1;
     var refreshgrid = parametri['refreshgrid'] || 0;
     var list = parametri['list'] || '#list1';
     jQuery(".fi-default-salva").removeClass("fi-default-salva");
@@ -1353,7 +1340,7 @@ function salvaDettaglio(parametri) {
         if (refreshgrid === 1) {
             jQuery(list).trigger("reloadGrid", [{current: true}]);
         }
-
+        
         if (jQuery.isEmptyObject(parametrireloadcombo)) {
             //console.log('i parametri non sono stati passati');
         } else {

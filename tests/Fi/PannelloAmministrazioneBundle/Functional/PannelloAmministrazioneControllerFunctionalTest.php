@@ -8,7 +8,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
     public static function setUpBeforeClass()
     {
         cleanFilesystem();
-        databaseinit();
         removecache();
         clearcache();
     }
@@ -19,22 +18,23 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
     public function test20AdminpanelGenerateBundle()
     {
+        //passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-warmup --env=test ");
+        //
+        //url da testare
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->container);
-        $checkentityprova = $apppath->getSrcPath() . "/Entity/Prova.php";
-        $checkentitybaseprova = $apppath->getSrcPath() . "/Entity/BaseProva.php";
-        $checkentitytabellacollegataprova = $apppath->getSrcPath() . "/Entity/Tabellacollegata.php";
-        $checkentitytabellacollegatabaseprova = $apppath->getSrcPath() . "/Entity/BaseTabellacollegata.php";
-        $checktypeprova = $apppath->getSrcPath() . "/Form/ProvaType.php";
-        $checkviewsprova = $apppath->getSrcPath() . "/../templates/Prova";
-        $checkindexprova = $apppath->getSrcPath() . "/../templates/Prova/index.html.twig";
-
-        $this->assertFalse(file_exists($checkentityprova));
-        $this->assertFalse(file_exists($checkentitybaseprova));
-        $this->assertFalse(file_exists($checkentitytabellacollegataprova));
-        $this->assertFalse(file_exists($checkentitytabellacollegatabaseprova));
-        $this->assertFalse(file_exists($checktypeprova));
-        $this->assertFalse(file_exists($checkviewsprova));
-        $this->assertFalse(file_exists($checkindexprova));
+        $fileprovabundle = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle";
+        $checkentityprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
+        $checkresourceprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR .
+                "doctrine" . DIRECTORY_SEPARATOR . "Prova.orm.yml";
+        $checktypeprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Form" . DIRECTORY_SEPARATOR . "ProvaType.php";
+        $checkviewsprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "Prova";
+        $checkindexprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . "Fi" . DIRECTORY_SEPARATOR . "ProvaBundle" .
+                DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "Prova" .
+                DIRECTORY_SEPARATOR . "index.html.twig";
 
         $url = $this->router->generate('fi_pannello_amministrazione_homepage');
         $this->visit($url);
@@ -42,47 +42,211 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
-        $this->visit($url);
-        $this->selectFieldOption('entityfile', 'wbadmintest.mwb');
-        $this->pressButton('adminpanelgenerateentity');
+
+
+        $this->fillField('bundlename', 'Fi/ProvaBundle');
+
+        $javascript = "window.alert = function() {};";
+        $this->executeScript($javascript);
+        $this->pressButton('adminpanelgeneratebundle');
+
         $this->pressButton('yesdialogbutton');
+        //$scriptrun = "function(){ $('button:contains(\"Si\")').click();";
+        //$this->executeScript($scriptrun);
         $this->ajaxWait();
 
-        //$screenshot = $this->facebookDriver->takeScreenshot();
-        //file_put_contents('/tmp/screenshot.txt', base64_encode($screenshot)."\n\n", FILE_APPEND);
-        //echo $page->getPageSource();
+        $scriptrun = "$('button:contains(\"Chiudi\")').click();";
+        $this->executeScript($scriptrun);
+        //parent::ajaxWait($session, 60000);
+        //$session->getDriver()->getWebDriverSession()->accept_alert();
+        //echo $session->getPage()->getHtml();
+        /**/
+        //$screenshot = $driver->getWebDriverSession()->screenshot();
+        //file_put_contents('/tmp/test1.png', base64_decode($screenshot));
+        /**/
+        //$scriptclose = 'function(){ if ($("#risultato\").is(":visible")) { $("#risultato").dialog("close");}}()';
+        //$scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        //$this->executeScript($scriptclose);
+        //echo passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
+        /* qui */
+        //removecache();
+        //clearcache();
+        //$driver->reload();
 
+        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+          $this->executeScript($scriptclose); */
+
+        //***************************************************************************************************************
+        //$urlRouting = $this->getClientAutorizzato()->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
+        //$url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $urlRouting;
+        //$page->fillField('username', 'admin');
+        //$page->fillField('password', 'admin');
+        //$this->pressButton('_submit');
+        clearcache();
+
+        $this->visit($url);
+        $this->login('admin', 'admin');
+        $session = $this->getSession();
+        $page = $this->getCurrentPage();
+
+
+        $this->visit($url);
+        $checkprovabundle = file_exists($fileprovabundle);
+        $this->assertTrue($checkprovabundle, $fileprovabundle);
+
+
+        $this->fillField('bundlename', 'Fi/ProvaBundle');
+
+        $this->selectFieldOption('entitybundle', 'Fi/ProvaBundle');
+        $this->selectFieldOption('entityfile', 'wbadmintest.mwb');
+
+        $this->pressButton('adminpanelgenerateentity');
+
+        $this->pressButton('yesdialogbutton');
+
+        /* $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+          $this->executeScript($scriptrun); */
+        $this->ajaxWait();
+
+
+        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+          $this->executeScript($scriptclose); */
         $this->pressButton('closedialogbutton');
+
+
+        $this->pressButton('adminpanelgenerateclassentity');
+        /* $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+          $this->executeScript($scriptrun); */
+
+        $this->pressButton('yesdialogbutton');
+
+        $this->ajaxWait();
+
+        //echo $session->getPage()->getHtml();
+        /**/
+        //$screenshot = $driver->getWebDriverSession()->screenshot();
+        //file_put_contents('/tmp/test3.png', base64_decode($screenshot));
+        /**/
+        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+          $this->executeScript($scriptclose);
+         */
+        $this->pressButton('closedialogbutton');
+
         $this->assertTrue(file_exists($checkentityprova));
-        $this->assertTrue(file_exists($checkentitybaseprova));
-        $this->assertTrue(file_exists($checkentitytabellacollegataprova));
-        $this->assertTrue(file_exists($checkentitytabellacollegatabaseprova));
+
+        $this->assertTrue(file_exists($checkresourceprova));
+
+        /* $this->pressButton('adminpanelcc');
+          $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+          $this->executeScript($scriptrun);
+          parent::ajaxWait($session, 60000);
+         */
+        //echo $session->getPage()->getHtml(); 
+        /**/
+        //$screenshot = $driver->getWebDriverSession()->screenshot();
+        //file_put_contents('/tmp/test4.png', base64_decode($screenshot));
+        /**/
+        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
+        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+          $this->executeScript($scriptclose); */
+
+        /* qui */
+        //removecache();
+        clearcache();
+        //$driver->reload();
+        $this->visit($url);
+        $this->login('admin', 'admin');
+        $session = $this->getSession();
+        $page = $this->getCurrentPage();
+
+
+        $this->visit($url);
+
 
         $this->pressButton('adminpanelaggiornadatabase');
+        /* $scriptdb = "function(){ $('button:contains(\"Si\")').click();}()";
+          $this->executeScript($scriptdb);
+         */
+
         $this->pressButton('yesdialogbutton');
+
         $this->ajaxWait();
+        /**/
+        //$screenshot = $driver->getWebDriverSession()->screenshot();
+        //file_put_contents('/tmp/test5.png', base64_decode($screenshot));
+        /**/
 
-        //$screenshot = $this->facebookDriver->takeScreenshot();
-        //file_put_contents('/tmp/screenshot.txt', base64_encode($screenshot)."\n\n", FILE_APPEND);
-        //echo $page->getPageSource();
-
+        //echo $session->getPage()->getHtml();
+        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
+        /* $scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+          $this->executeScript($scriptclose);
+         */
         $this->pressButton('closedialogbutton');
 
+        //passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
+
+        /* $session->visit($url);
+          $page = $session->getPage();
+
+          //echo $session->getPage()->getHtml();
+          //Login
+          $page->fillField('username', 'admin');
+          $page->fillField('password', 'admin');
+          $this->pressButton('_submit');
+
+
+          $session->visit($url);
+          $page = $session->getPage();
+
+         */
+
+        clearcache();
+        $this->visit($url);
+        $this->login('admin', 'admin');
+        $session = $this->getSession();
+        $page = $this->getCurrentPage();
+
+
+
+        $this->fillField('bundlename', 'Fi/ProvaBundle');
         $this->fillField('entityform', 'Prova');
+
         $this->pressButton('adminpanelgenerateformcrud');
+        /* $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+          $this->executeScript($scriptrun); */
+
         $this->pressButton('yesdialogbutton');
+
         $this->ajaxWait();
 
-        //$screenshot = $this->facebookDriver->takeScreenshot();
-        //file_put_contents('/tmp/screenshot.txt', base64_encode($screenshot)."\n\n", FILE_APPEND);
-        //echo $page->getPageSource();
-
+        //echo $page->getHtml();
         $this->assertTrue(file_exists($checktypeprova));
         $this->assertTrue(file_exists($checkviewsprova));
         $this->assertTrue(file_exists($checkindexprova));
+        /**/
+        //$screenshot = $driver->getWebDriverSession()->screenshot();
+        //file_put_contents('/tmp/test6.png', base64_decode($screenshot));
+        /**/
 
+
+
+        //echo $session->getPage()->getHtml();
+        //$scriptclose = "function(){ if ($(\"#risultato\").is(\":visible\")) {$(\"#risultato\").dialog(\"close\");}}()";
+        /*$scriptclose = 'function(){ $("#risultato").dialog("close");}()';
+        $this->executeScript($scriptclose);*/
         $this->pressButton('closedialogbutton');
+        
 
+        /* $this->pressButton('adminpanelcc');
+          $scriptrun = "function(){ $('button:contains(\"Si\")').click();}()";
+          $this->executeScript($scriptrun);
+          parent::ajaxWait($session, 60000); */
+        //echo passthru("php " . __DIR__ . '/../../../bin/console' . " cache:clear --no-debug --env=test ");
+
+        /* qui */
+        //removecache();
+        clearcache();
+        //$driver->reload();
         //***************************************************************************************************************
         try {
             $urlRouting = $this->router->generate('Prova_container');
@@ -92,11 +256,42 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
         $url = $urlRouting;
 
+
         $this->visit($url);
+        $this->login('admin', 'admin');
+        $session = $this->getSession();
+        $page = $this->getCurrentPage();
+
+
+
+        //echo $page->getHtml();
+
         $this->crudoperation($session, $page);
+
 
         $session->quit();
     }
+
+    /*
+     * @test
+     */
+
+    /* public function test100PannelloAmministrazioneMain()
+      {
+      $container = $this->getClientAutorizzato()->getContainer();
+      // @var $userManager \FOS\UserBundle\Doctrine\UserManager
+      $userManager = $container->get('fifree.fos_user.user_manager');
+      // @var $loginManager \FOS\UserBundle\Security\LoginManager
+      $loginManager = $container->get('fifree.fos_user.security.login_manager');
+      $firewallName = $container->getParameter('fos_user.firewall_name');
+      $username4test = $container->getParameter('user4test');
+      $user = $userManager->findUserBy(array('username' => $username4test));
+      $loginManager->loginUser($firewallName, $user);
+
+      // save the login token into the session and put it in a cookie
+      $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
+      $container->get('session')->save();
+      } */
 
     private function crudoperation($session, $page)
     {
@@ -104,7 +299,11 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
 
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-        $fieldhtml = 'prova_descrizione';
+//        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+//            $fieldhtml = 'prova_descrizione';
+//        } else {
+        $fieldhtml = 'fi_provabundle_prova_descrizione';
+//        }
 
         $this->fillField($fieldhtml, $descrizionetest1);
 

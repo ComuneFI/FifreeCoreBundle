@@ -1,3 +1,0 @@
-controllers:
-    resource: ../../src/Fi/CoreBundle/Controller/
-    type: annotation

@@ -51,11 +51,7 @@ class StoricomodificheRepository extends EntityRepository
     private function getValoreprecedenteImpostare($change)
     {
         if (is_object($change)) {
-            if ($change instanceof \DateTime) {
-                $risposta = $change->format('d/m/Y H:i:s');
-            } else {
-                $risposta = $change->__toString() . " (" . $change->getId() . ")";
-            }
+            $risposta = $change->__toString() . " (" . $change->getId() . ")";
         } else {
             $risposta = $change;
         }

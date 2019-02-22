@@ -30,6 +30,12 @@ services:
         arguments:
             ['@service_container']
 
+    pannelloamministrazione.command.generateentities:
+        class: Fi\PannelloAmministrazioneBundle\Command\GenerateentitiesCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
     pannelloamministrazione.command.generateymlentities:
         class: Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand
         public: false

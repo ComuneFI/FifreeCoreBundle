@@ -38,12 +38,8 @@
     </testsuites>
     
     <php>
-        <env name="KERNEL_CLASS" value="App\Kernel" />
-        <env name="APP_ENV" value="test" />
-        <env name="APP_DEBUG" value="1" />
-        <env name="APP_SECRET" value="s$cretf0rt3st" />
-        <env name="SHELL_VERBOSITY" value="-1" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak_vendors" />
+        <server name="KERNEL_CLASS" value="AppKernel" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="209" />
         <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
     </php>
 
@@ -51,7 +47,6 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory>./../../src</directory>
             <exclude>
-                <directory>./../../tests</directory>
                 <directory>./../../src/*Bundle/Resources</directory>
                 <directory>./../../src/*/*Bundle/Resources</directory>
                 <directory>./../../src/*/Bundle/*Bundle/Resources</directory>

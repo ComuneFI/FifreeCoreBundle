@@ -61,7 +61,7 @@ class FfprincipaleUserControllerTest extends FifreeTestAuthorizedClient
         $griglia = $container->get("ficorebundle.griglia");
         $testatagriglia = $griglia->testataPerGriglia($paricevuti);
         $modellocolonne = $testatagriglia['modellocolonne'];
-        $this->assertEquals(10, count($modellocolonne));
+        $this->assertEquals(9, count($modellocolonne));
 
         $this->assertEquals('id', $modellocolonne[0]['name']);
         $this->assertEquals('id', $modellocolonne[0]['id']);
@@ -88,37 +88,32 @@ class FfprincipaleUserControllerTest extends FifreeTestAuthorizedClient
         $this->assertEquals(110, $modellocolonne[4]['width']);
         $this->assertEquals('integer', $modellocolonne[4]['tipocampo']);
 
-        $this->assertEquals('giornodellasettimana', $modellocolonne[5]['name']);
-        $this->assertEquals('giornodellasettimana', $modellocolonne[5]['id']);
+        $this->assertEquals('importo', $modellocolonne[5]['name']);
+        $this->assertEquals('importo', $modellocolonne[5]['id']);
         $this->assertEquals(110, $modellocolonne[5]['width']);
-        $this->assertEquals('integer', $modellocolonne[5]['tipocampo']);
+        $this->assertEquals('float', $modellocolonne[5]['tipocampo']);
 
-        $this->assertEquals('importo', $modellocolonne[6]['name']);
-        $this->assertEquals('importo', $modellocolonne[6]['id']);
+        $this->assertEquals('attivo', $modellocolonne[6]['name']);
+        $this->assertEquals('attivo', $modellocolonne[6]['id']);
         $this->assertEquals(110, $modellocolonne[6]['width']);
-        $this->assertEquals('float', $modellocolonne[6]['tipocampo']);
+        $this->assertEquals('boolean', $modellocolonne[6]['tipocampo']);
 
-        $this->assertEquals('attivo', $modellocolonne[7]['name']);
-        $this->assertEquals('attivo', $modellocolonne[7]['id']);
-        $this->assertEquals(110, $modellocolonne[7]['width']);
-        $this->assertEquals('boolean', $modellocolonne[7]['tipocampo']);
+        $this->assertEquals('lunghezzanota', $modellocolonne[7]['name']);
+        $this->assertEquals('lunghezzanota', $modellocolonne[7]['id']);
+        $this->assertEquals(400, $modellocolonne[7]['width']);
+        $this->assertEquals('integer', $modellocolonne[7]['tipocampo']);
+        $this->assertEquals(false, $modellocolonne[7]['search']);
 
-        $this->assertEquals('lunghezzanota', $modellocolonne[8]['name']);
-        $this->assertEquals('lunghezzanota', $modellocolonne[8]['id']);
-        $this->assertEquals(400, $modellocolonne[8]['width']);
-        $this->assertEquals('integer', $modellocolonne[8]['tipocampo']);
+        $this->assertEquals('attivoToString', $modellocolonne[8]['name']);
+        $this->assertEquals('attivoToString', $modellocolonne[8]['id']);
+        $this->assertEquals(200, $modellocolonne[8]['width']);
+        $this->assertEquals('text', $modellocolonne[8]['tipocampo']);
         $this->assertEquals(false, $modellocolonne[8]['search']);
-
-        $this->assertEquals('attivoToString', $modellocolonne[9]['name']);
-        $this->assertEquals('attivoToString', $modellocolonne[9]['id']);
-        $this->assertEquals(200, $modellocolonne[9]['width']);
-        $this->assertEquals('text', $modellocolonne[9]['tipocampo']);
-        $this->assertEquals(false, $modellocolonne[9]['search']);
 
         $tabellagriglia = $testatagriglia['tabella'];
         $nomicolonnegriglia = $testatagriglia['nomicolonne'];
         $this->assertEquals($controller, $tabellagriglia);
-        $this->assertEquals(10, count($nomicolonnegriglia));
+        $this->assertEquals(9, count($nomicolonnegriglia));
 
         $testatagriglia['multisearch'] = 1;
         $testatagriglia['showconfig'] = 1;

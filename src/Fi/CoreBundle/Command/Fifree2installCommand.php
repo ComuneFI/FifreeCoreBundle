@@ -537,7 +537,6 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     ffprincipale_id: 1
     data: $today
     intero: 10
-    giornodellasettimana: 1
     importo: 12.34
     nota: 'Super Nota ffsecondaria'
     attivo: true
@@ -547,7 +546,6 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     ffprincipale_id: 1
     data: $today
     intero: 1
-    giornodellasettimana: 2
     importo: 1.23
     nota: 'Nota ffsecondaria'
     attivo: true
@@ -557,7 +555,6 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     ffprincipale_id: 1
     data: $today
     intero: 10
-    giornodellasettimana: 3
     importo: 11.34
     nota: 'Nota 3° ffsecondaria'
     attivo: false
@@ -566,7 +563,6 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     descsec: '4° Secondaria legato al 1° record Principale'
     ffprincipale_id: 1
     data: $today
-    giornodellasettimana: 4
     intero: 101
     importo: 101.34
     nota: 'Nota 4° ffsecondaria'
@@ -576,7 +572,6 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     descsec: '5° secondaria legato al 1° record principale'
     ffprincipale_id: 1
     data: $today
-    giornodellasettimana: 5
     intero: 101
     importo: 101.34
     nota: 'Nota 4° ffsecondaria'
@@ -587,7 +582,6 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     ffprincipale_id: 2
     data: $today
     intero: 10006
-    giornodellasettimana: 6
     importo: 10006.12
     nota: 'Nota altra ffsecondaria'
     attivo: true
@@ -597,7 +591,6 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     ffprincipale_id: 2
     data: $today
     intero: 10007
-    giornodellasettimana: 7
     importo: 10007.22
     nota: 'Nota altra 7 ffsecondaria'
     attivo: false
@@ -607,7 +600,6 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     ffprincipale_id: 2
     data: $today
     intero: 1111
-    giornodellasettimana: 2
     importo: 1111.12
     nota: 'Nota ffsecondaria con descsec null'
     attivo: false
@@ -617,7 +609,6 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     ffprincipale_id: 2
     data: $today
     intero: 1000
-    giornodellasettimana: 1
     importo: 1000.12
     nota: 'Nota altra ffsecondaria'
     attivo: true
@@ -627,7 +618,6 @@ Fi\CoreBundle\Entity\Ffsecondaria:
     ffprincipale_id: 2
     data: $today
     intero: 1100
-    giornodellasettimana: 2
     importo: 1100.99
     nota: 'Nota 10° altra ffsecondaria'
     attivo: false

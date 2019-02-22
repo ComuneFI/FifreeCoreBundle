@@ -55,7 +55,6 @@ class PermessiController extends FiCoreController
 
         $griglia = $this->get("ficorebundle.griglia");
         $testatagriglia = $griglia->testataPerGriglia($paricevuti);
-        $testatagriglia['overlayopen'] = 1;
 
         $testata = json_encode($testatagriglia);
         $twigparms = array(

@@ -991,7 +991,7 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
 
         return $tests;
     }
-    private function getDatiGriglia($paricevuti, $container)
+    private function getDatiGriglia($paricevuti,$container)
     {
 
         $requestarray = array(
@@ -1055,7 +1055,7 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $griglia = $container->get("ficorebundle.griglia");
         $testatagriglia = $griglia->testataPerGriglia($paricevuti);
         $modellocolonne = $testatagriglia['modellocolonne'];
-        $this->assertEquals(10, count($modellocolonne));
+        $this->assertEquals(9, count($modellocolonne));
 
         $this->assertEquals('id', $modellocolonne[0]['name']);
         $this->assertEquals('id', $modellocolonne[0]['id']);
@@ -1082,37 +1082,32 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $this->assertEquals(110, $modellocolonne[4]['width']);
         $this->assertEquals('integer', $modellocolonne[4]['tipocampo']);
 
-        $this->assertEquals('giornodellasettimana', $modellocolonne[5]['name']);
-        $this->assertEquals('giornodellasettimana', $modellocolonne[5]['id']);
+        $this->assertEquals('importo', $modellocolonne[5]['name']);
+        $this->assertEquals('importo', $modellocolonne[5]['id']);
         $this->assertEquals(110, $modellocolonne[5]['width']);
-        $this->assertEquals('integer', $modellocolonne[5]['tipocampo']);
+        $this->assertEquals('float', $modellocolonne[5]['tipocampo']);
 
-        $this->assertEquals('importo', $modellocolonne[6]['name']);
-        $this->assertEquals('importo', $modellocolonne[6]['id']);
+        $this->assertEquals('attivo', $modellocolonne[6]['name']);
+        $this->assertEquals('attivo', $modellocolonne[6]['id']);
         $this->assertEquals(110, $modellocolonne[6]['width']);
-        $this->assertEquals('float', $modellocolonne[6]['tipocampo']);
+        $this->assertEquals('boolean', $modellocolonne[6]['tipocampo']);
 
-        $this->assertEquals('attivo', $modellocolonne[7]['name']);
-        $this->assertEquals('attivo', $modellocolonne[7]['id']);
-        $this->assertEquals(110, $modellocolonne[7]['width']);
-        $this->assertEquals('boolean', $modellocolonne[7]['tipocampo']);
+        $this->assertEquals('lunghezzanota', $modellocolonne[7]['name']);
+        $this->assertEquals('lunghezzanota', $modellocolonne[7]['id']);
+        $this->assertEquals(400, $modellocolonne[7]['width']);
+        $this->assertEquals('integer', $modellocolonne[7]['tipocampo']);
+        $this->assertEquals(false, $modellocolonne[7]['search']);
 
-        $this->assertEquals('lunghezzanota', $modellocolonne[8]['name']);
-        $this->assertEquals('lunghezzanota', $modellocolonne[8]['id']);
-        $this->assertEquals(400, $modellocolonne[8]['width']);
-        $this->assertEquals('integer', $modellocolonne[8]['tipocampo']);
+        $this->assertEquals('attivoToString', $modellocolonne[8]['name']);
+        $this->assertEquals('attivoToString', $modellocolonne[8]['id']);
+        $this->assertEquals(200, $modellocolonne[8]['width']);
+        $this->assertEquals('text', $modellocolonne[8]['tipocampo']);
         $this->assertEquals(false, $modellocolonne[8]['search']);
-
-        $this->assertEquals('attivoToString', $modellocolonne[9]['name']);
-        $this->assertEquals('attivoToString', $modellocolonne[9]['id']);
-        $this->assertEquals(200, $modellocolonne[9]['width']);
-        $this->assertEquals('text', $modellocolonne[9]['tipocampo']);
-        $this->assertEquals(false, $modellocolonne[9]['search']);
 
         $tabellagriglia = $testatagriglia['tabella'];
         $nomicolonnegriglia = $testatagriglia['nomicolonne'];
         $this->assertEquals($controller, $tabellagriglia);
-        $this->assertEquals(10, count($nomicolonnegriglia));
+        $this->assertEquals(9, count($nomicolonnegriglia));
 
         $testatagriglia['multisearch'] = 1;
         $testatagriglia['showconfig'] = 1;
@@ -1144,7 +1139,7 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $testatanomicolonnegriglia = $testatagriglia['nomicolonne'];
 
         $this->assertEquals($controller, $tabellagriglia);
-        $this->assertEquals(10, count($testatanomicolonnegriglia));
+        $this->assertEquals(9, count($testatanomicolonnegriglia));
 
         $grigliareturn = $FfsecondariaController->grigliaAction($newrequest);
         $datigriglia = json_decode($grigliareturn->getContent());
@@ -1159,13 +1154,6 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
 
         $this->assertTrue($rows[0]->id == 1);
         $this->assertTrue($rows[8]->id == 10);
-
-        $decodifiche = array();
-        for ($index = 1; $index < 8; $index++) {
-            $format = new \IntlDateFormatter('it_IT', \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, "EEEE");
-            $decodifiche["giornodellasettimana"][$index] = ucfirst($format->format(strtotime('next Sunday +' . $index . ' days')));
-        }
-
 
         // @var $em \Doctrine\ORM\EntityManager
         $em = $this->container->get('doctrine')->getManager();
@@ -1189,10 +1177,6 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
 
                     $ffrow = $qu->getQuery()->getResult();
                 } else {
-                    if (isset($decodifiche[$modellocolonne[$idx]['name']])) {
-                        $row[$idx] = array_search($row[$idx], $decodifiche[$modellocolonne[$idx]['name']]);
-                    }
-
                     $qu = $em->createQueryBuilder();
                     $qu->select(array('c'))
                             ->from('FiCoreBundle:Ffsecondaria', 'c')
@@ -1224,7 +1208,7 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
     /**
      * @test
      */
-    public function testGrigliaOrdinamentoColonne()
+    public function testGrigliaOrdinemantoColonne()
     {
         $namespace = 'Fi';
         $bundle = 'Core';
@@ -1272,7 +1256,7 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $griglia = $container->get("ficorebundle.griglia");
         $testatagriglia = $griglia->testataPerGriglia($paricevuti);
         $modellocolonne = $testatagriglia['modellocolonne'];
-        $this->assertEquals(9, count($modellocolonne));
+        $this->assertEquals(8, count($modellocolonne));
 
         $this->assertEquals('attivo', $modellocolonne[0]['name']);
         $this->assertEquals('attivo', $modellocolonne[0]['id']);
@@ -1309,15 +1293,10 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $this->assertEquals(110, $modellocolonne[6]['width']);
         $this->assertEquals('date', $modellocolonne[6]['tipocampo']);
 
-        $this->assertEquals('giornodellasettimana', $modellocolonne[7]['name']);
-        $this->assertEquals('giornodellasettimana', $modellocolonne[7]['id']);
-        $this->assertEquals(110, $modellocolonne[7]['width']);
-        $this->assertEquals('integer', $modellocolonne[7]['tipocampo']);
-
-        $this->assertEquals('nota', $modellocolonne[8]['name']);
-        $this->assertEquals('nota', $modellocolonne[8]['id']);
-        $this->assertEquals(500, $modellocolonne[8]['width']);
-        $this->assertEquals('string', $modellocolonne[8]['tipocampo']);
+        $this->assertEquals('nota', $modellocolonne[7]['name']);
+        $this->assertEquals('nota', $modellocolonne[7]['id']);
+        $this->assertEquals(500, $modellocolonne[7]['width']);
+        $this->assertEquals('string', $modellocolonne[7]['tipocampo']);
 
         $datigriglia = $this->getDatiGriglia($paricevuti, $container);
 
@@ -1330,7 +1309,6 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $this->assertEquals($datigriglia["rows"][9]["cell"][4], 1100);
         $this->assertEquals($datigriglia["rows"][9]["cell"][5], 10);
         $this->assertTrue(DateTime::createFromFormat('d/m/Y', $datigriglia["rows"][9]["cell"][6]) !== false);
-        $this->assertEquals($datigriglia["rows"][9]["cell"][7], 2);
-        $this->assertEquals($datigriglia["rows"][9]["cell"][8], "Nota 10° altra ffsecondaria");
+        $this->assertEquals($datigriglia["rows"][9]["cell"][7], "Nota 10° altra ffsecondaria");
     }
 }

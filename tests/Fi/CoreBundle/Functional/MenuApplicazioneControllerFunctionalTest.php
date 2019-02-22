@@ -12,8 +12,8 @@ class MenuApplicazioneControllerFunctionalTest extends FacebookDriverTester
         $this->login('admin', 'admin');
         $session = $this->getSession();
         $page = $this->getCurrentPage();
-
-
+        
+        
 
         $this->crudoperation($session, $page);
 
@@ -26,7 +26,11 @@ class MenuApplicazioneControllerFunctionalTest extends FacebookDriverTester
         /* Inserimento */
         $this->ajaxWait();
         $descrizionetest1 = 'testmenu';
-        $fieldprefix = 'menu_applicazione';
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'menu_applicazione';
+        } else {
+            $fieldprefix = 'fi_corebundle_menuapplicazione';
+        }
         $this->fillField($fieldprefix . '_nome', $descrizionetest1);
         $this->fillField($fieldprefix . '_percorso', 'http://www.google.it');
         $this->checkboxSelect($fieldprefix . '_autorizzazionerichiesta', 1);
@@ -38,9 +42,9 @@ class MenuApplicazioneControllerFunctionalTest extends FacebookDriverTester
         $selectFirstRow = '$("#list1").jqGrid("setSelection", rowid);';
         $this->evaluateScript('var testselid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRow . '}(testselid )');
 
-
+        
         $this->clickElement('buttonedit_list1');
-
+        
         /* Modifica */
         $descrizionetest2 = 'testmenu 2';
         $this->fillField($fieldprefix . '_nome', $descrizionetest2);
@@ -62,9 +66,9 @@ class MenuApplicazioneControllerFunctionalTest extends FacebookDriverTester
         $selectFirstRowDel = '$("#list1").jqGrid("setSelection", rowid);';
         $this->evaluateScript('var testselid = function(){ var rowid = $($("#list1").find(">tbody>tr.jqgrow:first")).attr("id");' . $selectFirstRowDel . '}(testselid)');
 
-
+        
         $this->clickElement('buttondel_list1');
-
+        
         $this->clickElement('dData');
     }
 

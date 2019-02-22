@@ -75,7 +75,6 @@ class OpzioniTabellaController extends FiCoreController
         $testatagriglia['showedit'] = 1;
         $testatagriglia['showdel'] = 1;
         $testatagriglia['editinline'] = 0;
-        $testatagriglia['overlayopen'] = 1;
 
         $testatagriglia['parametritesta'] = json_encode($paricevuti);
         $this->setParametriGriglia(array('request' => $request));

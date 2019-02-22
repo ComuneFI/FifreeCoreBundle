@@ -21,7 +21,7 @@ class OpzioniTabellaType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-            'data_class' => 'Fi\CoreBundle\Entity\opzioniTabella',
+            'data_class' => 'Fi\CoreBundle\Entity\OpzioniTabella',
             )
         );
     }

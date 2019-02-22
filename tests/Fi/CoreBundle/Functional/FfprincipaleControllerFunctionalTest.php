@@ -65,7 +65,12 @@ class FfprincipaleControllerFunctionalTest extends FacebookDriverTester
     {
         $this->clickElement('buttonadd_list1');
 
-        $fieldprefix = 'ffprincipale_';
+        /* Inserimento */
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
+            $fieldprefix = 'ffprincipale_';
+        } else {
+            $fieldprefix = 'fi_corebundle_ffprincipaletype_';
+        }
         $this->ajaxWait();
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         $this->fillField($fieldprefix . 'descrizione', $descrizionetest1);
