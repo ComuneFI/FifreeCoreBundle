@@ -11,11 +11,8 @@ services:
 # Configure different DB environments
 env:
   - DB=mysql BROWSER=chrome
-  - DB=mysql BROWSER=firefox
   - DB=pgsql BROWSER=chrome
-  - DB=pgsql BROWSER=firefox
   - DB=sqlite3 BROWSER=chrome
-  - DB=sqlite3 BROWSER=firefox
   
 #sudo: required
 #dist: trusty
