@@ -7,16 +7,12 @@
                     {{ child.vars.label|trans|capitalize }}:
                     {{ forms.display_error(child) }}
                 {% else %}
-                    <h5>
-                        <a href="#{{ child.vars.id }}">
-                            {{ child.vars.name }}:
-                        </a>
-                        <small>
-                            {% for error in child.vars.errors %}
-                                {{ error.message|capitalize }}
-                            {% endfor %}
-                        </small>
-                    </h5>
+                    <a href="#{{ child.vars.id }}">
+                        {{ child.vars.name }}:
+                    </a>
+	            {% for error in child.vars.errors %}
+	                {{ error.message|capitalize }}
+	            {% endfor %}
                 {% endif %}
             </li>
         {% endfor %}
