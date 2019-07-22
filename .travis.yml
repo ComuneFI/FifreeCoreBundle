@@ -17,7 +17,9 @@ matrix:
        #   env: BROWSER=chrome
        - php: 7.2
          env: DB=mysql BROWSER=firefox
+       - php: 7.2
          env: DB=pgsql BROWSER=firefox
+       - php: 7.2
          env: DB=sqlite3 BROWSER=firefox
     exclude:
     #- php: hhvm
