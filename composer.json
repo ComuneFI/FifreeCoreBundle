@@ -53,6 +53,7 @@
         "symfony/dotenv": "3.4.*",
         "symfony/flex": "^1.0",
         "symfony/form": "3.4.*",
+        "symfony/framework-bundle": "3.4.*",
         "symfony/lock": "3.4.*",
         "symfony/maker-bundle": "^1.7",
         "symfony/monolog-bundle": "^3.2",
