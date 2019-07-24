@@ -6,21 +6,25 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use MwbExporter\Model\Table;
 
-class GeneratorHelper {
+class GeneratorHelper
+{
 
     private $container;
     private $apppaths;
 
-    public function __construct($container) {
+    public function __construct($container)
+    {
         $this->container = $container;
         $this->apppaths = $container->get("pannelloamministrazione.projectpath");
     }
 
-    public function getDestinationEntityYmlPath() {
+    public function getDestinationEntityYmlPath()
+    {
         return str_replace('/', "\/", str_replace('\\', '/', realpath($this->apppaths->getSrcPath() . '/../src/Entity/')));
     }
 
-    public function checktables($destinationPath, $wbFile, $output) {
+    public function checktables($destinationPath, $wbFile, $output)
+    {
         $finder = new Finder();
         $fs = new Filesystem();
 
@@ -68,7 +72,8 @@ class GeneratorHelper {
         }
     }
 
-    public function checkprerequisiti($mwbfile, $output) {
+    public function checkprerequisiti($mwbfile, $output)
+    {
         $fs = new Filesystem();
 
         $wbFile = $this->apppaths->getDocPath() . DIRECTORY_SEPARATOR . $mwbfile;
@@ -118,7 +123,8 @@ class GeneratorHelper {
         return 0;
     }
 
-    public function getScriptGenerator() {
+    public function getScriptGenerator()
+    {
         $scriptGenerator = $this->apppaths->getBinPath() . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
         if (!file_exists($scriptGenerator)) {
             $scriptGenerator = $this->apppaths->getVendorBinPath() . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
@@ -129,7 +135,8 @@ class GeneratorHelper {
         return $scriptGenerator;
     }
 
-    public function getExportJsonFile() {
+    public function getExportJsonFile()
+    {
         $fs = new Filesystem();
         $cachedir = $this->apppaths->getCachePath();
         $exportJson = $cachedir . DIRECTORY_SEPARATOR . 'export.json';
@@ -140,13 +147,15 @@ class GeneratorHelper {
         return $exportJson;
     }
 
-    public function removeExportJsonFile() {
+    public function removeExportJsonFile()
+    {
         $this->getExportJsonFile();
 
         return true;
     }
 
-    public static function getJsonMwbGenerator() {
+    public static function getJsonMwbGenerator()
+    {
         $jsonTemplate = <<<EOF
 {"export": "doctrine2-annotation",
     "zip": false,
@@ -174,5 +183,4 @@ class GeneratorHelper {
 EOF;
         return $jsonTemplate;
     }
-
 }
