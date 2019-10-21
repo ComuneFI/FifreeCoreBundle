@@ -2,7 +2,7 @@
 
 <project name="Fifree2 CoreBundle" default="build">
     <target name="build"
-            depends="prepare,composer-run-install,php-lint-ci,phpmd-ci,phpcs-ci,phpcpd-ci,php-security-checker,phpunit-ci"/>
+            depends="prepare,composer-run-install,php-lint-ci,phpmd-ci,phpcs-ci,phpcpd-ci,php-security-checker,selenium,phpunit-ci"/>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="build/artifacts/coverage"/>
@@ -34,6 +34,12 @@
     <target name="composer-run-install" depends="composer-update">
         <exec executable="php" failonerror="true">
             <arg line="composer.phar install"/>
+        </exec>
+    </target>
+
+    <target name="selenium" depends="composer-run-install">
+        <exec executable="sh" failonerror="true">
+            <arg line="vendor/bin/selenium-server-standalone"/>
         </exec>
     </target>
 
