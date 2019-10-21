@@ -2,16 +2,18 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerInterface as Container;
+use DateTime;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 class DatabaseUtility
 {
 
     private $container;
-    /* @var $em \Doctrine\ORM\EntityManager */
+    /* @var $em EntityManager */
     private $em;
 
     public function __construct(Container $container)
@@ -47,7 +49,7 @@ class DatabaseUtility
 
     public function isDateChanged($oldvalue, $newvalue)
     {
-        $datenewvalue = new \DateTime();
+        $datenewvalue = new DateTime();
         $datenewvalue->setTimestamp($newvalue);
         $twoboth = !$oldvalue && !$newvalue;
         if ($twoboth) {

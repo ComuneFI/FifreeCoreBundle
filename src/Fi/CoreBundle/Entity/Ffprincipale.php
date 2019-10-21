@@ -2,6 +2,9 @@
 
 namespace Fi\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 /**
  * Ffprincipale.
  */
@@ -18,7 +21,7 @@ class Ffprincipale
     private $descrizione;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var Collection
      */
     private $ffsecondarias;
 
@@ -27,7 +30,7 @@ class Ffprincipale
      */
     public function __construct()
     {
-        $this->ffsecondarias = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ffsecondarias = new ArrayCollection();
     }
 
     /**
@@ -67,11 +70,11 @@ class Ffprincipale
     /**
      * Add ffsecondarias.
      *
-     * @param \Fi\CoreBundle\Entity\Ffsecondaria $ffsecondarias
+     * @param Ffsecondaria $ffsecondarias
      *
      * @return ffprincipale
      */
-    public function addFfsecondaria(\Fi\CoreBundle\Entity\Ffsecondaria $ffsecondarias)
+    public function addFfsecondaria(Ffsecondaria $ffsecondarias)
     {
         $this->ffsecondarias[] = $ffsecondarias;
 
@@ -81,9 +84,9 @@ class Ffprincipale
     /**
      * Remove ffsecondarias.
      *
-     * @param \Fi\CoreBundle\Entity\Ffsecondaria $ffsecondarias
+     * @param Ffsecondaria $ffsecondarias
      */
-    public function removeFfsecondaria(\Fi\CoreBundle\Entity\Ffsecondaria $Ffsecondarias)
+    public function removeFfsecondaria(Ffsecondaria $Ffsecondarias)
     {
         $this->ffsecondarias->removeElement($Ffsecondarias);
     }
@@ -91,7 +94,7 @@ class Ffprincipale
     /**
      * Get ffsecondarias.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getFfsecondarias()
     {

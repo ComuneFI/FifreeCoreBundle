@@ -2,9 +2,11 @@
 
 namespace Fi\PannelloAmministrazioneBundle\DependencyInjection;
 
+use Exception;
+use MwbExporter\Model\Table;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use MwbExporter\Model\Table;
+use function ctype_upper;
 
 class GeneratorHelper
 {
@@ -129,7 +131,7 @@ class GeneratorHelper
         if (!file_exists($scriptGenerator)) {
             $scriptGenerator = $this->apppaths->getVendorBinPath() . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
             if (!file_exists($scriptGenerator)) {
-                throw new \Exception("mysql-workbench-schema-export non trovato", -100);
+                throw new Exception("mysql-workbench-schema-export non trovato", -100);
             }
         }
         return $scriptGenerator;

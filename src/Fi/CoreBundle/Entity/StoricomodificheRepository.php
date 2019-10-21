@@ -2,6 +2,7 @@
 
 namespace Fi\CoreBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 class StoricomodificheRepository extends EntityRepository
@@ -33,9 +34,9 @@ class StoricomodificheRepository extends EntityRepository
 
         $em = $this->getEntityManager();
 
-        $adesso = new \DateTime();
+        $adesso = new DateTime();
         foreach ($changes as $fieldName => $change) {
-            $nuovamodifica = new \Fi\CoreBundle\Entity\Storicomodifiche();
+            $nuovamodifica = new Storicomodifiche();
             $nuovamodifica->setNometabella($controller);
             $nuovamodifica->setNomecampo($fieldName);
             $nuovamodifica->setIdtabella($id);
@@ -51,7 +52,7 @@ class StoricomodificheRepository extends EntityRepository
     private function getValoreprecedenteImpostare($change)
     {
         if (is_object($change)) {
-            if ($change instanceof \DateTime) {
+            if ($change instanceof DateTime) {
                 $risposta = $change->format('d/m/Y H:i:s');
             } else {
                 $risposta = $change->__toString() . " (" . $change->getId() . ")";

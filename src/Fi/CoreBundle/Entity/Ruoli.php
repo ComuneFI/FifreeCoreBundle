@@ -2,6 +2,9 @@
 
 namespace Fi\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 /**
  * Ruoli.
  */
@@ -23,12 +26,12 @@ class Ruoli
     private $paginainiziale;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var Collection
      */
     private $operatoris;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var Collection
      */
     private $permessis;
 
@@ -37,8 +40,8 @@ class Ruoli
      */
     public function __construct()
     {
-        $this->operatoris = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->permessis = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->operatoris = new ArrayCollection();
+        $this->permessis = new ArrayCollection();
     }
 
     /**
@@ -102,11 +105,11 @@ class Ruoli
     /**
      * Add operatoris.
      *
-     * @param \Fi\CoreBundle\Entity\Operatori $operatoris
+     * @param Operatori $operatoris
      *
      * @return ruoli
      */
-    public function addOperatori(\Fi\CoreBundle\Entity\Operatori $operatoris)
+    public function addOperatori(Operatori $operatoris)
     {
         $this->operatoris[] = $operatoris;
 
@@ -116,9 +119,9 @@ class Ruoli
     /**
      * Remove operatoris.
      *
-     * @param \Fi\CoreBundle\Entity\Operatori $operatoris
+     * @param Operatori $operatoris
      */
-    public function removeOperatori(\Fi\CoreBundle\Entity\Operatori $operatoris)
+    public function removeOperatori(Operatori $operatoris)
     {
         $this->operatoris->removeElement($operatoris);
     }
@@ -126,7 +129,7 @@ class Ruoli
     /**
      * Get operatoris.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getOperatoris()
     {
@@ -136,11 +139,11 @@ class Ruoli
     /**
      * Add permessis.
      *
-     * @param \Fi\CoreBundle\Entity\Permessi $permessis
+     * @param Permessi $permessis
      *
      * @return ruoli
      */
-    public function addPermessi(\Fi\CoreBundle\Entity\Permessi $permessis)
+    public function addPermessi(Permessi $permessis)
     {
         $this->permessis[] = $permessis;
 
@@ -150,9 +153,9 @@ class Ruoli
     /**
      * Remove permessis.
      *
-     * @param \Fi\CoreBundle\Entity\Permessi $permessis
+     * @param Permessi $permessis
      */
-    public function removePermessi(\Fi\CoreBundle\Entity\Permessi $permessis)
+    public function removePermessi(Permessi $permessis)
     {
         $this->permessis->removeElement($permessis);
     }
@@ -160,7 +163,7 @@ class Ruoli
     /**
      * Get permessis.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getPermessis()
     {

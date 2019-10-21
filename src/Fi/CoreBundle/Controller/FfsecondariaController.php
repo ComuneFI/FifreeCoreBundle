@@ -2,6 +2,7 @@
 
 namespace Fi\CoreBundle\Controller;
 
+use IntlDateFormatter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -68,14 +69,14 @@ class FfsecondariaController extends FiCoreController
 
         $this->setDefaultGridSettings($testatagriglia);
 
-        $testatagriglia['parametritesta'] = json_encode($paricevuti);
+        $testatagriglia['parametritesta'] = \json_encode($paricevuti);
         $this->setParametriGriglia(array('request' => $request));
-        $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
+        $testatagriglia['parametrigriglia'] = \json_encode(self::$parametrigriglia);
 
         $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
         $canRead = ($gestionepermessi->leggere(array('modulo' => $controller)) ? 1 : 0);
 
-        $testata = json_encode($testatagriglia);
+        $testata = \json_encode($testatagriglia);
         $twigparms = array(
             'nomecontroller' => $controller,
             'testata' => $testata,
@@ -134,7 +135,7 @@ class FfsecondariaController extends FiCoreController
         //Imposta il filtro a TUTTI come default
         $giornodellasettimanaSelect[] = array("valore" => "", "descrizione" => "Tutti", "default" => true);
         for ($index = 1; $index < 8; $index++) {
-            $format = new \IntlDateFormatter('it_IT', \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, "EEEE");
+            $format = new IntlDateFormatter('it_IT', IntlDateFormatter::NONE, IntlDateFormatter::NONE, null, null, "EEEE");
             $giornodellasettimanaSelect[] = array(
                 "valore" => $index,
                 "descrizione" => ucfirst($format->format(strtotime('next Sunday +' . $index . ' days'))),
@@ -168,7 +169,7 @@ class FfsecondariaController extends FiCoreController
 
         $decodifiche = array();
         for ($index = 1; $index < 8; $index++) {
-            $format = new \IntlDateFormatter('it_IT', \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, "EEEE");
+            $format = new IntlDateFormatter('it_IT', IntlDateFormatter::NONE, IntlDateFormatter::NONE, null, null, "EEEE");
             $decodifiche["giornodellasettimana"][$index] = ucfirst($format->format(strtotime('next Sunday +' . $index . ' days')));
         }
         

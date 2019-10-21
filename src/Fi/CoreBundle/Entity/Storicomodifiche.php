@@ -2,6 +2,8 @@
 
 namespace Fi\CoreBundle\Entity;
 
+use DateTime;
+
 /**
  * Storicomodifiche
  */
@@ -28,7 +30,7 @@ class Storicomodifiche
     private $idtabella;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $giorno;
 
@@ -123,7 +125,7 @@ class Storicomodifiche
     /**
      * Set giorno
      *
-     * @param \DateTime $giorno
+     * @param DateTime $giorno
      *
      * @return Storicomodifiche
      */
@@ -137,7 +139,7 @@ class Storicomodifiche
     /**
      * Get giorno
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getGiorno()
     {
@@ -173,7 +175,7 @@ class Storicomodifiche
     private $operatori_id;
 
     /**
-     * @var \Fi\CoreBundle\Entity\Operatori
+     * @var Operatori
      */
     private $operatori;
 
@@ -205,11 +207,11 @@ class Storicomodifiche
     /**
      * Set operatori
      *
-     * @param \Fi\CoreBundle\Entity\Operatori $operatori
+     * @param Operatori $operatori
      *
      * @return Storicomodifiche
      */
-    public function setOperatori(\Fi\CoreBundle\Entity\Operatori $operatori = null)
+    public function setOperatori(Operatori $operatori = null)
     {
         $this->operatori = $operatori;
 
@@ -219,7 +221,7 @@ class Storicomodifiche
     /**
      * Get operatori
      *
-     * @return \Fi\CoreBundle\Entity\Operatori
+     * @return Operatori
      */
     public function getOperatori()
     {
