@@ -65,7 +65,6 @@ before_script:
   - if [[ "$DB" == "sqlite3" ]]; then echo "PROVISIONING WITH Sqlite3"; fi
   - if [[ "$DB" == "sqlite3" ]]; then cp -f ./tests/build/parameters.sqlite.yml $TRAVIS_BUILD_DIR/app/config/parameters.yml; fi
   
-  - composer install
   # - php bin/console fifree2:install admin admin admin@admin.it --env=test
   # - php bin/console server:start --env=test
   - sh vendor/bin/selenium-server-standalone > /dev/null 2>&1 &
