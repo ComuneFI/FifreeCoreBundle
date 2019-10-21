@@ -2,7 +2,12 @@
 
 namespace Fi\CoreBundle\Controller;
 
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\ORM\EntityManager;
+use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -23,7 +28,7 @@ class FiCrudController extends Controller
     protected function setup(Request $request)
     {
         $matches = array();
-        $controllo = new \ReflectionClass(get_class($this));
+        $controllo = new ReflectionClass(get_class($this));
 
         preg_match('/(.*)\\\(.*)Bundle\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
         if (count($matches) == 0) {
@@ -46,7 +51,7 @@ class FiCrudController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em EntityManager */
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -219,7 +224,7 @@ class FiCrudController extends Controller
      */
     public function editAction(Request $request, $id)
     {
-        /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em EntityManager */
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -280,7 +285,7 @@ class FiCrudController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em EntityManager */
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -364,7 +369,7 @@ class FiCrudController extends Controller
      */
     public function aggiornaAction(Request $request)
     {
-        /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em EntityManager */
         $this->setup($request);
         $namespace = $this->getNamespace();
         $bundle = $this->getBundle();
@@ -397,7 +402,7 @@ class FiCrudController extends Controller
      */
     public function deleteAction(Request $request)
     {
-        /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em EntityManager */
         $this->setup($request);
         if (!self::$canDelete) {
             throw new AccessDeniedException("Non si hanno i permessi per aggiornare questo contenuto");
@@ -418,7 +423,7 @@ class FiCrudController extends Controller
 
             $query = $qb->getQuery();
             $query->execute();
-        } catch (\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e) {
+        } catch (ForeignKeyConstraintViolationException $e) {
             return new Response('404');
         } catch (\Exception $e) {
             $response = new Response($e->getMessage());
@@ -434,12 +439,12 @@ class FiCrudController extends Controller
      *
      * @param mixed $id The entity id
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     protected function createDeleteForm($id)
     {
         return $this->createFormBuilder(array('id' => $id))
-                        ->add('id', get_class(new \Symfony\Component\Form\Extension\Core\Type\HiddenType()))
+                        ->add('id', get_class(new HiddenType()))
                         ->getForm();
     }
 

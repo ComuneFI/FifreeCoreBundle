@@ -2,6 +2,9 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
+use Exception;
+use Fi\CoreBundle\Entity\Operatori;
+use Fi\CoreBundle\Entity\Tabelle;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 class TabelleUtility
@@ -90,11 +93,11 @@ class TabelleUtility
         }
 
         if (!$tableClassName) {
-            throw new \Exception('Entity per la tabella ' . $nometabella . ' non trovata', '-1');
+            throw new Exception('Entity per la tabella ' . $nometabella . ' non trovata', '-1');
         }
 
         if (!$entityClass) {
-            throw new \Exception('Entity class per la tabella ' . $nometabella . ' non trovata', '-1');
+            throw new Exception('Entity class per la tabella ' . $nometabella . ' non trovata', '-1');
         }
 
         $bundleClass = str_replace('\\', '', $entityClass);
@@ -142,11 +145,11 @@ class TabelleUtility
         }
 
         if (!$tableClassName) {
-            throw new \Exception('Entity per la tabella ' . $nometabella . ' non trovata', '-1');
+            throw new Exception('Entity per la tabella ' . $nometabella . ' non trovata', '-1');
         }
 
         if (!$entityClass) {
-            throw new \Exception('Entity class per la tabella ' . $nometabella . ' non trovata', '-1');
+            throw new Exception('Entity class per la tabella ' . $nometabella . ' non trovata', '-1');
         }
 
         $bundleClass = str_replace('\\', '', $entityClass);
@@ -179,14 +182,14 @@ class TabelleUtility
 
     private function creaRecordTabelle($nometabella, $colonna, $vettorericerca, $parametri)
     {
-        $crea = new \Fi\CoreBundle\Entity\Tabelle();
+        $crea = new Tabelle();
         $crea->setNometabella($nometabella);
         $crea->setNomecampo($colonna);
 
         if (isset($parametri['operatore'])) {
             $idOperatore = $parametri['operatore'];
             $creaoperatore = $this->container->get("doctrine")->getRepository('FiCoreBundle:Operatori')->find($idOperatore);
-            if ($creaoperatore instanceof \Fi\CoreBundle\Entity\Operatori) {
+            if ($creaoperatore instanceof Operatori) {
                 $crea->setOperatori($creaoperatore);
             }
 

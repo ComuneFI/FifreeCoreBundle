@@ -2,9 +2,11 @@
 
 namespace Fi\PannelloAmministrazioneBundle\DependencyInjection;
 
+use Exception;
+use MwbExporter\Model\Table;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use MwbExporter\Model\Table;
+use function ctype_upper;
 
 class GeneratorHelper
 {

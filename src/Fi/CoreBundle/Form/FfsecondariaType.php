@@ -2,11 +2,11 @@
 
 namespace Fi\CoreBundle\Form;
 
+use IntlDateFormatter;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class FfsecondariaType extends AbstractType
 {
@@ -14,7 +14,7 @@ class FfsecondariaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $giornidellasettimana = array();
-        $format = new \IntlDateFormatter('it_IT', \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, "EEEE");
+        $format = new IntlDateFormatter('it_IT', IntlDateFormatter::NONE, IntlDateFormatter::NONE, null, null, "EEEE");
         for ($index = 1; $index < 8; $index++) {
             $giornidellasettimana[ucfirst($format->format(strtotime('next Sunday +' . $index . ' days')))] = $index;
         }

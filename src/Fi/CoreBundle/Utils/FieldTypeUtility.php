@@ -2,6 +2,8 @@
 
 namespace Fi\CoreBundle\Utils;
 
+use DateTime;
+
 /**
  * Description of JqgridResponse.
  *
@@ -26,7 +28,7 @@ abstract class FieldTypeUtility
 
     public static function getDateTimeValueFromTimestamp($value)
     {
-        $date = new \DateTime();
+        $date = new DateTime();
         $date->setTimestamp($value);
         return $date;
     }
