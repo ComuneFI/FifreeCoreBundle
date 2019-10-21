@@ -16,7 +16,7 @@ class GrigliaDatiPrecondizioniUtils
         $nometabella = $parametri['nometabella'];
         $entityName = $bundle . ':' . $nometabella;
         $regoleprecondizioni = array();
-        $filtri = json_decode($request->get('filters'), true);
+        $filtri = \json_decode($request->get('filters'), true);
         /* dal filtro prende il tipo di operatore (AND o OR sono i due fin qui gestiti) */
         $operatorelogicofiltrigriglia = $filtri['groupOp'];
         /* prende un vettore con tutte le ricerche */
@@ -36,10 +36,10 @@ class GrigliaDatiPrecondizioniUtils
                         $nomecampoprecondizione = $valuepre;
                         break;
                     case 'operatore':
+                        /*'LIKE' => 'bw', 'NOT LIKE' => 'bn', 'LIKE' => 'eq', 'NOT LIKE' => 'en',*/
                         $array_operatori = array('=' => 'eq', '<>' => 'ne', '<' => 'lt',
                             '<=' => 'le', '>' => 'gt', '>=' => 'ge',
-                            'LIKE' => 'bw', 'NOT LIKE' => 'bn', 'IN' => 'in', 'NOT IN' => 'ni',
-                            'LIKE' => 'eq', 'NOT LIKE' => 'en',
+                            'IN' => 'in', 'NOT IN' => 'ni',
                             'LIKE' => 'cn', 'NOT LIKE' => 'nc', 'IS' => 'nu', 'IS NOT' => 'nn');
                         $operatoreprecondizione = $array_operatori[strtoupper($valuepre)];
                         break;

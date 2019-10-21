@@ -2,6 +2,8 @@
 
 namespace Fi\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use FOS\UserBundle\Model\User as BaseUser;
 
 /**
@@ -29,17 +31,17 @@ class Operatori extends BaseUser
     private $ruoli_id;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var Collection
      */
     private $permessis;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var Collection
      */
     private $storicomodifiches;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var Collection
      */
     private $tabelles;
 
@@ -53,8 +55,8 @@ class Operatori extends BaseUser
      */
     public function __construct()
     {
-        $this->permessis = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->tabelles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->permessis = new ArrayCollection();
+        $this->tabelles = new ArrayCollection();
         parent::__construct();
     }
 
@@ -133,7 +135,7 @@ class Operatori extends BaseUser
     /**
      * Get permessis.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getPermessis()
     {
@@ -153,7 +155,7 @@ class Operatori extends BaseUser
     /**
      * Get storicomodifiches.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getStoricomodicihes()
     {
@@ -168,7 +170,7 @@ class Operatori extends BaseUser
      *
      * @return operatori
      */
-    public function addStoricomodifiche(\Fi\CoreBundle\Entity\Storicomodifiche $storicomodifiches)
+    public function addStoricomodifiche(Storicomodifiche $storicomodifiches)
     {
         $this->storicomodifiches[] = $storicomodifiches;
 
@@ -180,7 +182,7 @@ class Operatori extends BaseUser
      *
      * @param \Fi\CoreBundle\Entity\storicomodifiche $storicomodifiches
      */
-    public function removeStoricomodicihe(\Fi\CoreBundle\Entity\Storicomodifiche $storicomodifiches)
+    public function removeStoricomodicihe(Storicomodifiche $storicomodifiches)
     {
         $this->storicomodifiches->removeElement($storicomodifiches);
     }
@@ -212,7 +214,7 @@ class Operatori extends BaseUser
     /**
      * Get tabelles.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getTabelles()
     {
@@ -256,11 +258,11 @@ class Operatori extends BaseUser
     /**
      * Add storicomodifich
      *
-     * @param \Fi\CoreBundle\Entity\Storicomodifiche $storicomodifich
+     * @param Storicomodifiche $storicomodifich
      *
      * @return Operatori
      */
-    public function addStoricomodifich(\Fi\CoreBundle\Entity\Storicomodifiche $storicomodifich)
+    public function addStoricomodifich(Storicomodifiche $storicomodifich)
     {
         $this->storicomodifiches[] = $storicomodifich;
 
@@ -270,9 +272,9 @@ class Operatori extends BaseUser
     /**
      * Remove storicomodifich
      *
-     * @param \Fi\CoreBundle\Entity\Storicomodifiche $storicomodifich
+     * @param Storicomodifiche $storicomodifich
      */
-    public function removeStoricomodifich(\Fi\CoreBundle\Entity\Storicomodifiche $storicomodifich)
+    public function removeStoricomodifich(Storicomodifiche $storicomodifich)
     {
         $this->storicomodifiches->removeElement($storicomodifich);
     }
@@ -280,7 +282,7 @@ class Operatori extends BaseUser
     /**
      * Get storicomodifiches
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getStoricomodifiches()
     {

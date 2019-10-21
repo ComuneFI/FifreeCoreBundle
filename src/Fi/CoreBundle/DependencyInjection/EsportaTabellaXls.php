@@ -2,6 +2,15 @@
 
 namespace Fi\CoreBundle\DependencyInjection;
 
+use PHPExcel;
+use PHPExcel_CachedObjectStorageFactory;
+use PHPExcel_Cell;
+use PHPExcel_Settings;
+use PHPExcel_Shared_Date;
+use PHPExcel_Style_Fill;
+use PHPExcel_Style_NumberFormat;
+use PHPExcel_Writer_Excel5;
+
 class EsportaTabellaXls
 {
     public function esportaexcel($parametri = array())
@@ -9,12 +18,12 @@ class EsportaTabellaXls
         set_time_limit(960);
         ini_set('memory_limit', '2048M');
 
-        $cacheMethod = \PHPExcel_CachedObjectStorageFactory::cache_to_phpTemp;
+        $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_phpTemp;
         $cacheSettings = array('memoryCacheSize' => '8MB');
-        \PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+        PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
 
         //Creare un nuovo file
-        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel = new PHPExcel();
 
         $objPHPExcel->setActiveSheetIndex(0);
 
@@ -35,7 +44,7 @@ class EsportaTabellaXls
 
         $this->printHeaderXls($modellicolonne, $testata, $sheet);
 
-        $risposta = json_decode($rispostaj);
+        $risposta = \json_decode($rispostaj);
         if (isset($risposta->rows)) {
             $righe = $risposta->rows;
         } else {
@@ -45,7 +54,7 @@ class EsportaTabellaXls
         $this->printBodyXls($righe, $modellicolonne, $sheet);
 
         //Si crea un oggetto
-        $objWriter = new \PHPExcel_Writer_Excel5($objPHPExcel);
+        $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
         $todaydate = date('d-m-y');
 
         $filename = 'Exportazione_' . $testata['tabella'];
@@ -67,7 +76,7 @@ class EsportaTabellaXls
         $letteracolonna = 0;
         foreach ($modellicolonne as $modellocolonna) {
             //Si imposta la larghezza delle colonne
-            $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonnaheader);
+            $letteracolonna = PHPExcel_Cell::stringFromColumnIndex($indicecolonnaheader);
             $width = (int) $modellocolonna['width'] / 7;
             $indicecolonnaheadertitle = $testata['nomicolonne'][$indicecolonnaheader];
             $coltitlecalc = isset($indicecolonnaheadertitle) ? $indicecolonnaheadertitle : $modellocolonna['name'];
@@ -83,7 +92,7 @@ class EsportaTabellaXls
             //Colore header
             $style_header = array(
                 'fill' => array(
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID,
+                    'type' => PHPExcel_Style_Fill::FILL_SOLID,
                     'color' => array('rgb' => '0404B4'),
                 ),
                 'font' => array(
@@ -104,7 +113,7 @@ class EsportaTabellaXls
                 $d = (int) substr($vettorecella, 0, 2);
                 $m = (int) substr($vettorecella, 3, 2);
                 $y = (int) substr($vettorecella, 6, 4);
-                $t_date = \PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
+                $t_date = PHPExcel_Shared_Date::FormattedPHPToExcel($y, $m, $d);
                 $valore = $t_date;
                 break;
             case 'boolean':
@@ -137,22 +146,22 @@ class EsportaTabellaXls
 
         $indicecolonna = 0;
         foreach ($modellicolonne as $modellocolonna) {
-            $letteracolonna = \PHPExcel_Cell::stringFromColumnIndex($indicecolonna);
+            $letteracolonna = PHPExcel_Cell::stringFromColumnIndex($indicecolonna);
             switch ($modellocolonna['tipocampo']) {
                 case 'text':
                     $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
-                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                            ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
                     break;
                 case 'string':
                     $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
-                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                            ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
                     break;
                 case 'integer':
                     $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
-                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+                            ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
                     break;
                 case 'float':
                     $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
@@ -177,7 +186,7 @@ class EsportaTabellaXls
                 default:
                     $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $row)
                             ->getNumberFormat()
-                            ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+                            ->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
                     break;
             }
 

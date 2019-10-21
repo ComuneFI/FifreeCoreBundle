@@ -2,6 +2,9 @@
 
 namespace Fi\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 /**
  * Tabelle.
  */
@@ -68,12 +71,12 @@ class Tabelle
     private $operatori_id;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var Collection
      */
     private $opzioniTabellas;
 
     /**
-     * @var \Fi\CoreBundle\Entity\Operatori
+     * @var Operatori
      */
     private $operatori;
 
@@ -82,7 +85,7 @@ class Tabelle
      */
     public function __construct()
     {
-        $this->opzioniTabellas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->opzioniTabellas = new ArrayCollection();
     }
 
     /**
@@ -362,11 +365,11 @@ class Tabelle
     /**
      * Add opzioniTabella.
      *
-     * @param \Fi\CoreBundle\Entity\OpzioniTabella $opzioniTabella
+     * @param OpzioniTabella $opzioniTabella
      *
      * @return Tabelle
      */
-    public function addOpzioniTabella(\Fi\CoreBundle\Entity\OpzioniTabella $opzioniTabella)
+    public function addOpzioniTabella(OpzioniTabella $opzioniTabella)
     {
         $this->opzioniTabellas[] = $opzioniTabella;
 
@@ -376,9 +379,9 @@ class Tabelle
     /**
      * Remove opzioniTabella.
      *
-     * @param \Fi\CoreBundle\Entity\OpzioniTabella $opzioniTabella
+     * @param OpzioniTabella $opzioniTabella
      */
-    public function removeOpzioniTabella(\Fi\CoreBundle\Entity\OpzioniTabella $opzioniTabella)
+    public function removeOpzioniTabella(OpzioniTabella $opzioniTabella)
     {
         $this->opzioniTabellas->removeElement($opzioniTabella);
     }
@@ -386,7 +389,7 @@ class Tabelle
     /**
      * Get opzioniTabellas.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getOpzioniTabellas()
     {
@@ -396,11 +399,11 @@ class Tabelle
     /**
      * Set operatori.
      *
-     * @param \Fi\CoreBundle\Entity\Operatori $operatori
+     * @param Operatori $operatori
      *
      * @return Tabelle
      */
-    public function setOperatori(\Fi\CoreBundle\Entity\Operatori $operatori = null)
+    public function setOperatori(Operatori $operatori = null)
     {
         $this->operatori = $operatori;
 
@@ -410,7 +413,7 @@ class Tabelle
     /**
      * Get operatori.
      *
-     * @return \Fi\CoreBundle\Entity\Operatori
+     * @return Operatori
      */
     public function getOperatori()
     {

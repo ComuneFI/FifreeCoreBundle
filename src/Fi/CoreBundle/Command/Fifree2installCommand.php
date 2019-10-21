@@ -2,12 +2,13 @@
 
 namespace Fi\CoreBundle\Command;
 
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Filesystem\Filesystem;
 
 class Fifree2installCommand extends ContainerAwareCommand
 {
@@ -80,7 +81,7 @@ class Fifree2installCommand extends ContainerAwareCommand
      */
     private function generateDefaultData($admin, $adminemail)
     {
-        $todaydt = new \DateTime();
+        $todaydt = new DateTime();
         $today = $todaydt->format("Y-m-d") . "T00:00:00+01:00";
         
         $defaultData = <<<EOF

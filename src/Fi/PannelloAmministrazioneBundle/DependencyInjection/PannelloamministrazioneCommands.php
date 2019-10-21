@@ -2,8 +2,9 @@
 
 namespace Fi\PannelloAmministrazioneBundle\DependencyInjection;
 
-use Symfony\Component\Filesystem\Filesystem;
+use Exception;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
+use Symfony\Component\Filesystem\Filesystem;
 
 class PannelloamministrazioneCommands
 {
@@ -33,7 +34,7 @@ class PannelloamministrazioneCommands
             $vcscommand = 'git pull';
         }
         if (!$vcscommand) {
-            throw new \Exception("Vcs non trovato", 100);
+            throw new Exception("Vcs non trovato", 100);
         }
         $command = 'cd ' . $projectDir . $sepchr . $vcscommand;
         return $this->pammutils->runCommand($command);
@@ -119,7 +120,7 @@ class PannelloamministrazioneCommands
 
     public function generateFormCrud($bundlename, $entityform)
     {
-        /* @var $fs \Symfony\Component\Filesystem\Filesystem */
+        /* @var $fs Filesystem */
         $resultchk = $this->checkFormCrud($bundlename, $entityform);
 
         if ($resultchk["errcode"] != 0) {
@@ -140,7 +141,7 @@ class PannelloamministrazioneCommands
 
     public function checkFormCrud($bundlename, $entityform)
     {
-        /* @var $fs \Symfony\Component\Filesystem\Filesystem */
+        /* @var $fs Filesystem */
         $fs = new Filesystem();
         $srcPath = $this->apppaths->getSrcPath();
         $appPath = $this->apppaths->getAppPath();

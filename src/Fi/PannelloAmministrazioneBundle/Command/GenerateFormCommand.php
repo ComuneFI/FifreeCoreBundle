@@ -2,13 +2,14 @@
 
 namespace Fi\PannelloAmministrazioneBundle\Command;
 
+use Fi\CoreBundle\Entity\Permessi;
+use Fi\CoreBundle\Entity\Tabelle;
+use Fi\OsBundle\DependencyInjection\OsFunctions;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
-use Fi\OsBundle\DependencyInjection\OsFunctions;
 
 class GenerateFormCommand extends ContainerAwareCommand
 {
@@ -126,14 +127,14 @@ class GenerateFormCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
         $ruoloAmm = $em->getRepository('FiCoreBundle:Ruoli')->findOneBy(array('is_superadmin' => true)); //SuperAdmin
 
-        $newPermesso = new \Fi\CoreBundle\Entity\Permessi();
+        $newPermesso = new Permessi();
         $newPermesso->setCrud('crud');
         $newPermesso->setModulo($entityform);
         $newPermesso->setRuoli($ruoloAmm);
         $em->persist($newPermesso);
         $em->flush();
 
-        $tabelle = new \Fi\CoreBundle\Entity\Tabelle();
+        $tabelle = new Tabelle();
         $tabelle->setNometabella($entityform);
         $em->persist($tabelle);
         $em->flush();

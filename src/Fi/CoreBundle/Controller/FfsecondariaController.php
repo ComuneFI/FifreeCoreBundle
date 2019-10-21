@@ -2,6 +2,7 @@
 
 namespace Fi\CoreBundle\Controller;
 
+use IntlDateFormatter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -59,14 +60,14 @@ class FfsecondariaController extends FiCoreController
 
         $this->setDefaultGridSettings($testatagriglia);
 
-        $testatagriglia['parametritesta'] = json_encode($paricevuti);
+        $testatagriglia['parametritesta'] = \json_encode($paricevuti);
         $this->setParametriGriglia(array('request' => $request));
-        $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
+        $testatagriglia['parametrigriglia'] = \json_encode(self::$parametrigriglia);
 
         $gestionepermessi = $this->get("ficorebundle.gestionepermessi");
         $canRead = ($gestionepermessi->leggere(array('modulo' => $controller)) ? 1 : 0);
 
-        $testata = json_encode($testatagriglia);
+        $testata = \json_encode($testatagriglia);
         $twigparms = array(
             'nomecontroller' => $controller,
             'testata' => $testata,

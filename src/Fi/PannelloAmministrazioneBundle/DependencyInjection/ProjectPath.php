@@ -2,6 +2,8 @@
 
 namespace Fi\PannelloAmministrazioneBundle\DependencyInjection;
 
+use Exception;
+
 class ProjectPath
 {
 
@@ -44,7 +46,7 @@ class ProjectPath
             }
         }
         if (!file_exists($bindir)) {
-            throw new \Exception("Cartella Bin non trovata", -100);
+            throw new Exception("Cartella Bin non trovata", -100);
         }
         return $bindir;
     }
@@ -55,7 +57,7 @@ class ProjectPath
         if (!file_exists($vendorbindir)) {
             $vendorbindir = $this->getProjectPath() . '/../vendor/bin';
             if (!file_exists($vendorbindir)) {
-                throw new \Exception("Cartella Bin in vendor non trovata", -100);
+                throw new Exception("Cartella Bin in vendor non trovata", -100);
             }
         }
         return $vendorbindir;
@@ -94,7 +96,7 @@ class ProjectPath
             }
         }
         if (!file_exists($cachedir)) {
-            throw new \Exception("Cache non trovata", -100);
+            throw new Exception("Cache non trovata", -100);
         }
         return $cachedir;
     }
@@ -108,7 +110,7 @@ class ProjectPath
             }
         }
         if (!file_exists($logsdir)) {
-            throw new \Exception("Logs non trovata", -100);
+            throw new Exception("Logs non trovata", -100);
         }
         return $logsdir;
     }
@@ -123,7 +125,7 @@ class ProjectPath
             }
         }
         if (!file_exists($console)) {
-            throw new \Exception("Console non trovata", -100);
+            throw new Exception("Console non trovata", -100);
         }
         return $console;
     }
