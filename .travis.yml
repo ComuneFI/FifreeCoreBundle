@@ -48,7 +48,7 @@ cache:
 addons:
   #firefox: "45.8.0esr"
   firefox: "latest"
-  chrome: stable
+  chrome: "latest"
 
 before_script:
   - sudo apt-get update
