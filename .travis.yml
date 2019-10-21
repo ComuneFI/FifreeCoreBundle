@@ -6,6 +6,7 @@ php:
 services:
   - mysql
   - pgsql
+  - xvfb
   
 matrix:
     allow_failures:
@@ -104,9 +105,6 @@ before_script:
   
   - if [[ "$BROWSER" == "chrome" ]]; then sudo sed -i 's/firefox/chrome/' $TRAVIS_BUILD_DIR/tests/config/packages/test/testdriver.yaml; fi
   - chmod +x bin/console
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3 # give xvfb some time to start
   
 
 script:
