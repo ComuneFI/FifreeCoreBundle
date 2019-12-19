@@ -148,6 +148,7 @@
                         $.ajax({
                             url: "{{ path("fi_pannello_amministrazione_clearcache") }}",
                             data: {env: "prod"},
+                            dataType: "html",
                             context: document.body
                         }).done(function (data) {
                             $("#risultato").html(data);
@@ -227,6 +228,7 @@
                             $("#risultato").html("");
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_getVcs") }}",
+                                dataType: "html",
                                 context: document.body
                             }).done(function (data) {
                                 $("#risultato").html(data);
@@ -253,6 +255,7 @@
                             $("#risultato").html("");
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_generateentity") }}",
+                                dataType: "html",
                                 data: {file: entityfile},
                                 context: document.body
                             }).done(function (data) {
@@ -281,6 +284,7 @@
                             $("#risultato").html("");
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_generateform") }}",
+                                dataType: "html",
                                 data: {entityform: entityform, bundlename: bundlename},
                                 context: document.body
                             }).done(function (data) {
@@ -308,6 +312,7 @@
                             $("#risultato").html("");
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_generateformcrud") }}",
+                                dataType: "html",
                                 data: {entityform: entityform},
                                 context: document.body
                             }).done(function (data) {
@@ -335,6 +340,7 @@
                             $("#risultato").html("");
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_aggiornaschemadatabase") }}",
+                                dataType: "html",
                                 context: document.body
                             }).done(function (data) {
                                 $("#risultato").html(data);
@@ -365,6 +371,7 @@
                             $("#risultato").html("");
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_symfonycommand") }}",
+                                dataType: "html",
                                 data: {symfonycommand: symfonycommand},
                                 context: document.body
                             }).done(function (data) {
@@ -397,6 +404,7 @@
                             $("#risultato").html("");
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_unixcommand") }}",
+                                dataType: "html",
                                 data: {unixcommand: unixcommand},
                                 context: document.body
                             }).done(function (data) {
@@ -425,6 +433,7 @@
                             $("#risultato").html("");
                             $.ajax({
                                 url: "{{ path("fi_pannello_amministrazione_phpunittest") }}",
+                                dataType: "html",
                                 context: document.body
                             }).done(function (data) {
                                 $("#risultato").html(data);
@@ -446,7 +455,8 @@
                 $("#changetheme").change(function () {
                     var temascelto = $(this).val();
                     $.ajax({
-                        url: "{{ path("fi_pannello_amministrazione_changetheme") }}?theme="+temascelto,
+                        url: "{{ path("fi_pannello_amministrazione_changetheme") }}?theme=" + temascelto,
+                        dataType: "html",
                         context: document.body
                     }).done(function (data) {
                         $("#risultato").html(data);
