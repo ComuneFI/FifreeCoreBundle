@@ -98,8 +98,7 @@
                     {label: "Metti sito in manutenzione", value: "{{comandishell.setmaintenancefile}}"},
                     {label: "Metti sito online", value: "{{comandishell.remmaintenancefile}}"},
                     {label: "Cancella log files", value: "{{comandishell.logsfiles}}"},
-                    {label: "Cancella cache prod", value: "{{comandishell.cacheprodfiles}}"},
-                    {label: "Cancella cache dev", value: "{{comandishell.cachedevfiles}}"},
+                    {label: "Cancella cache", value: "{{comandishell.cachefiles}}"},
                     /**/{% if (iswindows == false) %}
                     {label: "Composer install", value: ". {{userdir}}/envvars && cd {{rootdir}} && export COMPOSER_HOME={{rootdir | slice(0, rootdir|length - (appname|length) - 1)}}/.composer && composer install --no-interaction 2>&1"},
                     {label: "Sostituisci stringa in file", value: "sed -i -e 's/cercastringa@/sostituiscistringa@/g' {{rootdir}}/app/config/parameters.yml"}

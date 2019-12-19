@@ -86,8 +86,7 @@ class PannelloAmministrazioneController extends Controller
         $dellockfile = "DELETELOCK";
         $delcomposerfile = $delcmd . ' ' . $projectDir . DIRECTORY_SEPARATOR . 'composer.lock';
         $dellogsfiles = $delcmd . ' ' . $this->apppaths->getLogsPath() . DIRECTORY_SEPARATOR . '*';
-        $delcacheprodfiles = $delcmd . ' ' . $this->apppaths->getCachePath() . DIRECTORY_SEPARATOR . 'prod' . DIRECTORY_SEPARATOR . '*';
-        $delcachedevfiles = $delcmd . ' ' . $this->apppaths->getCachePath() . DIRECTORY_SEPARATOR . 'dev' . DIRECTORY_SEPARATOR . '*';
+        $delcachefiles = $delcmd . ' ' . $this->apppaths->getCachePath() . DIRECTORY_SEPARATOR . '*';
         $setmaintenancefile = $setfilelock;
         $remmaintenancefile = $remfilelock;
 
@@ -95,8 +94,7 @@ class PannelloAmministrazioneController extends Controller
             'lockfile' => $dellockfile,
             'composerlock' => $this->fixSlash($delcomposerfile),
             'logsfiles' => $this->fixSlash($dellogsfiles),
-            'cacheprodfiles' => $this->fixSlash($delcacheprodfiles),
-            'cachedevfiles' => $this->fixSlash($delcachedevfiles),
+            'cachefiles' => $this->fixSlash($delcachefiles),
             'setmaintenancefile' => $setmaintenancefile,
             'remmaintenancefile' => $remmaintenancefile,
         );
