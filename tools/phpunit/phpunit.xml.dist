@@ -10,7 +10,6 @@
     convertWarningsToExceptions = "true"
     processIsolation            = "false"
     stopOnFailure               = "true"
-    syntaxCheck                 = "false"
     bootstrap                   = "./../../tests/bootstrap.php" >
 
     <testsuites>
@@ -43,7 +42,7 @@
         <env name="APP_DEBUG" value="1" />
         <env name="APP_SECRET" value="s$cretf0rt3st" />
         <env name="SHELL_VERBOSITY" value="-1" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak_vendors" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0" />
         <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
     </php>
 

@@ -8,7 +8,7 @@ class ArrayFunctionsTest extends WebTestCase
 
     private $rubrica = array();
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->rubrica[] = array("matricola" => 99996, "cognome" => "manzi", "nome" => "andrea");
         $this->rubrica[] = array("matricola" => 99994, "cognome" => "piariello", "nome" => "emidio");

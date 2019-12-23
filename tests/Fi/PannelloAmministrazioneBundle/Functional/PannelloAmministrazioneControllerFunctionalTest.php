@@ -4,7 +4,7 @@ use Tests\CoreBundle\FacebookDriver\FacebookDriverTester;
 
 class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTester
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() : void
     {
         cleanFilesystem();
         databaseinit();
@@ -135,7 +135,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FacebookDriverTest
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    public function tearDown() : void
     {
         parent::tearDown();
         cleanFilesystem();
