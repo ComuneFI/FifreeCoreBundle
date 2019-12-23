@@ -10,7 +10,7 @@ class OperatoriCreateCommandTest extends WebTestCase
     /**
      * @inheritDoc
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         static::$kernel = static::createKernel();
         static::$kernel->boot();

@@ -10,7 +10,6 @@
     convertWarningsToExceptions = "true"
     processIsolation            = "false"
     stopOnFailure               = "true"
-    syntaxCheck                 = "false"
     bootstrap                   = "./../../tests/bootstrap.php" >
 
     <testsuites>
@@ -39,7 +38,7 @@
     
     <php>
         <server name="KERNEL_CLASS" value="AppKernel" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="209" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0" />
         <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
     </php>
 
