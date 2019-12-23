@@ -8,7 +8,7 @@ class PercentualiStringheTest extends WebTestCase
 
     private $parametri = array();
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->parametri[] = array("stringaa" => "manzi", "stringab" => "manzi", "tolleranza" => 0, "percentuale" => 100);
         $this->parametri[] = array("stringaa" => "manzi", "stringab" => "manzo", "tolleranza" => 0, "percentuale" => 80);

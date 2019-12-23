@@ -18,7 +18,7 @@ class FifreeTestAuthorizedClient extends WebTestCase
     protected $client;
     protected $testclassname;
 
-    protected function setUp()
+    protected function setUp() : void
     {
         $client = static::createClient();
         $this->client = $this->createAuthorizedClient($client);
@@ -118,7 +118,7 @@ class FifreeTestAuthorizedClient extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown() : void
     {
         parent::tearDown();
         if (isset($this->em)) {

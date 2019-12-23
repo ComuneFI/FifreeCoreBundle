@@ -7,7 +7,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 class GenerateentitiesCommandTest extends KernelTestCase
 {
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() : void
     {
         cleanFilesystem();
         removecache();
@@ -25,7 +25,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
     /**
      * @inheritDoc
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         $kernel = static::createKernel();
         $kernel->boot();
@@ -175,7 +175,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $this->assertTrue(file_exists($checkform));
     }
 
-    protected function tearDown()
+    protected function tearDown() : void
     {
         parent::tearDown();
         cleanFilesystem();

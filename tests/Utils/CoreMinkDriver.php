@@ -330,7 +330,7 @@ abstract class CoreMinkDriver extends WebTestCase
         $this->visit("logout");
     }
 
-    public function tearDown()
+    public function tearDown() : void
     {
         parent::tearDown();
     }

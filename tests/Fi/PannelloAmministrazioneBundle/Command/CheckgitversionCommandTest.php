@@ -17,7 +17,7 @@ class CheckgitversionCommandTest extends KernelTestCase
     /**
      * @inheritDoc
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         $kernel = static::createKernel();
         $kernel->boot();
