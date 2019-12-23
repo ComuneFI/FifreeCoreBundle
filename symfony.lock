@@ -131,6 +131,9 @@
     "pdepend/pdepend": {
         "version": "2.5.2"
     },
+    "php": {
+        "version": "7.2"
+    },
     "php-coveralls/php-coveralls": {
         "version": "v2.1.0"
     },
@@ -341,11 +344,17 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.8.0"
     },
+    "symfony/polyfill-php56": {
+        "version": "v1.13.1"
+    },
     "symfony/polyfill-php70": {
         "version": "v1.8.0"
     },
     "symfony/polyfill-php72": {
         "version": "v1.11.0"
+    },
+    "symfony/polyfill-util": {
+        "version": "v1.13.1"
     },
     "symfony/process": {
         "version": "v3.4.14"
