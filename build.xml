@@ -44,6 +44,7 @@
 
     <target name="composer-run-install" depends="composer-self-update">
         <exec executable="php" failonerror="true">
+            <env key="COMPOSER_MEMORY_LIMIT" value="-1"/>
             <arg line="composer.phar install"/>
         </exec>
     </target>
