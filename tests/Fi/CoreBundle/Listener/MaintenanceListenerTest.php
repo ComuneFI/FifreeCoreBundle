@@ -15,7 +15,7 @@ class MaintenanceListenerTest extends FifreeTestAuthorizedClient
         $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $em = $this->getEntityManager();
-        //$this->assertContains('DoctrineORMEntityManager', get_class($em));
+        //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));
 
         $filelock = $client->getContainer()->getParameter('maintenanceLockFilePath');
         @unlink($filelock);        

@@ -47,7 +47,7 @@ class OperatoriCreateCommandTest extends WebTestCase
             'username' => $userprova,
         ));
 
-        //$this->assertContains('Created user', $output);
+        //$this->assertStringContainsString('Created user', $output);
         $this->assertEquals($userprova . '@domain.it', $user->getEmail());
         $this->assertEquals(true, $user->isEnabled());
 

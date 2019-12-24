@@ -16,7 +16,7 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
 
         $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('Ffsecondaria');
-        //$this->assertContains('DoctrineORMEntityManager', get_class($em));
+        //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));
 
         $crawler = $client->request('GET', $url);
         $this->assertTrue($client->getResponse()->isSuccessful());
