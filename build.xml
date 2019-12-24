@@ -8,7 +8,6 @@
                     fifreecorebundle-drop-database,
                     fifreecorebundle-install,
                     php-lint-ci, 
-                    phpmd-ci, 
                     phpcs-ci, 
                     phpcpd-ci, 
                     php-security-checker, 
