@@ -18,7 +18,7 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
         $client = $this->getClient();
         $url = $this->getRoute('Ffprincipale');
         $em = $this->getEntityManager();
-        //$this->assertContains('DoctrineORMEntityManager', get_class($em));
+        //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));
 
         $client->request('GET', $url);
 

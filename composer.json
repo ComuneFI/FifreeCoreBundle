@@ -68,7 +68,7 @@
         "enm1989/chromedriver": "^2.42",
         "facebook/webdriver": "^1.6",
         "php-coveralls/php-coveralls": "^2.0",
-        "phpmd/phpmd": "^2.6",
+        "phpmd/phpmd": "2.7.*",
         "se/selenium-server-standalone": "3.8.*",
         "sebastian/phpcpd": "^3.0",
         "sensiolabs/security-checker": "^5.0",

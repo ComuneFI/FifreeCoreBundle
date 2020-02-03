@@ -14,7 +14,7 @@ class FfsecondariaControllerUnauthorizedTest extends FifreeTestUnauthorizedClien
         $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('Ffsecondaria');
         $em = $this->getEntityManager();
-        //$this->assertContains('DoctrineORMEntityManager', get_class($em));
+        //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));
 
         $urlnoauth = '/Ffsecondaria/';
         $client->request('GET', $urlnoauth);

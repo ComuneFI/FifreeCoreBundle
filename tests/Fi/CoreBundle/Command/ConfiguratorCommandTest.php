@@ -36,7 +36,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $outputimport = $commandTesterImport->getDisplay();
 
         $this->assertRegExp('/.../', $outputimport);
-        $this->assertContains('Non trovato file ' . $fixturefile, $outputimport);
+        $this->assertStringContainsString('Non trovato file ' . $fixturefile, $outputimport);
 
         $commandexport = $application->find('fifree2:configuratorexport');
         $commandTesterExport = new CommandTester($commandexport);
@@ -44,7 +44,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $outputexport = $commandTesterExport->getDisplay();
 
         $this->assertRegExp('/.../', $outputexport);
-        $this->assertContains('Export Entity: Fi\\CoreBundle\\Entity\\' . $entity, $outputexport);
+        $this->assertStringContainsString('Export Entity: Fi\\CoreBundle\\Entity\\' . $entity, $outputexport);
 
 
         /* Rimuovo ruolo Utente per generare l'inserimento tramite import */
@@ -85,9 +85,9 @@ class ConfiguratorCommandTest extends WebTestCase
         $commandTesterImport2 = new CommandTester($commandimport);
         $commandTesterImport2->execute(array('--forceupdate' => true, '--verboso' => true));
         $outputimport2 = $commandTesterImport2->getDisplay();
-        $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport2);
-        $this->assertContains('Modifica', $outputimport2);
-        $this->assertContains('ROLE_UNDEFINED', $outputimport2);
+        $this->assertNotStringContainsString('Non trovato file ' . $fixturefile, $outputimport2);
+        $this->assertStringContainsString('Modifica', $outputimport2);
+        $this->assertStringContainsString('ROLE_UNDEFINED', $outputimport2);
 
         $user = $em->getRepository('FiCoreBundle:Ruoli')->findOneBy(array(
             'ruolo' => "Utente",
@@ -98,11 +98,11 @@ class ConfiguratorCommandTest extends WebTestCase
         $commandTesterImport3->execute(array('--forceupdate' => true, '--verboso' => true, '--truncatetables' => true));
         $outputimport3 = $commandTesterImport3->getDisplay();
         //echo $outputimport3;exit;
-        $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport3);
-        $this->assertContains('aggiunta', $outputimport3);
-        $this->assertContains('tramite entity find', $outputimport3);
-        $this->assertContains(' in formato Boolean', $outputimport3);
-        $this->assertContains('in formato DateTime', $outputimport3);
+        $this->assertNotStringContainsString('Non trovato file ' . $fixturefile, $outputimport3);
+        $this->assertStringContainsString('aggiunta', $outputimport3);
+        $this->assertStringContainsString('tramite entity find', $outputimport3);
+        $this->assertStringContainsString(' in formato Boolean', $outputimport3);
+        $this->assertStringContainsString('in formato DateTime', $outputimport3);
 
         unlink($fixturefile);
     }

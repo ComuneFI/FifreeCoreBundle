@@ -14,7 +14,7 @@ class RuoliControllerTest extends FifreeTestAuthorizedClient
         $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('Ruoli');
         $em = $this->getEntityManager();
-        //$this->assertContains('DoctrineORMEntityManager', get_class($em));
+        //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));
 
         $client->request('GET', $url);
         sleep(1);
