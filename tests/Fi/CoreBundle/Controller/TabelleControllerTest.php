@@ -13,7 +13,7 @@ class TabelleControllerTest extends FifreeTestAuthorizedClient
     {
         $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('Tabelle');
-        //$this->assertContains('DoctrineORMEntityManager', get_class($em));
+        //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));
 
         $client->request('GET', $url);
         $crawler = new Crawler($client->getResponse()->getContent());

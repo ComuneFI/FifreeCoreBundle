@@ -103,6 +103,7 @@ class CheckgitversionCommand extends ContainerAwareCommand
 
     private function getLocalVersionStringDetail($versions)
     {
+        $matches = [];
         if ($versions == 'master') {
             return $versions;
         } else {
@@ -115,6 +116,7 @@ class CheckgitversionCommand extends ContainerAwareCommand
 
     private function getRemoteVersionString($versions)
     {
+        $matches = [];
         if (preg_match('/\d+(?:\.\d+)+/', $versions, $matches)) {
             return $matches[0]; //returning the first match
         }

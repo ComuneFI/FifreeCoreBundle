@@ -411,11 +411,11 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $page = $this->getCurrentPageContent();
         $find = strpos($page, 'name="plugin" id="plugin"');
         if ($find !== false) {
-            $this->assertContains("application/pdf", $page);
+            $this->assertStringContainsString("application/pdf", $page);
         } else {
-            $this->assertContains('Ffsecondaria', $this->facebookDriver->getTitle());
-            $this->assertContains('FiFree2', $page);
-            $this->assertContains('Descrizione secondo record', $page);
+            $this->assertStringContainsString('Ffsecondaria', $this->facebookDriver->getTitle());
+            $this->assertStringContainsString('FiFree2', $page);
+            $this->assertStringContainsString('Descrizione secondo record', $page);
         }
 
         $session->executeScript('window.close();');

@@ -13,7 +13,7 @@ class OperatoriControllerTest extends FifreeTestAuthorizedClient
     {
         $client = $this->getClient();
         $url = $client->getContainer()->get('router')->generate('Operatori');
-        //$this->assertContains('DoctrineORMEntityManager', get_class($em));
+        //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));
 
         $client->request('GET', $url);
         $crawler = new Crawler($client->getResponse()->getContent());

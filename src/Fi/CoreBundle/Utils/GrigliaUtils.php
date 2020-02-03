@@ -5,11 +5,11 @@ namespace Fi\CoreBundle\Utils;
 class GrigliaUtils
 {
 
-    public static $decodificaop;
-    public static $precarattere;
-    public static $postcarattere;
-    public static $precaratterecampo;
-    public static $postcaratterecampo;
+    public static $decodificaop = [];
+    public static $precarattere = [];
+    public static $postcarattere = [];
+    public static $precaratterecampo = [];
+    public static $postcaratterecampo = [];
 
     const LARGHEZZAMASSIMA = 500;
     const MOLTIPLICATORELARGHEZZA = 10;
