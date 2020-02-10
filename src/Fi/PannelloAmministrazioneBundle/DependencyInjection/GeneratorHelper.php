@@ -129,18 +129,24 @@ class GeneratorHelper
     public function getScriptGenerator()
     {
         $scriptGenerator = "";
-        if (version_compare(Kernel::VERSION, '3.0') >= 0) {
-            $scriptGenerator = $this->apppaths->getVendorBinPath() . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
-        } else {
-            try {
-                $scriptGenerator = $this->apppaths->getBinPath() . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
-            } catch (Exception $exc) {
-                //echo $exc->getTraceAsString();
-                if (!file_exists($scriptGenerator)) {
-                    $scriptGenerator = $this->apppaths->getVendorBinPath() . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
-                }
-            }
+        $binpath = "";
+        $vendorbinpath = "";
+        try {
+            $binpath = $this->apppaths->getBinPath();
+        } catch (Exception $exc) {
+            
         }
+        try {
+            $vendorbinpath = $this->apppaths->getVendorBinPath();
+        } catch (Exception $exc) {
+            
+        }
+
+        $scriptGenerator = $binpath . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
+        if (!file_exists($scriptGenerator)) {
+            $scriptGenerator = $vendorbinpath . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
+        }
+
         if (!file_exists($scriptGenerator)) {
             $scriptGenerator = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
                     'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
