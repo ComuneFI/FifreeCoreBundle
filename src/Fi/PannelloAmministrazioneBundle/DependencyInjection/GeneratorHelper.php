@@ -8,27 +8,23 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use function ctype_upper;
 
-class GeneratorHelper
-{
+class GeneratorHelper {
 
     private $container;
     private $apppaths;
 
-    public function __construct($container)
-    {
+    public function __construct($container) {
         $this->container = $container;
         $this->apppaths = $container->get("pannelloamministrazione.projectpath");
     }
 
-    public function getDestinationEntityYmlPath($bundlePath)
-    {
+    public function getDestinationEntityYmlPath($bundlePath) {
         return $this->apppaths->getSrcPath() . DIRECTORY_SEPARATOR .
                 $bundlePath . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR .
                 'config' . DIRECTORY_SEPARATOR . 'doctrine' . DIRECTORY_SEPARATOR;
     }
 
-    public function checktables($destinationPath, $wbFile, $output)
-    {
+    public function checktables($destinationPath, $wbFile, $output) {
         $finder = new Finder();
         $fs = new Filesystem();
 
@@ -76,8 +72,7 @@ class GeneratorHelper
         }
     }
 
-    public function checkprerequisiti($bundlename, $mwbfile, $output)
-    {
+    public function checkprerequisiti($bundlename, $mwbfile, $output) {
         $fs = new Filesystem();
 
         $wbFile = $this->apppaths->getDocPath() . DIRECTORY_SEPARATOR . $mwbfile;
@@ -128,21 +123,26 @@ class GeneratorHelper
         return 0;
     }
 
-    public function getScriptGenerator()
-    {
+    public function getScriptGenerator() {
         $scriptGenerator = "";
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-            $scriptGenerator = $this->apppaths->getVendorBinPath() . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
-        } else {
-            try {
-                $scriptGenerator = $this->apppaths->getBinPath() . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
-            } catch (Exception $exc) {
-                //echo $exc->getTraceAsString();
-                if (!file_exists($scriptGenerator)) {
-                    $scriptGenerator = $this->apppaths->getVendorBinPath() . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
-                }
-            }
+        $binpath = "";
+        $vendorbinpath = "";
+        try {
+            $binpath = $this->apppaths->getBinPath();
+        } catch (Exception $exc) {
+            
         }
+        try {
+            $vendorbinpath = $this->apppaths->getVendorBinPath();
+        } catch (Exception $exc) {
+            
+        }
+
+        $scriptGenerator = $binpath . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
+        if (!file_exists($scriptGenerator)) {
+            $scriptGenerator = $vendorbinpath . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
+        }
+
         if (!file_exists($scriptGenerator)) {
             $scriptGenerator = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
                     'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
@@ -153,8 +153,7 @@ class GeneratorHelper
         return $scriptGenerator;
     }
 
-    public function getExportJsonFile()
-    {
+    public function getExportJsonFile() {
         $fs = new Filesystem();
         $cachedir = $this->apppaths->getCachePath();
         $exportJson = $cachedir . DIRECTORY_SEPARATOR . 'export.json';
@@ -165,15 +164,13 @@ class GeneratorHelper
         return $exportJson;
     }
 
-    public function removeExportJsonFile()
-    {
+    public function removeExportJsonFile() {
         $this->getExportJsonFile();
 
         return true;
     }
 
-    public static function getJsonMwbGenerator()
-    {
+    public static function getJsonMwbGenerator() {
         $jsonTemplate = <<<EOF
 {"export": "doctrine2-yaml", 
   "zip": false, 
@@ -197,4 +194,5 @@ class GeneratorHelper
 EOF;
         return $jsonTemplate;
     }
+
 }
