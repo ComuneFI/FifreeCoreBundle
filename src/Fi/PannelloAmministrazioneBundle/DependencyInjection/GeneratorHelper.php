@@ -134,12 +134,10 @@ class GeneratorHelper
         try {
             $binpath = $this->apppaths->getBinPath();
         } catch (Exception $exc) {
-            
         }
         try {
             $vendorbinpath = $this->apppaths->getVendorBinPath();
         } catch (Exception $exc) {
-            
         }
 
         $scriptGenerator = $binpath . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
