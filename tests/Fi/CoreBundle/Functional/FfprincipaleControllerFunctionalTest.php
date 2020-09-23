@@ -2,16 +2,14 @@
 
 use Tests\CoreBundle\FacebookDriver\FacebookDriverTester;
 
-class FfprincipaleControllerFunctionalTest extends FacebookDriverTester
-{
+class FfprincipaleControllerFunctionalTest extends FacebookDriverTester {
     /*
      * @test
      * @covers Fi\CoreBundle\Controller\FiController::<public>
      * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
      */
 
-    public function testFfprincipale()
-    {
+    public function testFfprincipale() {
         $url = "/Ffprincipale";
         $this->visit($url);
         $this->login('admin', 'admin');
@@ -29,8 +27,7 @@ class FfprincipaleControllerFunctionalTest extends FacebookDriverTester
         $session->quit();
     }
 
-    private function searchoperation($session)
-    {
+    private function searchoperation($session) {
 
         $this->clickElement('search_list1');
         /* Ricerca 1 */
@@ -61,8 +58,7 @@ class FfprincipaleControllerFunctionalTest extends FacebookDriverTester
         $this->assertEquals(1, $numrowsgrid2);
     }
 
-    private function crudoperation($session)
-    {
+    private function crudoperation($session) {
         $this->clickElement('buttonadd_list1');
 
         /* Inserimento */
@@ -103,8 +99,7 @@ class FfprincipaleControllerFunctionalTest extends FacebookDriverTester
         $this->clickElement('dData');
     }
 
-    private function printoperations($session)
-    {
+    private function printoperations($session) {
         $this->clickElement('buttonprint_list1');
         sleep(5);
         $windows = $this->facebookDriver->getWindowHandles();
@@ -113,13 +108,7 @@ class FfprincipaleControllerFunctionalTest extends FacebookDriverTester
 
         $page = $this->getCurrentPageContent();
         $find = strpos($page, 'name="plugin" id="plugin"');
-        if ($find !== false) {
-            $this->assertStringContainsString("application/pdf", $page);
-        } else {
-            $this->assertStringContainsString('Ffprincipale', $this->facebookDriver->getTitle());
-            $this->assertStringContainsString('FiFree2', $page);
-            $this->assertStringContainsString('Descrizione primo record', $page);
-        }
+        $this->assertStringContainsString("application/pdf", $page);
 
         $session->executeScript('window.close();');
 

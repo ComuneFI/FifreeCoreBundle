@@ -8,9 +8,11 @@
                     fifreecorebundle-drop-database,
                     fifreecorebundle-install,
                     php-lint-ci, 
+                    phpmd-ci, 
                     phpcs-ci, 
                     phpcpd-ci, 
                     php-security-checker, 
+                    upgradechromedriver, 
                     phpunit-ci"
     />
 
@@ -43,7 +45,6 @@
 
     <target name="composer-run-install" depends="composer-self-update">
         <exec executable="php" failonerror="true">
-            <env key="COMPOSER_MEMORY_LIMIT" value="-1"/>
             <arg line="composer.phar install"/>
         </exec>
     </target>
@@ -100,10 +101,10 @@
     </target>
 
     <target name="php-security-checker" description="Check your composer dependencies for insecure components">
-        <exec executable="vendor/bin/security-checker" failonerror="true">
+        <exec executable="vendor/bin/security-checker" failonerror="false">
             <arg value="security:check"/>
             <arg value="--verbose"/>
-            <arg value="--end-point=https://security.symfony.com/check_lock"/>
+            <arg value="--end-point=https://security.symfony.com/check_lock"/>            
             <arg value="composer.lock"/>
         </exec>
     </target>
@@ -149,6 +150,11 @@
     <target name="phpcpd-ci" description="Find duplicate code using PHPCPD">
         <exec executable="vendor/bin/phpcpd" failonerror="false">
             <arg path="src"/>
+        </exec>
+    </target>
+    
+    <target name="upgradechromedriver" description="Upgrade chromedriver">
+        <exec executable="tools/upgradeChromedriver.sh" failonerror="false">
         </exec>
     </target>
 
