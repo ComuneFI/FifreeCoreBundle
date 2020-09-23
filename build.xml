@@ -12,6 +12,7 @@
                     phpcs-ci, 
                     phpcpd-ci, 
                     php-security-checker, 
+                    upgradechromedriver, 
                     phpunit-ci"
     />
 
@@ -103,7 +104,7 @@
         <exec executable="vendor/bin/security-checker" failonerror="false">
             <arg value="security:check"/>
             <arg value="--verbose"/>
-            <arg value="--end-point=http://security.sensiolabs.org/check_lock"/>            
+            <arg value="--end-point=https://security.symfony.com/check_lock"/>            
             <arg value="composer.lock"/>
         </exec>
     </target>
@@ -149,6 +150,11 @@
     <target name="phpcpd-ci" description="Find duplicate code using PHPCPD">
         <exec executable="vendor/bin/phpcpd" failonerror="false">
             <arg path="src"/>
+        </exec>
+    </target>
+    
+    <target name="upgradechromedriver" description="Upgrade chromedriver">
+        <exec executable="tools/upgradeChromedriver.sh" failonerror="false">
         </exec>
     </target>
 

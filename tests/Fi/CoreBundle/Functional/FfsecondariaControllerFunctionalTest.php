@@ -2,8 +2,7 @@
 
 use Tests\CoreBundle\FacebookDriver\FacebookDriverTester;
 
-class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
-{
+class FfsecondariaControllerFunctionalTest extends FacebookDriverTester {
     /*
      * @test
      * @covers Fi\CoreBundle\Controller\StoricomodificheController::<public>
@@ -11,8 +10,8 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
      * @covers Fi\CoreBundle\Controller\FiCoreController::<public>
      * @covers Fi\CoreBundle\Controller\FiController::<public>
      */
-    public function testFfsecondaria()
-    {
+
+    public function testFfsecondaria() {
         //$url = $_ENV['HTTP_TEST_HOST'] . $_ENV['HTTP_TEST_URL'] . $this->router->generate('Ffsecondaria');
         $url = "/Ffsecondaria";
         $this->visit($url);
@@ -36,8 +35,8 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         $session->quit();
     }
-    private function crudoperation($session, $page)
-    {
+
+    private function crudoperation($session, $page) {
         $this->clickElement('buttonadd_list1');
 
         /* Inserimento */
@@ -96,8 +95,8 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $this->clickElement('buttondel_list1');
         $this->clickElement('dData');
     }
-    private function configuratabelleoperation($session, $page)
-    {
+
+    private function configuratabelleoperation($session, $page) {
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
             $fieldprefix = 'ffsecondaria_';
         } else {
@@ -156,8 +155,8 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         $this->assertTrue($this->elementIsVisible("jqgh_list1_attivo"));
     }
-    private function validationoperation($session, $page)
-    {
+
+    private function validationoperation($session, $page) {
         $this->clickElement('buttonadd_list1');
 
         /* Inserimento */
@@ -195,8 +194,8 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
 
         $this->clickElement('dData');
     }
-    private function searchoperation($session, $page)
-    {
+
+    private function searchoperation($session, $page) {
         /* Ricerca 0 */
 
         $this->clickElement('search_list1');
@@ -398,8 +397,8 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $this->clickElement('fbox_list1_search');
         $this->ajaxWait();
         /**/
-        
-        
+
+
         //reset filtri
         $this->clickElement('search_list1');
         //mi tocca rimettere questo sleep perchè schianta anche dopo il refactor
@@ -407,8 +406,8 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $this->clickElement('fbox_list1_reset');
         $this->ajaxWait();
     }
-    private function printoperations($session, $page)
-    {
+
+    private function printoperations($session, $page) {
         /* Print pdf */
         $this->clickElement('buttonprint_list1');
         sleep(5);
@@ -417,14 +416,7 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $this->facebookDriver->switchTo()->window($lastwindow);
 
         $page = $this->getCurrentPageContent();
-        $find = strpos($page, 'name="plugin" id="plugin"');
-        if ($find !== false) {
-            $this->assertContains("application/pdf", $page);
-        } else {
-            $this->assertContains('Ffsecondaria', $this->facebookDriver->getTitle());
-            $this->assertContains('FiFree2', $page);
-            $this->assertContains('Descrizione secondo record', $page);
-        }
+        $this->assertContains("application/pdf", $page);
 
         $session->executeScript('window.close();');
 
@@ -432,8 +424,8 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
         $lastwindow2 = end($windows2);
         $this->facebookDriver->switchTo()->window($lastwindow2);
     }
-    private function searchmodifiche($valoreprecedente)
-    {
+
+    private function searchmodifiche($valoreprecedente) {
         $em = $this->doctrine->getManager();
 
         $qu = $em->createQueryBuilder();
@@ -453,4 +445,5 @@ class FfsecondariaControllerFunctionalTest extends FacebookDriverTester
                 ->getQuery()
                 ->execute();
     }
+
 }
