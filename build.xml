@@ -12,6 +12,7 @@
                     phpcs-ci, 
                     phpcpd-ci, 
                     php-security-checker, 
+                    upgradechromedriver, 
                     phpunit-ci"
     />
 
@@ -149,6 +150,11 @@
     <target name="phpcpd-ci" description="Find duplicate code using PHPCPD">
         <exec executable="vendor/bin/phpcpd" failonerror="false">
             <arg path="src"/>
+        </exec>
+    </target>
+    
+    <target name="upgradechromedriver" description="Upgrade chromedriver">
+        <exec executable="tools/upgradeChromedriver.sh" failonerror="false">
         </exec>
     </target>
 
