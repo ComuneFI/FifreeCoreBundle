@@ -32,13 +32,21 @@ class GrigliaExtraFunzioniUtils
         $nomecampo = $parametri['nomecampo'];
         $doctrine = $parametri['doctrine'];
         $decodifiche = $parametri['decodifiche'];
-
         $vettoreparcampi = $doctrine->getMetadataFactory()->getMetadataFor($tabella)->fieldMappings;
 
         if (is_object($vettoreparcampi)) {
             $vettoreparcampi = get_object_vars($vettoreparcampi);
         }
 
+        if (is_object($decodifiche)) {
+            $decodifiche = get_object_vars($decodifiche);
+            foreach ($decodifiche as $key => $value) {
+                if (is_object($value)) {
+                    $decodifiche[$key] = get_object_vars($value);
+                }
+            }
+        }
+        
         $singolocampo = $parametri['singolocampo'];
 
         if (isset($decodifiche[$nomecampo]) && isset($decodifiche[$nomecampo][$singolocampo])) {
