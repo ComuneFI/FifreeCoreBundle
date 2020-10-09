@@ -39,12 +39,7 @@ class GrigliaExtraFunzioniUtils
         }
 
         if (is_object($decodifiche)) {
-            $decodifiche = get_object_vars($decodifiche);
-            foreach ($decodifiche as $key => $value) {
-                if (is_object($value)) {
-                    $decodifiche[$key] = get_object_vars($value);
-                }
-            }
+            $decodifiche = json_decode(json_encode($decodifiche), true);
         }
         
         $singolocampo = $parametri['singolocampo'];
