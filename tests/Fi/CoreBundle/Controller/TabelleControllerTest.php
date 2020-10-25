@@ -11,7 +11,7 @@ class TabelleControllerTest extends FifreeTestAuthorizedClient
      */
     public function testIndexTabelle()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $client->getContainer()->get('router')->generate('Tabelle');
         //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));
 
@@ -25,7 +25,7 @@ class TabelleControllerTest extends FifreeTestAuthorizedClient
 
     public function testConfiguraTabelle()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $client->getContainer()->get('router')->generate('Tabelle_configura', array("nometabella" => "Ffprincipale"));
 
         $client->request('POST', $url);
@@ -35,7 +35,7 @@ class TabelleControllerTest extends FifreeTestAuthorizedClient
 
     public function testAggiornaTabelle()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $client->getContainer()->get('router')->generate('Tabelle_aggiorna', array(
             "etichettaindex" => "",
             "etichettastampa" => "",
@@ -73,7 +73,7 @@ class TabelleControllerTest extends FifreeTestAuthorizedClient
 
     public function testGrigliapopupTabelle()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $client->getContainer()->get('router')->generate('Tabelle_grigliapopup', array("chiamante" => "Ffprincipale"));
 
         $client->request('POST', $url);
@@ -83,7 +83,7 @@ class TabelleControllerTest extends FifreeTestAuthorizedClient
 
     public function testListacampitabellaTabelle()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $client->getContainer()->get('router')->generate('Tabelle_listacampitabella', array("tabella" => "Ffprincipale", "escludiid" => 1));
 
         $client->request('POST', $url);

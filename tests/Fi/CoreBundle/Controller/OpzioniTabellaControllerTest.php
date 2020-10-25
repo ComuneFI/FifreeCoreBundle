@@ -11,7 +11,7 @@ class OpzioniTabellaControllerTest extends FifreeTestAuthorizedClient
      */
     public function testIndexOpzioniTabella()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $client->getContainer()->get('router')->generate('OpzioniTabella');
         $em = $this->getEntityManager();
         //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));

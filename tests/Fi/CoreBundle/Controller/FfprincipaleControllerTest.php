@@ -15,7 +15,7 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
     public function testIndexFfprincipale()
     {
         /* @var $client \Symfony\Bundle\FrameworkBundle\Client */
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $this->getRoute('Ffprincipale');
         $em = $this->getEntityManager();
         //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));
@@ -107,7 +107,7 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
      */
     public function testExcelFfprincipale()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $this->getRoute('Tabelle_esportaexceltabella', array('nometabella' => 'Ffprincipale'));
 
 
@@ -130,7 +130,7 @@ class FfprincipaleControllerTest extends FifreeTestAuthorizedClient
      */
     public function testStampaFfprincipale()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $url = $this->getRoute('Tabelle_stampatabella', array('nometabella' => 'Ffprincipale'));
         ob_start();

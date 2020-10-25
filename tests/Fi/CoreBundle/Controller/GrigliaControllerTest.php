@@ -14,13 +14,13 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $namespace = 'Fi';
         $bundle = 'Core';
         $controller = 'Ffsecondaria';
-        $client = $this->getClient();
+        $client = self::getClient();
         $container = $client->getContainer();
 
         /* TESTATA */
         $nomebundle = $namespace . $bundle . 'Bundle';
         /* @var $em \Doctrine\ORM\EntityManager */
-        /* $em = $this->container->get('doctrine')->getManager(); */
+        /* $em = self::$container->get('doctrine')->getManager(); */
         $descsec = array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text'));
         $ffprincipaleId = array(
             array('nomecampo' => 'ffprincipale.descrizione',
@@ -79,7 +79,7 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
 
         $rows = $datigriglia['rows'];
         // @var $em \Doctrine\ORM\EntityManager
-        $em = $this->container->get('doctrine')->getManager();
+        $em = self::$container->get('doctrine')->getManager();
         $this->assertTrue($rows[0]->id == 2);
         $this->assertTrue($rows[8]->id == 7);
     }
@@ -91,13 +91,13 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $namespace = 'Fi';
         $bundle = 'Core';
         $controller = 'Ffsecondaria';
-        $client = $this->getClient();
+        $client = self::getClient();
         $container = $client->getContainer();
 
         /* TESTATA */
         $nomebundle = $namespace . $bundle . 'Bundle';
         /* @var $em \Doctrine\ORM\EntityManager */
-        /* $em = $this->container->get('doctrine')->getManager(); */
+        /* $em = self::$container->get('doctrine')->getManager(); */
         $descsec = array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text'));
         $ffprincipaleId = array(
             array('nomecampo' => 'ffprincipale.descrizione',
@@ -156,7 +156,7 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
 
         $rows = $datigriglia['rows'];
         // @var $em \Doctrine\ORM\EntityManager
-        $em = $this->container->get('doctrine')->getManager();
+        $em = self::$container->get('doctrine')->getManager();
         $this->assertTrue($rows[0]->id == 7);
         $this->assertTrue($rows[8]->id == 2);
     }
@@ -168,13 +168,13 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $namespace = 'Fi';
         $bundle = 'Core';
         $controller = 'Ffsecondaria';
-        $client = $this->getClient();
+        $client = self::getClient();
         $container = $client->getContainer();
 
         /* TESTATA */
         $nomebundle = $namespace . $bundle . 'Bundle';
         /* @var $em \Doctrine\ORM\EntityManager */
-        /* $em = $this->container->get('doctrine')->getManager(); */
+        /* $em = self::$container->get('doctrine')->getManager(); */
         $descsec = array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text'));
         $ffprincipaleId = array(
             array('nomecampo' => 'ffprincipale.descrizione',
@@ -1019,13 +1019,13 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $namespace = 'Fi';
         $bundle = 'Core';
         $controller = 'Ffsecondaria';
-        $client = $this->getClient();
+        $client = self::getClient();
         $container = $client->getContainer();
 
         /* TESTATA */
         $nomebundle = $namespace . $bundle . 'Bundle';
         /* @var $em \Doctrine\ORM\EntityManager */
-        /* $em = $this->container->get('doctrine')->getManager(); */
+        /* $em = self::$container->get('doctrine')->getManager(); */
         $descsec = array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text'));
         $ffprincipaleId = array(
             array('nomecampo' => 'ffprincipale.descrizione',
@@ -1162,13 +1162,13 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
 
         $decodifiche = array();
         for ($index = 1; $index < 8; $index++) {
-            $format = new \IntlDateFormatter('it_IT', \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, "EEEE");
+            $format = new \IntlDateFormatter('en', \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, "EEEE");
             $decodifiche["giornodellasettimana"][$index] = ucfirst($format->format(strtotime('next Sunday +' . $index . ' days')));
         }
 
 
         // @var $em \Doctrine\ORM\EntityManager
-        $em = $this->container->get('doctrine')->getManager();
+        $em = self::$container->get('doctrine')->getManager();
         foreach ($rows as $idx => $row) {
             if (is_object($row)) {
                 $row = get_object_vars($row);
@@ -1229,13 +1229,13 @@ class GrigliaControllerTest extends FifreeTestAuthorizedClient
         $namespace = 'Fi';
         $bundle = 'Core';
         $controller = 'Ffsecondaria';
-        $client = $this->getClient();
+        $client = self::getClient();
         $container = $client->getContainer();
 
         /* TESTATA */
         $nomebundle = $namespace . $bundle . 'Bundle';
         /* @var $em \Doctrine\ORM\EntityManager */
-        /* $em = $this->container->get('doctrine')->getManager(); */
+        /* $em = self::$container->get('doctrine')->getManager(); */
         $descsec = array(array('nomecampo' => 'descsec', 'lunghezza' => '400', 'descrizione' => 'Descrizione tabella secondaria', 'tipo' => 'text'));
         $ffprincipaleId = array(
             array('nomecampo' => 'ffprincipale.descrizione',

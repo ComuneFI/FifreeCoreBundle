@@ -11,7 +11,7 @@ class MenuApplicazioneControllerTest extends FifreeTestAuthorizedClient
      */
     public function testIndexMenuApplicazione()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $client->getContainer()->get('router')->generate('MenuApplicazione');
         $em = $this->getEntityManager();
         //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));

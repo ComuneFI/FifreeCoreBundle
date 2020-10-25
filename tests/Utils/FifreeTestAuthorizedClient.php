@@ -14,18 +14,18 @@ class FifreeTestAuthorizedClient extends WebTestCase
      */
     protected $em;
     protected $application;
-    protected $container;
-    protected $client;
+    static protected $container;
+    static protected $client;
     protected $testclassname;
 
     protected function setUp() : void
     {
         $client = static::createClient();
-        $this->client = $this->createAuthorizedClient($client);
-        $this->container = $this->client->getKernel()->getContainer();
-        $this->em = $this->container->get('doctrine')->getManager();
+        self::$client = $this->createAuthorizedClient($client);
+        self::$container = self::$client->getKernel()->getContainer();
+        $this->em = self::$container->get('doctrine')->getManager();
         /*
-        $this->application = new \Symfony\Bundle\FrameworkBundle\Console\Application($this->client->getKernel());
+        $this->application = new \Symfony\Bundle\FrameworkBundle\Console\Application(self::$client->getKernel());
         $this->application->setAutoExit(false);
 
          
@@ -39,12 +39,12 @@ class FifreeTestAuthorizedClient extends WebTestCase
             $absolutepath = \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL;
         }
 
-        return $this->client->getContainer()->get('router')->generate($name, $variables, $absolutepath);
+        return self::$client->getContainer()->get('router')->generate($name, $variables, $absolutepath);
     }
 
     protected function getContainer()
     {
-        return $this->container;
+        return self::$container;
     }
 
     protected function setClassName($testclassname)
@@ -67,9 +67,9 @@ class FifreeTestAuthorizedClient extends WebTestCase
         return $this->em;
     }
 
-    protected function getClient()
+    static protected function getClient()
     {
-        return $this->client;
+        return self::$client;
     }
 
     protected function getControllerNameByClassName()

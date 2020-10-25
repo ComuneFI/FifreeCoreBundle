@@ -14,7 +14,7 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
     {
         $em = $this->getEntityManager();
 
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $client->getContainer()->get('router')->generate('Ffsecondaria');
         //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));
 
@@ -36,7 +36,7 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
     {
         $em = $this->getEntityManager();
 
-        $client = $this->getClient();
+        $client = self::getClient();
 
         //insert
         $urlnew = $client->getContainer()->get('router')->generate('Ffsecondaria_new');
@@ -166,7 +166,7 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
      */
     public function testExcelFfsecondaria()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $url = $client->getContainer()->get('router')->generate('Tabelle_esportaexceltabella', array('nometabella' => 'Ffsecondaria'));
 
@@ -188,7 +188,7 @@ class FfsecondariaControllerTest extends FifreeTestAuthorizedClient
      */
     public function testStampaFfprincipale()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         //$url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $url = $client->getContainer()->get('router')->generate('Tabelle_stampatabella', array('nometabella' => 'Ffsecondaria'));
         ob_start();

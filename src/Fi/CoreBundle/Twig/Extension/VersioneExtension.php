@@ -4,10 +4,10 @@ namespace Fi\CoreBundle\Twig\Extension;
 
 use Fi\CoreBundle\Controller\FiVersioneController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Twig_Extension;
-use Twig_SimpleFunction;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 
-class VersioneExtension extends Twig_Extension
+class VersioneExtension extends AbstractExtension
 {
     protected $container;
 
@@ -19,7 +19,7 @@ class VersioneExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new Twig_SimpleFunction('versione_tag_git', array($this, 'versioneTagGit', 'is_safe' => array('html'))),
+            new TwigFunction('versione_tag_git', array($this, 'versioneTagGit', 'is_safe' => array('html'))),
         );
     }
 

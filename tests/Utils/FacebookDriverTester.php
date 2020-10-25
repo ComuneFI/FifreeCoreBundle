@@ -24,10 +24,10 @@ abstract class FacebookDriverTester extends WebTestCase
     protected $facebookDriver;
 
     /** @var Client */
-    protected $client;
+    static protected $client;
 
     /** @var Container */
-    protected $container;
+    static protected $container;
 
     /** @var Router */
     protected $router;

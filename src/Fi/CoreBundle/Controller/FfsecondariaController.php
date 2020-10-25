@@ -86,7 +86,7 @@ class FfsecondariaController extends FiCoreController
         if (!$canRead) {
             throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
         } else {
-            return $this->render($nomebundle . ':' . $controller . ':index.html.twig', $twigparms);
+            return $this->render('@FiCore/Ffsecondaria/index.html.twig', $twigparms);
         }
     }
     private function setDefaultGridSettings(&$testatagriglia)
@@ -135,7 +135,7 @@ class FfsecondariaController extends FiCoreController
         //Imposta il filtro a TUTTI come default
         $giornodellasettimanaSelect[] = array("valore" => "", "descrizione" => "Tutti", "default" => true);
         for ($index = 1; $index < 8; $index++) {
-            $format = new IntlDateFormatter('it_IT', IntlDateFormatter::NONE, IntlDateFormatter::NONE, null, null, "EEEE");
+            $format = new IntlDateFormatter('en', IntlDateFormatter::NONE, IntlDateFormatter::NONE, null, null, "EEEE");
             $giornodellasettimanaSelect[] = array(
                 "valore" => $index,
                 "descrizione" => ucfirst($format->format(strtotime('next Sunday +' . $index . ' days'))),
@@ -169,7 +169,7 @@ class FfsecondariaController extends FiCoreController
 
         $decodifiche = array();
         for ($index = 1; $index < 8; $index++) {
-            $format = new IntlDateFormatter('it_IT', IntlDateFormatter::NONE, IntlDateFormatter::NONE, null, null, "EEEE");
+            $format = new IntlDateFormatter('en', IntlDateFormatter::NONE, IntlDateFormatter::NONE, null, null, "EEEE");
             $decodifiche["giornodellasettimana"][$index] = ucfirst($format->format(strtotime('next Sunday +' . $index . ' days')));
         }
         

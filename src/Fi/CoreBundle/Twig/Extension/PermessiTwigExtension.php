@@ -4,10 +4,10 @@ namespace Fi\CoreBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Twig_Extension;
-use Twig_SimpleFilter;
+use Twig\TwigFilter;
+use Twig\Extension\AbstractExtension;
 
-class PermessiTwigExtension extends Twig_Extension
+class PermessiTwigExtension extends AbstractExtension
 {
 
     protected $requeststack;
@@ -41,7 +41,7 @@ class PermessiTwigExtension extends Twig_Extension
     public function getFilters()
     {
         return array(
-            new Twig_SimpleFilter('permesso', array($this, 'singoloPermesso')),
+            new TwigFilter('permesso', array($this, 'singoloPermesso')),
         );
     }
 

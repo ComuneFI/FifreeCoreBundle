@@ -8,7 +8,7 @@ class FfprincipaleUserControllerTest extends FifreeTestAuthorizedClient
     public function testIndexFfprincipaleSenzaPrivilegi()
     {
 
-        $client = $this->getClient();
+        $client = self::getClient();
 
         $url = $client->getContainer()->get('router')->generate('Ffprincipale');
 
@@ -25,8 +25,8 @@ class FfprincipaleUserControllerTest extends FifreeTestAuthorizedClient
         $namespace = 'Fi';
         $bundle = 'Core';
         $controller = 'Ffsecondaria';
-        $client = $this->getClient();
-        $container = $this->getClient()->getContainer();
+        $client = self::getClient();
+        $container = self::getClient()->getContainer();
 
         /* TESTATA */
         $nomebundle = $namespace . $bundle . 'Bundle';

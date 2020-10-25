@@ -19,7 +19,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
      * @var \Doctrine\ORM\EntityManager
      */
     protected $em;
-    protected $container;
+    static protected $container;
     protected $application;
 
     /**
@@ -28,9 +28,10 @@ class GenerateentitiesCommandTest extends KernelTestCase
     protected function setUp() : void
     {
         $kernel = static::createKernel();
+        
         $kernel->boot();
 
-        $this->container = $kernel->getContainer();
+        self::$container = $kernel->getContainer();
         $this->em = $kernel->getContainer()
                 ->get('doctrine')
                 ->getManager();
@@ -54,7 +55,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
           $this->assertRegExp('/.../', $commandTester->getDisplay());
          */
-        $this->application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
+        $this->application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand('fifree2:droptables'));
 
         $command = $this->application->find('fifree2:droptables');
         $commandTester = new CommandTester($command);
@@ -67,7 +68,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         $this->assertRegExp('/.../', $commandTester->getDisplay());
 
-        $this->application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand());
+        $this->application->add(new \Fi\CoreBundle\Command\Fifree2dropdatabaseCommand('fifree2:dropdatabase'));
 
         $command = $this->application->find('fifree2:dropdatabase');
         $commandTester = new CommandTester($command);
@@ -80,9 +81,9 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         $this->assertRegExp('/.../', $commandTester->getDisplay());
 
-        $this->application->add(new \Fi\CoreBundle\Command\Fifree2installCommand());
-        $this->application->add(new \Fi\CoreBundle\Command\Fifree2createdatabaseCommand());
-        $this->application->add(new \Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand());
+        $this->application->add(new \Fi\CoreBundle\Command\Fifree2installCommand('fifree2:install'));
+        $this->application->add(new \Fi\CoreBundle\Command\Fifree2createdatabaseCommand('fifree2:createdatabase'));
+        //$this->application->add(new \Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand());
 
         clearcache();
         cachewarmup();
@@ -122,7 +123,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
 
         $checkbaseent = $apppath->getSrcPath() . "/Entity/BaseProva.php";
 
-        $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand());
+        $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateymlentitiesCommand('pannelloamministrazione:generateymlentities'));
         $command = $this->application->find('pannelloamministrazione:generateymlentities');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
@@ -135,7 +136,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $this->assertRegExp('/.../', $commandTester->getDisplay());
         //dump($commandTester->getDisplay());
 
-        $this->application->add(new Doctrine\Bundle\DoctrineBundle\Command\Proxy\UpdateSchemaDoctrineCommand());
+        $this->application->add(new Doctrine\Bundle\DoctrineBundle\Command\Proxy\UpdateSchemaDoctrineCommand('doctrine:schema:update'));
         $command = $this->application->find('doctrine:schema:update');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
@@ -160,7 +161,7 @@ class GenerateentitiesCommandTest extends KernelTestCase
         $apppath = new \Fi\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($container);
         $checkform = $apppath->getSrcPath() . "/Form/ProvaType.php";
 
-        $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateFormCommand());
+        $this->application->add(new \Fi\PannelloAmministrazioneBundle\Command\GenerateFormCommand('pannelloamministrazione:generateformcrud'));
         $command = $this->application->find('pannelloamministrazione:generateformcrud');
         $commandTester = new CommandTester($command);
         $commandTester->execute(

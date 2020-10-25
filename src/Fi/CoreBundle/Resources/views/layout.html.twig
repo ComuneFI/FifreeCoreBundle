@@ -8,11 +8,11 @@
         {% block head %}
 
             {% set vars = {'versionecor': versionecor} %}
-            {{ include('FiCoreBundle:Default:css.html.twig', vars) }}
+            {{ include('@FiCore/Default/css.html.twig', vars) }}
             {% block css %}
             {% endblock %}
 
-            {{ include('FiCoreBundle:Default:javascripts.html.twig', vars) }}
+            {{ include('@FiCore/Default/javascripts.html.twig', vars) }}
             {% block javascripts %}
             {% endblock %}
 
@@ -27,12 +27,12 @@
             </div>
         {% endfor %}
         {% block menu %}
-            {{ render(controller('FiCoreBundle:Menu:generamenu')) }}
+            {#{ render(controller('generamenu')) }#}
         {% endblock %}
 
         {% block contextMenu %}
-            {{ include('FiCoreBundle:Menu:contextMenu.html.twig') }}
-            {{ include('FiCoreBundle:Menu:contextMenuCampo.html.twig') }}
+            {{ include('@FiCore/Menu/contextMenu.html.twig') }}
+            {{ include('@FiCore/Menu/contextMenuCampo.html.twig') }}
         {% endblock %}
 
         {% block fibody %}

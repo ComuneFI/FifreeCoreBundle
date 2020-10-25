@@ -11,7 +11,7 @@ class PermessiControllerTest extends FifreeTestAuthorizedClient
      */
     public function testIndexPermessi()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $client->getContainer()->get('router')->generate('Permessi');
         $em = $this->getEntityManager();
         //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));

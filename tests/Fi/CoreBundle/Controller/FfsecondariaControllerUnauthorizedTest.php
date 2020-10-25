@@ -11,7 +11,7 @@ class FfsecondariaControllerUnauthorizedTest extends FifreeTestUnauthorizedClien
      */
     public function testIndexFfsecondaria()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $client->getContainer()->get('router')->generate('Ffsecondaria');
         $em = $this->getEntityManager();
         //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));

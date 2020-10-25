@@ -3,10 +3,9 @@
 namespace Fi\CoreBundle\Twig\Extension;
 
 use Fi\CoreBundle\Controller\FiUtilita;
-use Twig_Extension;
-use Twig_SimpleFunction;
-
-class UtilitaExtension extends Twig_Extension
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
+class UtilitaExtension extends AbstractExtension
 {
 
     /**
@@ -15,7 +14,7 @@ class UtilitaExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new Twig_SimpleFunction('db2data', array($this, 'getDb2data', 'is_safe' => array('html'))),
+            new TwigFunction('db2data', array($this, 'getDb2data', 'is_safe' => array('html'))),
         );
     }
     public function getDb2data($giorno)

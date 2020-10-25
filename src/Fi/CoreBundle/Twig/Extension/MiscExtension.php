@@ -3,10 +3,10 @@
 namespace Fi\CoreBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Twig_Extension;
-use Twig_SimpleFunction;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 
-class MiscExtension extends Twig_Extension
+class MiscExtension extends AbstractExtension
 {
     protected $container;
 
@@ -18,8 +18,8 @@ class MiscExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new Twig_SimpleFunction('serviceExists', array($this, 'serviceExists')),
-            new Twig_SimpleFunction('getParameter', array($this, 'getParameter')),
+            new TwigFunction('serviceExists', array($this, 'serviceExists')),
+            new TwigFunction('getParameter', array($this, 'getParameter')),
         );
     }
 

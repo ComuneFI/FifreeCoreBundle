@@ -11,7 +11,7 @@ class OperatoriControllerTest extends FifreeTestAuthorizedClient
      */
     public function testIndexOperatori()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $client->getContainer()->get('router')->generate('Operatori');
         //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));
 

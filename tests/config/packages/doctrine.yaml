@@ -35,4 +35,4 @@ doctrine:
                 alias: AppBundle
         #query_cache_driver: apcu
         #metadata_cache_driver: apcu
-        result_cache_driver: apcu
+        #result_cache_driver: apcu

@@ -11,7 +11,7 @@ class FfprincipaleControllerUnauthorizedTest extends FifreeTestUnauthorizedClien
      */
     public function testIndexFfprincipaleUnauthorized()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $client->getContainer()->get('router')->generate('Ffprincipale');
         $em = $this->getEntityManager();
         //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));

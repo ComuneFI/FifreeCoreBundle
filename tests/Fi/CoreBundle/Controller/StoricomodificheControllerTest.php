@@ -11,7 +11,7 @@ class StoricomodificheControllerTest extends FifreeTestAuthorizedClient
      */
     public function testIndexStoricomodifiche()
     {
-        $client = $this->getClient();
+        $client = self::getClient();
         $url = $client->getContainer()->get('router')->generate('Storicomodifiche_container');
         $em = $this->getEntityManager();
         //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));

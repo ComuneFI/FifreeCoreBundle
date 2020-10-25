@@ -88,8 +88,8 @@ class FiCrudController extends Controller
         $this->setParametriGriglia(array('request' => $request));
         $testatagriglia['parametrigriglia'] = json_encode(self::$parametrigriglia);
 
-        $template = $nomebundle . ':' . $controller . ':index.html.twig';
-        if (!$this->get('templating')->exists($template)) {
+        $template = "@FiCore/". $controller . '/index.html.twig';
+        if (!$this->get('twig')->getLoader()->exists($template)) {
             $template = $controller . '/index.html.twig';
         }
 

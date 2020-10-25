@@ -17,10 +17,10 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('fi_core');
+        $treeBuilder = new TreeBuilder('fi_core');
+        $root = $treeBuilder->getRootNode();
 
-        $treeBuilder->root('fi_core')->children()
+        $root->children()
             ->booleanNode('testroutes')->defaultTrue()->end()
             ->booleanNode('testdb')->defaultTrue()->end();
         // Here you should define the parameters that are allowed to
