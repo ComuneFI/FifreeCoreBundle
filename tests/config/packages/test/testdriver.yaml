@@ -3,5 +3,5 @@ parameters:
     usernoprivileges4test: user4test
     facebookdriver_url: "http://localhost:8000"
     facebookdriver_host: "http://localhost:4444/wd/hub"
-    selenium_driver_type: firefox
+    selenium_driver_type: chrome
     browser_headless: false

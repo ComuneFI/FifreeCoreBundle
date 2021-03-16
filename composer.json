@@ -71,7 +71,6 @@
         "phpmd/phpmd": "2.7.*",
         "se/selenium-server-standalone": "3.8.*",
         "sebastian/phpcpd": "^3.0",
-        "sensiolabs/security-checker": "^6.0",
         "squizlabs/php_codesniffer": "^2.7",
         "symfony/browser-kit": "3.4.*",
         "symfony/css-selector": "3.4.*",
@@ -95,8 +94,7 @@
         ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "security-checker security:check": "script"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         }
     },
     "config": {

@@ -80,6 +80,9 @@
     "enm1989/geckodriver": {
         "version": "0.19.1"
     },
+    "ezyang/htmlpurifier": {
+        "version": "v4.13.0"
+    },
     "facebook/webdriver": {
         "version": "1.6.0"
     },
@@ -103,6 +106,15 @@
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
+    },
+    "laminas/laminas-code": {
+        "version": "4.0.0"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.3.1"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.2.0"
     },
     "maennchen/zipstream-php": {
         "version": "2.1.0"
@@ -508,6 +520,9 @@
     },
     "twig/twig": {
         "version": "v2.5.0"
+    },
+    "webimpress/safe-writer": {
+        "version": "2.1.0"
     },
     "zendframework/zend-code": {
         "version": "3.3.0"
