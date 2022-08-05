@@ -18,7 +18,7 @@ class GrigliaDatiPrecondizioniUtils
         $regoleprecondizioni = array();
         $filtri = \json_decode($request->get('filters'), true);
         /* dal filtro prende il tipo di operatore (AND o OR sono i due fin qui gestiti) */
-        $operatorelogicofiltrigriglia = $filtri['groupOp'];
+        $operatorelogicofiltrigriglia = isset($filtri['groupOp']) ? $filtri['groupOp'] : array();
         /* prende un vettore con tutte le ricerche */
         $regolegriglia = isset($filtri['rules']) ? $filtri['rules'] : array();
         foreach ($precondizioniAvanzate as $elem) {
